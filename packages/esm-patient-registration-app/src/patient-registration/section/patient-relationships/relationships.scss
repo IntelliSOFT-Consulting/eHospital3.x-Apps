@@ -1,0 +1,35 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+@import '../../patient-registration.scss';
+
+.labelText {
+  @include type.type-style('label-01');
+}
+
+.bodyShort02 {
+  @include type.type-style('body-compact-02');
+}
+
+.searchBox {
+  margin-bottom: spacing.$spacing-05;
+}
+
+.relationshipHeader {
+  display: flex;
+  align-items: center;
+}
+
+.productiveHeading {
+  @include type.type-style('heading-compact-02');
+  color: $text-02;
+}
+
+.trashCan {
+  color: $danger !important;
+}
+
+:global(.omrs-breakpoint-lt-desktop) {
+  .relationshipHeader {
+    justify-content: space-between;
+  }
+}

@@ -1,24 +1,22 @@
 {
-  "name": "@openmrs/esm-template-app",
-  "version": "3.0.0",
-  "license": "MPL-2.0",
-  "description": "An OpenMRS seed application for building microfrontends",
-  "browser": "dist/openmrs-esm-template-app.js",
-  "main": "src/index.ts",
-  "source": true,
+  "name": "@sjhtc/eHospital3.x-Apps",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "start": "openmrs develop",
+    "start": "openmrs develop --sources packages/esm-patient-registration-app/",
     "serve": "webpack serve --mode=development",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env analyze=true",
     "lint": "TIMING=1 eslint src --ext js,jsx,ts,tsx",
-    "prettier": "prettier --write \"src/**/*.{ts,tsx}\" --list-different",
+    "prettier": "prettier --config prettier.config.js --write \"packages/**/*.{ts,tsx,css,scss}\" \"e2e/**/*.ts\"",
     "typescript": "tsc",
     "test": "jest --config jest.config.js --passWithNoTests",
     "verify": "turbo lint typescript coverage",
     "coverage": "yarn test --coverage",
     "prepare": "husky install",
-    "extract-translations": "i18next 'src/**/*.component.tsx' --config ./i18next-parser.config.js",
+    "extract-translations": "i18next 'packages/**/*.component.tsx' --config ./i18next-parser.config.js",
     "test-e2e": "playwright test"
   },
   "husky": {
@@ -46,6 +44,7 @@
   },
   "dependencies": {
     "@carbon/react": "^1.33.1",
+    "@sjthc/esm-patient-registration-app": "^5.2.8",
     "lodash-es": "^4.17.21",
     "react-image-annotate": "^1.8.0"
   },
@@ -76,6 +75,7 @@
     "@types/webpack-env": "^1.18.1",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.8.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.44.0",
