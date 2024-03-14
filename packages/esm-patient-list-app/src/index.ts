@@ -5,7 +5,7 @@ import {
 } from "@openmrs/esm-framework";
 import { moduleName } from "./constants";
 import { configSchema } from "./config-schema";
-import { dashboardMeta, homeDashboardMeta } from "./dashboard.meta";
+import { homeDashboardMeta } from "./dashboard.meta";
 import { createDashboardLink as createHomeDashboardLink } from "./DashboardLink";
 
 const options = {

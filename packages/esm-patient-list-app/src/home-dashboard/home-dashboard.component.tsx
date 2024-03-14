@@ -15,39 +15,54 @@ import {
   DatePicker,
   DatePickerInput,
   Button,
+  DataTableSkeleton,
+  Tile,
+  SkeletonPlaceholder,
 } from "@carbon/react";
+import { usePatientList } from "../hooks/usePatientList";
 
-type PatientListHomeProps = object;
+type PatientListHomeProps = {
+  patientUuid?: string;
+};
 
 const PatientListHome: React.FC<PatientListHomeProps> = () => {
   const { t } = useTranslation();
   const config = useConfig();
 
+  const { patient, isLoading, isError } = usePatientList();
+
+  const totalPatients = patient?.total || 0;
+
   const state = {};
 
-  const rows = [
-    {
-      name: "Patient 1",
-      gender: "Male",
-      id: "1234",
-      dateRegistered: "12-02-2024",
-      timeRegistered: "18:22:41",
-    },
-    {
-      name: "Patient 2",
-      gender: "Female",
-      id: "07654",
-      dateRegistered: "12-02-2024",
-      timeRegistered: "18:22:42",
-    },
-    {
-      name: "Patient 3",
-      gender: "Female",
-      id: "56789",
-      dateRegistered: "12-02-2024",
-      timeRegistered: "18:22:43",
-    },
-  ];
+  const rows =
+    patient?.entry?.map((entry: any) => {
+      const patientData = entry.resource;
+      const fullName = patientData.name
+        ?.map((name: any) => name.given?.join(" ") + " " + name.family)
+        .join(", ");
+      const age =
+        new Date().getFullYear() -
+        new Date(patientData.birthDate).getFullYear();
+      const gender = patientData.gender?.toUpperCase();
+      const openmrsID = patientData.identifier?.find(
+        (id: any) => id.type?.text === "OpenMRS ID"
+      )?.value;
+      const dateRegistered = new Date(
+        patientData.meta?.lastUpdated
+      ).toLocaleDateString();
+      const timeRegistered = new Date(
+        patientData.meta?.lastUpdated
+      ).toLocaleTimeString();
+      return {
+        name: fullName,
+        gender: gender,
+        age: age.toString(),
+        id: openmrsID,
+        dateRegistered: dateRegistered,
+        timeRegistered: timeRegistered,
+      };
+    }) || [];
 
   const headers = [
     {
@@ -57,6 +72,11 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
     {
       key: "gender",
       header: "Gender",
+    },
+
+    {
+      key: "age",
+      header: "Age",
     },
     {
       key: "id",
@@ -71,6 +91,34 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
       header: "Time Registered",
     },
   ];
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          width: "100%",
+        }}
+      >
+        <div className={styles.header} data-testid="patient-queue-header">
+          <div className={styles["left-justified-items"]}>
+            <PatientQueueIllustration />
+            <div className={styles["page-labels"]}>
+              <p className={styles.title}>{t("patients", "Patients")}</p>
+              <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
+            </div>
+          </div>
+        </div>
+        <div className={styles.cardContainer} data-testid="registered-patients">
+          <Tile className={styles.tileContainer}>
+            <SkeletonPlaceholder style={{ width: "100%" }} />
+          </Tile>
+        </div>
+        <DataTableSkeleton headers={headers} aria-label="sample table" />
+        <br />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className={styles.homeContainer}>
@@ -86,13 +134,20 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
         <div className={styles.cardContainer} data-testid="registered-patients">
           <MetricsCard
             label={t("total", "Total")}
-            value="20"
+            value={totalPatients.toString()}
             headerLabel={t("registeredPatients", "Registered Patients")}
             service="scheduled"
           />
         </div>
         <div className={styles.listFilter}>
-          <DatePicker datePickerType="range" dateFormat="d/m/Y">
+          <DatePicker
+            datePickerType="range"
+            dateFormat="d/m/Y"
+            // onChange={({ startDate, endDate }) => {
+            //   setStartDate(startDate);
+            //   setEndDate(endDate);
+            // }}
+          >
             <DatePickerInput
               id="date-picker-input-id-start"
               placeholder="dd/mm/yyyy"
@@ -106,7 +161,11 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
               size="md"
             />
           </DatePicker>
-          <Button kind="primary" style={styles.FilterButton}>
+          <Button
+            kind="primary"
+            style={styles.FilterButton}
+            // onClick={handleSearch}
+          >
             Search
           </Button>
         </div>
@@ -116,9 +175,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
               <TableHead>
                 <TableRow>
                   {headers.map((header) => (
-                    <TableHeader {...getHeaderProps({ header })}>
-                      {header.header}
-                    </TableHeader>
+                    <TableHeader>{header.header}</TableHeader>
                   ))}
                 </TableRow>
               </TableHead>

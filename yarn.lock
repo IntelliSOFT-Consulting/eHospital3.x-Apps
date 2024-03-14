@@ -5293,39 +5293,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sjhc/esm-patient-list-app@workspace:packages/esm-patient-list-app":
+"@sjthc/eHospital3.x-Apps@workspace:.":
   version: 0.0.0-use.local
-  resolution: "@sjhc/esm-patient-list-app@workspace:packages/esm-patient-list-app"
-  dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@types/uuid": ^9.0.4
-    lodash-es: ^4.17.21
-    uuid: ^8.3.2
-    webpack: ^5.88.2
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 5.x
-    single-spa-react: 5.x
-  languageName: unknown
-  linkType: soft
-
-"@sjhtc/eHospital3.x-Apps@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@sjhtc/eHospital3.x-Apps@workspace:."
+  resolution: "@sjthc/eHospital3.x-Apps@workspace:."
   dependencies:
     "@carbon/react": ^1.33.1
     "@openmrs/esm-framework": next
     "@openmrs/esm-styleguide": next
     "@playwright/test": ^1.30.0
-    "@sjthc/esm-patient-registration-app": ^5.2.8
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.68
     "@swc/jest": ^0.2.26
@@ -5380,7 +5355,32 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@sjthc/esm-patient-registration-app@^5.2.8, @sjthc/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
+"@sjthc/esm-patient-list-app@workspace:packages/esm-patient-list-app":
+  version: 0.0.0-use.local
+  resolution: "@sjthc/esm-patient-list-app@workspace:packages/esm-patient-list-app"
+  dependencies:
+    "@carbon/charts-react": ^1.5.2
+    "@types/uuid": ^9.0.4
+    dayjs: 1.x
+    lodash-es: ^4.17.21
+    uuid: ^8.3.2
+    webpack: ^5.88.2
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    lodash-es: 4.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 5.x
+    single-spa-react: 5.x
+  languageName: unknown
+  linkType: soft
+
+"@sjthc/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
   version: 0.0.0-use.local
   resolution: "@sjthc/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
   dependencies:
@@ -10062,7 +10062,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.10.4, dayjs@npm:^1.10.7":
+"dayjs@npm:1.x, dayjs@npm:^1.10.4, dayjs@npm:^1.10.7":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
   checksum: a6b5a3813b8884f5cd557e2e6b7fa569f4c5d0c97aca9558e38534af4f2d60daafd3ff8c2000fed3435cfcec9e805bcebd99f90130c6d1c5ef524084ced588c4

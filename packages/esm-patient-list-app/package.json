@@ -1,9 +1,9 @@
 {
-  "name": "@sjhc/esm-patient-list-app",
+  "name": "@sjthc/esm-patient-list-app",
   "version": "1.0.0",
   "license": "MPL-2.0",
-  "description": "Patient dashboard microfrontend for the OpenMRS SPA",
-  "browser": "dist/sjhc-esm-patient-list-app",
+  "description": "Custom Patient list microfrontend for the OpenMRS SPA",
+  "browser": "dist/sjthc-esm-patient-list-app",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
@@ -25,19 +25,20 @@
   "keywords": [
     "openmrs"
   ],
-  "homepage": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/sjhc-esm-patient-list-app#readme",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/donaldkibet/ssemr-esm-patient-dashboard.git"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/sjhc-esm-patient-list-app.git"
   },
   "bugs": {
-    "url": "https://github.com/donaldkibet/ssemr-esm-patient-dashboard/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/sjhc-esm-patient-list-app/issues"
   },
   "dependencies": {
     "@carbon/charts-react": "^1.5.2",
+    "dayjs": "1.x",
     "lodash-es": "^4.17.21",
     "uuid": "^8.3.2"
   },
