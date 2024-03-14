@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-patient-list-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MPL-2.0",
   "description": "Custom Patient list microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-list-app",
@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@carbon/charts-react": "^1.5.2",
-    "dayjs": "1.x",
     "lodash-es": "^4.17.21",
     "uuid": "^8.3.2"
   },

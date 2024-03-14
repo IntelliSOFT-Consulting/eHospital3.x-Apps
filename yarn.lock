@@ -5361,7 +5361,6 @@ __metadata:
   dependencies:
     "@carbon/charts-react": ^1.5.2
     "@types/uuid": ^9.0.4
-    dayjs: 1.x
     lodash-es: ^4.17.21
     uuid: ^8.3.2
     webpack: ^5.88.2
@@ -10062,7 +10061,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.x, dayjs@npm:^1.10.4, dayjs@npm:^1.10.7":
+"dayjs@npm:^1.10.4, dayjs@npm:^1.10.7":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
   checksum: a6b5a3813b8884f5cd557e2e6b7fa569f4c5d0c97aca9558e38534af4f2d60daafd3ff8c2000fed3435cfcec9e805bcebd99f90130c6d1c5ef524084ced588c4

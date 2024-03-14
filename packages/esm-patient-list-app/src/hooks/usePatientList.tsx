@@ -8,7 +8,7 @@ export function usePatientList() {
     return response.json();
   };
 
-  const { data, error } = useSWR(`/ws/fhir2/R4/Patient?_count=100000`, fetcher);
+  const { data, error } = useSWR(`/ws/fhir2/R4/Patient`, fetcher);
 
   return {
     patient: data,
