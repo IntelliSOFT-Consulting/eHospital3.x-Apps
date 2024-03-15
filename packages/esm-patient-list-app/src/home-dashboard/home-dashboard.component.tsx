@@ -31,12 +31,16 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const { patient, isLoading, isError } = usePatientList();
 
+  const sortedPatients = patient?.entry?.sort(
+    (a, b) =>
+      new Date(b.resource.meta.lastUpdated) -
+      new Date(a.resource.meta.lastUpdated)
+  );
+
   const totalPatients = patient?.total || 0;
 
-  const state = {};
-
   const rows =
-    patient?.entry?.map((entry: any) => {
+    sortedPatients?.map((entry: any) => {
       const patientData = entry.resource;
       const fullName = patientData.name
         ?.map((name: any) => name.given?.join(" ") + " " + name.family)
