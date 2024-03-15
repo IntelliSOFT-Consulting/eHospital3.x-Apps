@@ -1,0 +1,16 @@
+{
+  "activeClients": "Active Clients",
+  "add": "Add",
+  "dashboard": "Dashboard",
+  "errorLoadingTrendsChart": "VL & CD4 Chart error",
+  "HIV & ART Treatment": "HIV & ART Treatment",
+  "HIV Care & ART": "HIV Care & ART",
+  "hivAndCareTitle": "HIV Care & ART",
+  "hivViralLoad": "High Viral Load",
+  "interuptedTreatments": "Interupted Treatment",
+  "level": "LEVELS",
+  "loading": "កំពុងផ្ទុក",
+  "missedAppointments": "Missed appointments",
+  "newClients": "New Clients",
+  "viralLoadAndCDTrend": "Viral load and CD4 trends"
+}

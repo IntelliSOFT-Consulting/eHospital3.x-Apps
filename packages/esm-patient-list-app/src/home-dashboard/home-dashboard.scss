@@ -1,0 +1,178 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+
+.homeContainer {
+    margin: spacing.$spacing-05 spacing.$spacing-09;
+}
+.dashboardCard{
+    margin: spacing.$spacing-05 0;
+}
+
+.header {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  height: spacing.$spacing-12;
+  min-height: 5rem;
+  margin-bottom: 2rem;
+  background-color: $ui-02;
+  border: 1px solid $ui-03;
+  border-left: 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.listFilter {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  height: spacing.$spacing-12;
+  min-height: 2rem;
+  align-items: center;
+  background-color: $ui-02;
+  border: 1px solid $ui-03;
+  border-left: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+
+.left-justified-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.right-justified-items {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  padding-top: 1rem;
+}
+
+.title {
+    @include type.type-style("heading-05");
+    color: colors.$gray-100;
+    margin: spacing.$spacing-03 0;
+}
+
+.subTitle{
+    @include type.type-style("body-01");
+    color: colors.$gray-70;
+    font-size: 1.2rem;
+}
+
+.dashboardCard{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: spacing.$spacing-07;
+    row-gap: spacing.$spacing-05;
+    justify-content: space-between;
+}
+
+.container {
+  flex-grow: 1;
+}
+
+.cardContainer {
+  background-color: $ui-02;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 spacing.$spacing-05 spacing.$spacing-07 spacing.$spacing-03;
+  flex-flow: row wrap;
+  margin-top: -(spacing.$spacing-03);
+}
+
+.metricsContainer {
+  display: flex;
+  justify-content: space-between;
+  background-color: $ui-02;
+  height: spacing.$spacing-10;
+  align-items: center;
+  padding: 0 spacing.$spacing-05;
+}
+
+.metricsTitle {
+  @include type.type-style('heading-03');
+  color: $ui-05;
+}
+
+.actionBtn {
+  display: flex;
+  column-gap: 0.5rem;
+}
+
+/* Tablet viewport */
+:global(.omrs-breakpoint-lt-desktop) {
+  // The card containing the dropdown element should be the first to overflow on tablet
+  .cardWithChildren {
+    order: 3;
+  }
+}
+
+.tileContainer {
+  border: 0.0625rem solid $ui-03;
+  height: 7.875rem;
+  padding: spacing.$spacing-05;
+  margin: spacing.$spacing-03 spacing.$spacing-03;
+  width: 30%;
+}
+
+.tileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: spacing.$spacing-03;
+}
+
+.headerLabel {
+  @include type.type-style('heading-compact-01');
+  color: $text-02;
+}
+
+.totalsLabel {
+  @include type.type-style('label-01');
+  color: $text-02;
+}
+
+.totalsValue {
+  @include type.type-style('heading-04');
+  color: $ui-05;
+}
+
+.headerLabelContainer {
+  display: flex;
+  height: spacing.$spacing-07;
+
+  :global(.cds--dropdown__wrapper--inline) {
+    gap: 0;
+    margin-top: -0.75rem;
+  }
+
+  :global(.cds--list-box__menu-icon) {
+    height: 1rem;
+  }
+}
+
+.link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: $interactive-01;
+
+  svg {
+    margin-left: spacing.$spacing-03;
+  }
+}
+
+// Overriding styles for RTL support
+html[dir='rtl'] {
+  .link {
+    svg {
+      margin-right: spacing.$spacing-03;
+      margin-left: unset;
+      transform: scale(-1, 1);
+    }
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "@sjhtc/eHospital3.x-Apps",
+  "name": "@sjthc/eHospital3.x-Apps",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -44,7 +44,6 @@
   },
   "dependencies": {
     "@carbon/react": "^1.33.1",
-    "@sjthc/esm-patient-registration-app": "^5.2.8",
     "lodash-es": "^4.17.21",
     "react-image-annotate": "^1.8.0"
   },
