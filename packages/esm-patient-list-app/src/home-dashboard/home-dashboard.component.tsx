@@ -31,12 +31,16 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const { patient, isLoading, isError } = usePatientList();
 
+  const sortedPatients = patient?.entry?.sort(
+    (a, b) =>
+      new Date(b.resource.meta.lastUpdated) -
+      new Date(a.resource.meta.lastUpdated)
+  );
+
   const totalPatients = patient?.total || 0;
 
-  const state = {};
-
   const rows =
-    patient?.entry?.map((entry: any) => {
+    sortedPatients?.map((entry: any) => {
       const patientData = entry.resource;
       const fullName = patientData.name
         ?.map((name: any) => name.given?.join(" ") + " " + name.family)
@@ -47,6 +51,9 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
       const gender = patientData.gender?.toUpperCase();
       const openmrsID = patientData.identifier?.find(
         (id: any) => id.type?.text === "OpenMRS ID"
+      )?.value;
+      const opdNumber = patientData.identifier?.find(
+        (id: any) => id.type?.text === "Unique OPD number"
       )?.value;
       const dateRegistered = new Date(
         patientData.meta?.lastUpdated
@@ -59,6 +66,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
         gender: gender,
         age: age.toString(),
         id: openmrsID,
+        opd: opdNumber,
         dateRegistered: dateRegistered,
         timeRegistered: timeRegistered,
       };
@@ -81,6 +89,10 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
     {
       key: "id",
       header: "ID",
+    },
+    {
+      key: "opd",
+      header: "OPD Number",
     },
     {
       key: "dateRegistered",
@@ -121,16 +133,16 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   return (
     <>
-      <div className={styles.homeContainer}>
-        <div className={styles.header} data-testid="patient-queue-header">
-          <div className={styles["left-justified-items"]}>
-            <PatientQueueIllustration />
-            <div className={styles["page-labels"]}>
-              <p className={styles.title}>{t("patients", "Patients")}</p>
-              <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
-            </div>
+      <div className={styles.header} data-testid="patient-queue-header">
+        <div className={styles["left-justified-items"]}>
+          <PatientQueueIllustration />
+          <div className={styles["page-labels"]}>
+            <p className={styles.title}>{t("patients", "Patients")}</p>
+            <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
           </div>
         </div>
+      </div>
+      <div className={styles.homeContainer}>
         <div className={styles.cardContainer} data-testid="registered-patients">
           <MetricsCard
             label={t("total", "Total")}
@@ -140,14 +152,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
           />
         </div>
         <div className={styles.listFilter}>
-          <DatePicker
-            datePickerType="range"
-            dateFormat="d/m/Y"
-            // onChange={({ startDate, endDate }) => {
-            //   setStartDate(startDate);
-            //   setEndDate(endDate);
-            // }}
-          >
+          <DatePicker datePickerType="range" dateFormat="d/m/Y">
             <DatePickerInput
               id="date-picker-input-id-start"
               placeholder="dd/mm/yyyy"
@@ -161,16 +166,12 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
               size="md"
             />
           </DatePicker>
-          <Button
-            kind="primary"
-            style={styles.FilterButton}
-            // onClick={handleSearch}
-          >
+          <Button kind="primary" style={styles.FilterButton}>
             Search
           </Button>
         </div>
         <DataTable rows={rows} headers={headers}>
-          {({ rows, headers, getTableProps, getHeaderProps, getRowProps }) => (
+          {({ rows, headers, getTableProps, getRowProps }) => (
             <Table {...getTableProps()}>
               <TableHead>
                 <TableRow>
