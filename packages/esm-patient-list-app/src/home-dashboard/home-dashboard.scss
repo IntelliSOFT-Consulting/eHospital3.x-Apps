@@ -24,19 +24,6 @@
   justify-content: space-between;
 }
 
-.listFilter {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  height: spacing.$spacing-12;
-  min-height: 2rem;
-  align-items: center;
-  background-color: $ui-02;
-  border: 1px solid $ui-03;
-  border-left: 0px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
 
 
 .left-justified-items {
@@ -176,4 +163,27 @@ html[dir='rtl'] {
       transform: scale(-1, 1);
     }
   }
+}
+
+.listFilter {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  height: spacing.$spacing-12;
+  min-height: 2rem;
+  align-items: end;
+  border-left: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: absolute;
+  z-index: 20;
+  padding: 10px;
+  right: 0px;
+  gap: 12px;
+}
+
+.datatable{
+  position: relative;
+  width: 100%;
+  border: 1px solid $ui-03;
 }

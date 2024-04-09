@@ -1,25 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useMemo } from "react";
 import styles from "./home-dashboard.scss";
 import { useTranslation } from "react-i18next";
 import { useConfig } from "@openmrs/esm-framework";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
 import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
-  DataTable,
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
   DatePicker,
   DatePickerInput,
   Button,
-  DataTableSkeleton,
   Tile,
   SkeletonPlaceholder,
 } from "@carbon/react";
 import { usePatientList } from "../hooks/usePatientList";
+import DataTable from "react-data-table-component";
 
 type PatientListHomeProps = {
   patientUuid?: string;
@@ -28,6 +21,8 @@ type PatientListHomeProps = {
 const PatientListHome: React.FC<PatientListHomeProps> = () => {
   const { t } = useTranslation();
   const config = useConfig();
+
+  const [dateRange, setDateRange] = React.useState(null);
 
   const { patient, isLoading, isError } = usePatientList();
 
@@ -72,38 +67,6 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
       };
     }) || [];
 
-  const headers = [
-    {
-      key: "name",
-      header: "Name",
-    },
-    {
-      key: "gender",
-      header: "Gender",
-    },
-
-    {
-      key: "age",
-      header: "Age",
-    },
-    {
-      key: "id",
-      header: "ID",
-    },
-    {
-      key: "opd",
-      header: "OPD Number",
-    },
-    {
-      key: "dateRegistered",
-      header: "Date Registered",
-    },
-    {
-      key: "timeRegistered",
-      header: "Time Registered",
-    },
-  ];
-
   if (isLoading) {
     return (
       <div
@@ -122,14 +85,60 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
         </div>
         <div className={styles.cardContainer} data-testid="registered-patients">
           <Tile className={styles.tileContainer}>
-            <SkeletonPlaceholder style={{ width: "100%" }} />
+            <SkeletonPlaceholder />
           </Tile>
         </div>
-        <DataTableSkeleton headers={headers} aria-label="sample table" />
         <br />
       </div>
     );
   }
+
+  const customStyles = {
+    cells: {
+      style: {
+        minHeight: "72px",
+        fontSize: "14px",
+        fontWeight: "500",
+      },
+    },
+    headCells: {
+      style: {
+        fontSize: ".9rem",
+        fontWeight: "600",
+      },
+    },
+  };
+
+  const columns = [
+    {
+      name: "Name",
+      selector: (row) => row.name,
+    },
+    {
+      name: "ID",
+      selector: (row) => row.id,
+    },
+    {
+      name: "Gender",
+      selector: (row) => row.gender,
+    },
+    {
+      name: "Age",
+      selector: (row) => row.age,
+    },
+    {
+      name: "OPD Number",
+      selector: (row) => row.opd,
+    },
+    {
+      name: "Date Registered",
+      selector: (row) => row.dateRegistered,
+    },
+    {
+      name: "Time Registered",
+      selector: (row) => row.timeRegistered,
+    },
+  ];
 
   return (
     <>
@@ -151,47 +160,44 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
             service="scheduled"
           />
         </div>
-        <div className={styles.listFilter}>
-          <DatePicker datePickerType="range" dateFormat="d/m/Y">
-            <DatePickerInput
-              id="date-picker-input-id-start"
-              placeholder="dd/mm/yyyy"
-              labelText="Start date"
-              size="md"
-            />
-            <DatePickerInput
-              id="date-picker-input-id-finish"
-              placeholder="dd/mm/yyyy"
-              labelText="End date"
-              size="md"
-            />
-          </DatePicker>
-          <Button kind="primary" style={styles.FilterButton}>
-            Search
-          </Button>
+        <div className={styles.datatable}>
+          <div className={styles.listFilter}>
+            <DatePicker
+              onChange={(value) => console.log("value", value)}
+              datePickerType="range"
+              dateFormat="d/m/Y"
+            >
+              <DatePickerInput
+                id="date-picker-input-id-start"
+                placeholder="dd/mm/yyyy"
+                labelText="Start date"
+                size="md"
+              />
+              <DatePickerInput
+                id="date-picker-input-id-finish"
+                placeholder="dd/mm/yyyy"
+                labelText="End date"
+                size="md"
+              />
+            </DatePicker>
+            <Button kind="primary" style={styles.FilterButton}>
+              Search
+            </Button>
+          </div>
+          <DataTable
+            columns={columns}
+            data={rows}
+            responsive
+            pagination
+            customStyles={customStyles}
+            subHeader
+            striped
+            title="Registered Patients"
+            fixedHeader
+            pointerOnHover
+            className="rounded"
+          />
         </div>
-        <DataTable rows={rows} headers={headers}>
-          {({ rows, headers, getTableProps, getRowProps }) => (
-            <Table {...getTableProps()}>
-              <TableHead>
-                <TableRow>
-                  {headers.map((header) => (
-                    <TableHeader>{header.header}</TableHeader>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow {...getRowProps({ row })}>
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          )}
-        </DataTable>
       </div>
     </>
   );
