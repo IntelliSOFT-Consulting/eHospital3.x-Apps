@@ -22,7 +22,6 @@ export function usePatientList() {
           new Date(item.resource.meta.lastUpdated) <= new Date(end)
       );
 
-
     filteredArray = filteredArray.map((item: any) => ({
       fullName:
         item?.resource?.name[0]?.given[0] + item.resource?.name[0]?.family,
@@ -85,7 +84,7 @@ export function usePatientList() {
   const customStyles = {
     cells: {
       style: {
-        minHeight: "72px",
+        minHeight: "22px",
         fontSize: "14px",
         fontWeight: "500",
       },
