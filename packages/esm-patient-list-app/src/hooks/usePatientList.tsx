@@ -15,33 +15,52 @@ export function usePatientList() {
 
   const filterData = ({ start = null, end = null }) => {
     let filteredArray = data.entry;
-    if (start && end)
-      filteredArray = data.entry.filter(
+
+    if (start && end) {
+      filteredArray = filteredArray.filter(
         (item) =>
           new Date(item.resource.meta.lastUpdated) >= new Date(start) &&
           new Date(item.resource.meta.lastUpdated) <= new Date(end)
       );
+    }
 
-    filteredArray = filteredArray.map((item: any) => ({
-      fullName:
-        item?.resource?.name[0]?.given[0] + item.resource?.name[0]?.family,
-      age:
-        new Date().getFullYear() -
-        new Date(item.resource.birthDate).getFullYear(),
-      gender: item.resource.gender?.toUpperCase(),
-      openmrsID: item.resource?.identifier?.find(
-        (id) => id.type?.text === "OpenMRS ID"
-      )?.value,
-      opdNumber: item.resource?.identifier?.find(
-        (id) => id.type.text === "Unique OPD number"
-      )?.value,
-      dateRegistered: new Date(
-        item.resource?.meta?.lastUpdated
-      ).toLocaleDateString(),
-      timeRegistered: new Date(
-        item.resource?.meta?.lastUpdated
-      ).toLocaleTimeString(),
-    }));
+    filteredArray = filteredArray.map((item: any) => {
+      const givenName =
+        item?.resource?.name[0]?.given[0] +
+        (item?.resource?.name[0]?.given[1]
+          ? " " + item.resource?.name[0]?.given[1]
+          : "");
+
+      const gender = item.resource.gender
+        ? item.resource.gender.charAt(0).toUpperCase()
+        : "";
+
+      return {
+        fullName: givenName + " " + item.resource?.name[0]?.family,
+        age:
+          new Date().getFullYear() -
+          new Date(item.resource.birthDate).getFullYear(),
+        gender: gender,
+        openmrsID: item.resource?.identifier?.find(
+          (id) => id.type?.text === "OpenMRS ID"
+        )?.value,
+        opdNumber: item.resource?.identifier?.find(
+          (id) => id.type.text === "Unique OPD number"
+        )?.value,
+        dateRegistered: new Date(
+          item.resource?.meta?.lastUpdated
+        ).toLocaleDateString(),
+        timeRegistered: new Date(
+          item.resource?.meta?.lastUpdated
+        ).toLocaleTimeString(),
+      };
+    });
+
+    filteredArray.sort((a, b) => {
+      const dateA = new Date(a.dateRegistered + " " + a.timeRegistered);
+      const dateB = new Date(b.dateRegistered + " " + b.timeRegistered);
+      return (dateB as unknown as number) - (dateA as unknown as number);
+    });
 
     setFilteredData(filteredArray);
   };
