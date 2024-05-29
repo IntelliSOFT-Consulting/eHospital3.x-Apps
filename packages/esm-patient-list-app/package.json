@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-patient-list-app",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "license": "MPL-2.0",
   "description": "Custom Patient list microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-list-app",

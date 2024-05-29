@@ -1,0 +1,51 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+
+.homeContainer {
+    margin: spacing.$spacing-05 spacing.$spacing-09;
+}
+.dashboardCard{
+    margin: spacing.$spacing-05 0;
+}
+
+
+.dashboardCard{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: spacing.$spacing-07;
+    row-gap: spacing.$spacing-05;
+    justify-content: space-between;
+}
+
+.header {
+  @include type.type-style("heading-05");
+  color: colors.$gray-100;
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 10px;
+    fill: #0072c3;
+    width: 3rem;
+    height: 5rem;
+  }
+
+  .titleContainer {
+    text-align: left;
+  }
+
+  .title{
+    @include type.type-style("heading-05");
+    color: colors.$gray-100;
+  }
+  .subTitle {
+    @include type.type-style("body-01");
+    color: colors.$gray-70;
+    margin: 0;
+  }
+}
+
+.tabs {
+  margin-top: 1rem;
+}

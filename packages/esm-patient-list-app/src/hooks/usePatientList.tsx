@@ -45,7 +45,7 @@ export function usePatientList() {
           (id) => id.type?.text === "OpenMRS ID"
         )?.value,
         opdNumber: item.resource?.identifier?.find(
-          (id) => id.type.text === "Unique OPD number"
+          (id) => id.type.text === "Unique OPD Number"
         )?.value,
         dateRegistered: new Date(
           item.resource?.meta?.lastUpdated
