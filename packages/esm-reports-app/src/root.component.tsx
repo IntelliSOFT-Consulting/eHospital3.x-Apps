@@ -1,10 +1,10 @@
 import React from "react";
+import { SWRConfig } from "swr";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 const swrConfiguration = {
   errorRetryCount: 3,
 };
-import { SWRConfig } from "swr";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import HomeDashboard from "./reports-dashboard/home-dashboard.component";
 
 const RootComponent: React.FC = () => {
   const baseName = window.getOpenmrsSpaBase() + "home/reports";
@@ -14,7 +14,7 @@ const RootComponent: React.FC = () => {
       <SWRConfig value={swrConfiguration}>
         <BrowserRouter basename={baseName}>
           <Routes>
-            <Route path="/" element={<HomeDashboard />} />
+            <Route path="/" />
           </Routes>
         </BrowserRouter>
       </SWRConfig>
