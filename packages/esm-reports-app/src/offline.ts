@@ -1,5 +1,4 @@
 import { setupDynamicOfflineDataHandler } from "@openmrs/esm-framework";
-import { cacheForOfflineHeaders } from "./constants";
 
 export function setupOffline() {
   setupDynamicOfflineDataHandler({

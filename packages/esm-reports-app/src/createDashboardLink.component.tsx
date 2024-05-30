@@ -1,6 +1,4 @@
 import React, { useMemo } from "react";
-import classNames from "classnames";
-import { ConfigurableLink } from "@openmrs/esm-framework";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -9,14 +7,13 @@ export interface DashboardLinkConfig {
   title: string;
 }
 
-function DashboardExtension({
+export function DashboardExtension({
   dashboardLinkConfig,
 }: {
   dashboardLinkConfig: DashboardLinkConfig;
 }) {
-  //
   const { t } = useTranslation();
-  const { name } = dashboardLinkConfig;
+  const { name, title } = dashboardLinkConfig;
   const location = useLocation();
   const spaBasePath = `${window.spaBase}/home`;
 
@@ -26,15 +23,34 @@ function DashboardExtension({
     return decodeURIComponent(lastElement);
   }, [location.pathname]);
 
+  const baseUrl = `${window.location.protocol}//${window.location.host}`;
+  const reportsUrl = `${baseUrl}/openmrs/spa/reports`;
+
+  const handleClick = () => {
+    const url = name === "reports" ? reportsUrl : `${spaBasePath}/${name}`;
+    window.open(url, "_blank");
+  };
+
   return (
-    <ConfigurableLink
-      className={classNames("cds--side-nav__link", {
-        "active-left-nav-link": navLink.match(name),
-      })}
-      to={`${spaBasePath}/${name}`}
+    <button
+      className={`cds--side-nav__link ${
+        navLink.match(name) && "active-left-nav-link"
+      }`}
+      style={{
+        paddingLeft: "50px",
+        lineHeight: "inherit",
+        cursor: "pointer",
+        background: "none",
+        border: "none",
+        padding: "0",
+        marginLeft: "17px",
+        fontSize: "15px",
+        color: "inherit",
+      }}
+      onClick={handleClick}
     >
-      {t("reports", "Reports")}
-    </ConfigurableLink>
+      {t(name, title)}
+    </button>
   );
 }
 
