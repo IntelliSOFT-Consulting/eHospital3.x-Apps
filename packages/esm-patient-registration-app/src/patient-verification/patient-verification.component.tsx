@@ -53,7 +53,6 @@ const PatientVerification: React.FC<PatientVerificationProps> = ({ props }) => {
       showToast({
         title: "Client registry error",
         description: `Please reload the registration page and re-try again, if the issue persist contact system administrator`,
-        millis: 10000,
         kind: "error",
         critical: true,
       });

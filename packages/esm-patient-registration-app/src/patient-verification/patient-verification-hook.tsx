@@ -62,7 +62,6 @@ export async function handleSavePatientToClientRegistry(
         showToast({
           title: "Client registry error",
           description: `${error}`,
-          millis: 10000,
           kind: "error",
           critical: true,
         });
