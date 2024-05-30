@@ -1,8 +1,8 @@
 {
-  "name": "@openmrs/esm-billing-app",
-  "version": "1.0.0",
+  "name": "@sjthc/esm-billing-app",
+  "version": "1.0.1",
   "description": "Billing frontend module for use in O3",
-  "browser": "dist/openmrs-esm-billing-app.js",
+  "browser": "dist/sjthc-esm-billing-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
