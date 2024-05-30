@@ -49,6 +49,7 @@
     "react-data-table-component": "^7.6.2",
     "react-image-annotate": "^1.8.0",
     "react-is": "^18.3.1",
+    "single-spa": "^6.0.1",
     "styled-components": "^5",
     "uuid": "^8.3.2"
   },
@@ -63,7 +64,6 @@
     "react-router-dom": "6.x",
     "rxjs": "6.x",
     "sass": "^1.33.0",
-    "single-spa": "5.x",
     "single-spa-react": "5.x"
   },
   "devDependencies": {

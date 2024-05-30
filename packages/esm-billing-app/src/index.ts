@@ -1,5 +1,4 @@
 import { configSchema } from './config-schema';
-import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
 import { createLeftPanelLink } from './left-panel-link.component';
 import { dashboardMeta } from './dashboard.meta';
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle, registerFeatureFlag } from '@openmrs/esm-framework';
@@ -12,8 +11,9 @@ import RootComponent from './root.component';
 import VisitAttributeTags from './invoice/payments/visit-tags/visit-attribute.component';
 import ServiceMetrics from './billable-services/dashboard/service-metrics.component';
 import appMenu from './billable-services/billable-services-menu-item/item.component';
+import {createDashboardLink} from "./createDashboardLink.component";
 
-const moduleName = '@openmrs/esm-billing-app';
+const moduleName = '@sjthc/esm-billing-app';
 
 const options = {
   featureName: 'billing',
@@ -42,9 +42,9 @@ export function startupApp() {
 }
 
 export const billingSummaryDashboardLink = getSyncLifecycle(
-  createDashboardLink({ ...dashboardMeta, moduleName }),
-  options,
-);
+  createDashboardLink(dashboardMeta),
+  options
+)
 
 export const billableServicesCardLink = getSyncLifecycle(BillableServicesCardLink, options);
 export const billableServicesHome = getSyncLifecycle(BillableServiceHome, options);
