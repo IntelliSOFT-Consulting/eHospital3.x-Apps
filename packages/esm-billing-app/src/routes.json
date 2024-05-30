@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": ">=2.24.0",
+    "fhir2": ">=1.2"
+  },
+  "extensions": [
+    {
+      "name": "billing-dashboard-link",
+      "component": "billingDashboardLink",
+      "slot": "homepage-dashboard-slot",
+      "meta": {
+        "name": "billing",
+        "slot": "billing-dashboard-slot",
+        "title": "Billing"
+      }
+    },
+    {
+      "component": "root",
+      "name": "billing-summary",
+      "slot": "billing-dashboard-slot"
+    }
+  ]
+}
