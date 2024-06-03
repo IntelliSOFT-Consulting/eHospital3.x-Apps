@@ -38,7 +38,11 @@
   },
   "dependencies": {
     "@carbon/react": "~1.37.0",
-    "lodash-es": "^4.17.15"
+    "@hookform/resolvers": "^3.3.4",
+    "dayjs": "1.x",
+    "lodash-es": "^4.17.15",
+    "react-hook-form": "^7.49.3",
+    "zod": "^3.22.4"
   },
   "peerDependencies": {
     "@openmrs/esm-framework": "5.x",
