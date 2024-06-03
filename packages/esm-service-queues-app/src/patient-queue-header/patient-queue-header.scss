@@ -1,0 +1,90 @@
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/spacing';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+.header {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  height: spacing.$spacing-12;
+  background-color: $ui-02;
+  border: 1px solid $ui-03;
+  border-left: 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-justified-items {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.right-justified-items {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  padding-top: 1rem;
+}
+
+.page-name {
+  @include type.type-style('heading-04');
+}
+
+.page-labels {
+  p:first-of-type {
+    margin-bottom: 0.25rem;
+  }
+}
+
+.date-and-location {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 1rem;
+}
+
+.value {
+  margin-left: 0.25rem;
+}
+
+.middot {
+  margin: 0 0.5rem;
+}
+
+.view {
+  @include type.type-style('label-01');
+}
+
+.dropdownContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.dropdown {
+  :global(.cds--list-box__field) {
+    width: 14rem;
+    overflow: hidden;
+  }
+
+  :global(.cds--dropdown--inline .cds--list-box__menu) {
+    left: -4rem;
+  }
+}
+
+// Overriding styles for RTL support
+html[dir='rtl'] {
+  .date-and-location {
+    margin-right: unset;
+    margin-left: spacing.$spacing-05;
+    & > svg:first-child {
+      order: -1;
+    }
+    & > svg:nth-child(4) {
+      order: 1;
+    }
+    & > span:nth-child(2) {
+      order: -2;
+    }
+  }
+}

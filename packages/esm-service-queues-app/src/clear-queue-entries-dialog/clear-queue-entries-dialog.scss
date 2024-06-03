@@ -1,0 +1,8 @@
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/spacing';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+#subHeading {
+  @include type.type-style('heading-compact-01');
+  color: $ui-05;
+}
