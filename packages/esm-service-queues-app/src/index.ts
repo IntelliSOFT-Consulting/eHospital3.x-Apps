@@ -14,7 +14,7 @@ import addQueueEntryComponent from './patient-search/visit-form-queue-fields/vis
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
-const moduleName = '@openmrs/esm-service-queues-app';
+const moduleName = '@sjthc/esm-service-queues-app';
 
 const options = {
   featureName: 'outpatient',
