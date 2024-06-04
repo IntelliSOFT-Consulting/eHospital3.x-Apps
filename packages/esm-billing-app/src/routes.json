@@ -43,9 +43,6 @@
       "meta": {
         "columns": 1,
         "columnSpan": 1,
-        "slot": "patient-chart-billing-dashboard-slot",
-        "path": "Billing history"
-      }
     }
   ]
 }

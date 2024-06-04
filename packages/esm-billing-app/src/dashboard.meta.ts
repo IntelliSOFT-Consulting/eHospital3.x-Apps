@@ -3,3 +3,4 @@ export const dashboardMeta = {
   slot: 'patient-chart-billing-dashboard-slot',
   title: 'Billing history',
 };
+
