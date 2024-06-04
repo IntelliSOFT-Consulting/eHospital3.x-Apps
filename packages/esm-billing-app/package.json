@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-billing-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/sjthc-esm-billing-app.js",
   "main": "src/index.ts",

@@ -1,0 +1,68 @@
+import React from 'react';
+import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
+import StartVisitQueueFields from './visit-form-queue-fields.component';
+
+jest.mock('@openmrs/esm-framework', () => ({
+  ...jest.requireActual('@openmrs/esm-framework'),
+  useLayoutType: () => 'desktop',
+  showSnackbar: jest.fn(),
+  useConfig: jest.fn(() => ({
+    concepts: {
+      defaultStatusConceptUuid: 'c61ce16f-272a-41e7-9924-4c555d0932c5',
+    },
+    visitQueueNumberAttributeUuid: 'c61ce16f-272a-41e7-9924-4c555d0932c5',
+  })),
+}));
+jest.mock('../hooks/useQueueLocations', () => ({
+  useQueueLocations: jest.fn(() => ({
+    queueLocations: [{ id: '1', name: 'Location 1' }],
+  })),
+}));
+
+jest.mock('../../hooks/useQueues', () => {
+  return {
+    useQueues: jest.fn().mockReturnValue({
+      queues: [
+        {
+          uuid: 'e2ec9cf0-ec38-4d2b-af6c-59c82fa30b90',
+          name: 'Service 1',
+          allowedPriorities: [{ uuid: '197852c7-5fd4-4b33-89cc-7bae6848c65a', display: 'High' }],
+          allowedStatuses: [{ uuid: '176052c7-5fd4-4b33-89cc-7bae6848c65a', display: 'In Progress' }],
+        },
+      ],
+    }),
+  };
+});
+
+describe('StartVisitQueueFields', () => {
+  it('renders the form fields', () => {
+    const { getByLabelText, getByText } = render(<StartVisitQueueFields />);
+
+    expect(getByLabelText('Select a queue location')).toBeInTheDocument();
+    expect(getByLabelText('Select a service')).toBeInTheDocument();
+    expect(getByLabelText('Select a status')).toBeInTheDocument();
+    expect(getByText('High')).toBeInTheDocument();
+    expect(getByLabelText('Sort weight')).toBeInTheDocument();
+  });
+
+  it('updates the selected queue location', async () => {
+    const user = userEvent.setup();
+    const { getByLabelText } = render(<StartVisitQueueFields />);
+
+    const selectQueueLocation = getByLabelText('Select a queue location') as HTMLInputElement;
+    await user.type(selectQueueLocation, '1');
+
+    expect(selectQueueLocation.value).toBe('1');
+  });
+
+  it('updates the selected service', async () => {
+    const user = userEvent.setup();
+    const { getByLabelText } = render(<StartVisitQueueFields />);
+
+    const selectService = getByLabelText('Select a service') as HTMLInputElement;
+    await user.type(selectService, 'service-1');
+
+    expect(selectService.value).toBe('e2ec9cf0-ec38-4d2b-af6c-59c82fa30b90');
+  });
+});

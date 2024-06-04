@@ -1,0 +1,19 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@carbon/styles/scss/spacing';
+
+@import '~@openmrs/esm-styleguide/src/vars';
+
+.sectionTitle {
+  @include type.type-style('heading-compact-02');
+  color: $text-02;
+  margin-bottom: layout.$spacing-03;
+}
+
+.section {
+  margin: layout.$spacing-07 layout.$spacing-05 0;
+}
+
+.sectionHidden {
+  display: none;
+}
