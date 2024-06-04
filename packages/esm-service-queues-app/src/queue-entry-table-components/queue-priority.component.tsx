@@ -1,8 +1,8 @@
 import React from 'react';
-import { DefinitionTooltip, Tag } from '@carbon/react';
+import {DefinitionTooltip, Tag} from '@carbon/react';
 import styles from './queue-priority.scss';
-import { type PriorityConfig } from '../config-schema';
-import { type Concept } from '../types';
+import {type PriorityConfig} from '../config-schema';
+import {type Concept} from '../types';
 
 interface QueuePriorityProps {
   priority: Concept;
@@ -10,9 +10,9 @@ interface QueuePriorityProps {
   priorityConfigs: PriorityConfig[];
 }
 
-const QueuePriority: React.FC<QueuePriorityProps> = ({ priority, priorityComment, priorityConfigs }) => {
+const QueuePriority: React.FC<QueuePriorityProps> = ({priority, priorityComment, priorityConfigs}) => {
   const priorityConfig = priorityConfigs?.find((c) => c.conceptUuid === priority.uuid);
-  const priorityVariant = (priorityConfigs?.find((c) => c.tagType))?.tagType;
+  const priorityVariant = priority.display === "Not Urgent" ? "green" : priority.display === "Emergency" ? "red" : priority.display === "Urgent" ? "magenta" : "gray"
   return (
     <>
       {priorityComment ? (
@@ -20,14 +20,14 @@ const QueuePriority: React.FC<QueuePriorityProps> = ({ priority, priorityComment
           <Tag
             role="tooltip"
             className={priorityConfig?.tagClassName === 'priorityTag' ? styles.priorityTag : styles.tag}
-            type={priorityVariant ?? 'gray'}>
+            type={priorityVariant}>
             {priority.display}
           </Tag>
         </DefinitionTooltip>
       ) : (
         <Tag
           className={priorityConfig?.tagClassName === 'priorityTag' ? styles.priorityTag : styles.tag}
-          type={priorityVariant ?? 'gray'}>
+          type={priorityVariant}>
           {priority.display}
         </Tag>
       )}
