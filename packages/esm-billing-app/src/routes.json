@@ -4,6 +4,12 @@
     "webservices.rest": ">=2.24.0",
     "fhir2": ">=1.2"
   },
+  "pages": [
+    {
+      "component": "billableServicesHome",
+      "route":"billable-services"
+    }
+  ],
   "extensions": [
     {
       "name": "billing-dashboard-link",
@@ -19,6 +25,87 @@
       "component": "root",
       "name": "billing-summary",
       "slot": "billing-dashboard-slot"
+    },
+    {
+      "name": "hiv-art-trend-dashboard",
+      "component": "hivArtTreatmentDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "order": 21,
+      "meta": {
+        "slot": "patient-chart-hiv-art-treatment-dashboard-slot",
+        "path": "HIV & ART Treatment",
+        "layoutMode":"anchored"
+      }
+    },
+    {
+      "name": "hiv-art-dashboard",
+      "component": "hivArtTrendsDashboard",
+      "slot": "patient-chart-hiv-art-treatment-dashboard-slot",
+      "meta": {
+        "view": "HIV & ART Treatment",
+        "title": "HIV & ART Treatment",
+        "columnSpan": 4
+      }
+    },
+    {
+      "name": "billing-check-in-form",
+      "slot": "extra-visit-attribute-slot",
+      "component": "billingCheckInForm"
+    },
+    {
+      "slot": "system-admin-page-card-link-slot",
+      "component": "billableServicesCardLink",
+      "name": "billable-services-admin-card-link"
+    },
+    {
+      "name": "billing-form",
+      "component": "billingForm"
+    },
+    {
+      "name": "billing-summary-dashboard-link",
+      "component": "billingSummaryDashboardLink",
+      "slot": "patient-chart-dashboard-slot",
+      "order": 11,
+      "meta": {
+        "columns": 1,
+        "columnSpan": 1,
+        "slot": "patient-chart-hiv-art-treatment-dashboard-slot",
+        "path": "Billing history",
+        "layoutMode":"anchored"
+      },
+      "featureFlag": "billing"
+    },
+    {
+      "name": "billable-services-app-menu-item",
+      "component": "billableServicesAppMenuItem",
+      "slot": "app-menu-item-slot",
+      "meta": {
+        "name": "Billable Services"
+      }
+    },
+    {
+      "name": "require-billing-modal",
+      "component": "requirePaymentModal"
+    },
+    {
+      "name": "patient-banner-billing-tags",
+      "component": "visitAttributeTags",
+      "slot": "patient-banner-tags-slot",
+      "order": 2
+    },
+    {
+      "name": "initiate-payment-modal",
+      "component": "initiatePaymentDialog"
+    },
+    {
+      "name": "lab-order-billable-item",
+      "component": "labOrder",
+      "slot": "top-of-lab-order-form-slot"
+    },
+    {
+      "name": "drug-order-billable-item",
+      "component": "drugOrder",
+      "slot": "medication-info-slot"
     }
   ]
 }

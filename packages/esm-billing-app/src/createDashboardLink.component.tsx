@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import classNames from "classnames";
 import { ConfigurableLink } from "@openmrs/esm-framework";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,7 +13,6 @@ function DashboardExtension({
 }: {
   dashboardLinkConfig: DashboardLinkConfig;
 }) {
-  //
   const { t } = useTranslation();
   const { name } = dashboardLinkConfig;
   const location = useLocation();
@@ -28,12 +26,12 @@ function DashboardExtension({
 
   return (
     <ConfigurableLink
-      className={classNames("cds--side-nav__link", {
-        "active-left-nav-link": navLink.match(name),
-      })}
       to={`${spaBasePath}/${name}`}
+      className={`cds--side-nav__link ${
+        navLink.match(name) && "active-left-nav-link"
+      }`}
     >
-      {t("billingSummary", "Billing Summary")}
+      {t("billingSummary", "Billing Home")}
     </ConfigurableLink>
   );
 }
