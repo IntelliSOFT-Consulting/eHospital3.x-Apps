@@ -6,9 +6,9 @@ __metadata:
   cacheKey: 8
 
 "@adobe/css-tools@npm:^4.0.1, @adobe/css-tools@npm:^4.3.2":
-  version: 4.3.3
-  resolution: "@adobe/css-tools@npm:4.3.3"
-  checksum: d21f3786b84911fee59c995a146644a85c98692979097b26484ffa9e442fb1a92ccd68ce984e3e7cf8d5933c3560fbc0ad3e3cd1de50b9a723d1c012e793bbcb
+  version: 4.4.0
+  resolution: "@adobe/css-tools@npm:4.4.0"
+  checksum: 1f08fb49bf17fc7f2d1a86d3e739f29ca80063d28168307f1b0a962ef37501c5667271f6771966578897f2e94e43c4770fd802728a6e6495b812da54112d506a
   languageName: node
   linkType: hard
 
@@ -1574,34 +1574,34 @@ __metadata:
   linkType: hard
 
 "@carbon/charts-react@npm:^1.5.2":
-  version: 1.16.1
-  resolution: "@carbon/charts-react@npm:1.16.1"
+  version: 1.16.3
+  resolution: "@carbon/charts-react@npm:1.16.3"
   dependencies:
-    "@carbon/charts": 1.16.1
-    "@carbon/icons-react": ^11.39.0
-    "@ibm/telemetry-js": ^1.5.1
-    react: ^18.2.0
-    react-dom: ^18.2.0
+    "@carbon/charts": 1.16.3
+    "@carbon/icons-react": ^11.42.0
+    "@ibm/telemetry-js": ^1.5.2
+    react: ^18.3.1
+    react-dom: ^18.3.1
   peerDependencies:
     react: ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: b3acf92d93b6c1ec25ba0fc1684020ed9ec767aa8f62e50819eac77aa535b67405363041e98efe637404fd87623874b6c2d8b9d7cc01693362c94ae689dbd471
+  checksum: 1cd7e841402fbdc6b7a766762074ceb6a38f82eed5ba28263ba902eb539fa9d0c08d1c5f27a4e237d045bbc3ebc9e1181f68b9fa06b375477e817dbcae8a8344
   languageName: node
   linkType: hard
 
-"@carbon/charts@npm:1.16.1, @carbon/charts@npm:^1.12.0":
-  version: 1.16.1
-  resolution: "@carbon/charts@npm:1.16.1"
+"@carbon/charts@npm:1.16.3, @carbon/charts@npm:^1.12.0":
+  version: 1.16.3
+  resolution: "@carbon/charts@npm:1.16.3"
   dependencies:
-    "@carbon/colors": ^11.21.0
-    "@carbon/utils-position": ^1.2.0
-    "@ibm/telemetry-js": ^1.5.1
-    carbon-components: ^10.58.14
+    "@carbon/colors": ^11.22.0
+    "@carbon/utils-position": ^1.3.0
+    "@ibm/telemetry-js": ^1.5.2
+    carbon-components: ^10.58.15
     d3: ^7.9.0
     d3-cloud: ^1.2.7
     d3-sankey: ^0.12.3
     date-fns: ^3.6.0
-    dompurify: ^3.1.0
+    dompurify: ^3.1.5
     html-to-image: ^1.11.11
     lodash-es: ^4.17.21
     topojson-client: ^3.1.0
@@ -1615,11 +1615,11 @@ __metadata:
       optional: true
     d3-sankey:
       optional: true
-  checksum: 8d6dfb5a7a7e73e3346994cdc934821ec864321877037a1c697a102a6a4a0246393f31087b0782bd9a021c5b8f529afa767ed4dcaa4c123fd76836976fdcf53c
+  checksum: ed0f0a3a731828c1aaa8aba823cab465cc0e5515105492d4eb61a12be74809b03bea3201ab620f41d4b90022294056a1cc320ff6525119895761f0dba92d2367
   languageName: node
   linkType: hard
 
-"@carbon/colors@npm:^11.21.0, @carbon/colors@npm:^11.22.0":
+"@carbon/colors@npm:^11.22.0":
   version: 11.22.0
   resolution: "@carbon/colors@npm:11.22.0"
   dependencies:
@@ -1654,7 +1654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@carbon/icon-helpers@npm:^10.44.0, @carbon/icon-helpers@npm:^10.48.0":
+"@carbon/icon-helpers@npm:^10.48.0":
   version: 10.48.0
   resolution: "@carbon/icon-helpers@npm:10.48.0"
   dependencies:
@@ -1663,20 +1663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@carbon/icons-react@npm:11.26.0":
-  version: 11.26.0
-  resolution: "@carbon/icons-react@npm:11.26.0"
-  dependencies:
-    "@carbon/icon-helpers": ^10.44.0
-    "@carbon/telemetry": 0.1.0
-    prop-types: ^15.7.2
-  peerDependencies:
-    react: ">=16"
-  checksum: dabc6e7896d2a089aaabac78af9161720995f9e5b0f28694ac664459c5fae164a3d0c16b9cb22f6ab37f01b736cd2613cf232a6b6577b396afd8c083171cae67
-  languageName: node
-  linkType: hard
-
-"@carbon/icons-react@npm:^11.26.0, @carbon/icons-react@npm:^11.39.0, @carbon/icons-react@npm:^11.42.0":
+"@carbon/icons-react@npm:^11.26.0, @carbon/icons-react@npm:^11.42.0":
   version: 11.42.0
   resolution: "@carbon/icons-react@npm:11.42.0"
   dependencies:
@@ -1830,7 +1817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@carbon/utils-position@npm:^1.2.0":
+"@carbon/utils-position@npm:^1.3.0":
   version: 1.3.0
   resolution: "@carbon/utils-position@npm:1.3.0"
   dependencies:
@@ -2283,9 +2270,9 @@ __metadata:
   linkType: hard
 
 "@eslint-community/regexpp@npm:^4.4.0, @eslint-community/regexpp@npm:^4.5.1, @eslint-community/regexpp@npm:^4.6.1":
-  version: 4.10.0
-  resolution: "@eslint-community/regexpp@npm:4.10.0"
-  checksum: 2a6e345429ea8382aaaf3a61f865cae16ed44d31ca917910033c02dc00d505d939f10b81e079fa14d43b51499c640138e153b7e40743c4c094d9df97d4e56f7b
+  version: 4.10.1
+  resolution: "@eslint-community/regexpp@npm:4.10.1"
+  checksum: 1e04bc366fb8152c9266258cd25e3fded102f1d212a9476928e3cb98c48be645df6d676728d1c596053992fb9134879fe0de23c9460035b342cceb22d3af1776
   languageName: node
   linkType: hard
 
@@ -2468,11 +2455,11 @@ __metadata:
   linkType: hard
 
 "@hookform/resolvers@npm:^3.3.4":
-  version: 3.4.2
-  resolution: "@hookform/resolvers@npm:3.4.2"
+  version: 3.5.0
+  resolution: "@hookform/resolvers@npm:3.5.0"
   peerDependencies:
     react-hook-form: ^7.0.0
-  checksum: 5045c3b1bfa2cace97ab0708a25a5c65353a10e06b4992c43ab648cf09fa0e51cabbbec40144c53f3646d35b91823ba6a9e254156614649cefa503722900dd9a
+  checksum: ff0a0dd8a090a83fe0345dbab2d3a792a127f49fcda3a998d6f24f4e25343d102055c90ae587c9153f92ec0eb6f764689f354cf897d66fceda15686bbccd0fa8
   languageName: node
   linkType: hard
 
@@ -2525,7 +2512,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ibm/telemetry-js@npm:^1.5.0, @ibm/telemetry-js@npm:^1.5.1":
+"@ibm/telemetry-js@npm:^1.5.0, @ibm/telemetry-js@npm:^1.5.1, @ibm/telemetry-js@npm:^1.5.2":
   version: 1.5.2
   resolution: "@ibm/telemetry-js@npm:1.5.2"
   bin:
@@ -4170,8 +4157,8 @@ __metadata:
   linkType: hard
 
 "@npmcli/package-json@npm:^5.0.0":
-  version: 5.1.1
-  resolution: "@npmcli/package-json@npm:5.1.1"
+  version: 5.2.0
+  resolution: "@npmcli/package-json@npm:5.2.0"
   dependencies:
     "@npmcli/git": ^5.0.0
     glob: ^10.2.2
@@ -4180,7 +4167,7 @@ __metadata:
     normalize-package-data: ^6.0.0
     proc-log: ^4.0.0
     semver: ^7.5.3
-  checksum: 073e7344ae96e8c187fe605db4cc41827916648ec1225f9ac640eae8841d3bfd7e92d56c5863591fc6ebba46f9554cb9b113b93d5ebe6e7d900ae43907fd4492
+  checksum: 8df289c45b52cca88826cc737195cabf21757008e11d90b1f62d5400ff65834c0e9bcb552f235ba560c3af436a1ca3fc553b23b5cb5da8330ae56929065a6988
   languageName: node
   linkType: hard
 
@@ -4248,32 +4235,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nrwl/devkit@npm:19.1.1"
+"@nrwl/devkit@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nrwl/devkit@npm:19.1.2"
   dependencies:
-    "@nx/devkit": 19.1.1
-  checksum: 7266b512b78b564e0911146685ac8cbde41be447f5be3670dc48887d5cbe52d9aa083e039a216b76af32b5a0390ea63e2b68918032e1565c9e0863eb354e3c67
+    "@nx/devkit": 19.1.2
+  checksum: 7358ac463e2afe71206fa2375ea07528eba29346bbf09c6f116ec9995e3a8870fdf9425dd2200fcf38b46acf742c5f54282e11bc776dbc4a722d04135a3d2754
   languageName: node
   linkType: hard
 
-"@nrwl/tao@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nrwl/tao@npm:19.1.1"
+"@nrwl/tao@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nrwl/tao@npm:19.1.2"
   dependencies:
-    nx: 19.1.1
+    nx: 19.1.2
     tslib: ^2.3.0
   bin:
     tao: index.js
-  checksum: 520c8452227ef38a7554262751d79594c0b70e372c13b65d14155768d46f30972556894e76cc292667d5cd18736d07e1051c2ad86aa5879339106a0141793cbd
+  checksum: 0ceac55b9f2478235e88dda23227a944b762c95fbf54779c8af9e97c6acf61a8c0ce1911d5814bcb370eebfbe86ee9ad0ef6c790780960c9fb31aeaf4c7a116f
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:19.1.1, @nx/devkit@npm:>=17.1.2 < 20":
-  version: 19.1.1
-  resolution: "@nx/devkit@npm:19.1.1"
+"@nx/devkit@npm:19.1.2, @nx/devkit@npm:>=17.1.2 < 20":
+  version: 19.1.2
+  resolution: "@nx/devkit@npm:19.1.2"
   dependencies:
-    "@nrwl/devkit": 19.1.1
+    "@nrwl/devkit": 19.1.2
     ejs: ^3.1.7
     enquirer: ~2.3.6
     ignore: ^5.0.4
@@ -4284,76 +4271,76 @@ __metadata:
     yargs-parser: 21.1.1
   peerDependencies:
     nx: ">= 17 <= 20"
-  checksum: c8917b5ab933fa28a9cf3f6509c69e7b6e58ca98dbf5b02f70a5649af0359cf188d3bb5822868bf3ff8e330d4a1bf6a81227dc05b4e53c02d3a8012c73fedd8c
+  checksum: 4d217e07ca9014cbe6157d0a9165881e93b649eb16653c5d7ad658c48f1b1f6f18de078343f3dc78ef25db804f60bb491b4d705d39bc5bbaf1777ec721de5270
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-arm64@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-darwin-arm64@npm:19.1.1"
+"@nx/nx-darwin-arm64@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-darwin-arm64@npm:19.1.2"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-darwin-x64@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-darwin-x64@npm:19.1.1"
+"@nx/nx-darwin-x64@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-darwin-x64@npm:19.1.2"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-freebsd-x64@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-freebsd-x64@npm:19.1.1"
+"@nx/nx-freebsd-x64@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-freebsd-x64@npm:19.1.2"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm-gnueabihf@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.1.1"
+"@nx/nx-linux-arm-gnueabihf@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-linux-arm-gnueabihf@npm:19.1.2"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-gnu@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-linux-arm64-gnu@npm:19.1.1"
+"@nx/nx-linux-arm64-gnu@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-linux-arm64-gnu@npm:19.1.2"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-arm64-musl@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-linux-arm64-musl@npm:19.1.1"
+"@nx/nx-linux-arm64-musl@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-linux-arm64-musl@npm:19.1.2"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-gnu@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-linux-x64-gnu@npm:19.1.1"
+"@nx/nx-linux-x64-gnu@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-linux-x64-gnu@npm:19.1.2"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@nx/nx-linux-x64-musl@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-linux-x64-musl@npm:19.1.1"
+"@nx/nx-linux-x64-musl@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-linux-x64-musl@npm:19.1.2"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-arm64-msvc@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-win32-arm64-msvc@npm:19.1.1"
+"@nx/nx-win32-arm64-msvc@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-win32-arm64-msvc@npm:19.1.2"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@nx/nx-win32-x64-msvc@npm:19.1.1":
-  version: 19.1.1
-  resolution: "@nx/nx-win32-x64-msvc@npm:19.1.1"
+"@nx/nx-win32-x64-msvc@npm:19.1.2":
+  version: 19.1.2
+  resolution: "@nx/nx-win32-x64-msvc@npm:19.1.2"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4510,9 +4497,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-api@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-api@npm:5.6.1-pre.1839"
+"@openmrs/esm-api@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-api@npm:5.6.1-pre.1869"
   dependencies:
     "@types/fhir": 0.0.31
     lodash-es: ^4.17.21
@@ -4521,17 +4508,17 @@ __metadata:
     "@openmrs/esm-error-handling": 5.x
     "@openmrs/esm-navigation": 5.x
     "@openmrs/esm-offline": 5.x
-  checksum: 4b1b085d5d3b4d05f1ae2e7397d4b7c566f9261d7f1d05fa52fe31e8f532d2d00decd9f6cc96ebb8c94d667ca617642edd1b54931c460b5c17cd47371bcf56d2
+  checksum: 9c2824b3e08173b76782538cd4ca33c74b976f2be159a677d9ab4e8ccc076daf8b2029ab8c24f0b81b04fe3d583b4dacbd8b6361aa99cb92ba5b40d5689f822d
   languageName: node
   linkType: hard
 
-"@openmrs/esm-app-shell@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-app-shell@npm:5.6.1-pre.1839"
+"@openmrs/esm-app-shell@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-app-shell@npm:5.6.1-pre.1869"
   dependencies:
     "@carbon/react": ~1.37.0
-    "@openmrs/esm-framework": 5.6.1-pre.1839
-    "@openmrs/esm-styleguide": 5.6.1-pre.1839
+    "@openmrs/esm-framework": 5.6.1-pre.1869
+    "@openmrs/esm-styleguide": 5.6.1-pre.1869
     dayjs: ^1.10.4
     dexie: ^3.0.3
     html-webpack-plugin: ^5.5.0
@@ -4556,57 +4543,57 @@ __metadata:
     workbox-strategies: ^6.1.5
     workbox-webpack-plugin: ^6.1.5
     workbox-window: ^6.1.5
-  checksum: 688c4395785f14cd83c56cbd025ba79fccc03661c42ffd9bf3119b2d10af080d6c45e8861aad9533f3e0eef179dbecf9ffa35cb95c0de9f8b292b975d5dfb563
+  checksum: 57a5afa465419bb6f4122bbdb0fe224e948af32453b481df8eca4c2ce2b46436544456b0cf618bb5dbbf3d368facb6b53938c1211195617b5265b09e0cd49c02
   languageName: node
   linkType: hard
 
-"@openmrs/esm-config@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-config@npm:5.6.1-pre.1839"
+"@openmrs/esm-config@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-config@npm:5.6.1-pre.1869"
   dependencies:
     ramda: ^0.26.1
   peerDependencies:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-state": 5.x
     single-spa: 5.x
-  checksum: dce2dce81fc7dea7a4845f7dc99ba10b133ae78c9f33e9c9e004b7dfb42c38514dc91f02bb0ffa7af1b8e2705ade389944c6e64e97570ffe70c7e091f4e5902b
+  checksum: 0787bc613512328674aee38816e3bbc6ab080a445ed024995c9da791afb4eed47bdb89e5f1fd35192ea2f0f988c16ee6152f6a1dd0807f90c38e439b2082e4a7
   languageName: node
   linkType: hard
 
-"@openmrs/esm-context@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-context@npm:5.6.1-pre.1839"
+"@openmrs/esm-context@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-context@npm:5.6.1-pre.1869"
   dependencies:
     immer: ^10.0.4
   peerDependencies:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-state": 5.x
-  checksum: facf66d5ad59efce0eefc8fc1ad2b5e5922ff20216e81aa881bc7d9783fa6cd8c19e6d94eac737d00e6a1e3c52c7ef4653b0e67c97fce31e1fee9711f018109f
+  checksum: 9b80aac65f1e0e324e9750c7c358dfc220a5808e026121a19db6a968aec86b637baa6a8e556af72e6cc5782860cb498950c1960e9210f8b7457aac4c9b8f8b61
   languageName: node
   linkType: hard
 
-"@openmrs/esm-dynamic-loading@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-dynamic-loading@npm:5.6.1-pre.1839"
+"@openmrs/esm-dynamic-loading@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-dynamic-loading@npm:5.6.1-pre.1869"
   peerDependencies:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-translations": 5.x
-  checksum: 593e72074914f8415a007e610b71831d5baa8de5a4e31c18bd73c751c57e2d705e68ad85c442b84411ee27bb56b3caeca1e583e0a72129dbbc76b1da3a424ebd
+  checksum: fe76a0104857d5cbafcfd045dde26007df8a9352263ddd53fad29ea02256f00deb7416a70e9b62698812eb7fed955925245878afeb1171ebcff03bd2730e8a83
   languageName: node
   linkType: hard
 
-"@openmrs/esm-error-handling@npm:5.6.1-pre.1839, @openmrs/esm-error-handling@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-error-handling@npm:5.6.1-pre.1839"
+"@openmrs/esm-error-handling@npm:5.6.1-pre.1869, @openmrs/esm-error-handling@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-error-handling@npm:5.6.1-pre.1869"
   peerDependencies:
     "@openmrs/esm-globals": 5.x
-  checksum: 3cb7816f0086c6f0af46e80a256b461b77b8e40fb634129a52d4d520f0c6d2f15dcf12952d342c275f62cda514e71b3eabad311f23df71f1f5baea8c30fe42b3
+  checksum: 6edee899ddc003556e8d04c362411244364eefb074cfa01c00cf6db925641cd9b712dded057671e9457d5f0ef94e0f524870be5e0a9fec20ec1d32956c0c6e14
   languageName: node
   linkType: hard
 
-"@openmrs/esm-extensions@npm:5.6.1-pre.1839, @openmrs/esm-extensions@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-extensions@npm:5.6.1-pre.1839"
+"@openmrs/esm-extensions@npm:5.6.1-pre.1869, @openmrs/esm-extensions@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-extensions@npm:5.6.1-pre.1869"
   dependencies:
     lodash-es: ^4.17.21
   peerDependencies:
@@ -4616,43 +4603,43 @@ __metadata:
     "@openmrs/esm-state": 5.x
     "@openmrs/esm-utils": 5.x
     single-spa: 5.x
-  checksum: b7aa99ec2540c7467f0bb338abd772ef7ccff358dcf7457decf8418d78af6de1d18b66fbc15f43bd05bbc4895cf9e604cc9ce84afc09704a1e1f986e5b04f730
+  checksum: 56123716bd4abdfe5c5bf95a785ffaa7c72836365d3fe4d2c85cffb5050442457ba08630c9fe43230e9a3d1ac8e2da1a48f8065698b3d6d7bfa4a99b5d9844a8
   languageName: node
   linkType: hard
 
-"@openmrs/esm-feature-flags@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-feature-flags@npm:5.6.1-pre.1839"
+"@openmrs/esm-feature-flags@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-feature-flags@npm:5.6.1-pre.1869"
   dependencies:
     ramda: ^0.26.1
   peerDependencies:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-state": 5.x
     single-spa: 5.x
-  checksum: 572c9957d261f408adc74f74c66942f80b1b03a303cb7ad81bb947a001469cbb0164dca53de926ff68faae05d7a2187d5ee8dc94591dc3fec6f7bbad92a4ad29
+  checksum: fe340d0b2322f1c82a63726d294c82d4f65e5d7cfec376972046661cedae061c478b9e7360405f443604026482bbcb367d08d726d38640a94ca0524e82e1d2f9
   languageName: node
   linkType: hard
 
-"@openmrs/esm-framework@npm:5.6.1-pre.1839, @openmrs/esm-framework@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-framework@npm:5.6.1-pre.1839"
+"@openmrs/esm-framework@npm:5.6.1-pre.1869, @openmrs/esm-framework@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-framework@npm:5.6.1-pre.1869"
   dependencies:
-    "@openmrs/esm-api": 5.6.1-pre.1839
-    "@openmrs/esm-config": 5.6.1-pre.1839
-    "@openmrs/esm-context": 5.6.1-pre.1839
-    "@openmrs/esm-dynamic-loading": 5.6.1-pre.1839
-    "@openmrs/esm-error-handling": 5.6.1-pre.1839
-    "@openmrs/esm-extensions": 5.6.1-pre.1839
-    "@openmrs/esm-feature-flags": 5.6.1-pre.1839
-    "@openmrs/esm-globals": 5.6.1-pre.1839
-    "@openmrs/esm-navigation": 5.6.1-pre.1839
-    "@openmrs/esm-offline": 5.6.1-pre.1839
-    "@openmrs/esm-react-utils": 5.6.1-pre.1839
-    "@openmrs/esm-routes": 5.6.1-pre.1839
-    "@openmrs/esm-state": 5.6.1-pre.1839
-    "@openmrs/esm-styleguide": 5.6.1-pre.1839
-    "@openmrs/esm-translations": 5.6.1-pre.1839
-    "@openmrs/esm-utils": 5.6.1-pre.1839
+    "@openmrs/esm-api": 5.6.1-pre.1869
+    "@openmrs/esm-config": 5.6.1-pre.1869
+    "@openmrs/esm-context": 5.6.1-pre.1869
+    "@openmrs/esm-dynamic-loading": 5.6.1-pre.1869
+    "@openmrs/esm-error-handling": 5.6.1-pre.1869
+    "@openmrs/esm-extensions": 5.6.1-pre.1869
+    "@openmrs/esm-feature-flags": 5.6.1-pre.1869
+    "@openmrs/esm-globals": 5.6.1-pre.1869
+    "@openmrs/esm-navigation": 5.6.1-pre.1869
+    "@openmrs/esm-offline": 5.6.1-pre.1869
+    "@openmrs/esm-react-utils": 5.6.1-pre.1869
+    "@openmrs/esm-routes": 5.6.1-pre.1869
+    "@openmrs/esm-state": 5.6.1-pre.1869
+    "@openmrs/esm-styleguide": 5.6.1-pre.1869
+    "@openmrs/esm-translations": 5.6.1-pre.1869
+    "@openmrs/esm-utils": 5.6.1-pre.1869
     dayjs: ^1.10.7
   peerDependencies:
     dayjs: 1.x
@@ -4663,35 +4650,35 @@ __metadata:
     rxjs: 6.x
     single-spa: 5.x
     swr: 2.x
-  checksum: be750395e19a685e72b630a403ef8df88093fad2a179d83a310591be0e9e37bce88c8337752bbef3f210d17471bbb72831cc8fe84605f7724563cd949f3dca62
+  checksum: e4ec9c275c1b508b0c8e48fce8f98964d0c07fc80564eda6e159ba2de600358341a01fc822e575f15ca60098be9fead6eb7fab3582ef6d3cc1d0a169ecee7742
   languageName: node
   linkType: hard
 
-"@openmrs/esm-globals@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-globals@npm:5.6.1-pre.1839"
+"@openmrs/esm-globals@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-globals@npm:5.6.1-pre.1869"
   dependencies:
     "@types/fhir": 0.0.31
   peerDependencies:
     single-spa: 5.x
-  checksum: 03bac803e7c5f7a8d0df46d6c080f13a68b67a83e11cd84656851b1e09c2b715b7f899b950f77ae198f3bc6b26de3fa70f932325790276dfe66a096a42dd2fa0
+  checksum: 402e04fd3c7f97077a075bec678194d7c2ee969a419cf418d1e335de2e8e94ea4423fd62f042205ab64fddf41ce16b923673e8632d21db2c5a142541139fdb2c
   languageName: node
   linkType: hard
 
-"@openmrs/esm-navigation@npm:5.6.1-pre.1839, @openmrs/esm-navigation@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-navigation@npm:5.6.1-pre.1839"
+"@openmrs/esm-navigation@npm:5.6.1-pre.1869, @openmrs/esm-navigation@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-navigation@npm:5.6.1-pre.1869"
   dependencies:
     path-to-regexp: 6.1.0
   peerDependencies:
     "@openmrs/esm-state": 5.x
-  checksum: 7adeeaf889a6c3b7ad5afc839333350e2c19aa4cec51079854948da792e737ff8f59e9479a026c964bebff123068b9b37ca742e3e819e2e87fe3210d154c4fbc
+  checksum: f7800f9eca9cdc0b8af38b92f3ea8778a3fc6faaa3ecc4f119d3849c8e96c179e18b773ba4cb8aa78713cf6f968b0d87347eace10fc0e321b1bf00b5d45d25c7
   languageName: node
   linkType: hard
 
-"@openmrs/esm-offline@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-offline@npm:5.6.1-pre.1839"
+"@openmrs/esm-offline@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-offline@npm:5.6.1-pre.1869"
   dependencies:
     dexie: ^3.0.3
     lodash-es: ^4.17.21
@@ -4702,13 +4689,13 @@ __metadata:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-state": 5.x
     rxjs: 6.x
-  checksum: 91ec037f8b0dc6bad8998a65cfba5137135a230567ab69a29d5b6a496fe87b63d91bb9f74cb53343581478c9ba98a8ab60258dd97183dc967e428a05aa03d249
+  checksum: 59e9c0186c44a5183bf1efdc56cbba5700a2d199de58f091673a68b8ab74e7e1fcc9556e0bc2cb942272ffd3f11494ad56e0209110ea53bb65e9abcb896ab63d
   languageName: node
   linkType: hard
 
 "@openmrs/esm-patient-common-lib@npm:next":
-  version: 8.0.2-pre.4635
-  resolution: "@openmrs/esm-patient-common-lib@npm:8.0.2-pre.4635"
+  version: 8.0.2-pre.4644
+  resolution: "@openmrs/esm-patient-common-lib@npm:8.0.2-pre.4644"
   dependencies:
     "@carbon/react": ^1.12.0
     lodash-es: ^4.17.21
@@ -4717,13 +4704,13 @@ __metadata:
     "@openmrs/esm-framework": 5.x
     react: 18.x
     single-spa: 6.x
-  checksum: 3f9fe24679a2f0d3426de084bf50460059cd586b1dfca8697b53e5942a6d1fdb291af68752dee8dd624f5fbb89a578fdaf539ed9a125fb60863a66496ea4e2e1
+  checksum: d4398f6629dfbd42a8331d77c6dfbc167d00954368c7aa297cc9761a7eb896d6e188dac0605c165f55dacce67d71ffbf3cc6c7725a98fcc2186ab7b38ee41235
   languageName: node
   linkType: hard
 
-"@openmrs/esm-react-utils@npm:5.6.1-pre.1839, @openmrs/esm-react-utils@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-react-utils@npm:5.6.1-pre.1839"
+"@openmrs/esm-react-utils@npm:5.6.1-pre.1869, @openmrs/esm-react-utils@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-react-utils@npm:5.6.1-pre.1869"
   dependencies:
     lodash-es: ^4.17.21
     single-spa-react: ^6.0.0
@@ -4744,34 +4731,34 @@ __metadata:
     react-i18next: 11.x
     rxjs: 6.x
     swr: 2.x
-  checksum: 278013c56a8a39517d9d772fe0866f64fa5c3c2f74210935c5c69e2940778a845e8afdd26697013e1389cd521505a7f6d626f49564a19278910ec6d1a168b4d1
+  checksum: 72f950f42951ded9596fff7e35b428e567bc8c30e9176f9600c8903102c135ff8cd269a89938c80de1dec8d731c9ce7f00c4ed638bfdc360c9e3c2f676e59ee4
   languageName: node
   linkType: hard
 
-"@openmrs/esm-routes@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-routes@npm:5.6.1-pre.1839"
+"@openmrs/esm-routes@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-routes@npm:5.6.1-pre.1869"
   peerDependencies:
     "@openmrs/esm-globals": 5.x
     "@openmrs/esm-utils": 5.x
-  checksum: 1b3007f6d049cd12920652d2a8b3ba196fb5fa07d9b87ffa054b11be64d465efc9a4f81a739e04b234c51b71968e18e83a1bfbf117d7f4400347558006e2e6be
+  checksum: 01ecf9670af4e305fcf1072a039bfd9172661acb5a2d07baca78f9efe224f23c474698b23c6d96ee22b2c4250799b40c6cd087650f06dbf8d2fba31fa22db767
   languageName: node
   linkType: hard
 
-"@openmrs/esm-state@npm:5.6.1-pre.1839, @openmrs/esm-state@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-state@npm:5.6.1-pre.1839"
+"@openmrs/esm-state@npm:5.6.1-pre.1869, @openmrs/esm-state@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-state@npm:5.6.1-pre.1869"
   dependencies:
     zustand: ^4.3.6
   peerDependencies:
     "@openmrs/esm-globals": 5.x
-  checksum: e59fb7a5f834bb6fd0de9bace9ac163c75f5c15140595272a75f9d8c2d61b8f64a8e5904892103cf0953f7aa9c053718f7313126237e436ed32ea28190c9e12d
+  checksum: 7dc0341e75c445e2e4a48dc54160c06dc2056f22bed18b7b01ecc5299f01d4c6deb8c0ccdd2bb6487baade2be4f728e252d66d9c59070cfeaf7fd9eeb008bfb0
   languageName: node
   linkType: hard
 
-"@openmrs/esm-styleguide@npm:5.6.1-pre.1839, @openmrs/esm-styleguide@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-styleguide@npm:5.6.1-pre.1839"
+"@openmrs/esm-styleguide@npm:5.6.1-pre.1869, @openmrs/esm-styleguide@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-styleguide@npm:5.6.1-pre.1869"
   dependencies:
     "@carbon/charts": ^1.12.0
     "@carbon/react": ~1.37.0
@@ -4796,24 +4783,24 @@ __metadata:
     react: 18.x
     react-dom: 18.x
     rxjs: 6.x
-  checksum: e6248ad7d40e29047ee59f100a85dabded2bb6f90160acfd328f2b8bc9687f40d436149db54967248b773505c738b1314ef07da68f0a62a18b4306035c81f488
+  checksum: 6387adf405761ca29cc2571b5127e9e4e740c72c066bf70bd0c745dc92ad8a7d99854c7b2af22039be366d5aac770356e2d6a46b3a141a5f5117c675b4118a70
   languageName: node
   linkType: hard
 
-"@openmrs/esm-translations@npm:5.6.1-pre.1839, @openmrs/esm-translations@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-translations@npm:5.6.1-pre.1839"
+"@openmrs/esm-translations@npm:5.6.1-pre.1869, @openmrs/esm-translations@npm:next":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-translations@npm:5.6.1-pre.1869"
   dependencies:
     i18next: 21.10.0
   peerDependencies:
     i18next: 21.x
-  checksum: e53f840a566917620328ecfe364f226cdda885eaedc92ec121921c7dd964a4496ded39012d48e26c5f842ad22bac95fc20c7faba59ec66aa615258564610ae3e
+  checksum: 417b74dd6a5dc70df39464696905c8eb2522a9e97f59dfe487c9c4cef15acb16ffd07d50c17554ef0c39ef0d4d9c2ce3b835091ee23263224e11c9b0a0fc699a
   languageName: node
   linkType: hard
 
-"@openmrs/esm-utils@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/esm-utils@npm:5.6.1-pre.1839"
+"@openmrs/esm-utils@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/esm-utils@npm:5.6.1-pre.1869"
   dependencies:
     "@internationalized/date": ^3.5.0
     semver: 7.3.2
@@ -4822,13 +4809,13 @@ __metadata:
     dayjs: 1.x
     i18next: 21.x
     rxjs: 6.x
-  checksum: e1d73d81aecf38e91f0721d3d78deafd2b424ffc53b0971c23864dc21e686acef3b82938dca0f3c5d883c15e0c792755af19ec707e841abf54316fcdb644ece1
+  checksum: 0275c63a53b8c049359d85c1b30e2765d4a99f3656d3f47e5bbafb8b65486585f0df492c99884022e07e74bb106511f2bac9e9fa7ebb5a5c36a13b5f1185fd8e
   languageName: node
   linkType: hard
 
-"@openmrs/webpack-config@npm:5.6.1-pre.1839":
-  version: 5.6.1-pre.1839
-  resolution: "@openmrs/webpack-config@npm:5.6.1-pre.1839"
+"@openmrs/webpack-config@npm:5.6.1-pre.1869":
+  version: 5.6.1-pre.1869
+  resolution: "@openmrs/webpack-config@npm:5.6.1-pre.1869"
   dependencies:
     "@swc/core": ^1.3.58
     clean-webpack-plugin: ^4.0.0
@@ -4845,7 +4832,7 @@ __metadata:
     webpack-stats-plugin: ^1.0.3
   peerDependencies:
     webpack: 5.x
-  checksum: 652d660d8d19cf36346379adeed842c558b50df475456bac3575b4c59d1799450366045ceabb843d8f5363c67f7a302f6573ddd0e56cffdef54f0029532ae678
+  checksum: d52f9546934cbcac3446c55df526fa34167096daf7043805bd11697234f628ea00e7f00bd09dfab2d482ec04868b49ff15a10434925a468b839d509d54431c24
   languageName: node
   linkType: hard
 
@@ -7487,90 +7474,90 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-darwin-arm64@npm:1.5.24"
+"@swc/core-darwin-arm64@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-darwin-arm64@npm:1.5.25"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-darwin-x64@npm:1.5.24"
+"@swc/core-darwin-x64@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-darwin-x64@npm:1.5.25"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm-gnueabihf@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.5.24"
+"@swc/core-linux-arm-gnueabihf@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-linux-arm-gnueabihf@npm:1.5.25"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-gnu@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-linux-arm64-gnu@npm:1.5.24"
+"@swc/core-linux-arm64-gnu@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-linux-arm64-gnu@npm:1.5.25"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-arm64-musl@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-linux-arm64-musl@npm:1.5.24"
+"@swc/core-linux-arm64-musl@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-linux-arm64-musl@npm:1.5.25"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-gnu@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-linux-x64-gnu@npm:1.5.24"
+"@swc/core-linux-x64-gnu@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-linux-x64-gnu@npm:1.5.25"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-linux-x64-musl@npm:1.5.24"
+"@swc/core-linux-x64-musl@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-linux-x64-musl@npm:1.5.25"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@swc/core-win32-arm64-msvc@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-win32-arm64-msvc@npm:1.5.24"
+"@swc/core-win32-arm64-msvc@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-win32-arm64-msvc@npm:1.5.25"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-win32-ia32-msvc@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-win32-ia32-msvc@npm:1.5.24"
+"@swc/core-win32-ia32-msvc@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-win32-ia32-msvc@npm:1.5.25"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@swc/core-win32-x64-msvc@npm:1.5.24":
-  version: 1.5.24
-  resolution: "@swc/core-win32-x64-msvc@npm:1.5.24"
+"@swc/core-win32-x64-msvc@npm:1.5.25":
+  version: 1.5.25
+  resolution: "@swc/core-win32-x64-msvc@npm:1.5.25"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@swc/core@npm:^1.3.106, @swc/core@npm:^1.3.58, @swc/core@npm:^1.3.68":
-  version: 1.5.24
-  resolution: "@swc/core@npm:1.5.24"
+  version: 1.5.25
+  resolution: "@swc/core@npm:1.5.25"
   dependencies:
-    "@swc/core-darwin-arm64": 1.5.24
-    "@swc/core-darwin-x64": 1.5.24
-    "@swc/core-linux-arm-gnueabihf": 1.5.24
-    "@swc/core-linux-arm64-gnu": 1.5.24
-    "@swc/core-linux-arm64-musl": 1.5.24
-    "@swc/core-linux-x64-gnu": 1.5.24
-    "@swc/core-linux-x64-musl": 1.5.24
-    "@swc/core-win32-arm64-msvc": 1.5.24
-    "@swc/core-win32-ia32-msvc": 1.5.24
-    "@swc/core-win32-x64-msvc": 1.5.24
+    "@swc/core-darwin-arm64": 1.5.25
+    "@swc/core-darwin-x64": 1.5.25
+    "@swc/core-linux-arm-gnueabihf": 1.5.25
+    "@swc/core-linux-arm64-gnu": 1.5.25
+    "@swc/core-linux-arm64-musl": 1.5.25
+    "@swc/core-linux-x64-gnu": 1.5.25
+    "@swc/core-linux-x64-musl": 1.5.25
+    "@swc/core-win32-arm64-msvc": 1.5.25
+    "@swc/core-win32-ia32-msvc": 1.5.25
+    "@swc/core-win32-x64-msvc": 1.5.25
     "@swc/counter": ^0.1.3
     "@swc/types": ^0.1.7
   peerDependencies:
@@ -7599,7 +7586,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: eafbcf5ea93540dc7cb0802c8ae8df5e995f586611195647e70d966bb6407e8233d31c3d954da58eb158a0c9a57d9207e52bb1518579de64cd34b67b025acc14
+  checksum: 0f3dc4740ac3d168682cdae45620622d07c953914d867e5fecf45c65ab04e60e981aea0894d784c06f60ad214b381a0189bb2eb3955869ed44009af0c01617dd
   languageName: node
   linkType: hard
 
@@ -8234,11 +8221,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.12.13
-  resolution: "@types/node@npm:20.12.13"
+  version: 20.14.2
+  resolution: "@types/node@npm:20.14.2"
   dependencies:
     undici-types: ~5.26.4
-  checksum: 9ec8971a76b2435379c10689c639ba1bbf4451075709bdf4bf23b7972a63f7d966947914410f2d3711a315e1157d782b76cfadc32944e29db9dd444221aea699
+  checksum: 265362479b8f3b50fcd1e3f9e9af6121feb01a478dff0335ae67cccc3babfe45d0f12209d3d350595eebd7e67471762697b877c380513f8e5d27a238fa50c805
   languageName: node
   linkType: hard
 
@@ -9281,14 +9268,14 @@ __metadata:
   linkType: hard
 
 "ajv@npm:^8.0.0, ajv@npm:^8.6.0, ajv@npm:^8.9.0":
-  version: 8.14.0
-  resolution: "ajv@npm:8.14.0"
+  version: 8.16.0
+  resolution: "ajv@npm:8.16.0"
   dependencies:
     fast-deep-equal: ^3.1.3
     json-schema-traverse: ^1.0.0
     require-from-string: ^2.0.2
     uri-js: ^4.4.1
-  checksum: 83a933ee20ca25026236cd44634ab8b88d386be26f666e4bc8e34085bbe6775bdb52cb8e25afdaca20d90cb59828a4a168993e21dd2adad3612308f568b2320e
+  checksum: bdf3d4c9f1d11e220850051ef4cd89346e951cfb933d6d41be36d45053c1092af1523ee6c62525cce567355caf0a4f4c19a08a93851649c1fa32b4a39b7c4858
   languageName: node
   linkType: hard
 
@@ -11027,13 +11014,13 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001587, caniuse-lite@npm:^1.0.30001599":
-  version: 1.0.30001625
-  resolution: "caniuse-lite@npm:1.0.30001625"
-  checksum: e7f8b9e10c35a5d9a1d1db76be398cb1c592ee1bc905fabe6bd90313537099d29a65c49c85e6350132fa30ca20e8c0317ecfaa66d997f7fac21ff37ddaece2a9
+  version: 1.0.30001628
+  resolution: "caniuse-lite@npm:1.0.30001628"
+  checksum: b5dcdaeb0117a02b3c42f5bc2922cad97546cb8eb3820f14fc7a1f566f6d477df89cf43ed9b43a354f6059ea4009eed89f7b7e741d17d2c8d3c21e0b7d56e31d
   languageName: node
   linkType: hard
 
-"carbon-components@npm:^10.58.14":
+"carbon-components@npm:^10.58.15":
   version: 10.58.15
   resolution: "carbon-components@npm:10.58.15"
   dependencies:
@@ -12959,14 +12946,14 @@ __metadata:
   linkType: hard
 
 "debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
-  version: 4.3.4
-  resolution: "debug@npm:4.3.4"
+  version: 4.3.5
+  resolution: "debug@npm:4.3.5"
   dependencies:
     ms: 2.1.2
   peerDependenciesMeta:
     supports-color:
       optional: true
-  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
+  checksum: 7c002b51e256257f936dda09eb37167df952758c57badf6bf44bdc40b89a4bcb8e5a0a2e4c7b53f97c69e2970dd5272d33a757378a12c8f8e64ea7bf99e8e86e
   languageName: node
   linkType: hard
 
@@ -13465,7 +13452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.1.0":
+"dompurify@npm:^3.1.5":
   version: 3.1.5
   resolution: "dompurify@npm:3.1.5"
   checksum: 18ae2930cba3c260889b99e312c382c344d219bd113bc39fbb665a61987d25849021768f490395e6954aab94448a24b3c3721c160b53550547110c37cebe9feb
@@ -13635,9 +13622,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.4.668":
-  version: 1.4.787
-  resolution: "electron-to-chromium@npm:1.4.787"
-  checksum: 0cfac6acabd8d779a4f1a3a47b91bfddf0275f2448a800830953caa46d3ccdbf548054f86c97196de147dd7abdbc2491e2628364f353d1852d9045502aa87f0f
+  version: 1.4.790
+  resolution: "electron-to-chromium@npm:1.4.790"
+  checksum: 46f4f92370146478b4d1f6c9dc4b203e0f5861eeda2df73d76652dc13f04043b923049832ee1736361fae562c1eabb442c12d4b7d60969d58a65aa655dbdd28c
   languageName: node
   linkType: hard
 
@@ -13709,12 +13696,12 @@ __metadata:
   linkType: hard
 
 "enhanced-resolve@npm:^5.16.0":
-  version: 5.16.1
-  resolution: "enhanced-resolve@npm:5.16.1"
+  version: 5.17.0
+  resolution: "enhanced-resolve@npm:5.17.0"
   dependencies:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
-  checksum: 6e4c166fef72ef231455f9119686d93ecccb11874f8256d73a42de5b293cb2536050849382468864b25973514ca4fa4cb13c37be2ff857a211e2aca3ff05bb6c
+  checksum: 1066000454da6a7aeabdbe1f433d912d1e39e6892142a78a37b6577aab27e0436091fa1399d857ad87085b1c3b73a0f811c8874da3dbdc40fbd5ebe89a5568e6
   languageName: node
   linkType: hard
 
@@ -15086,9 +15073,9 @@ __metadata:
   linkType: hard
 
 "flow-parser@npm:0.*":
-  version: 0.237.1
-  resolution: "flow-parser@npm:0.237.1"
-  checksum: 0b65f36b043767d633f91fd3ead31c64da251133a7837b98102a88d2281a0ccbdd5e9742ae5f8e59d40dbfff960abd62054354827f7593e066b712005259e1c3
+  version: 0.237.2
+  resolution: "flow-parser@npm:0.237.2"
+  checksum: f0bb959883738e664921b2836f96a3fd3273999bdaeb067a081bfd03551ae8987947c07facd2a52cfb85ba7657498718fd659c4074505d6c1869b22ca170cb8e
   languageName: node
   linkType: hard
 
@@ -18034,15 +18021,15 @@ __metadata:
   linkType: hard
 
 "jackspeak@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "jackspeak@npm:3.1.2"
+  version: 3.3.0
+  resolution: "jackspeak@npm:3.3.0"
   dependencies:
     "@isaacs/cliui": ^8.0.2
     "@pkgjs/parseargs": ^0.11.0
   dependenciesMeta:
     "@pkgjs/parseargs":
       optional: true
-  checksum: 134276d5f785c518930701a0dcba1f3b0e9ce3e5b1c3e300898e2ae0bbd9b5195088b77252bf2110768de072c426e9e39f47e13912b0b002da4a3f4ff6e16eac
+  checksum: 2046055180f17ab2b8dc4321d2c004cdd0688c935b40011ca204d78986a031b6e87af4b55aacf9676d740ef401754ae099f101b8d1766a4748915ab9c6772216
   languageName: node
   linkType: hard
 
@@ -21840,21 +21827,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:19.1.1, nx@npm:>=17.1.2 < 20":
-  version: 19.1.1
-  resolution: "nx@npm:19.1.1"
+"nx@npm:19.1.2, nx@npm:>=17.1.2 < 20":
+  version: 19.1.2
+  resolution: "nx@npm:19.1.2"
   dependencies:
-    "@nrwl/tao": 19.1.1
-    "@nx/nx-darwin-arm64": 19.1.1
-    "@nx/nx-darwin-x64": 19.1.1
-    "@nx/nx-freebsd-x64": 19.1.1
-    "@nx/nx-linux-arm-gnueabihf": 19.1.1
-    "@nx/nx-linux-arm64-gnu": 19.1.1
-    "@nx/nx-linux-arm64-musl": 19.1.1
-    "@nx/nx-linux-x64-gnu": 19.1.1
-    "@nx/nx-linux-x64-musl": 19.1.1
-    "@nx/nx-win32-arm64-msvc": 19.1.1
-    "@nx/nx-win32-x64-msvc": 19.1.1
+    "@nrwl/tao": 19.1.2
+    "@nx/nx-darwin-arm64": 19.1.2
+    "@nx/nx-darwin-x64": 19.1.2
+    "@nx/nx-freebsd-x64": 19.1.2
+    "@nx/nx-linux-arm-gnueabihf": 19.1.2
+    "@nx/nx-linux-arm64-gnu": 19.1.2
+    "@nx/nx-linux-arm64-musl": 19.1.2
+    "@nx/nx-linux-x64-gnu": 19.1.2
+    "@nx/nx-linux-x64-musl": 19.1.2
+    "@nx/nx-win32-arm64-msvc": 19.1.2
+    "@nx/nx-win32-x64-msvc": 19.1.2
     "@yarnpkg/lockfile": ^1.1.0
     "@yarnpkg/parsers": 3.0.0-rc.46
     "@zkochan/js-yaml": 0.0.7
@@ -21919,7 +21906,7 @@ __metadata:
   bin:
     nx: bin/nx.js
     nx-cloud: bin/nx-cloud.js
-  checksum: 006c7a8b123390b01b7932f6ad986b0ee8de96761c4113b51b3eb77130963fcf4a96c3c9080c12112c2765efe4b23abfc601a80f70e6f496cd94b3637e64f516
+  checksum: 913b2586e8ab298366a9a01fd60325018f9e58cdf09e5b7abbd26abc165632f5b0b73adca04c5df70afaeef3a02cafd6c1f666baa0ab2708c864371b572de0a5
   languageName: node
   linkType: hard
 
@@ -22120,12 +22107,11 @@ __metadata:
   linkType: hard
 
 "openmrs@npm:next":
-  version: 5.6.1-pre.1839
-  resolution: "openmrs@npm:5.6.1-pre.1839"
+  version: 5.6.1-pre.1869
+  resolution: "openmrs@npm:5.6.1-pre.1869"
   dependencies:
-    "@carbon/icons-react": 11.26.0
-    "@openmrs/esm-app-shell": 5.6.1-pre.1839
-    "@openmrs/webpack-config": 5.6.1-pre.1839
+    "@openmrs/esm-app-shell": 5.6.1-pre.1869
+    "@openmrs/webpack-config": 5.6.1-pre.1869
     "@pnpm/npm-conf": ^2.1.0
     "@swc/core": ^1.3.58
     autoprefixer: ^10.4.2
@@ -22157,7 +22143,7 @@ __metadata:
     yargs: ^17.6.2
   bin:
     openmrs: ./dist/cli.js
-  checksum: bee9275e72fef30cf7bd7e7ba943ff21d2985f18cee0fcc5cb774baa9bc4fe8d9be3ba3e25e5ca1314282209913e30c2fa9eea7bd8fbea3a160c2b455476b95a
+  checksum: 619dee968dbe63c3b2428f327a2fc9a72215379247d8fe82091dc3aa72921c6cafe7e9cc3d86a916381be1059047839b216d3a056a228eaab7bb8707da5cae65
   languageName: node
   linkType: hard
 
@@ -23451,11 +23437,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.2.4":
-  version: 3.2.5
-  resolution: "prettier@npm:3.2.5"
+  version: 3.3.1
+  resolution: "prettier@npm:3.3.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 2ee4e1417572372afb7a13bb446b34f20f1bf1747db77cf6ccaf57a9be005f2f15c40f903d41a6b79eec3f57fff14d32a20fb6dee1f126da48908926fe43c311
+  checksum: 10987ff39e23d9359a76a441431dfe3ee26cc444540dc1577e8109e31394231fc1187d47a1e4ebc98bd605885c50ec681e9f2674e489c3313708c30b6ef5e119
   languageName: node
   linkType: hard
 
@@ -24564,7 +24550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^18.1.0, react@npm:^18.2.0":
+"react@npm:^18.1.0, react@npm:^18.2.0, react@npm:^18.3.1":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:
@@ -27673,9 +27659,9 @@ __metadata:
   linkType: hard
 
 "tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.6.2":
-  version: 2.6.2
-  resolution: "tslib@npm:2.6.2"
-  checksum: 329ea56123005922f39642318e3d1f0f8265d1e7fcb92c633e0809521da75eeaca28d2cf96d7248229deb40e5c19adf408259f4b9640afd20d13aecc1430f3ad
+  version: 2.6.3
+  resolution: "tslib@npm:2.6.3"
+  checksum: 74fce0e100f1ebd95b8995fbbd0e6c91bdd8f4c35c00d4da62e285a3363aaa534de40a80db30ecfd388ed7c313c42d930ee0eaf108e8114214b180eec3dbe6f5
   languageName: node
   linkType: hard
 
@@ -27721,58 +27707,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-darwin-64@npm:1.13.3"
+"turbo-darwin-64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-darwin-64@npm:1.13.4"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-darwin-arm64@npm:1.13.3"
+"turbo-darwin-arm64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-darwin-arm64@npm:1.13.4"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-linux-64@npm:1.13.3"
+"turbo-linux-64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-linux-64@npm:1.13.4"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-linux-arm64@npm:1.13.3"
+"turbo-linux-arm64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-linux-arm64@npm:1.13.4"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-windows-64@npm:1.13.3"
+"turbo-windows-64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-windows-64@npm:1.13.4"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:1.13.3":
-  version: 1.13.3
-  resolution: "turbo-windows-arm64@npm:1.13.3"
+"turbo-windows-arm64@npm:1.13.4":
+  version: 1.13.4
+  resolution: "turbo-windows-arm64@npm:1.13.4"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
 "turbo@npm:^1.12.4, turbo@npm:^1.13.0":
-  version: 1.13.3
-  resolution: "turbo@npm:1.13.3"
+  version: 1.13.4
+  resolution: "turbo@npm:1.13.4"
   dependencies:
-    turbo-darwin-64: 1.13.3
-    turbo-darwin-arm64: 1.13.3
-    turbo-linux-64: 1.13.3
-    turbo-linux-arm64: 1.13.3
-    turbo-windows-64: 1.13.3
-    turbo-windows-arm64: 1.13.3
+    turbo-darwin-64: 1.13.4
+    turbo-darwin-arm64: 1.13.4
+    turbo-linux-64: 1.13.4
+    turbo-linux-arm64: 1.13.4
+    turbo-windows-64: 1.13.4
+    turbo-windows-arm64: 1.13.4
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -27788,7 +27774,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: d00655987e5d2e714d5e5a8d5950624508fb69e8671ca17e8ac7b9316ce01e518308ec4eaa472306950782704caa2eaa3c4fb328192818fcd9fcc05423bc29e7
+  checksum: 94533f700dbbb7b556a7152ef04500a44b571232daf1eb9bd82bcfebac473d0cf45a78c851325c6867246656cb0b3be7c62a412381b6e85c77c1eddf51302778
   languageName: node
   linkType: hard
 
