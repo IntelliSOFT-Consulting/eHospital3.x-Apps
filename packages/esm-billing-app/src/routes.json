@@ -7,7 +7,7 @@
   "pages": [
     {
       "component": "billableServicesHome",
-      "route":"billable-services"
+      "route": "billable-services"
     }
   ],
   "extensions": [
@@ -42,7 +42,8 @@
       "order": 11,
       "meta": {
         "columns": 1,
-        "columnSpan": 1,
+        "columnSpan": 1
+      }
     }
   ]
 }
