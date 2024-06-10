@@ -1,12 +1,15 @@
 import React from 'react';
-import BillableServices from '../billable-services.component';
+import { useTranslation } from 'react-i18next';
 import styles from './dashboard.scss';
-import { ExtensionSlot } from '@openmrs/esm-framework';
+import ServiceMetrics from './service-metrics.component';
+import BillableServices from '../billable-services.component';
 
-export default function BillableServicesDashboard() {
+export function BillableServicesDashboard() {
+  const { t } = useTranslation();
+
   return (
     <main className={styles.container}>
-      <ExtensionSlot name="billing-home-tiles-slot" />
+      <ServiceMetrics />
       <main className={styles.servicesTableContainer}>
         <BillableServices />
       </main>

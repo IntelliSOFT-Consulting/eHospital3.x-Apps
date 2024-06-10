@@ -12,7 +12,7 @@ import {
 } from '@carbon/react';
 import { age, isDesktop, useLayoutType } from '@openmrs/esm-framework';
 import { getGender } from '../../helpers';
-import { type MappedBill } from '../../types';
+import { MappedBill } from '../../types';
 import { useTranslation } from 'react-i18next';
 import PrintableFooter from './printable-footer.component';
 import PrintableInvoiceHeader from './printable-invoice-header.component';
@@ -65,9 +65,9 @@ const PrintableInvoice: React.FC<PrintableInvoiceProps> = ({ bill, patient, isLo
   }, [patient, t]);
 
   const invoiceDetails = {
-    'Invoice #': bill?.receiptNumber,
+    'Invoice #': bill.receiptNumber,
     'Invoice date': bill.dateCreated,
-    Status: bill?.status,
+    Status: bill.status,
   };
 
   if (isLoading) {

@@ -1,36 +1,29 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  Button,
-  DataTable,
   DataTableSkeleton,
   Layer,
-  Pagination,
-  Table,
-  TableBody,
-  TableCell,
+  DataTable,
   TableContainer,
-  TableExpandedRow,
-  TableExpandHeader,
-  TableExpandRow,
+  Table,
   TableHead,
   TableHeader,
   TableRow,
+  TableBody,
+  TableCell,
   Tile,
+  Pagination,
+  TableExpandHeader,
+  TableExpandRow,
+  TableExpandedRow,
+  Button,
 } from '@carbon/react';
-import { isDesktop, useConfig, useLayoutType, usePagination } from '@openmrs/esm-framework';
-import {
-  CardHeader,
-  EmptyDataIllustration,
-  ErrorState,
-  launchPatientWorkspace,
-  usePaginationInfo,
-} from '@openmrs/esm-patient-common-lib';
+import { Add } from '@carbon/react/icons';
+import { isDesktop, useLayoutType, usePagination, launchWorkspace } from '@openmrs/esm-framework';
+import { EmptyDataIllustration, ErrorState, usePaginationInfo, CardHeader } from '@openmrs/esm-patient-common-lib';
 import { useBills } from '../billing.resource';
 import InvoiceTable from '../invoice/invoice-table.component';
 import styles from './bill-history.scss';
-import { Add } from '@carbon/react/icons';
-import { convertToCurrency } from '../helpers';
 
 interface BillHistoryProps {
   patientUuid: string;
@@ -40,10 +33,9 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
   const { bills, isLoading, error } = useBills(patientUuid);
   const layout = useLayoutType();
+  const [pageSize, setPageSize] = React.useState(10);
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
-  const { paginated, goTo, results, currentPage } = usePagination(bills);
-  const { pageSize, defaultCurrency } = useConfig();
-  const [currentPageSize, setCurrentPageSize] = React.useState(pageSize);
+  const { paginated, goTo, results, currentPage } = usePagination(bills, pageSize);
   const { pageSizes } = usePaginationInfo(pageSize, bills?.length, currentPage, results?.length);
 
   const headerData = [
@@ -66,12 +58,15 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
   ];
 
   const setBilledItems = (bill) =>
-    bill?.lineItems?.reduce((acc, item) => acc + (acc ? ' & ' : '') + (item?.billableService || item?.item || ''), '');
+    bill.lineItems.reduce(
+      (acc, item) => acc + (acc ? ' & ' : '') + (item.billableService?.split(':')[1] || item.item?.split(':')[1] || ''),
+      '',
+    );
 
   const rowData = results?.map((bill) => ({
     id: bill.uuid,
     uuid: bill.uuid,
-    billTotal: convertToCurrency(bill?.totalAmount, defaultCurrency),
+    billTotal: bill.totalAmount,
     visitTime: bill.dateCreated,
     identifier: bill.identifier,
     billedItems: setBilledItems(bill),
@@ -97,24 +92,32 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
 
   if (bills.length === 0) {
     return (
-      <Layer className={styles.emptyStateContainer}>
-        <Tile className={styles.tile}>
-          <div className={styles.illo}>
-            <EmptyDataIllustration />
-          </div>
-          <p className={styles.content}>There are no bills to display.</p>
-          <Button onClick={() => launchPatientWorkspace('billing-form-workspace')} kind="ghost">
-            {t('launchBillForm', 'Launch bill form')}
-          </Button>
-        </Tile>
-      </Layer>
+      <>
+        <CardHeader title={t('patientBilling', 'Patient billing')}>
+          <></>
+        </CardHeader>
+        <Layer>
+          <Tile className={styles.tile}>
+            <div className={styles.illo}>
+              <EmptyDataIllustration />
+            </div>
+            <p className={styles.content}>There are no bills to display.</p>
+            <Button onClick={() => launchWorkspace('billing-form', { workspaceTitle: 'Billing Form' })} kind="ghost">
+              {t('launchBillForm', 'Launch bill form')}
+            </Button>
+          </Tile>
+        </Layer>
+      </>
     );
   }
 
   return (
-    <>
-      <CardHeader title={t('billingHistory', 'Billing History')}>
-        <Button renderIcon={Add} onClick={() => launchPatientWorkspace('billing-form-workspace', {})} kind="ghost">
+    <div>
+      <CardHeader title={t('patientBilling', 'Patient billing')}>
+        <Button
+          renderIcon={Add}
+          onClick={() => launchWorkspace('billing-form', { workspaceTitle: 'Billing Form' })}
+          kind="ghost">
           {t('addBill', 'Add bill item(s)')}
         </Button>
       </CardHeader>
@@ -153,9 +156,7 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
                       <React.Fragment key={row.id}>
                         <TableExpandRow {...getRowProps({ row })}>
                           {row.cells.map((cell) => (
-                            <TableCell key={cell.id} className={styles.tableCells}>
-                              {cell.value}
-                            </TableCell>
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
                           ))}
                         </TableExpandRow>
                         {row.isExpanded ? (
@@ -180,7 +181,7 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
             forwardText={t('nextPage', 'Next page')}
             backwardText={t('previousPage', 'Previous page')}
             page={currentPage}
-            pageSize={currentPageSize}
+            pageSize={pageSize}
             pageSizes={pageSizes}
             totalItems={bills.length}
             className={styles.pagination}
@@ -189,12 +190,12 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
               if (newPage !== currentPage) {
                 goTo(newPage);
               }
-              setCurrentPageSize(pageSize);
+              setPageSize(pageSize);
             }}
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

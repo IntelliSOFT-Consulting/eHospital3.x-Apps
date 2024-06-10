@@ -8,7 +8,6 @@ const PrintableFooter = () => {
   if (isLoading) {
     return <div>--</div>;
   }
-
   return (
     <div className={styles.container}>
       <p className={styles.itemFooter}>{data?.display}</p>

@@ -1,16 +1,15 @@
 import React from 'react';
 import { Form, Stack, FormGroup, Layer, Button, NumberInput } from '@carbon/react';
 import { TaskAdd } from '@carbon/react/icons';
-import { mutate } from 'swr';
 import { useTranslation } from 'react-i18next';
-import { restBaseUrl, showSnackbar, useConfig } from '@openmrs/esm-framework';
+import styles from './bill-waiver-form.scss';
+import { LineItem, MappedBill } from '../../types';
 import { createBillWaiverPayload } from './utils';
 import { convertToCurrency } from '../../helpers';
 import { processBillPayment } from '../../billing.resource';
-import { useBillableItems } from '../../billing-form/billing-form.resource';
-import type { LineItem, MappedBill } from '../../types';
-import styles from './bill-waiver-form.scss';
-import { apiBasePath } from '../../constants';
+import { showSnackbar } from '@openmrs/esm-framework';
+import { mutate } from 'swr';
+import { useBillableItems, usePaymentMethods } from '../../billing-form/billing-form.resource';
 
 type BillWaiverFormProps = {
   bill: MappedBill;
@@ -23,8 +22,7 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
   const [waiverAmount, setWaiverAmount] = React.useState(0);
   const { lineItems: billableLineItems, isLoading: isLoadingLineItems, error: lineError } = useBillableItems();
   const totalAmount = lineItems.reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
-  const { defaultCurrency } = useConfig();
-
+  const { paymentModes } = usePaymentMethods();
   if (lineItems?.length === 0) {
     return null;
   }
@@ -36,6 +34,7 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
       totalAmount,
       lineItems,
       billableLineItems,
+      paymentModes,
     );
 
     processBillPayment(waiverEndPointPayload, bill.uuid).then(
@@ -48,7 +47,7 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
           isLowContrast: true,
         });
         setPatientUuid('');
-        mutate((key) => typeof key === 'string' && key.startsWith(`${apiBasePath}bill?v=full`), undefined, {
+        mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/cashier/bill?v=full'), undefined, {
           revalidate: true,
         });
       },
@@ -79,7 +78,7 @@ const BillWaiverForm: React.FC<BillWaiverFormProps> = ({ bill, lineItems, setPat
           </section>
           <section className={styles.billWaiverDescription}>
             <label className={styles.label}>{t('billTotal', 'Bill total')}</label>
-            <p className={styles.value}>{convertToCurrency(totalAmount, defaultCurrency)}</p>
+            <p className={styles.value}>{convertToCurrency(totalAmount)}</p>
           </section>
 
           <Layer className={styles.formControlLayer}>

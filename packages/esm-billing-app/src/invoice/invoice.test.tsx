@@ -3,10 +3,10 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useReactToPrint } from 'react-to-print';
 import { showSnackbar } from '@openmrs/esm-framework';
+import { mockPayments, mockBill } from '../../../../__mocks__/bills.mock';
 import { useBill, processBillPayment } from '../billing.resource';
 import { usePaymentModes } from './payments/payment.resource';
 import Invoice from './invoice.component';
-import {mockBill, mockPayments} from "../../../../__mocks__/bills.mock";
 
 const mockedBill = jest.mocked(useBill);
 const mockedProcessBillPayment = jest.mocked(processBillPayment);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Route } from 'react-router-dom';
 import { LinkExtension, createLeftPanelLink } from './left-panel-link.component';
 import userEvent from '@testing-library/user-event';
 
@@ -14,9 +14,7 @@ describe('LinkExtension Component', () => {
 
   test('renders correctly', () => {
     const config = { name: 'billing', title: 'Billing' };
-    renderWithRouter(<LinkExtension config={config} />, {
-      route: '/billing/6eb8d678-514d-46ad-9554-51e48d96d567',
-    });
+    renderWithRouter(<LinkExtension config={config} />, { route: '/billing/6eb8d678-514d-46ad-9554-51e48d96d567' });
 
     expect(screen.getByText('Billing')).toBeInTheDocument();
   });

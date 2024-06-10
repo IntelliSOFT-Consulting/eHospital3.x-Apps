@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
   ButtonSet,
   Button,
-  Form,
-  InlineLoading,
   RadioButtonGroup,
   RadioButton,
   Search,
-  Stack,
   Table,
   TableHead,
   TableBody,
@@ -17,201 +14,164 @@ import {
 } from '@carbon/react';
 import styles from './billing-form.scss';
 import { useTranslation } from 'react-i18next';
-import { restBaseUrl, showSnackbar, showToast, useConfig, useDebounce, useLayoutType } from '@openmrs/esm-framework';
 import { useFetchSearchResults, processBillItems } from '../billing.resource';
+import { getPatientUuidFromUrl } from '@openmrs/esm-patient-common-lib';
+import { showSnackbar } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
-import { convertToCurrency } from '../helpers';
-import { z } from 'zod';
-import { TrashCan } from '@carbon/react/icons';
-import fuzzy from 'fuzzy';
-import { type BillabeItem } from '../types';
-import { apiBasePath } from '../constants';
-import isEmpty from 'lodash-es/isEmpty';
 
 type BillingFormProps = {
   patientUuid: string;
   closeWorkspace: () => void;
 };
 
-const BillingForm: React.FC<BillingFormProps> = ({ patientUuid, closeWorkspace }) => {
+const BillingForm: React.FC<BillingFormProps> = ({ closeWorkspace }) => {
   const { t } = useTranslation();
-  const { defaultCurrency, postBilledItems } = useConfig();
-  const isTablet = useLayoutType() === 'tablet';
+  const patientUuid = getPatientUuidFromUrl();
 
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [searchOptions, setSearchOptions] = useState([]);
-  const [billItems, setBillItems] = useState([]);
-  const [searchVal, setSearchVal] = useState('');
+  const [GrandTotal, setGrandTotal] = useState(0);
+
+  const [searchOptions, setsearchOptions] = useState([]);
+  const [defaultSearchItems, setdefaultSearchItems] = useState([]);
+
+  const [BillItems, setBillItems] = useState([]);
+
+  const [searchVal, setsearchVal] = useState('');
   const [category, setCategory] = useState('');
-  const [saveDisabled, setSaveDisabled] = useState<boolean>(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [addedItems, setAddedItems] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const debouncedSearchTerm = useDebounce(searchTerm);
-  const [disableSearch, setDisableSearch] = useState<boolean>(true);
 
   const toggleSearch = (choiceSelected) => {
-    if (!isEmpty(choiceSelected)) {
-      setDisableSearch(false);
-    }
-    setCategory(choiceSelected === 'Stock Item' ? 'Stock Item' : 'Service');
-  };
+    (document.getElementById('searchField') as HTMLInputElement).disabled = false;
 
-  const billItemSchema = z.object({
-    Qnty: z.number().min(1, t('quantityGreaterThanZero', 'Quantity must be at least one for all items.')), // zod logic
-  });
+    if (choiceSelected == 'Stock Item') {
+      setCategory('Stock Item');
+    } else {
+      setCategory('Service');
+    }
+  };
 
   const calculateTotal = (event, itemName) => {
-    const quantity = parseInt(event.target.value);
-    let isValid = true;
+    const Qnty = event.target.value;
+    const price = (document.getElementById(event.target.id + 'Price') as HTMLInputElement).innerHTML;
+    const total = parseInt(price) * Qnty;
+    (document.getElementById(event.target.id + 'Total') as HTMLInputElement).innerHTML = total.toString();
 
-    try {
-      billItemSchema.parse({ Qnty: quantity });
-    } catch (error) {
-      isValid = false;
-      const parsedErrorMessage = JSON.parse(error.message);
-      showToast({
-        title: t('billItems', 'Save Bill'),
-        kind: 'error',
-        description: parsedErrorMessage[0].message,
-      });
-    }
+    const updateItem = BillItems.filter((o) => o.Item.toLowerCase().includes(itemName.toLowerCase()));
 
-    const updatedItems = billItems.map((item) => {
-      if (item.Item.toLowerCase().includes(itemName.toLowerCase())) {
-        return { ...item, Qnty: quantity, Total: quantity > 0 ? item.Price * quantity : 0 };
-      }
-      return item;
+    updateItem.map((o) => (o.Qnty = Qnty));
+    updateItem.map((o) => (o.Total = total));
+
+    const totals = Array.from(document.querySelectorAll('[id$="Total"]'));
+
+    let addUpTotals = 0;
+    totals.forEach((tot) => {
+      var getTot = (tot as HTMLInputElement).innerHTML;
+      addUpTotals += parseInt(getTot);
     });
-
-    const anyInvalidQuantity = updatedItems.some((item) => item.Qnty <= 0);
-
-    setSaveDisabled(!isValid || anyInvalidQuantity);
-
-    const updatedGrandTotal = updatedItems.reduce((acc, item) => acc + item.Total, 0);
-    setGrandTotal(updatedGrandTotal);
+    setGrandTotal(addUpTotals);
   };
 
-  const calculateTotalAfterAddBillItem = (items) => {
-    const sum = items.reduce((acc, item) => acc + item.Price * item.Qnty, 0);
+  const CalculateTotalAfteraddBillItem = () => {
+    let sum = 0;
+    BillItems.map((o) => (sum += o.Price));
+
     setGrandTotal(sum);
   };
 
   const addItemToBill = (event, itemid, itemname, itemcategory, itemPrice) => {
-    const existingItemIndex = billItems.findIndex((item) => item.uuid === itemid);
-
-    let updatedItems = [];
-    if (existingItemIndex >= 0) {
-      updatedItems = billItems.map((item, index) => {
-        if (index === existingItemIndex) {
-          const updatedQuantity = item.Qnty + 1;
-          return { ...item, Qnty: updatedQuantity, Total: updatedQuantity * item.Price };
-        }
-        return item;
-      });
-    } else {
-      const newItem = {
-        uuid: itemid,
-        Item: itemname,
-        Qnty: 1,
-        Price: itemPrice,
-        Total: itemPrice,
-        category: itemcategory,
-      };
-      updatedItems = [...billItems, newItem];
-      setAddedItems([...addedItems, newItem]);
-    }
-
-    setBillItems(updatedItems);
-    calculateTotalAfterAddBillItem(updatedItems);
+    BillItems.push({
+      uuid: itemid,
+      Item: itemname,
+      Qnty: 1,
+      Price: itemPrice,
+      Total: itemPrice,
+      category: itemcategory,
+    });
+    setBillItems(BillItems);
+    setsearchOptions([]);
+    CalculateTotalAfteraddBillItem();
     (document.getElementById('searchField') as HTMLInputElement).value = '';
   };
 
-  const removeItemFromBill = (uuid) => {
-    const updatedItems = billItems.filter((item) => item.uuid !== uuid);
-    setBillItems(updatedItems);
+  //  filter items
+  const { data, error, isLoading, isValidating } = useFetchSearchResults(searchVal, category);
 
-    // Update the list of added items
-    setAddedItems(addedItems.filter((item) => item.uuid !== uuid));
+  const filterItems = (val) => {
+    setsearchVal(val);
 
-    const updatedGrandTotal = updatedItems.reduce((acc, item) => acc + item.Total, 0);
-    setGrandTotal(updatedGrandTotal);
+    if (isLoading) {
+    } else {
+      if (typeof data !== 'undefined') {
+        //set to null then repopulate
+        while (searchOptions.length > 0) {
+          searchOptions.pop();
+        }
+
+        const res = data as { results: any[] };
+
+        res.results.map((o) => {
+          if (o.commonName && (o.commonName != '' || o.commonName != null)) {
+            searchOptions.push({
+              uuid: o.uuid,
+              Item: o.commonName,
+              Qnty: 1,
+              Price: 10,
+              Total: 10,
+              category: 'StockItem',
+            });
+          } else {
+            if (o.name.toLowerCase().includes(searchVal.toLowerCase())) {
+              searchOptions.push({
+                uuid: o.uuid,
+                Item: o.name,
+                Qnty: 1,
+                Price: o.servicePrices[0].price,
+                Total: o.servicePrices[0].price,
+                category: 'Service',
+              });
+            }
+          }
+          setsearchOptions(searchOptions);
+        });
+      }
+    }
   };
 
-  const { data, error, isLoading, isValidating } = useFetchSearchResults(debouncedSearchTerm, category);
-
-  const handleSearchTermChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value);
-
-  const filterItems = useMemo(() => {
-    if (!debouncedSearchTerm || isLoading || error) {
-      return [];
-    }
-
-    const res = data as { results: BillabeItem[] };
-    const existingItemUuids = new Set(billItems.map((item) => item.uuid));
-
-    const preprocessedData = res?.results
-      ?.map((item) => {
-        return {
-          uuid: item.uuid || '',
-          Item: item.commonName ? item.commonName : item.name,
-          Qnty: 1,
-          Price: item.commonName ? 10 : item.servicePrices[0]?.price,
-          Total: item.commonName ? 10 : item.servicePrices[0]?.price,
-          category: item.commonName ? 'StockItem' : 'Service',
-        };
-      })
-      .filter((item) => !existingItemUuids.has(item.uuid));
-
-    return debouncedSearchTerm
-      ? fuzzy
-          .filter(debouncedSearchTerm, preprocessedData, {
-            extract: (o) => `${o.Item}`,
-          })
-          .sort((r1, r2) => r1.score - r2.score)
-          .map((result) => result.original)
-      : searchOptions;
-  }, [debouncedSearchTerm, data, billItems]);
-
-  useEffect(() => {
-    setSearchOptions(filterItems);
-  }, [filterItems]);
-
   const postBillItems = () => {
-    setIsSubmitting(true);
     const bill = {
-      cashPoint: postBilledItems.cashPoint,
-      cashier: postBilledItems.cashier,
+      cashPoint: '54065383-b4d4-42d2-af4d-d250a1fd2590',
+      cashier: 'f9badd80-ab76-11e2-9e96-0800200c9a66',
       lineItems: [],
       payments: [],
       patient: patientUuid,
       status: 'PENDING',
     };
 
-    billItems.forEach((item) => {
-      let lineItem: any = {
-        quantity: parseInt(item.Qnty),
-        price: item.Price,
-        priceName: 'Default',
-        priceUuid: postBilledItems.priceUuid,
-        lineItemOrder: 0,
-        paymentStatus: 'PENDING',
-      };
-
-      if (item.category === 'StockItem') {
-        lineItem.item = item.uuid;
+    BillItems.map((o) => {
+      if (o.category == 'StockItem') {
+        bill.lineItems.push({
+          item: o.uuid,
+          quantity: parseInt(o.Qnty),
+          price: o.Price,
+          priceName: 'Default',
+          priceUuid: '7b9171ac-d3c1-49b4-beff-c9902aee5245',
+          lineItemOrder: 0,
+          paymentStatus: 'PENDING',
+        });
       } else {
-        lineItem.billableService = item.uuid;
+        bill.lineItems.push({
+          billableService: o.uuid,
+          quantity: parseInt(o.Qnty),
+          price: o.Price,
+          priceName: 'Default',
+          priceUuid: '7b9171ac-d3c1-49b4-beff-c9902aee5245',
+          lineItemOrder: 0,
+          paymentStatus: 'PENDING',
+        });
       }
-
-      bill?.lineItems.push(lineItem);
     });
 
-    const url = `${apiBasePath}bill`;
+    const url = `/ws/rest/v1/cashier/bill`;
     processBillItems(bill).then(
-      () => {
-        setIsSubmitting(false);
-
+      (resp) => {
         closeWorkspace();
         mutate((key) => typeof key === 'string' && key.startsWith(url), undefined, { revalidate: true });
         showSnackbar({
@@ -222,132 +182,114 @@ const BillingForm: React.FC<BillingFormProps> = ({ patientUuid, closeWorkspace }
         });
       },
       (error) => {
-        setIsSubmitting(false);
-        showSnackbar({ title: 'Bill processing error', kind: 'error', subtitle: error?.message });
+        showSnackbar({ title: 'Bill processing error', kind: 'error', subtitle: error });
       },
     );
   };
 
-  const handleClearSearchTerm = () => {
-    setSearchOptions([]);
-  };
-
   return (
-    <Form className={styles.form}>
-      <div className={styles.grid}>
-        <Stack>
-          <RadioButtonGroup
-            legendText={t('selectCategory', 'Select category')}
-            name="radio-button-group"
-            defaultSelected="radio-1"
-            className={styles.mt2}
-            onChange={toggleSearch}>
-            <RadioButton labelText={t('stockItem', 'Stock Item')} value="Stock Item" id="stockItem" />
-            <RadioButton labelText={t('service', 'Service')} value="Service" id="service" />
-          </RadioButtonGroup>
-        </Stack>
-        <Stack>
-          <Search
-            size="lg"
-            id="searchField"
-            disabled={disableSearch}
-            closeButtonLabelText={t('clearSearchInput', 'Clear search input')}
-            className={styles.mt2}
-            placeholder={t('searchItems', 'Search items and services')}
-            labelText={t('searchItems', 'Search items and services')}
-            onKeyUp={handleSearchTermChange}
-            onClear={handleClearSearchTerm}
-          />
-        </Stack>
-        <Stack>
-          <ul className={styles.searchContent}>
-            {searchOptions?.length > 0 &&
-              searchOptions?.map((row) => (
-                <li key={row.uuid} className={styles.searchItem}>
-                  <Button
-                    id={row.uuid}
-                    onClick={(e) => addItemToBill(e, row.uuid, row.Item, row.category, row.Price)}
-                    style={{ background: 'inherit', color: 'black' }}>
-                    {row.Item} Qnty.{row.Qnty} Ksh.{row.Price}
-                  </Button>
-                </li>
-              ))}
+    <div className={styles.billingFormContainer}>
+      <RadioButtonGroup
+        legendText={t('selectCategory', 'Select category')}
+        name="radio-button-group"
+        defaultSelected="radio-1"
+        className={styles.billingItem}
+        onChange={toggleSearch}>
+        <RadioButton labelText={t('stockItem', 'Stock Item')} value="Stock Item" id="radio-1" />
+        <RadioButton labelText={t('service', 'Service')} value="Service" id="radio-2" />
+      </RadioButtonGroup>
+      <div></div>
 
-            {searchOptions?.length === 0 && !isLoading && !!debouncedSearchTerm && (
-              <p>{t('noResultsFound', 'No results found')}</p>
-            )}
-          </ul>
-        </Stack>
-        <Stack>
-          <Table aria-label="sample table" className={styles.mt2}>
-            <TableHead>
-              <TableRow>
-                <TableHeader>Item</TableHeader>
-                <TableHeader>Quantity</TableHeader>
-                <TableHeader>Price</TableHeader>
-                <TableHeader>Total</TableHeader>
-                <TableHeader>Action</TableHeader>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {billItems && Array.isArray(billItems) ? (
-                billItems.map((row) => (
-                  <TableRow>
-                    <TableCell>{row.Item}</TableCell>
-                    <TableCell>
-                      <input
-                        type="number"
-                        className={`form-control ${row.Qnty <= 0 ? styles.invalidInput : ''}`}
-                        id={row.Item}
-                        min={0}
-                        max={100}
-                        value={row.Qnty}
-                        onChange={(e) => {
-                          calculateTotal(e, row.Item);
-                          row.Qnty = e.target.value;
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell id={row.Item + 'Price'}>{row.Price}</TableCell>
-                    <TableCell id={row.Item + 'Total'} className="totalValue">
-                      {row.Total}
-                    </TableCell>
-                    <TableCell>
-                      <TrashCan onClick={() => removeItemFromBill(row.uuid)} className={styles.removeButton} />
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <p>Loading...</p>
-              )}
-              <TableRow>
-                <TableCell colSpan={3}></TableCell>
-                <TableCell style={{ fontWeight: 'bold' }}>{t('grandTotal', 'Grand total')}:</TableCell>
-                <TableCell id="GrandTotalSum">{convertToCurrency(grandTotal, defaultCurrency)}</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Stack>
+      <div>
+        <Search
+          id="searchField"
+          size="lg"
+          placeholder="Find your drugs here..."
+          labelText="Search"
+          disabled
+          closeButtonLabelText="Clear search input"
+          onChange={() => {}}
+          className={styles.billingItem}
+          onKeyUp={(e) => {
+            filterItems(e.target.value);
+          }}
+        />
 
-        <ButtonSet className={isTablet ? styles.tablet : styles.desktop}>
-          <Button className={styles.button} kind="secondary" disabled={isSubmitting} onClick={closeWorkspace}>
-            {t('discard', 'Discard')}
-          </Button>
-          <Button
-            className={styles.button}
-            kind="primary"
-            onClick={postBillItems}
-            disabled={isSubmitting || saveDisabled}
-            type="submit">
-            {isSubmitting ? (
-              <InlineLoading description={t('saving', 'Saving') + '...'} />
-            ) : (
-              t('saveAndClose', 'Save and close')
-            )}
-          </Button>
-        </ButtonSet>
+        <ul className={styles.searchContent}>
+          {searchOptions.map((row) => (
+            <li className={styles.searchItem}>
+              <Button
+                id={row.uuid}
+                onClick={(e) => addItemToBill(e, row.uuid, row.Item, row.category, row.Price)}
+                style={{ background: 'inherit', color: 'black' }}>
+                {row.Item} Qnty.{row.Qnty} Ksh.{row.Price}
+              </Button>
+            </li>
+          ))}
+        </ul>
       </div>
-    </Form>
+
+      {/* <NumberInput id="carbon-number" min={0} max={100} value={50} ref={numberRef}
+      onChange={(e)=> alert((numberRef.current as HTMLInputElement).value)} 
+      className="testingNumberInput" label="NumberInput label" helperText="Optional helper text." invalidText="Number is not valid" /> */}
+
+      <Table aria-label="sample table" className={styles.billingItem}>
+        <TableHead>
+          <TableRow>
+            <TableHeader>Item</TableHeader>
+            <TableHeader>Quantity</TableHeader>
+            <TableHeader>Price</TableHeader>
+            <TableHeader>Total</TableHeader>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {BillItems && Array.isArray(BillItems) ? (
+            BillItems.map((row) => (
+              <TableRow>
+                <TableCell>{row.Item}</TableCell>
+                <TableCell>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id={row.Item}
+                    min={0}
+                    max={100}
+                    value={row.Qnty}
+                    onChange={(e) => {
+                      calculateTotal(e, row.Item);
+                      row.Qnty = e.target.value;
+                    }}
+                  />
+                  {/* <NumberInput id={row.Item} min={0} max={100} value={row.Qnty} ref={numberRef}
+                    onChange={(e)=> alert((numberRef.current as HTMLInputElement).value)} /> */}
+                </TableCell>
+                <TableCell id={row.Item + 'Price'}>{row.Price}</TableCell>
+                <TableCell id={row.Item + 'Total'} className="totalValue">
+                  {row.Total}
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <p>Loading...</p>
+          )}
+          <TableRow>
+            <TableCell></TableCell>
+            <TableCell></TableCell>
+            <TableCell style={{ fontWeight: 'bold' }}>Grand Total:</TableCell>
+            <TableCell id="GrandTotalSum">{GrandTotal}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+
+      <ButtonSet className={styles.billingItem}>
+        <Button kind="secondary" onClick={closeWorkspace}>
+          Discard
+        </Button>
+        <Button kind="primary" onClick={postBillItems}>
+          Save & Close
+        </Button>
+      </ButtonSet>
+    </div>
   );
 };
 

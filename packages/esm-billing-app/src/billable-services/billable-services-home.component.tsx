@@ -1,18 +1,17 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { SideNav, SideNavItems, SideNavLink } from '@carbon/react';
-import { Wallet, Money } from '@carbon/react/icons';
 import { useTranslation } from 'react-i18next';
-import { UserHasAccess, navigate } from '@openmrs/esm-framework';
+import { BillableServicesDashboard } from './dashboard/dashboard.component';
 import AddBillableService from './create-edit/add-billable-service.component';
-import BillWaiver from './bill-waiver/bill-waiver.component';
-import BillableServicesDashboard from './dashboard/dashboard.component';
-import BillingHeader from '../billing-header/billing-header.component';
+import { SideNav, SideNavItems, SideNavLink } from '@carbon/react';
 import styles from './billable-services.scss';
-
+import BillingHeader from '../billing-header/billing-header.component';
+import { Wallet, Money } from '@carbon/react/icons';
+import { UserHasAccess, navigate } from '@openmrs/esm-framework';
+import BillWaiver from './bill-waiver/bill-waiver.component';
+const basePath = `${window.spaBase}/billable-services`;
 const BillableServiceHome: React.FC = () => {
   const { t } = useTranslation();
-  const basePath = `${window.spaBase}/billable-services`;
 
   const handleNavigation = (path: string) => {
     navigate({ to: `${basePath}/${path}` });

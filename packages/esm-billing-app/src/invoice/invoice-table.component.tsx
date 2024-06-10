@@ -20,12 +20,9 @@ import {
   type DataTableHeader,
   type DataTableRow,
 } from '@carbon/react';
-import { isDesktop, showModal, useConfig, useDebounce, useLayoutType } from '@openmrs/esm-framework';
-import { type LineItem, type MappedBill } from '../types';
+import { isDesktop, useDebounce, useLayoutType } from '@openmrs/esm-framework';
+import { LineItem, MappedBill } from '../types';
 import styles from './invoice-table.scss';
-import { convertToCurrency } from '../helpers';
-import { Edit } from '@carbon/react/icons';
-import { Button } from '@carbon/react';
 
 type InvoiceTableProps = {
   bill: MappedBill;
@@ -36,15 +33,13 @@ type InvoiceTableProps = {
 
 const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, isLoadingBill, onSelectItem }) => {
   const { t } = useTranslation();
-  const lineItems = bill?.lineItems ?? [];
+  const { lineItems } = bill;
+  const paidLineItems = lineItems?.filter((item) => item.paymentStatus === 'PAID') ?? [];
   const layout = useLayoutType();
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
-  const pendingLineItems = lineItems?.filter((item) => item.paymentStatus === 'PENDING') ?? [];
-  const [selectedLineItems, setSelectedLineItems] = useState(pendingLineItems ?? []);
+  const [selectedLineItems, setSelectedLineItems] = useState(paidLineItems ?? []);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm);
-  const { defaultCurrency, showEditBillButton } = useConfig();
-
   const filteredLineItems = useMemo(() => {
     if (!debouncedSearchTerm) {
       return lineItems;
@@ -61,23 +56,15 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
   }, [debouncedSearchTerm, lineItems]);
 
   const tableHeaders: Array<typeof DataTableHeader> = [
-    { header: 'No', key: 'no', width: 7 }, // Width as a percentage
-    { header: 'Bill item', key: 'billItem', width: 25 },
-    { header: 'Bill code', key: 'billCode', width: 20 },
-    { header: 'Status', key: 'status', width: 25 },
-    { header: 'Quantity', key: 'quantity', width: 15 },
-    { header: 'Price', key: 'price', width: 24 },
-    { header: 'Total', key: 'total', width: 15 },
-    { header: t('actions', 'Actions'), key: 'actionButton' },
+    { header: 'No', key: 'no' },
+    { header: 'Bill item', key: 'billItem' },
+    { header: 'Bill code', key: 'billCode' },
+    { header: 'Status', key: 'status' },
+    { header: 'Quantity', key: 'quantity' },
+    { header: 'Price', key: 'price' },
+    { header: 'Total', key: 'total' },
   ];
-
-  const handleSelectBillItem = (row) => {
-    const dispose = showModal('edit-bill-line-item-dialog', {
-      bill,
-      item: row,
-      closeModal: () => dispose(),
-    });
-  };
+  const processBillItem = (item) => (item.item || item.billableService)?.split(':')[1];
 
   const tableRows: Array<typeof DataTableRow> = useMemo(
     () =>
@@ -85,33 +72,15 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
         return {
           no: `${index + 1}`,
           id: `${item.uuid}`,
-          billItem: item.billableService ? item.billableService : item?.item,
-          billCode: bill?.receiptNumber,
-          status: item?.paymentStatus,
+          billItem: processBillItem(item),
+          billCode: bill.receiptNumber,
+          status: item.paymentStatus,
           quantity: item.quantity,
-          price: convertToCurrency(item.price, defaultCurrency),
-          total: convertToCurrency(item.price * item.quantity, defaultCurrency),
-          actionButton: {
-            content: (
-              <span>
-                {showEditBillButton ? (
-                  <Button
-                    renderIcon={Edit}
-                    hasIconOnly
-                    kind="ghost"
-                    iconDescription={t('editThisBillItem', 'Edit this bill item')}
-                    tooltipPosition="left"
-                    onClick={() => handleSelectBillItem(item)}
-                  />
-                ) : (
-                  '--'
-                )}
-              </span>
-            ),
-          },
+          price: item.price,
+          total: item.price * item.quantity,
         };
       }) ?? [],
-    [bill?.receiptNumber, filteredLineItems],
+    [bill.receiptNumber, filteredLineItems],
   );
 
   if (isLoadingBill) {
@@ -152,17 +121,20 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
               </span>
             }
             title={t('lineItems', 'Line items')}>
-            <TableToolbarSearch
-              className={styles.searchbox}
-              expanded
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-              placeholder={t('searchThisTable', 'Search this table')}
-              size={responsiveSize}
-            />
-            <Table
-              {...getTableProps()}
-              aria-label="Invoice line items"
-              className={`${styles.invoiceTable} billingTable`}>
+            <div className={styles.toolbarWrapper}>
+              <TableToolbar {...getToolbarProps()} className={styles.tableToolbar} size={responsiveSize}>
+                <TableToolbarContent className={styles.headerContainer}>
+                  <TableToolbarSearch
+                    className={styles.searchbox}
+                    expanded
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                    placeholder={t('searchThisTable', 'Search this table')}
+                    size={responsiveSize}
+                  />
+                </TableToolbarContent>
+              </TableToolbar>
+            </div>
+            <Table {...getTableProps()} aria-label="Invoice line items" className={styles.table}>
               <TableHead>
                 <TableRow>
                   {rows.length > 1 && isSelectable ? <TableHeader /> : null}
@@ -172,25 +144,27 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    {...getRowProps({
-                      row,
-                    })}>
-                    {rows.length > 1 && isSelectable && (
-                      <TableSelectRow
-                        aria-label="Select row"
-                        {...getSelectionProps({ row })}
-                        onChange={(checked: boolean) => handleRowSelection(row, checked)}
-                        checked={Boolean(selectedLineItems?.find((item) => item?.uuid === row?.id))}
-                      />
-                    )}
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
+                {rows.map((row, index) => {
+                  return (
+                    <TableRow
+                      key={row.id}
+                      {...getRowProps({
+                        row,
+                      })}>
+                      {rows.length > 1 && isSelectable && (
+                        <TableSelectRow
+                          aria-label="Select row"
+                          {...getSelectionProps({ row })}
+                          onChange={(checked: boolean) => handleRowSelection(row, checked)}
+                          checked={Boolean(selectedLineItems?.find((item) => item?.uuid === row?.id))}
+                        />
+                      )}
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
           </TableContainer>
