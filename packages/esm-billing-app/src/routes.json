@@ -1,29 +1,34 @@
 {
   "$schema": "https://json.openmrs.org/routes.schema.json",
   "backendDependencies": {
-    "webservices.rest": ">=2.24.0",
-    "fhir2": ">=1.2"
+    "kenyaemr": "^18.2.0"
   },
   "pages": [
     {
       "component": "billableServicesHome",
-      "route": "billable-services"
+      "route":"billable-services"
+    },
+    {
+      "component": "requirePaymentModal",
+      "routeRegex": "^patient\/.+\/chart",
+      "online": true,
+      "offline": false
     }
   ],
   "extensions": [
     {
-      "name": "billing-dashboard-link",
       "component": "billingDashboardLink",
+      "name": "billing-dashboard-link",
       "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "billing",
-        "slot": "billing-dashboard-slot",
-        "title": "Billing"
+        "title": "billing",
+        "slot": "billing-dashboard-slot"
       }
     },
     {
       "component": "root",
-      "name": "billing-summary",
+      "name": "billing-dashboard-root",
       "slot": "billing-dashboard-slot"
     },
     {
@@ -42,8 +47,48 @@
       "order": 11,
       "meta": {
         "columns": 1,
-        "columnSpan": 1
+        "columnSpan": 1,
+        "slot": "patient-chart-billing-dashboard-slot",
+        "path": "Billing"
       }
+    },
+    {
+      "name": "billing-check-in-form",
+      "slot": "extra-visit-attribute-slot",
+      "component": "billingCheckInForm"
+    },
+    {
+      "slot": "system-admin-page-card-link-slot",
+      "component": "billableServicesCardLink",
+      "name": "billable-services-admin-card-link"
+    },
+    {
+      "name": "billing-form",
+      "component": "billingForm"
+    },
+    {
+      "name": "require-billing-modal",
+      "component": "requirePaymentModal"
+    },
+    {
+      "name": "patient-banner-billing-tags",
+      "component": "visitAttributeTags",
+      "slot": "patient-banner-tags-slot",
+      "order": 2
+    },
+    {
+      "name": "initiate-payment-modal",
+      "component": "initiatePaymentDialog"
+    },
+    {
+      "name": "lab-order-billable-item",
+      "component": "labOrder",
+      "slot": "top-of-lab-order-form-slot"
+    },
+    {
+      "name": "drug-order-billable-item",
+      "component": "drugOrder",
+      "slot": "medication-info-slot"
     }
   ]
 }

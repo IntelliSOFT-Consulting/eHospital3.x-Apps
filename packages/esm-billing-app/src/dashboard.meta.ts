@@ -1,6 +1,6 @@
 export const dashboardMeta = {
-  name: "billing",
   slot: 'patient-chart-billing-dashboard-slot',
-  title: 'Billing history',
+  columns: 1,
+  title: 'Billing',
+  path: 'Billing',
 };
-

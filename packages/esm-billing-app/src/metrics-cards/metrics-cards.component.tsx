@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
-import { InlineLoading } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
-import { ErrorState } from '@openmrs/esm-patient-common-lib';
-import { useBills } from '../billing.resource';
-import { useBillMetrics } from './metrics.resource';
 import Card from './card.component';
 import styles from './metrics-cards.scss';
+import { useBills } from '../billing.resource';
+import { useBillMetrics } from './metrics.resource';
+import { useTranslation } from 'react-i18next';
+import { ErrorState } from '@openmrs/esm-patient-common-lib';
+import { InlineLoading } from '@carbon/react';
 
 export default function MetricsCards() {
   const { t } = useTranslation();

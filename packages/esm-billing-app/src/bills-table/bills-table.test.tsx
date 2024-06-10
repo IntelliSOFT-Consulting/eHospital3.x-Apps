@@ -1,8 +1,8 @@
 import React from 'react';
-import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 import { useBills } from '../billing.resource';
 import BillsTable from './bills-table.component';
+import userEvent from '@testing-library/user-event';
 
 const mockbills = useBills as jest.Mock;
 
@@ -121,12 +121,12 @@ describe('BillsTable', () => {
     // Should filter the table when bill payment status combobox is changed
     const billCategorySelect = screen.getByRole('combobox');
     expect(billCategorySelect).toBeInTheDocument();
-    await user.click(billCategorySelect, { name: 'Pending bills' });
-    expect(mockbills).toHaveBeenCalledWith('', 'PENDING');
-
-    await user.click(screen.getByText('All bills'));
-    expect(screen.getByText('All bills')).toBeInTheDocument();
+    await user.click(billCategorySelect, { name: 'All bills' });
     expect(mockbills).toHaveBeenCalledWith('', '');
+
+    await user.click(screen.getByText('Pending bills'));
+    expect(screen.getByText('Pending bills')).toBeInTheDocument();
+    expect(mockbills).toHaveBeenCalledWith('', 'PENDING');
   });
 
   test('should show the loading spinner while retrieving data', () => {
@@ -149,6 +149,5 @@ describe('BillsTable', () => {
 
     const patientNameLink = screen.getByRole('link', { name: 'John Doe' });
     expect(patientNameLink).toBeInTheDocument();
-    expect(patientNameLink).toHaveAttribute('href', '/openmrs/spa/home/billing/patient/uuid1/1');
   });
 });

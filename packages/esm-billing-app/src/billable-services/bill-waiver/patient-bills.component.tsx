@@ -1,26 +1,26 @@
 import React from 'react';
+import { useBills } from '../../billing.resource';
 import {
-  DataTable,
   Layer,
-  Table,
-  TableBody,
-  TableCell,
+  DataTable,
   TableContainer,
-  TableExpandedRow,
-  TableExpandHeader,
-  TableExpandRow,
+  Table,
   TableHead,
-  TableHeader,
   TableRow,
+  TableExpandHeader,
+  TableHeader,
+  TableBody,
+  TableExpandRow,
+  TableCell,
+  TableExpandedRow,
   Tile,
 } from '@carbon/react';
+import { convertToCurrency, extractString } from '../../helpers';
 import { useTranslation } from 'react-i18next';
 import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
-import { type MappedBill } from '../../types';
-import { convertToCurrency } from '../../helpers';
 import PatientBillsSelections from './bill-selection.component';
+import { MappedBill } from '../../types';
 import styles from '../../bills-table/bills-table.scss';
-import { useConfig } from '@openmrs/esm-framework';
 
 type PatientBillsProps = {
   patientUuid: string;
@@ -30,7 +30,6 @@ type PatientBillsProps = {
 
 const PatientBills: React.FC<PatientBillsProps> = ({ patientUuid, bills, setPatientUuid }) => {
   const { t } = useTranslation();
-  const { defaultCurrency } = useConfig();
 
   if (!patientUuid) {
     return;
@@ -45,8 +44,8 @@ const PatientBills: React.FC<PatientBillsProps> = ({ patientUuid, bills, setPati
   const tableRows = bills.map((bill) => ({
     id: `${bill.uuid}`,
     date: bill.dateCreated,
-    billableService: bill.billingService,
-    totalAmount: convertToCurrency(bill?.totalAmount, defaultCurrency),
+    billableService: extractString(bill.billingService),
+    totalAmount: convertToCurrency(bill.totalAmount),
   }));
 
   if (bills.length === 0 && patientUuid !== '') {

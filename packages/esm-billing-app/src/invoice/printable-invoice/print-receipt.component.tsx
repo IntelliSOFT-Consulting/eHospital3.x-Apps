@@ -1,41 +1,26 @@
-import React, { useState } from 'react';
-import { Button } from '@carbon/react';
-import { Printer } from '@carbon/react/icons';
+import { ConfigurableLink } from '@openmrs/esm-framework';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './print-receipt.scss';
-import { apiBasePath } from '../../constants';
+import { Button } from '@carbon/react';
+import { Printer } from '@carbon/react/icons';
 
 interface PrintReceiptProps {
   billId: number;
 }
 const PrintReceipt: React.FC<PrintReceiptProps> = ({ billId }) => {
   const { t } = useTranslation();
-  const [isRedirecting, setIsRedirecting] = useState(false);
-  const baseUrl = new URL(window.location.href);
-
-  const handlePrintReceiptClick = () => {
-    setIsRedirecting(true);
-    setTimeout(() => {
-      const pdfUrl = `${baseUrl.origin}/openmrs${apiBasePath}receipt?billId=${billId}`;
-      const link = document.createElement('a');
-      link.href = pdfUrl;
-      link.download = `receipt_${billId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setIsRedirecting(false);
-    }, 1000);
-  };
-
   return (
     <Button
       kind="secondary"
       className={styles.button}
       size="md"
-      renderIcon={(props) => <Printer size={24} {...props} />}
-      onClick={handlePrintReceiptClick}
-      disabled={isRedirecting}>
-      {isRedirecting ? t('loading', 'Loading') : t('printReceipt', 'Print receipt')}
+      renderIcon={(props) => <Printer size={24} {...props} />}>
+      <ConfigurableLink
+        className={styles.configurableLink}
+        to={`\${openmrsBase}/ws/rest/v1/cashier/receipt?billId=${billId}`}>
+        {t('printReceipt', 'Print receipt')}
+      </ConfigurableLink>{' '}
     </Button>
   );
 };

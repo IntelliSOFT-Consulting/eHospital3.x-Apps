@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { useConfig } from '@openmrs/esm-framework';
-import { useDefaultFacility } from '../../billing.resource';
 import PrintableInvoiceHeader from './printable-invoice-header.component';
+import { useDefaultFacility } from '../../billing.resource';
+import { useConfig } from '@openmrs/esm-framework';
 
 const mockUseDefaultFacility = useDefaultFacility as jest.MockedFunction<typeof useDefaultFacility>;
 const mockUseConfig = useConfig as jest.MockedFunction<typeof useConfig>;

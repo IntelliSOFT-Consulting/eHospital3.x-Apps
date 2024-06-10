@@ -32,6 +32,7 @@
 }
 
 .invoiceContainer {
+  margin: layout.$spacing-09 layout.$spacing-05 0;
   border: 1px solid $ui-03;
 }
 
@@ -41,10 +42,10 @@
   }
 }
 
-.invoiceTable {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+.table {
+  td {
+    border-bottom: none !important;
+  }
 }
 
 .tableDescription {

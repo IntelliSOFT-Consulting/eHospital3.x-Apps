@@ -30,13 +30,23 @@ import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
 import { useBills } from '../billing.resource';
 import styles from './bills-table.scss';
 
-const BillsTable = () => {
+const filterItems = [
+  { id: '', text: 'All bills' },
+  { id: 'PENDING', text: 'Pending bills' },
+  { id: 'PAID', text: 'Paid bills' },
+];
+
+type BillTableProps = {
+  defaultBillPaymentStatus?: string;
+};
+
+const BillsTable: React.FC<BillTableProps> = ({ defaultBillPaymentStatus = '' }) => {
   const { t } = useTranslation();
   const id = useId();
   const config = useConfig();
   const layout = useLayoutType();
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
-  const [billPaymentStatus, setBillPaymentStatus] = useState('PENDING');
+  const [billPaymentStatus, setBillPaymentStatus] = useState(defaultBillPaymentStatus);
   const pageSizes = config?.bills?.pageSizes ?? [10, 20, 30, 40, 50];
   const [pageSize, setPageSize] = useState(config?.bills?.pageSize ?? 10);
   const { bills, isLoading, isValidating, error } = useBills('', billPaymentStatus);
@@ -82,7 +92,10 @@ const BillsTable = () => {
   const { paginated, goTo, results, currentPage } = usePagination(searchResults, pageSize);
 
   const setBilledItems = (bill) =>
-    bill?.lineItems?.reduce((acc, item) => acc + (acc ? ' & ' : '') + (item.billableService || item.item || ''), '');
+    bill?.lineItems?.reduce(
+      (acc, item) => acc + (acc ? ' & ' : '') + (item.billableService.split(':')[1] || item.item.split(':')[1] || ''),
+      '',
+    );
 
   const billingUrl = '${openmrsSpaBase}/home/billing/patient/${patientUuid}/${uuid}';
 
@@ -111,12 +124,6 @@ const BillsTable = () => {
     },
     [goTo, setSearchString],
   );
-
-  const filterItems = [
-    { id: '', text: 'All bills' },
-    { id: 'PENDING', text: 'Pending bills' },
-    { id: 'PAID', text: 'Paid bills' },
-  ];
 
   const handleFilterChange = ({ selectedItem }) => setBillPaymentStatus(selectedItem.id);
 
@@ -152,7 +159,7 @@ const BillsTable = () => {
           className={styles.filterDropdown}
           direction="bottom"
           id={`filter-${id}`}
-          initialSelectedItem={filterItems[1]}
+          initialSelectedItem={filterItems.find((item) => item.id === billPaymentStatus)}
           items={filterItems}
           itemToString={(item) => (item ? item.text : '')}
           label=""
