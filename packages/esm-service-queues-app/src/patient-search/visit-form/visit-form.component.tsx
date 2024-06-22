@@ -44,9 +44,9 @@ import { SearchTypes, type PatientProgram, type NewVisitPayload } from '../../ty
 import styles from './visit-form.scss';
 import { useDefaultLoginLocation } from '../hooks/useDefaultLocation';
 import isEmpty from 'lodash-es/isEmpty';
-import { useMutateQueueEntries } from '../../hooks/useMutateQueueEntries';
 import { type ConfigObject } from '../../config-schema';
 import { datePickerFormat, datePickerPlaceHolder } from '../../constants';
+import {emitRefetchQueuesEvent} from "../../helpers/http-events";
 
 interface VisitFormProps {
   toggleSearchType: (searchMode: SearchTypes, patientUuid) => void;
@@ -74,7 +74,6 @@ const VisitForm: React.FC<VisitFormProps> = ({ patientUuid, toggleSearchType, cl
   const [ignoreChanges, setIgnoreChanges] = useState(true);
   const { activePatientEnrollment, isLoading } = useActivePatientEnrollment(patientUuid);
   const [enrollment, setEnrollment] = useState<PatientProgram>(activePatientEnrollment[0]);
-  const { mutateQueueEntries } = useMutateQueueEntries();
   const visitQueueNumberAttributeUuid = config.visitQueueNumberAttributeUuid;
   const [selectedLocation, setSelectedLocation] = useState('');
   const [visitType, setVisitType] = useState('');
@@ -139,7 +138,7 @@ const VisitForm: React.FC<VisitFormProps> = ({ patientUuid, toggleSearchType, cl
                 queueLocation,
                 visitQueueNumberAttributeUuid,
               ).then(
-                ({ status }) => {
+                ({ status, data }) => {
                   if (status === 201) {
                     showSnackbar({
                       kind: 'success',
@@ -152,7 +151,7 @@ const VisitForm: React.FC<VisitFormProps> = ({ patientUuid, toggleSearchType, cl
                       ),
                     });
                     closePanel();
-                    mutateQueueEntries();
+                    emitRefetchQueuesEvent(data?.uuid)
                   }
                 },
                 (error) => {
@@ -176,7 +175,6 @@ const VisitForm: React.FC<VisitFormProps> = ({ patientUuid, toggleSearchType, cl
     },
     [
       closePanel,
-      mutateQueueEntries,
       patientUuid,
       selectedLocation,
       t,
