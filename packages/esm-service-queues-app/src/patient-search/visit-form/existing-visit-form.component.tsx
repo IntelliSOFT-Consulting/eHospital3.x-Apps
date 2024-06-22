@@ -1,6 +1,6 @@
-import React, { useCallback, useState } from 'react';
-import { Button, ButtonSet, Form, Row, Stack } from '@carbon/react';
-import { useTranslation } from 'react-i18next';
+import React, {useCallback, useState} from 'react';
+import {Button, ButtonSet, Form, Row} from '@carbon/react';
+import {useTranslation} from 'react-i18next';
 import {
   type ConfigObject,
   type Visit,
@@ -10,9 +10,9 @@ import {
   useLayoutType,
 } from '@openmrs/esm-framework';
 import { addQueueEntry } from '../../active-visits/active-visits-table.resource';
-import { useMutateQueueEntries } from '../../hooks/useMutateQueueEntries';
 import styles from './visit-form.scss';
 import classNames from 'classnames';
+import {emitRefetchQueuesEvent} from "../../helpers/http-events";
 
 interface ExistingVisitFormProps {
   closePanel: () => void;
@@ -26,7 +26,6 @@ const ExistingVisitForm: React.FC<ExistingVisitFormProps> = ({ visit, closePanel
 
   const config = useConfig<ConfigObject>();
   const visitQueueNumberAttributeUuid = config.visitQueueNumberAttributeUuid;
-  const { mutateQueueEntries } = useMutateQueueEntries();
 
   const handleSubmit = useCallback(
     (event) => {
@@ -51,7 +50,7 @@ const ExistingVisitForm: React.FC<ExistingVisitFormProps> = ({ visit, closePanel
         queueLocation,
         visitQueueNumberAttributeUuid,
       ).then(
-        ({ status }) => {
+        ({status, data }) => {
           if (status === 201) {
             showSnackbar({
               kind: 'success',
@@ -61,7 +60,7 @@ const ExistingVisitForm: React.FC<ExistingVisitFormProps> = ({ visit, closePanel
             });
             closePanel();
             setIsSubmitting(false);
-            mutateQueueEntries();
+            emitRefetchQueuesEvent(data?.uuid)
           }
         },
         (error) => {
@@ -79,7 +78,7 @@ const ExistingVisitForm: React.FC<ExistingVisitFormProps> = ({ visit, closePanel
         },
       );
     },
-    [closePanel, mutateQueueEntries, visit, t, visitQueueNumberAttributeUuid],
+    [closePanel, visit, t, visitQueueNumberAttributeUuid],
   );
 
   return visit ? (

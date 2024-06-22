@@ -25,7 +25,7 @@ This is used in the main dashboard of the queues app. (Currently behind a featur
 function DefaultQueueTable() {
   const selectedQueueUuid = useSelectedServiceUuid();
   const currentLocationUuid = useSelectedQueueLocationUuid();
-  const { queueEntries, isLoading, error } = useQueueEntries({
+  const {queueEntries, isLoading, error, mutate} = useQueueEntries({
     queue: selectedQueueUuid,
     location: currentLocationUuid,
     isEnded: false,
@@ -64,6 +64,17 @@ function DefaultQueueTable() {
       });
     });
   }, [queueEntries, searchTerm]);
+
+  useEffect(() => {
+    const handlePatientAddedToQueue = () => mutate()
+
+
+    window.addEventListener('refetchQueues', handlePatientAddedToQueue);
+    return () => {
+      window.removeEventListener('refetchQueues', handlePatientAddedToQueue);
+    }
+
+  }, []);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
