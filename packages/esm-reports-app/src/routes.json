@@ -22,6 +22,7 @@
       "name": "home-reports-dashboard-link",
       "component": "homeReportsLink",
       "slot": "homepage-dashboard-slot",
+      "order": 7,
       "meta": {
         "name": "reports",
         "slot": "reports-dashboard-slot",
