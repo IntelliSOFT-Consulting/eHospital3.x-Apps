@@ -20,6 +20,7 @@
       "component": "billingDashboardLink",
       "name": "billing-dashboard-link",
       "slot": "homepage-dashboard-slot",
+      "order": 5,
       "meta": {
         "name": "billing",
         "title": "billing",
