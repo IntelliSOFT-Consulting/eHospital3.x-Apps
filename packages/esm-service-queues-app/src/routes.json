@@ -15,6 +15,7 @@
     {
       "name": "service-queues-dashboard-link",
       "component": "serviceQueuesDashboardLink",
+      "order": 1,
       "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "service-queues",
