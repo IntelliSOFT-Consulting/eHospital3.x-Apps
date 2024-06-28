@@ -9,17 +9,17 @@ import homeDashboardComponent from './home.component';
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
-const moduleName = '@sjthc/esm-service-queues-app';
+const moduleName = '@sjthc/esm-import-export-app';
 
 const options = {
-  featureName: 'outpatient',
+  featureName: 'esm-import-export-app',
   moduleName,
 };
 
 export const root = getSyncLifecycle(rootComponent, options);
 
 
-export const serviceQueuesDashboardLink = getSyncLifecycle(createDashboardLink(dashboardMeta), options);
+export const importExportDashboardLink = getSyncLifecycle(createDashboardLink(dashboardMeta), options);
 
 export const homeDashboard = getSyncLifecycle(homeDashboardComponent, options);
 

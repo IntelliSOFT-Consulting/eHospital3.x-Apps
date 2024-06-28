@@ -4,7 +4,7 @@ import Home from './home.component';
 
 
 const Root: React.FC = () => {
-  const serviceQueuesBasename = window.getOpenmrsSpaBase() + 'home/service-queues';
+  const serviceQueuesBasename = window.getOpenmrsSpaBase() + 'home/import-export';
 
   return (
     <main>

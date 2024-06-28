@@ -1,5 +1,6 @@
 export const dashboardMeta = {
-  name: 'service-queues',
-  slot: 'service-queues-dashboard-slot',
-  title: 'Service queues',
+  name: 'import-export',
+  path: 'import-export',
+  slot: 'import-export-dashboard-slot',
+  title: 'Import Export App',
 };
