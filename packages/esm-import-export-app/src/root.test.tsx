@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Root from './views/root.component';
+import Root from './parent/root.component';
 
 describe('Root Component', () => {
   // Mock the pushState function and store the original implementation

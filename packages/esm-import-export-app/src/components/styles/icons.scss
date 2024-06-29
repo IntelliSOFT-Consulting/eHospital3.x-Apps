@@ -1,0 +1,22 @@
+.wrapper{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  margin-top: auto;
+}
+
+.icon{
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.exportIcon{
+  @extend .icon;
+  position: absolute;
+  left: 70%;
+  bottom: 50%;
+  z-index: 0;
+}
+
