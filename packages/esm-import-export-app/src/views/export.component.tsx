@@ -6,19 +6,22 @@ import MetricCardComponent from "../components/metric-card.component";
 import {
   Button,
   DataTable,
-  Table, TableBatchAction, TableBatchActions,
+  Table,
   TableBody,
-  TableCell, TableContainer,
+  TableCell,
+  TableContainer,
   TableHead,
   TableHeader,
   TableRow,
-  TableToolbar, TableToolbarAction, TableToolbarContent, TableToolbarMenu, TableToolbarSearch
+  TableToolbar,
+  TableToolbarContent
 } from "@carbon/react";
 import {dummyBackupTableData} from "../data/dummy";
 import {useBackup} from "../hooks/useBackup";
 import DownloadModalComponent from "../components/modals/download-modal.component";
-import DeleteModalComponent from "../components/modals/delete-modal-component";
-import {Add, Download, Save, TrashCan} from "@carbon/icons-react";
+import DeleteModalComponent from "../components/modals/delete-modal.component";
+import NewBackupModal from "../components/modals/new-backup.component";
+import RetryModalComponent from "../components/modals/retry-modal.component";
 
 interface tableHeader {
   key: string;
@@ -32,7 +35,11 @@ const Home: React.FC = () => {
     isDownloadModalOpen,
     setIsDownloadModalOpen,
     setIsDeleteModalOpen,
-    isDeleteModalOpen
+    isDeleteModalOpen,
+    setIsNewModalOpen,
+    isNewModalOpen,
+    isRetryModalOpen,
+    setIsRetryModalOpen,
   } = useBackup()
 
 
@@ -58,7 +65,7 @@ const Home: React.FC = () => {
               <TableContainer title="Backup History">
                 <TableToolbar {...getToolbarProps()} >
                   <TableToolbarContent >
-                    <Button size="sm" className={styles.newButton} kind="primary">New Backup</Button>
+                    <Button onClick={()=> setIsNewModalOpen(true)} size="sm" className={styles.newButton} kind="primary">New Backup</Button>
                   </TableToolbarContent>
                 </TableToolbar>
                 <Table {...getTableProps()}>
@@ -75,9 +82,9 @@ const Home: React.FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
+                    {rows.map(row => (
                       <TableRow {...getRowProps({row})}>
-                        {row.cells.map((cell, index) => (
+                        {row.cells.map(cell => (
                           <TableCell key={cell.id}>{cell.value}</TableCell>
                         ))}
                         <TableCell className={styles.actionCell}>
@@ -85,7 +92,7 @@ const Home: React.FC = () => {
                             <Button onClick={() => setIsDownloadModalOpen(true)} className={styles.actionButton}
                                     size="sm">Download</Button>
                           ) : (
-                            <Button className={styles.actionButton} size="sm">Retry</Button>
+                            <Button onClick={() => setIsRetryModalOpen(true)} className={styles.actionButton} size="sm">Retry</Button>
                           )}
                           <Button onClick={() => setIsDeleteModalOpen(true)} className={styles.actionButton} size="sm"
                                   kind="danger">Delete</Button>
@@ -101,6 +108,8 @@ const Home: React.FC = () => {
       </div>
       <DeleteModalComponent isOpen={isDeleteModalOpen} setOpen={setIsDeleteModalOpen}/>
       <DownloadModalComponent isOpen={isDownloadModalOpen} setOpen={setIsDownloadModalOpen}/>
+      <NewBackupModal isOpen={isNewModalOpen} setOpen={setIsNewModalOpen}/>
+      <RetryModalComponent isOpen={isRetryModalOpen} setOpen={setIsRetryModalOpen}/>
     </div>
   );
 };
