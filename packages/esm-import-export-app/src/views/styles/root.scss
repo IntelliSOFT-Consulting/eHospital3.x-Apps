@@ -1,6 +1,6 @@
-@use '@carbon/styles/scss/spacing';
-@use '@carbon/styles/scss/type';
-@import '~@openmrs/esm-styleguide/src/vars';
+@use '../../../../../node_modules/@carbon/styles/scss/spacing';
+@use '../../../../../node_modules/@carbon/styles/scss/type/index';
+@import 'vars';
 
 .productiveHeading01 {
   @include type.type-style('heading-compact-01');
