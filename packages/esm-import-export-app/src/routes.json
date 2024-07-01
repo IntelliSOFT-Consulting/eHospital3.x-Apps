@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": ">=2.2.0",
+    "queue": "^2.4.0-SNAPSHOT"
+  },
+  "extensions": [
+    {
+      "name": "import-export-dashboard-link",
+      "component": "importExportDashboardLink",
+      "order": 10,
+      "slot": "homepage-dashboard-slot",
+      "meta": {
+        "name": "import-export",
+        "slot": "import-export-dashboard-slot",
+        "title": "Import Export"
+      },
+      "online": true,
+      "offline": true
+    },
+    {
+      "component": "root",
+      "name": "import-export",
+      "slot": "import-export-dashboard-slot"
+    }
+  ]
+}
