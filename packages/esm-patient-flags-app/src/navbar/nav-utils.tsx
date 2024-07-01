@@ -1,17 +1,14 @@
 import React from 'react';
 import {
-  ChartColumn,
   DocumentAdd,
   Events,
-  Home,
   Medication,
   Receipt,
   Renew,
   User,
-  VolumeFileStorage,
   Report,
   InventoryManagement,
-  HospitalBed,
+  ImportExport
 } from '@carbon/react/icons';
 const openmrsSpaBase = window['getOpenmrsSpaBase']();
 
@@ -25,21 +22,6 @@ const handleClearCache = async () => {
 };
 
 export const moduleLinks = [
-  {
-    label: 'System Info',
-    url: `${openmrsSpaBase}about`,
-    icon: <VolumeFileStorage size={24} />,
-  },
-  {
-    label: 'KenyaEMR Home',
-    url: `/openmrs/kenyaemr/userHome.page?`,
-    icon: <Home size={24} />,
-  },
-  {
-    label: 'Facility Dashboard ',
-    url: `https://odoosuperset.kenyahmis.org/superset/dashboard/11/`,
-    icon: <ChartColumn size={24} />,
-  },
   {
     label: 'Clear Cache',
     icon: <Renew size={24} />,
@@ -82,9 +64,15 @@ export const moduleLinks = [
     requiresAdmin: true,
   },
   {
-    label: 'Bed Management',
-    url: `${openmrsSpaBase}bed-management`,
-    icon: <HospitalBed size={24} />,
+    label: 'Billable Services',
+    url: `${openmrsSpaBase}billable-services`,
+    icon: <InventoryManagement size={24} />,
+    requiresAdmin: true,
+  },
+  {
+    label: 'Import Export',
+    url: `${openmrsSpaBase}import-export`,
+    icon: <ImportExport size={24} />,
     requiresAdmin: true,
   },
 ];
