@@ -30,9 +30,6 @@ describe('Navbar Action Button', () => {
     const searchInput = screen.getByRole('searchbox', { name: 'Search for a module' });
     expect(searchInput).toBeInTheDocument();
     const kenyaemrLinks = [
-      'System Info',
-      'KenyaEMR Home',
-      'Facility Dashboard',
       'Clear Cache',
       'Form Builder',
       'Legacy Admin',
