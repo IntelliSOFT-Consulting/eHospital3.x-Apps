@@ -6,6 +6,7 @@ import NavBarOverlay from './navbar-overlay.component';
 import { Switcher, Close } from '@carbon/react/icons';
 import { moduleLinks } from './nav-utils';
 import { useTranslation } from 'react-i18next';
+import NavAppIconComponent from "../components/nav-app-icon.component";
 
 type NavbarActionButtonProps = {};
 const DEBOUNCE_TIME = 500;
@@ -45,7 +46,7 @@ const NavbarActionButton: React.FC<NavbarActionButtonProps> = () => {
         name="adminModules"
         onClick={toggleOverlay}
         className={showOverlay ? styles.active : styles.slotStyles}>
-        {showOverlay ? <Close size={20} /> : <Switcher size={20} />}
+        {showOverlay ? <Close size={20} /> : <NavAppIconComponent />}
       </HeaderGlobalAction>
     </div>
   );
