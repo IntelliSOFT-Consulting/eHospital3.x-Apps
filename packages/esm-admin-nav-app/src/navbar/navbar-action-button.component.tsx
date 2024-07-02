@@ -39,10 +39,10 @@ const NavbarActionButton: React.FC<NavbarActionButtonProps> = () => {
       )}
 
       <HeaderGlobalAction
-        aria-label={t('kenyaEMRModules', 'KenyaEMR Modules')}
-        aria-labelledby={t('kenyaEMRModules', 'KenyaEMR Modules')}
+        aria-label={t('adminModules', 'Admin Modules')}
+        aria-labelledby={t('adminModules', 'Admin Modules')}
         enterDelayMs={500}
-        name="kenyaEMRModules"
+        name="adminModules"
         onClick={toggleOverlay}
         className={showOverlay ? styles.active : styles.slotStyles}>
         {showOverlay ? <Close size={20} /> : <Switcher size={20} />}
