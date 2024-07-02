@@ -1,8 +1,8 @@
 {
   "name": "@sjthc/esm-import-export-app",
-  "version": "1.0.0",
-  "description": "Outpatient front-end module for the OpenMRS SPA",
-  "browser": "dist/sjthc-esm-service-queues-app.js",
+  "version": "1.0.3",
+  "description": "Import and Export Micro-frontend for OpenMRS3",
+  "browser": "dist/sjthc-esm-import-export-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
@@ -36,11 +36,20 @@
   "bugs": {
     "url": "https://github.com/openmrs/openmrs-esm-patient-management/issues"
   },
+  "dependencies": {
+    "@carbon/react": "^1.48.1",
+    "lodash-es": "^4.17.21"
+  },
   "peerDependencies": {
     "@openmrs/esm-framework": "5.x",
-    "react": "^18.1.0",
+    "@openmrs/esm-patient-common-lib": "7.x",
+    "react": "18.x",
+    "react-dom": "18.x",
     "react-i18next": "11.x",
-    "react-router-dom": "6.x",
+    "rxjs": "6.x",
     "swr": "2.x"
+  },
+  "devDependencies": {
+    "webpack": "^5.74.0"
   }
 }
