@@ -1,12 +1,12 @@
 {
-  "name": "@sjthc/esm-patient-flags-app",
-  "version": "1.0.1",
-  "description": "Patient flags microfrontend for the OpenMRS SPA",
-  "browser": "dist/sjthc-esm-patient-flags-app.js",
+  "name": "@sjthc/esm-admin-nav-app",
+  "version": "1.0.0",
+  "description": "Admin micro-frontend to navigate to all admin apps",
+  "browser": "dist/sjthc-esm-admin-nav-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
-  "homepage": "https://github.com/palladiumkenya/kenyaemr-esm-core#readme",
+  "homepage": "",
   "scripts": {
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",

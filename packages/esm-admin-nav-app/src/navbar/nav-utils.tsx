@@ -71,7 +71,7 @@ export const moduleLinks = [
   },
   {
     label: 'Import Export',
-    url: `${openmrsSpaBase}import-export`,
+    url: `${openmrsSpaBase}home/import-export`,
     icon: <ImportExport size={24} />,
     requiresAdmin: true,
   },

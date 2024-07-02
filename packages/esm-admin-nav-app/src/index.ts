@@ -2,7 +2,7 @@ import { defineConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
 import NavbarActionButton from './navbar/navbar-action-button.component';
 
-const moduleName = '@kenyaemr/esm-nav-app';
+const moduleName = '@kenyaemr/esm-admin-nav-app';
 
 const options = {
   featureName: 'patient-flags',
