@@ -70,7 +70,7 @@ export const moduleLinks = [
     requiresAdmin: true,
   },
   {
-    label: 'Import Export',
+    label: 'Backup Services',
     url: `${openmrsSpaBase}home/import-export`,
     icon: <ImportExport size={24} />,
     requiresAdmin: true,
