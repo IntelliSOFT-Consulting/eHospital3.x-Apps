@@ -3591,22 +3591,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kenyaemr/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
-  version: 0.0.0-use.local
-  resolution: "@kenyaemr/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
-  dependencies:
-    "@carbon/react": ^1.42.1
-    "@openmrs/esm-patient-common-lib": ^8.0.0
-    lodash-es: ^4.17.15
-    webpack: ^5.74.0
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-  languageName: unknown
-  linkType: soft
-
 "@leichtgewicht/ip-codec@npm:^2.0.1":
   version: 2.0.5
   resolution: "@leichtgewicht/ip-codec@npm:2.0.5"
@@ -6936,6 +6920,22 @@ __metadata:
     react-i18next: 11.x
     react-router-dom: 6.x
     swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@sjthc/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
+  version: 0.0.0-use.local
+  resolution: "@sjthc/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    "@openmrs/esm-patient-common-lib": ^8.0.0
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
   languageName: unknown
   linkType: soft
 

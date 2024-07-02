@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "pages": [],
+  "extensions": [
+    {
+      "name": "admin-module-links",
+      "slot": "top-nav-actions-slot",
+      "component": "navbarButtons",
+      "order": 5,
+      "online": true,
+      "offline": true
+    }
+  ]
+}
