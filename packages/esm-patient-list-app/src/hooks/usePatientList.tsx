@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { openmrsFetch } from "@openmrs/esm-framework";
-import { Patient } from "@sjthc/esm-patient-registration-app/src/patient-registration/patient-registration.types";
 
 export function usePatientList() {
-  const [filteredData, setFilteredData] = useState<Patient[]>([]);
+  const [filteredData, setFilteredData] = useState<[]>([]);
 
   const fetcher = async (url: string) => {
     const response = await openmrsFetch(url);
