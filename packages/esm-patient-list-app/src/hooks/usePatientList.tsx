@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {openmrsFetch} from "@openmrs/esm-framework";
 import {getPaddedDateString} from "../helpers/dateOps";
+import {Link} from "@carbon/react";
 
 export function usePatientList() {
   const [data, setData] = useState([]);
@@ -17,7 +18,6 @@ export function usePatientList() {
   const getAllClients = async ({page, size}) => {
     try {
       if (page === 0) setLoading(true);
-      console.log("start", typeof dateRange.start)
 
       let startString =dateRange.start;
       let endString =dateRange.end;
@@ -74,7 +74,15 @@ export function usePatientList() {
   const tableColumns = [
     {
       name: "Name",
-      selector: (row) => row.fullName,
+      cell: (row) => (
+        <Link
+          href={`${window.getOpenmrsSpaBase()}patient/${
+            row.uuid
+          }/chart/Patient%20Summary`}
+        >
+          {row.fullName}
+        </Link>
+      ),
     },
     {
       name: "ID",
