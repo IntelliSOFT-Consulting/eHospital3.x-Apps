@@ -1,6 +1,6 @@
 import useSWR from 'swr';
-import { openmrsFetch, useConfig } from '@openmrs/esm-framework';
-import { BillingConfig } from '../../config-schema';
+import { type Visit, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import { apiBasePath } from '../../constants';
 
 type PaymentMethod = {
   uuid: string;
@@ -14,32 +14,31 @@ const swrOption = {
 };
 
 export const usePaymentModes = () => {
-  const { excludedPaymentMode } = useConfig<BillingConfig>();
-  const url = `/ws/rest/v1/cashier/paymentMode`;
+  const url = `${apiBasePath}paymentMode`;
   const { data, isLoading, error, mutate } = useSWR<{ data: { results: Array<PaymentMethod> } }>(
     url,
     openmrsFetch,
     swrOption,
   );
-  const allowedPaymentModes =
-    excludedPaymentMode?.length > 0
-      ? data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ?? []
-      : data?.data?.results ?? [];
+
   return {
-    paymentModes: allowedPaymentModes,
+    paymentModes: data?.data?.results ?? [],
     isLoading,
     mutate,
     error,
   };
 };
 
-export const initiateStkPush = (payload) => {
-  const url = `/ws/rest/v1/cashier/api/payment-request`;
-  return openmrsFetch(url, {
-    method: 'POST',
-    body: payload,
+export const updateBillVisitAttribute = async (visit: Visit) => {
+  const { uuid, attributes } = visit;
+  const pendingPaymentAtrributeUuid = attributes?.find(
+    (attribute) => attribute.attributeType.uuid === '919b51c9-8e2e-468f-8354-181bf3e55786',
+  )?.uuid;
+  return openmrsFetch(`${restBaseUrl}/visit/${uuid}/attribute/${pendingPaymentAtrributeUuid}`, {
+    body: { value: false },
     headers: {
       'Content-Type': 'application/json',
     },
+    method: 'POST',
   });
 };

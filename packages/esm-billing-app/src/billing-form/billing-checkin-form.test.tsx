@@ -1,8 +1,8 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
-import BillingCheckInForm from './billing-checkin-form.component';
-import { useBillableItems, useCashPoint, createPatientBill, usePaymentMethods } from './billing-form.resource';
 import userEvent from '@testing-library/user-event';
+import { screen, render } from '@testing-library/react';
+import { useBillableItems, useCashPoint, createPatientBill, usePaymentMethods } from './billing-form.resource';
+import BillingCheckInForm from './billing-checkin-form.component';
 
 const mockCashPoints = [
   {
@@ -51,7 +51,7 @@ jest.mock('./billing-form.resource', () => ({
   createPatientBill: jest.fn(),
 }));
 
-const testProps = { patientUuid: 'some-patient-uuid', setBillingInfo: jest.fn() };
+const testProps = { patientUuid: 'some-patient-uuid', setExtraVisitInfo: jest.fn() };
 
 xdescribe('BillingCheckInForm', () => {
   beforeEach(() => {
@@ -59,11 +59,7 @@ xdescribe('BillingCheckInForm', () => {
   });
 
   test('should show the loading spinner while retrieving data', () => {
-    mockUseBillableItems.mockReturnValueOnce({ lineItems: [], isLoading: true,
-      searchTerm: "",
-      setSearchTerm(value: ((prevState: string) => string) | string): void {
-      },
-      error: null });
+    mockUseBillableItems.mockReturnValueOnce({ lineItems: [], isLoading: true, error: null });
     mockUseCashPoint.mockReturnValueOnce({ cashPoints: [], isLoading: true, error: null });
     renderBillingCheckinForm();
 
@@ -72,11 +68,7 @@ xdescribe('BillingCheckInForm', () => {
 
   test('should show error state when an error occurs while fetching data', () => {
     const error = new Error('Internal server error');
-    mockUseBillableItems.mockReturnValueOnce({ lineItems: [],
-      searchTerm: "",
-      setSearchTerm(value: ((prevState: string) => string) | string): void {
-      },
-      isLoading: false, error });
+    mockUseBillableItems.mockReturnValueOnce({ lineItems: [], isLoading: false, error });
     mockUseCashPoint.mockReturnValueOnce({ cashPoints: [], isLoading: false, error });
     renderBillingCheckinForm();
 
@@ -87,9 +79,7 @@ xdescribe('BillingCheckInForm', () => {
   test('should render the form correctly and generate the required payload', async () => {
     const user = userEvent.setup();
     mockUseCashPoint.mockReturnValue({ cashPoints: [], isLoading: false, error: null });
-    mockUseBillableItems.mockReturnValue({
-      searchTerm: "", setSearchTerm(value: ((prevState: string) => string) | string): void {
-      }, lineItems: mockBillableItems, isLoading: false, error: null });
+    mockUseBillableItems.mockReturnValue({ lineItems: mockBillableItems, isLoading: false, error: null });
     renderBillingCheckinForm();
 
     const paymentTypeSelect = screen.getByRole('group', { name: 'Payment Details' });
@@ -105,8 +95,8 @@ xdescribe('BillingCheckInForm', () => {
 
     await user.click(screen.getByText('Lab Testing'));
 
-    expect(testProps.setBillingInfo).toHaveBeenCalled();
-    expect(testProps.setBillingInfo).toHaveBeenCalledWith({
+    expect(testProps.setExtraVisitInfo).toHaveBeenCalled();
+    expect(testProps.setExtraVisitInfo).toHaveBeenCalledWith({
       createBillPayload: {
         lineItems: [
           {
@@ -124,11 +114,15 @@ xdescribe('BillingCheckInForm', () => {
         status: 'PENDING',
         payments: [],
       },
-      handleCreateBill: expect.anything(),
+      handleCreateExtraVisitInfo: expect.anything(),
       attributes: [
         {
           attributeType: 'caf2124f-00a9-4620-a250-efd8535afd6d',
-          value: '1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+          value: '1c30ee58-82d4-4ea4-a8c1-4bf2f9dfc8cf',
+        },
+        {
+          attributeType: '919b51c9-8e2e-468f-8354-181bf3e55786',
+          value: true,
         },
       ],
     });
@@ -136,7 +130,5 @@ xdescribe('BillingCheckInForm', () => {
 });
 
 function renderBillingCheckinForm() {
-  return render(<BillingCheckInForm setExtraVisitInfo={function (state: any): void {
-    throw new Error('Function not implemented.');
-  }} {...testProps} />);
+  return render(<BillingCheckInForm {...testProps} />);
 }

@@ -6,6 +6,11 @@
   margin: 2rem 0;
 }
 
+.emptyStateContainer,
+.loaderContainer {
+  @extend .container;
+}
+
 .billHistoryContainer {
   background-color: $ui-02;
   border: 1px solid $ui-03;
@@ -112,7 +117,7 @@
 
 .tile {
   text-align: center;
-  // border: 1px solid $ui-03;
+  border: 1px solid $ui-03;
 }
 
 .filterEmptyState {
@@ -140,26 +145,22 @@
 }
 
 .table {
-  tr[data-child-row] td {
-    padding-left: 2rem !important;
+  width: 100%;
+  table-layout: fixed; // This helps with uniform column sizing
+  border-collapse: collapse;
+
+  td:has(:global(.billingTable)) {
+    td{
+      padding: 0.375rem 2rem 0.4375rem !important;
+      white-space:normal;
+      text-overflow: unset;
+    }
+  }
+  :global(tr.cds--parent-row.cds--expandable-row + tr[data-child-row]) td {
+    padding-left: 1rem;
   }
 }
 
-.billingHeading {
-  position: relative;
-  max-width: 400px;
-  text-align: 'left';
-  margin-bottom: 40px;
-}
-
-.billingHeading::after {
-  position: absolute;
-  bottom: -10px;
-  width: 50px;
-  height: 5px;
-  background: green;
-  content: '';
-  display: block;
-  left: 6%;
-  transform: translatex(-50%);
+.tableCells {
+  white-space: wrap !important;
 }

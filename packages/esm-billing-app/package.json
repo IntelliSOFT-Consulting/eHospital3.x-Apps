@@ -1,12 +1,12 @@
 {
   "name": "@sjthc/esm-billing-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/sjthc-esm-billing-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
-  "homepage": "https://github.com/openmrs/openmrs-esm-billing-app#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/tree/main/packages/esm-billing-app",
   "scripts": {
     "start": "openmrs develop",
     "analyze": "webpack --mode=production --env.analyze=true",
@@ -38,10 +38,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-esm-billing-app#readme"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/blob/main/packages/esm-billing-app/README.md"
   },
   "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-billing-app/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
   "dependencies": {
     "@carbon/react": "^1.48.1",

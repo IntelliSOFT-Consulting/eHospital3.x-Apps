@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import MetricsCards from './metrics-cards.component';
+import { billsSummary } from '../../__mocks__/bills.mock';
 import { useBills } from '../billing.resource';
-import { billsSummary } from '../../../../__mocks__/bills.mock';
+import MetricsCards from './metrics-cards.component';
+import { useConfig } from '@openmrs/esm-framework';
 
 const mockUseBills = useBills as jest.Mock;
+const mockUseConfig = useConfig as jest.Mock;
 
 jest.mock('../billing.resource', () => ({
   useBills: jest.fn(),
@@ -29,6 +31,7 @@ describe('MetricsCards', () => {
 
   test('renders metrics cards', () => {
     mockUseBills.mockReturnValue({ isLoading: false, bills: billsSummary, error: null });
+    mockUseConfig.mockImplementation(() => ({ defaultCurrency: 'USD' }));
     renderMetricsCards();
     expect(screen.getByRole('heading', { name: /cumulative bills/i })).toBeInTheDocument();
     expect(screen.getByRole('heading', { name: /pending bills/i })).toBeInTheDocument();
