@@ -1,18 +1,19 @@
 import React from 'react';
 import {
+  Checkbox,
+  Layer,
+  StructuredListBody,
+  StructuredListCell,
   StructuredListHead,
   StructuredListRow,
-  StructuredListCell,
-  StructuredListBody,
   StructuredListWrapper,
-  Layer,
-  Checkbox,
 } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { convertToCurrency, extractString } from '../../helpers';
-import { MappedBill, LineItem } from '../../types';
-import styles from './bill-waiver.scss';
+import { convertToCurrency } from '../../helpers';
+import { type MappedBill, type LineItem } from '../../types';
 import BillWaiverForm from './bill-waiver-form.component';
+import styles from './bill-waiver.scss';
+import { useConfig } from '@openmrs/esm-framework';
 
 const PatientBillsSelections: React.FC<{ bills: MappedBill; setPatientUuid: (patientUuid) => void }> = ({
   bills,
@@ -20,9 +21,10 @@ const PatientBillsSelections: React.FC<{ bills: MappedBill; setPatientUuid: (pat
 }) => {
   const { t } = useTranslation();
   const [selectedBills, setSelectedBills] = React.useState<Array<LineItem>>([]);
+  const { defaultCurrency } = useConfig();
 
   const checkBoxLabel = (lineItem) => {
-    return `${lineItem.item === '' ? lineItem.billableService : lineItem.item} ${convertToCurrency(lineItem.price)}`;
+    return `${lineItem.item === '' ? lineItem.billableService : lineItem.item} ${convertToCurrency(lineItem.price, defaultCurrency)}`;
   };
 
   const handleOnCheckBoxChange = (event, { checked, id }) => {
@@ -48,12 +50,12 @@ const PatientBillsSelections: React.FC<{ bills: MappedBill; setPatientUuid: (pat
         <StructuredListBody>
           {bills?.lineItems.map((lineItem) => (
             <StructuredListRow>
-              <StructuredListCell>
-                {lineItem.item === '' ? extractString(lineItem.billableService) : extractString(lineItem.item)}
-              </StructuredListCell>
+              <StructuredListCell>{lineItem.item === '' ? lineItem.billableService : lineItem.item}</StructuredListCell>
               <StructuredListCell>{lineItem.quantity}</StructuredListCell>
-              <StructuredListCell>{convertToCurrency(lineItem.price)}</StructuredListCell>
-              <StructuredListCell>{convertToCurrency(lineItem.price * lineItem.quantity)}</StructuredListCell>
+              <StructuredListCell>{convertToCurrency(lineItem.price, defaultCurrency)}</StructuredListCell>
+              <StructuredListCell>
+                {convertToCurrency(lineItem.price * lineItem.quantity, defaultCurrency)}
+              </StructuredListCell>
               <StructuredListCell>
                 <Checkbox
                   hideLabel

@@ -1,10 +1,11 @@
 import React, { useMemo } from 'react';
-import Card from '../../metrics-cards/card.component';
-import styles from '../../metrics-cards/metrics-cards.scss';
+import { InlineLoading } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { ErrorState } from '@openmrs/esm-patient-common-lib';
-import { InlineLoading } from '@carbon/react';
 import { useBillableServices } from '../billable-service.resource';
+import Card from '../../metrics-cards/card.component';
+import styles from '../../metrics-cards/metrics-cards.scss';
+import { ExtensionSlot } from '@openmrs/esm-framework';
 
 export default function ServiceMetrics() {
   const { t } = useTranslation();

@@ -1,2 +1,5 @@
-export const PENDING_PAYMENT_STATUS = 'PENDING';
-export const EXEMPTED_PAYMENT_STATUS = 'EXEMPTED';
+import { restBaseUrl } from '@openmrs/esm-framework';
+
+export const apiBasePath = `${restBaseUrl}/billing/`;
+
+export const omrsDateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';

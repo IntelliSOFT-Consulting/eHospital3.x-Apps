@@ -1,9 +1,9 @@
 import React from 'react';
-import { PatientDetails } from '../../types';
-import styles from './printable-invoice-header.scss';
+import { type PatientDetails } from '../../types';
 import { useConfig } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 import { useDefaultFacility } from '../../billing.resource';
+import styles from './printable-invoice-header.scss';
 
 interface PrintableInvoiceHeaderProps {
   patientDetails: PatientDetails;

@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { InlineLoading, InlineNotification, FilterableMultiSelect } from '@carbon/react';
+import React, { useCallback, useState } from 'react';
+import { Dropdown, InlineLoading, InlineNotification } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { useCashPoint, useBillableItems, createPatientBill } from './billing-form.resource';
 import { showSnackbar, useConfig } from '@openmrs/esm-framework';
-import styles from './billing-checkin-form.scss';
+import { useCashPoint, useBillableItems, createPatientBill } from './billing-form.resource';
 import VisitAttributesForm from './visit-attributes/visit-attributes-form.component';
-import { BillingConfig } from '../config-schema';
-import { hasPatientBeenExempted } from './helper';
-import { EXEMPTED_PAYMENT_STATUS, PENDING_PAYMENT_STATUS } from '../constants';
-import { BillingService } from '../types';
-import SHANumberValidity from './social-health-authority/sha-number-validity.component';
+import styles from './billing-checkin-form.scss';
+
+const DEFAULT_PRICE = 500.00001;
+const PENDING_PAYMENT_STATUS = 'PENDING';
 
 type BillingCheckInFormProps = {
   patientUuid: string;
@@ -18,73 +16,59 @@ type BillingCheckInFormProps = {
 
 const BillingCheckInForm: React.FC<BillingCheckInFormProps> = ({ patientUuid, setExtraVisitInfo }) => {
   const { t } = useTranslation();
-  const {
-    visitAttributeTypes: { isPatientExempted },
-  } = useConfig<BillingConfig>();
   const { cashPoints, isLoading: isLoadingCashPoints, error: cashError } = useCashPoint();
   const { lineItems, isLoading: isLoadingLineItems, error: lineError } = useBillableItems();
   const [attributes, setAttributes] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState<any>();
   let lineList = [];
 
-  const handleCreateBill = useCallback((createBillPayload) => {
+  const handleCreateExtraVisitInfo = useCallback((createBillPayload) => {
     createPatientBill(createBillPayload).then(
-      () => {
+      (res) => {
         showSnackbar({ title: 'Patient Bill', subtitle: 'Patient has been billed successfully', kind: 'success' });
       },
       (error) => {
-        const errorMessage = JSON.stringify(error?.responseBody?.error?.message?.replace(/\[/g, '').replace(/\]/g, ''));
         showSnackbar({
           title: 'Patient Bill Error',
-          subtitle: `An error has occurred while creating patient bill, Contact system administrator quoting this error ${errorMessage}`,
+          subtitle: 'An error has occurred while creating patient bill',
           kind: 'error',
-          isLowContrast: true,
         });
       },
     );
   }, []);
 
-  const handleBillingService = (selectedItems: Array<BillingService>) => {
+  const handleBillingService = ({ selectedItem }) => {
     const cashPointUuid = cashPoints?.[0]?.uuid ?? '';
-    const billStatus = hasPatientBeenExempted(attributes, isPatientExempted)
-      ? EXEMPTED_PAYMENT_STATUS
-      : PENDING_PAYMENT_STATUS;
+    const itemUuid = selectedItem?.uuid ?? '';
 
-    const lineItems = selectedItems.map((item, index) => {
-      // // should default to first price if check returns empty. todo - update backend to return default price
-      const priceForPaymentMode =
-        item.servicePrices.find((p) => p.paymentMode?.uuid === paymentMethod) || item?.servicePrices[0];
-      return {
-        billableService: item?.uuid ?? '',
-        quantity: 1,
-        price: priceForPaymentMode ? priceForPaymentMode.price : '0.000',
-        priceName: 'Default',
-        priceUuid: priceForPaymentMode ? priceForPaymentMode.uuid : '',
-        lineItemOrder: index,
-        paymentStatus: billStatus,
-      };
-    });
+    // should default to first price if check returns empty. todo - update backend to return default price
+    const priceForPaymentMode =
+      selectedItem.servicePrices.find((p) => p.paymentMode?.uuid === paymentMethod) || selectedItem?.servicePrices[0];
 
-    const billPayload = {
-      lineItems: lineItems,
+    const createBillPayload = {
+      lineItems: [
+        {
+          billableService: itemUuid,
+          quantity: 1,
+          price: priceForPaymentMode ? priceForPaymentMode.price : '0.000',
+          priceName: 'Default',
+          priceUuid: priceForPaymentMode ? priceForPaymentMode.uuid : '',
+          lineItemOrder: 0,
+          paymentStatus: PENDING_PAYMENT_STATUS,
+        },
+      ],
       cashPoint: cashPointUuid,
       patient: patientUuid,
-      status: billStatus,
+      status: PENDING_PAYMENT_STATUS,
       payments: [],
     };
 
     setExtraVisitInfo({
-      handleCreateExtraVisitInfo: () => handleCreateBill(billPayload),
+      createBillPayload,
+      handleCreateExtraVisitInfo: () => handleCreateExtraVisitInfo(createBillPayload),
       attributes,
     });
   };
-
-  useEffect(() => {
-    setExtraVisitInfo({
-      handleCreateExtraVisitInfo: () => {},
-      attributes,
-    });
-  }, []);
 
   if (isLoadingLineItems || isLoadingCashPoints) {
     return (
@@ -99,9 +83,14 @@ const BillingCheckInForm: React.FC<BillingCheckInFormProps> = ({ patientUuid, se
   if (paymentMethod) {
     lineList = [];
     lineList = lineItems.filter((e) =>
-      e.servicePrices.some((p) => p.paymentMode && p.paymentMode.uuid === paymentMethod?.uuid),
+      e.servicePrices.some((p) => p.paymentMode && p.paymentMode.uuid === paymentMethod),
     );
   }
+
+  const setServicePrice = (prices) => {
+    const matchingPrice = prices.find((p) => p.paymentMode?.uuid === paymentMethod);
+    return matchingPrice ? `(${matchingPrice.name}:${matchingPrice.price})` : '';
+  };
 
   if (cashError || lineError) {
     return (
@@ -115,22 +104,23 @@ const BillingCheckInForm: React.FC<BillingCheckInFormProps> = ({ patientUuid, se
   }
 
   return (
-    <>
+    <section className={styles.sectionContainer}>
       <VisitAttributesForm setAttributes={setAttributes} setPaymentMethod={setPaymentMethod} />
-      <SHANumberValidity paymentMethod={paymentMethod} />
-      <section className={styles.sectionContainer}>
-        <div className={styles.sectionTitle}>{t('billing', 'Billing')}</div>
-        <div className={styles.sectionField}>
-          <FilterableMultiSelect
-            id="billing-service"
-            titleText={t('searchServices', 'Search services')}
-            items={lineItems ?? []}
-            itemToString={(item) => (item ? item?.name : '')}
-            onChange={({ selectedItems }) => handleBillingService(selectedItems)}
+      {
+        <>
+          <div className={styles.sectionTitle}>{t('billing', 'Billing')}</div>
+          <div className={styles.sectionField}></div>
+          <Dropdown
+            label={t('selectBillableService', 'Select a billable service...')}
+            onChange={handleBillingService}
+            id="billable-items"
+            items={lineList}
+            itemToString={(item) => (item ? `${item.name} ${setServicePrice(item.servicePrices)}` : '')}
+            titleText={t('billableService', 'Billable service')}
           />
-        </div>
-      </section>
-    </>
+        </>
+      }
+    </section>
   );
 };
 

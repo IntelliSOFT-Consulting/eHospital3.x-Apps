@@ -8,11 +8,11 @@ describe('BillableServicesCardLink', () => {
     const manageBillableServicesText = screen.getByText('Manage billable services');
     expect(manageBillableServicesText).toHaveClass('heading');
 
-    const billableText = screen.getByText('Billable Services');
-    expect(billableText).toHaveClass('content');
+    const billiableText = screen.getByText('Billable Services');
+    expect(billiableText).toHaveClass('content');
 
-    const billableServiceLink = screen.getByRole('link', { name: /Billable Services/i });
-    expect(billableServiceLink).toHaveAttribute('href', '/spa/billable-services');
+    const billiableServiceLink = screen.getByRole('link', { name: /Billable Services/i });
+    expect(billiableServiceLink).toHaveAttribute('href', '/spa/billable-services');
   });
 });
 

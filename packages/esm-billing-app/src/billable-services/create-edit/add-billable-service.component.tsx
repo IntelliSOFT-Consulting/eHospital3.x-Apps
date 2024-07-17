@@ -1,31 +1,40 @@
 /* eslint-disable curly */
 import React, { useCallback, useRef, useState } from 'react';
-import styles from './add-billable-service.scss';
 import {
-  Form,
   Button,
-  TextInput,
   ComboBox,
   Dropdown,
-  Layer,
-  InlineLoading,
-  Search,
-  Tile,
+  Form,
   FormLabel,
+  InlineLoading,
+  Layer,
+  Search,
+  TextInput,
+  Tile,
 } from '@carbon/react';
+import { navigate, showSnackbar, useDebounce, useLayoutType, useSession } from '@openmrs/esm-framework';
+import { Add, TrashCan, WarningFilled } from '@carbon/react/icons';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  createBillableService,
+  createBillableSerice,
   useConceptsSearch,
   usePaymentModes,
   useServiceTypes,
 } from '../billable-service.resource';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Add, TrashCan, WarningFilled } from '@carbon/react/icons';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { navigate, showSnackbar, useDebounce, useLayoutType, useSession } from '@openmrs/esm-framework';
-import { ServiceConcept } from '../../types';
+import { type ServiceConcept } from '../../types';
+import styles from './add-billable-service.scss';
+
+type PaymentMode = {
+  paymentMode: string;
+  price: string | number;
+};
+
+type PaymentModeFormValue = {
+  payment: Array<PaymentMode>;
+};
 
 const servicePriceSchema = z.object({
   paymentMode: z.string().refine((value) => !!value, 'Payment method is required'),
@@ -34,15 +43,11 @@ const servicePriceSchema = z.object({
     z.string().refine((value) => !!value, 'Price is required'),
   ]),
 });
-const paymentFormSchema = z.object({ payment: z.array(servicePriceSchema) });
 
-type PaymentMode = {
-  paymentMode: string;
-  price: string | number;
-};
-type PaymentModeFormValue = {
-  payment: Array<PaymentMode>;
-};
+const paymentFormSchema = z.object({
+  payment: z.array(servicePriceSchema).min(1, 'At least one payment option is required'),
+});
+
 const DEFAULT_PAYMENT_OPTION = { paymentMode: '', price: 0 };
 
 const AddBillableService: React.FC = () => {
@@ -55,10 +60,10 @@ const AddBillableService: React.FC = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<any>({
     mode: 'all',
-    defaultValues: {},
+    defaultValues: { payment: [DEFAULT_PAYMENT_OPTION] },
     resolver: zodResolver(paymentFormSchema),
   });
   const { fields, remove, append } = useFieldArray({ name: 'payment', control: control });
@@ -108,7 +113,7 @@ const AddBillableService: React.FC = () => {
     payload.serviceStatus = 'ENABLED';
     payload.concept = selectedConcept?.concept?.uuid;
 
-    createBillableService(payload).then(
+    createBillableSerice(payload).then(
       (resp) => {
         showSnackbar({
           title: t('billableService', 'Billable service'),
@@ -119,9 +124,17 @@ const AddBillableService: React.FC = () => {
         handleNavigateToServiceDashboard();
       },
       (error) => {
-        showSnackbar({ title: 'Bill payment error', kind: 'error', subtitle: error });
+        showSnackbar({ title: 'Bill payment error', kind: 'error', subtitle: error?.message });
       },
     );
+  };
+
+  const getPaymentErrorMessage = () => {
+    const paymentError = errors.payment;
+    if (paymentError && typeof paymentError.message === 'string') {
+      return paymentError.message;
+    }
+    return null;
   };
 
   return (
@@ -258,7 +271,6 @@ const AddBillableService: React.FC = () => {
                 render={({ field }) => (
                   <Layer>
                     <Dropdown
-                      id={`paymentMode-${index}`}
                       onChange={({ selectedItem }) => field.onChange(selectedItem?.uuid)}
                       titleText={t('paymentMode', 'Payment Mode')}
                       label={t('selectPaymentMethod', 'Select payment method')}
@@ -276,7 +288,6 @@ const AddBillableService: React.FC = () => {
                 render={({ field }) => (
                   <Layer>
                     <TextInput
-                      id={`price-${index}`}
                       {...field}
                       invalid={!!errors?.payment?.[index]?.price}
                       invalidText={errors?.payment?.[index]?.price?.message}
@@ -287,13 +298,7 @@ const AddBillableService: React.FC = () => {
                 )}
               />
               <div className={styles.removeButtonContainer}>
-                <TrashCan
-                  aria-label={`delete_${index}`}
-                  id={`delete_${index}`}
-                  onClick={() => handleRemovePaymentMode(index)}
-                  className={styles.removeButton}
-                  size={20}
-                />
+                <TrashCan onClick={() => handleRemovePaymentMode(index)} className={styles.removeButton} size={20} />
               </div>
             </div>
           ))}
@@ -305,6 +310,7 @@ const AddBillableService: React.FC = () => {
             iconDescription="Add">
             {t('addPaymentOptions', 'Add payment option')}
           </Button>
+          {getPaymentErrorMessage() && <div className={styles.errorMessage}>{getPaymentErrorMessage()}</div>}
         </div>
       </section>
 
@@ -312,7 +318,7 @@ const AddBillableService: React.FC = () => {
         <Button kind="secondary" onClick={handleNavigateToServiceDashboard}>
           {t('cancel', 'Cancel')}
         </Button>
-        <Button type="submit" onClick={handleSubmit(onSubmit)}>
+        <Button type="submit" onClick={handleSubmit(onSubmit)} disabled={!isValid}>
           {t('save', 'Save')}
         </Button>
       </section>

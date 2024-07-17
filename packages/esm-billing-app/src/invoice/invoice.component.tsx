@@ -4,10 +4,10 @@ import { Printer } from '@carbon/react/icons';
 import { useParams } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { useTranslation } from 'react-i18next';
-import { ExtensionSlot, usePatient, showModal } from '@openmrs/esm-framework';
+import { ExtensionSlot, useConfig, usePatient } from '@openmrs/esm-framework';
 import { ErrorState } from '@openmrs/esm-patient-common-lib';
 import { convertToCurrency } from '../helpers';
-import { LineItem } from '../types';
+import { type LineItem } from '../types';
 import { useBill } from '../billing.resource';
 import InvoiceTable from './invoice-table.component';
 import Payments from './payments/payments.component';
@@ -24,12 +24,13 @@ const Invoice: React.FC = () => {
   const { t } = useTranslation();
   const { billUuid, patientUuid } = useParams();
   const { patient, isLoading: isLoadingPatient } = usePatient(patientUuid);
-  const { bill, isLoading: isLoadingBill, error } = useBill(billUuid);
+  const { bill, isLoading: isLoadingBill, error, mutate } = useBill(billUuid);
   const [isPrinting, setIsPrinting] = useState(false);
-  const [selectedLineItems, setSelectedLineItems] = useState([]);
+  const [selectedLineItems, setSelectedLineItems] = useState<LineItem[]>([]);
   const componentRef = useRef<HTMLDivElement>(null);
   const onBeforeGetContentResolve = useRef<(() => void) | null>(null);
-  const handleSelectItem = (lineItems: Array<LineItem>) => {
+  const { defaultCurrency } = useConfig();
+  const handleSelectItem = (lineItems: LineItem[]) => {
     setSelectedLineItems(lineItems);
   };
 
@@ -51,25 +52,11 @@ const Invoice: React.FC = () => {
 
   const handlePrint = useReactToPrint({
     content: reactToPrintContent,
-    documentTitle: `Invoice ${bill?.receiptNumber} - ${patient?.name?.[0]?.given?.join(' ')} ${
-      patient?.name?.[0].family
-    }`,
+    documentTitle: `Invoice ${bill?.receiptNumber} - ${patient?.name?.[0]?.given?.join(' ')} ${patient?.name?.[0].family}`,
     onBeforeGetContent: handleOnBeforeGetContent,
     onAfterPrint: handleAfterPrint,
     removeAfterPrint: true,
   });
-
-  const handleBillPayment = () => {
-    const dispose = showModal('initiate-payment-modal', {
-      closeModal: () => dispose(),
-      bill: bill,
-    });
-  };
-
-  useEffect(() => {
-    const paidLineItems = bill?.lineItems?.filter((item) => item.paymentStatus === 'PAID') ?? [];
-    setSelectedLineItems(paidLineItems);
-  }, [bill.lineItems]);
 
   useEffect(() => {
     if (isPrinting && onBeforeGetContentResolve.current) {
@@ -77,10 +64,15 @@ const Invoice: React.FC = () => {
     }
   }, [isPrinting]);
 
+  useEffect(() => {
+    const unPaidLineItems = bill?.lineItems?.filter((item) => item.paymentStatus === 'PENDING') ?? [];
+    setSelectedLineItems(unPaidLineItems);
+  }, [bill?.lineItems]);
+
   const invoiceDetails = {
-    'Total Amount': convertToCurrency(bill?.totalAmount),
-    'Amount Tendered': convertToCurrency(bill?.tenderedAmount),
-    'Invoice Number': bill.receiptNumber,
+    'Total Amount': convertToCurrency(bill?.totalAmount, defaultCurrency),
+    'Amount Tendered': convertToCurrency(bill?.tenderedAmount, defaultCurrency),
+    'Invoice Number': bill?.receiptNumber,
     'Date And Time': bill?.dateCreated,
     'Invoice Status': bill?.status,
   };
@@ -116,24 +108,20 @@ const Invoice: React.FC = () => {
           ))}
         </section>
         <div>
-          <Button onClick={handleBillPayment} iconDescription="Initiate Payment" size="md">
-            {t('initiatePayment', 'Initiate Payment')}
-          </Button>
           <Button
             disabled={isPrinting}
             onClick={handlePrint}
             renderIcon={(props) => <Printer size={24} {...props} />}
             iconDescription="Print bill"
-            className={styles.button}
             size="md">
             {t('printBill', 'Print bill')}
           </Button>
-          {bill.status === 'PAID' ? <PrintReceipt billId={bill?.id} /> : null}
+          {(bill?.status === 'PAID' || bill?.tenderedAmount > 0) && <PrintReceipt billId={bill?.id} />}
         </div>
       </div>
 
       <InvoiceTable bill={bill} isLoadingBill={isLoadingBill} onSelectItem={handleSelectItem} />
-      <Payments bill={bill} selectedLineItems={selectedLineItems} />
+      <Payments bill={bill} mutate={mutate} selectedLineItems={selectedLineItems} />
 
       <div className={styles.printContainer} ref={componentRef}>
         {isPrinting && <PrintableInvoice bill={bill} patient={patient} isLoading={isLoadingPatient} />}
