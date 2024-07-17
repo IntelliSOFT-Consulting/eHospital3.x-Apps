@@ -1,18 +1,13 @@
 {
   "$schema": "https://json.openmrs.org/routes.schema.json",
   "backendDependencies": {
-    "kenyaemr": "^18.2.0"
+    "webservices.rest": ">=2.24.0",
+    "fhir2": ">=1.2"
   },
   "pages": [
     {
       "component": "billableServicesHome",
       "route":"billable-services"
-    },
-    {
-      "component": "requirePaymentModal",
-      "routeRegex": "^patient\/.+\/chart",
-      "online": true,
-      "offline": false
     }
   ],
   "extensions": [
@@ -24,7 +19,8 @@
         "name": "billing",
         "title": "billing",
         "slot": "billing-dashboard-slot"
-      }
+      },
+      "featureFlag": "billing"
     },
     {
       "component": "root",
@@ -49,11 +45,20 @@
         "columns": 1,
         "columnSpan": 1,
         "slot": "patient-chart-billing-dashboard-slot",
-        "path": "Billing"
+        "path": "Billing history"
+      },
+      "featureFlag": "billing"
+    },
+    {
+      "name": "billable-services-app-menu-item",
+      "component": "billableServicesAppMenuItem",
+      "slot": "app-menu-item-slot",
+      "meta": {
+        "name": "Billable Services"
       }
     },
     {
-      "name": "billing-check-in-form",
+      "name": "billing-checkin-form",
       "slot": "extra-visit-attribute-slot",
       "component": "billingCheckInForm"
     },
@@ -61,10 +66,6 @@
       "slot": "system-admin-page-card-link-slot",
       "component": "billableServicesCardLink",
       "name": "billable-services-admin-card-link"
-    },
-    {
-      "name": "billing-form",
-      "component": "billingForm"
     },
     {
       "name": "require-billing-modal",
@@ -77,18 +78,23 @@
       "order": 2
     },
     {
-      "name": "initiate-payment-modal",
-      "component": "initiatePaymentDialog"
+      "name": "billing-home-tiles-ext",
+      "slot": "billing-home-tiles-slot",
+      "component": "serviceMetrics"
     },
     {
-      "name": "lab-order-billable-item",
-      "component": "labOrder",
-      "slot": "top-of-lab-order-form-slot"
-    },
+      "name": "edit-bill-line-item-dialog",
+      "component": "editBillLineItemDialog",
+      "online": true,
+      "offline": true
+    }
+  ],
+  "workspaces": [
     {
-      "name": "drug-order-billable-item",
-      "component": "drugOrder",
-      "slot": "medication-info-slot"
+      "name": "billing-form-workspace",
+      "title": "billingForm",
+      "component": "billingFormWorkspace",
+      "type": "form"
     }
   ]
 }

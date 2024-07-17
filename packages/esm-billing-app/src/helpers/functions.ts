@@ -1,4 +1,6 @@
-import { Payment, LineItem } from '../types';
+import { type Payment, type LineItem } from '../types';
+import { type ConfigObject } from '../config-schema';
+import { useConfig } from '@openmrs/esm-framework';
 
 // amount already paid
 export function calculateTotalAmountTendered(payments: Array<Payment>) {
@@ -31,10 +33,11 @@ export function calculateTotalAmount(lineItems: Array<LineItem>) {
     : 0;
 }
 
-export const convertToCurrency = (amountToConvert: number) => {
-  const formatter = new Intl.NumberFormat('en-KE', {
+export const convertToCurrency = (amountToConvert: number, currencyType?: string) => {
+  const locale = window.i18next?.language?.substring(0, 2) ?? '';
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'KES',
+    currency: currencyType,
     minimumFractionDigits: 2,
   });
 
@@ -61,15 +64,3 @@ export const getGender = (gender: string, t) => {
       return gender;
   }
 };
-
-/**
- * Extracts and returns the substring after the first colon (:) in the input string.
- * The input string is expected to be in the format "uuid:string".
- *
- * @param {string} input - The input string from which the substring is to be extracted.
- * @returns {string} The substring found after the first colon in the input string.
- */
-export function extractString(input: string): string {
-  const parts = input.split(':');
-  return parts.length < 2 ? input : parts[1];
-}

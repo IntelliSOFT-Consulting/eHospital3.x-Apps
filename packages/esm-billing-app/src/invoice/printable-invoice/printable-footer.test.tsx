@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import PrintableFooter from './printable-footer.component';
 import { useDefaultFacility } from '../../billing.resource';
+import PrintableFooter from './printable-footer.component';
 
 const mockUseDefaultFacility = useDefaultFacility as jest.MockedFunction<typeof useDefaultFacility>;
 

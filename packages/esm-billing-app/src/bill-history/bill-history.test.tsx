@@ -1,8 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import BillHistory from './bill-history.component';
-import { useBills } from '../billing.resource';
 import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
+import { useBills } from '../billing.resource';
+import BillHistory from './bill-history.component';
 
 const testProps = {
   patientUuid: 'some-uuid',
