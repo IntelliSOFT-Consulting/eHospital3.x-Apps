@@ -1,73 +1,75 @@
-import { useEffect, useState } from "react";
-import useSWR from "swr";
-import { openmrsFetch } from "@openmrs/esm-framework";
-import { Patient } from "@sjthc/esm-patient-registration-app/src/patient-registration/patient-registration.types";
+import React, {useEffect, useState} from "react";
+import {openmrsFetch} from "@openmrs/esm-framework";
+import {getPaddedDateString} from "../helpers/dateOps";
 
 export function usePatientList() {
-  const [filteredData, setFilteredData] = useState<Patient[]>([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPaginationState, setCurrentPaginationState] = useState({
+    size: 50,
+    page: 0
+  });
+  const [dateRange, setDateRange] = React.useState({
+    start: `01-01-${new Date().getFullYear()}`,
+    end: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
+  });
 
-  const fetcher = async (url: string) => {
-    const response = await openmrsFetch(url);
-    return response.json();
-  };
+  const getAllClients = async ({page, size}) => {
+    try {
+      if (page === 0) setLoading(true);
+      console.log("start", typeof dateRange.start)
 
-  const { data, error } = useSWR(`/ws/fhir2/R4/Patient?_count=1000`, fetcher);
+      let startString =dateRange.start;
+      let endString =dateRange.end;
 
-  const filterData = ({ start = null, end = null }) => {
-    let filteredArray = data.entry;
+      if(typeof dateRange.start === "object"){
+        const dateObject = new Date(dateRange.start);
+        startString = getPaddedDateString(dateObject);
+      }
 
-    if (start && end) {
-      filteredArray = filteredArray.filter(
-        (item) =>
-          new Date(item.resource.meta.lastUpdated) >= new Date(start) &&
-          new Date(item.resource.meta.lastUpdated) <= new Date(end)
-      );
+      if(typeof dateRange.end === "object"){
+        const dateObject = new Date(dateRange.end);
+        endString = getPaddedDateString(dateObject)
+      }
+
+
+      const url = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
+      const {data} = await openmrsFetch(url);
+
+      if (data.results.length > 0) {
+        setData(prev => [...prev, ...data.results.map(result => ({
+          ...result,
+          fullName: result?.name,
+          age: result?.age,
+          gender: result?.sex,
+          openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+          opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+        }))]);
+      }
+
+      if (data.results.length === size)
+        setCurrentPaginationState(prev => ({
+          ...prev,
+          page: ++prev.page
+        }))
+
+    } catch (e) {
+      return e
+    } finally {
+      setLoading(false);
     }
+  }
 
-    filteredArray = filteredArray.map((item: any) => {
-      const givenName =
-        item?.resource?.name[0]?.given[0] +
-        (item?.resource?.name[0]?.given[1]
-          ? " " + item.resource?.name[0]?.given[1]
-          : "");
-
-      const gender = item.resource.gender
-        ? item.resource.gender.charAt(0).toUpperCase()
-        : "";
-
-      return {
-        fullName: givenName + " " + item.resource?.name[0]?.family,
-        age:
-          new Date().getFullYear() -
-          new Date(item.resource.birthDate).getFullYear(),
-        gender: gender,
-        openmrsID: item.resource?.identifier?.find(
-          (id) => id.type?.text === "OpenMRS ID"
-        )?.value,
-        opdNumber: item.resource?.identifier?.find(
-          (id) => id.type.text === "Unique OPD Number"
-        )?.value,
-        dateRegistered: new Date(
-          item.resource?.meta?.lastUpdated
-        ).toLocaleDateString(),
-        timeRegistered: new Date(
-          item.resource?.meta?.lastUpdated
-        ).toLocaleTimeString(),
-      };
-    });
-
-    filteredArray.sort((a, b) => {
-      const dateA = new Date(a.dateRegistered + " " + a.timeRegistered);
-      const dateB = new Date(b.dateRegistered + " " + b.timeRegistered);
-      return (dateB as unknown as number) - (dateA as unknown as number);
-    });
-
-    setFilteredData(filteredArray);
-  };
 
   useEffect(() => {
-    if (data?.entry) filterData({});
-  }, [data]);
+    getAllClients({...currentPaginationState})
+  }, [currentPaginationState.page]);
+
+  useEffect(() => {
+    setCurrentPaginationState(prev => ({...prev, page: 0}))
+    setData([]);
+    getAllClients({...currentPaginationState})
+  }, [dateRange]);
 
   const tableColumns = [
     {
@@ -100,6 +102,15 @@ export function usePatientList() {
     },
   ];
 
+
+  const clear = () => {
+    setDateRange({
+      start: `01-01-${new Date().getFullYear()}`,
+      end: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
+    });
+    setData([]);
+    getAllClients({...currentPaginationState})
+  };
   const customStyles = {
     cells: {
       style: {
@@ -119,10 +130,13 @@ export function usePatientList() {
   return {
     customStyles,
     tableColumns,
-    filterData,
-    filteredData,
+    data,
     patient: data,
-    isLoading: !error && !data,
-    isError: error,
+    isLoading: loading,
+    dateRange,
+    setDateRange,
+    getAllClients,
+    currentPaginationState,
+    clear
   };
 }

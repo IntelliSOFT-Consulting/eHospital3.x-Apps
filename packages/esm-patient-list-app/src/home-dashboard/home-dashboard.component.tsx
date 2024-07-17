@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./home-dashboard.scss";
-import { useTranslation } from "react-i18next";
+import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
 import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
@@ -10,7 +10,7 @@ import {
   Tile,
   SkeletonPlaceholder
 } from "@carbon/react";
-import { usePatientList } from "../hooks/usePatientList";
+import {usePatientList} from "../hooks/usePatientList";
 import DataTable from "react-data-table-component";
 
 type PatientListHomeProps = {
@@ -18,27 +18,22 @@ type PatientListHomeProps = {
 };
 
 const PatientListHome: React.FC<PatientListHomeProps> = () => {
-  const { t } = useTranslation();
-
-  const [dateRange, setDateRange] = React.useState({ start: null, end: null });
+  const {t} = useTranslation();
 
   const {
-    patient,
     isLoading,
-    isError,
-    filterData,
-    filteredData,
+    data,
     tableColumns,
-    customStyles
+    customStyles,
+    setDateRange,
+    dateRange,
+    currentPaginationState,
+    getAllClients,
+    clear,
   } = usePatientList();
 
-  const totalPatients = patient?.total || 0;
+  const totalPatients = 0;
 
-
-  const clear = () => {
-    filterData({});
-    setDateRange({ start: null, end: null });
-  };
   return (
     <>
       {isLoading ? (
@@ -49,7 +44,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
         >
           <div className={styles.header} data-testid="patient-queue-header">
             <div className={styles["left-justified-items"]}>
-              <PatientQueueIllustration />
+              <PatientQueueIllustration/>
               <div className={styles["page-labels"]}>
                 <p className={styles.title}>{t("patients", "Patients")}</p>
                 <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
@@ -61,16 +56,16 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
             data-testid="registered-patients"
           >
             <Tile className={styles.tileContainer}>
-              <SkeletonPlaceholder />
+              <SkeletonPlaceholder/>
             </Tile>
           </div>
-          <br />
+          <br/>
         </div>
       ) : (
         <>
           <div className={styles.header} data-testid="patient-queue-header">
             <div className={styles["left-justified-items"]}>
-              <PatientQueueIllustration />
+              <PatientQueueIllustration/>
               <div className={styles["page-labels"]}>
                 <p className={styles.title}>{t("patients", "Patients")}</p>
                 <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
@@ -93,7 +88,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
               <div className={styles.listFilter}>
                 <DatePicker
                   onChange={(value) =>
-                    setDateRange({ start: value[0], end: value[1] })
+                    setDateRange({start: value[0], end: value[1]})
                   }
                   value={[dateRange.start, dateRange.end]}
                   datePickerType="range"
@@ -113,13 +108,6 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
                   />
                 </DatePicker>
                 <Button
-                  onClick={() => filterData({ ...dateRange })}
-                  kind="primary"
-                  style={styles.FilterButton}
-                >
-                  Search
-                </Button>
-                <Button
                   onClick={clear}
                   kind="secondary"
                   style={styles.FilterButton}
@@ -128,8 +116,9 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
                 </Button>
               </div>
               <DataTable
+                paginationPerPage={15}
                 columns={tableColumns}
-                data={filteredData}
+                data={data}
                 responsive
                 pagination
                 customStyles={customStyles}
