@@ -64,12 +64,6 @@ export const moduleLinks = [
     requiresAdmin: true,
   },
   {
-    label: 'Billable Services',
-    url: `${openmrsSpaBase}billable-services`,
-    icon: <InventoryManagement size={24} />,
-    requiresAdmin: true,
-  },
-  {
     label: 'Backup Services',
     url: `${openmrsSpaBase}home/import-export`,
     icon: <ImportExport size={24} />,
