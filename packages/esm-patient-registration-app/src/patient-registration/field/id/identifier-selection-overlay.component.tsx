@@ -1,56 +1,29 @@
-import React, {
-  useMemo,
-  useCallback,
-  useEffect,
-  useState,
-  useContext,
-} from "react";
-import { useTranslation } from "react-i18next";
-import {
-  Button,
-  ButtonSet,
-  Checkbox,
-  Search,
-  RadioButtonGroup,
-  RadioButton,
-} from "@carbon/react";
-import { isDesktop, useConfig, useLayoutType } from "@openmrs/esm-framework";
-import {
-  type FormValues,
-  type PatientIdentifierType,
-  PatientIdentifierValue,
-} from "../../patient-registration.types";
-import Overlay from "../../ui-components/overlay/overlay.component";
-import { ResourcesContext } from "../../../offline.resources";
-import { PatientRegistrationContext } from "../../patient-registration-context";
+import React, { useMemo, useCallback, useEffect, useState, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button, ButtonSet, Checkbox, Search, RadioButtonGroup, RadioButton } from '@carbon/react';
+import { isDesktop, useConfig, useLayoutType } from '@openmrs/esm-framework';
+import { type FormValues, type PatientIdentifierType, PatientIdentifierValue } from '../../patient-registration.types';
+import Overlay from '../../ui-components/overlay/overlay.component';
+import { ResourcesContext } from '../../../offline.resources';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 import {
   isUniqueIdentifierTypeForOffline,
   shouldBlockPatientIdentifierInOfflineMode,
-} from "../../input/custom-input/identifier/utils";
-import {
-  initializeIdentifier,
-  setIdentifierSource,
-} from "./id-field.component";
-import styles from "./identifier-selection.scss";
+} from '../../input/custom-input/identifier/utils';
+import { initializeIdentifier, setIdentifierSource } from './id-field.component';
+import styles from './identifier-selection.scss';
 
 interface PatientIdentifierOverlayProps {
   setFieldValue: (string, PatientIdentifierValue) => void;
   closeOverlay: () => void;
 }
 
-const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
-  closeOverlay,
-  setFieldValue,
-}) => {
+const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({ closeOverlay, setFieldValue }) => {
   const layout = useLayoutType();
   const { identifierTypes } = useContext(ResourcesContext);
-  const { isOffline, values, initialFormValues } = useContext(
-    PatientRegistrationContext
-  );
-  const [unsavedIdentifierTypes, setUnsavedIdentifierTypes] = useState<
-    FormValues["identifiers"]
-  >(values.identifiers);
-  const [searchString, setSearchString] = useState<string>("");
+  const { isOffline, values, initialFormValues } = useContext(PatientRegistrationContext);
+  const [unsavedIdentifierTypes, setUnsavedIdentifierTypes] = useState<FormValues['identifiers']>(values.identifiers);
+  const [searchString, setSearchString] = useState<string>('');
   const { t } = useTranslation();
   const { defaultPatientIdentifierTypes } = useConfig();
   const defaultPatientIdentifierTypesMap = useMemo(() => {
@@ -65,17 +38,11 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
     setUnsavedIdentifierTypes(values.identifiers);
   }, [values.identifiers]);
 
-  const handleSearch = useCallback(
-    (event) => setSearchString(event?.target?.value ?? ""),
-    []
-  );
+  const handleSearch = useCallback((event) => setSearchString(event?.target?.value ?? ''), []);
 
   const filteredIdentifiers = useMemo(
-    () =>
-      identifierTypes?.filter((identifier) =>
-        identifier?.name?.toLowerCase().includes(searchString.toLowerCase())
-      ),
-    [searchString, identifierTypes]
+    () => identifierTypes?.filter((identifier) => identifier?.name?.toLowerCase().includes(searchString.toLowerCase())),
+    [searchString, identifierTypes],
   );
 
   const handleCheckingIdentifier = useCallback(
@@ -88,36 +55,29 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
               identifierType,
               values.identifiers[identifierType.fieldName] ??
                 initialFormValues.identifiers[identifierType.fieldName] ??
-                {}
+                {},
             ),
           };
         }
         if (unsavedIdentifierTypes[identifierType.fieldName]) {
           return Object.fromEntries(
-            Object.entries(unsavedIdentifierTypes).filter(
-              ([fieldName]) => fieldName !== identifierType.fieldName
-            )
+            Object.entries(unsavedIdentifierTypes).filter(([fieldName]) => fieldName !== identifierType.fieldName),
           );
         }
         return unsavedIdentifierTypes;
       }),
-    [initialFormValues.identifiers, values.identifiers]
+    [initialFormValues.identifiers, values.identifiers],
   );
 
-  const handleSelectingIdentifierSource = (
-    identifierType: PatientIdentifierType,
-    sourceUuid
-  ) =>
+  const handleSelectingIdentifierSource = (identifierType: PatientIdentifierType, sourceUuid) =>
     setUnsavedIdentifierTypes((unsavedIdentifierTypes) => ({
       ...unsavedIdentifierTypes,
       [identifierType.fieldName]: {
         ...unsavedIdentifierTypes[identifierType.fieldName],
         ...setIdentifierSource(
-          identifierType.identifierSources.find(
-            (source) => source.uuid === sourceUuid
-          ),
+          identifierType.identifierSources.find((source) => source.uuid === sourceUuid),
           unsavedIdentifierTypes[identifierType.fieldName].identifierValue,
-          unsavedIdentifierTypes[identifierType.fieldName].initialValue
+          unsavedIdentifierTypes[identifierType.fieldName].initialValue,
         ),
       },
     }));
@@ -125,8 +85,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
   const identifierTypeFields = useMemo(
     () =>
       filteredIdentifiers.map((identifierType) => {
-        const patientIdentifier =
-          unsavedIdentifierTypes[identifierType.fieldName];
+        const patientIdentifier = unsavedIdentifierTypes[identifierType.fieldName];
         const isDisabled =
           identifierType.isPrimary ||
           identifierType.required ||
@@ -134,9 +93,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
           // De-selecting shouldn't be allowed if the identifier was selected earlier and is present in the form.
           // If the user wants to de-select an identifier-type already present in the form, they'll need to delete the particular identifier from the form itself.
           values.identifiers[identifierType.fieldName];
-        const isDisabledOffline =
-          isOffline &&
-          shouldBlockPatientIdentifierInOfflineMode(identifierType);
+        const isDisabledOffline = isOffline && shouldBlockPatientIdentifierInOfflineMode(identifierType);
 
         return (
           <div key={identifierType.uuid} className={styles.space05}>
@@ -144,9 +101,7 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
               id={identifierType.uuid}
               value={identifierType.uuid}
               labelText={identifierType.name}
-              onChange={(e, { checked }) =>
-                handleCheckingIdentifier(identifierType, checked)
-              }
+              onChange={(e, { checked }) => handleCheckingIdentifier(identifierType, checked)}
               checked={!!patientIdentifier}
               disabled={isDisabled || (isOffline && isDisabledOffline)}
             />
@@ -162,21 +117,14 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
                 along with a source assigned to itself(only if the identifierType has sources, else there's nothing to worry about), which by
                 default is the first identifierSource
               */
-              (!patientIdentifier.initialValue ||
-                patientIdentifier?.selectedSource) && (
+              (!patientIdentifier.initialValue || patientIdentifier?.selectedSource) && (
                 <div className={styles.radioGroup}>
                   <RadioButtonGroup
-                    legendText={t("source", "Source")}
+                    legendText={t('source', 'Source')}
                     name={`${identifierType?.fieldName}-identifier-sources`}
                     defaultSelected={patientIdentifier?.selectedSource?.uuid}
-                    onChange={(sourceUuid: string) =>
-                      handleSelectingIdentifierSource(
-                        identifierType,
-                        sourceUuid
-                      )
-                    }
-                    orientation="vertical"
-                  >
+                    onChange={(sourceUuid: string) => handleSelectingIdentifierSource(identifierType, sourceUuid)}
+                    orientation="vertical">
                     {identifierType?.identifierSources.map((source) => (
                       <RadioButton
                         key={source.uuid}
@@ -205,54 +153,37 @@ const PatientIdentifierOverlay: React.FC<PatientIdentifierOverlayProps> = ({
       isOffline,
       handleCheckingIdentifier,
       t,
-    ]
+    ],
   );
 
   const handleConfiguringIdentifiers = useCallback(() => {
-    setFieldValue("identifiers", unsavedIdentifierTypes);
+    setFieldValue('identifiers', unsavedIdentifierTypes);
     closeOverlay();
   }, [unsavedIdentifierTypes, setFieldValue, closeOverlay]);
 
   return (
     <Overlay
       close={closeOverlay}
-      header={t("configureIdentifiers", "Configure identifiers")}
+      header={t('configureIdentifiers', 'Configure identifiers')}
       buttonsGroup={
-        <ButtonSet
-          className={isDesktop(layout) ? styles.desktop : styles.tablet}
-        >
-          <Button
-            className={styles.button}
-            kind="secondary"
-            onClick={closeOverlay}
-          >
-            {t("cancel", "Cancel")}
+        <ButtonSet className={isDesktop(layout) ? styles.desktop : styles.tablet}>
+          <Button className={styles.button} kind="secondary" onClick={closeOverlay}>
+            {t('cancel', 'Cancel')}
           </Button>
-          <Button
-            className={styles.button}
-            kind="primary"
-            onClick={handleConfiguringIdentifiers}
-          >
-            {t("configureIdentifiers", "Configure identifiers")}
+          <Button className={styles.button} kind="primary" onClick={handleConfiguringIdentifiers}>
+            {t('configureIdentifiers', 'Configure identifiers')}
           </Button>
         </ButtonSet>
-      }
-    >
+      }>
       <div>
         <p className={styles.bodyLong02}>
-          {t(
-            "IDInstructions",
-            "Select the identifiers you'd like to add for this patient:"
-          )}
+          {t('IDInstructions', "Select the identifiers you'd like to add for this patient:")}
         </p>
         {identifierTypes.length > 7 && (
           <div className={styles.space05}>
             <Search
-              labelText={t("searchIdentifierPlaceholder", "Search identifier")}
-              placeholder={t(
-                "searchIdentifierPlaceholder",
-                "Search identifier"
-              )}
+              labelText={t('searchIdentifierPlaceholder', 'Search identifier')}
+              placeholder={t('searchIdentifierPlaceholder', 'Search identifier')}
               onChange={handleSearch}
               value={searchString}
             />

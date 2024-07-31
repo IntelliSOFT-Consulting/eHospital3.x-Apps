@@ -1,43 +1,40 @@
 import {
+  fhirBaseUrl,
   makeUrl,
   messageOmrsServiceWorker,
   navigate,
+  restBaseUrl,
   setupDynamicOfflineDataHandler,
   setupOfflineSync,
   type SyncProcessOptions,
-} from "@openmrs/esm-framework";
-import {
-  patientRegistration,
-  personRelationshipRepresentation,
-} from "./constants";
+} from '@openmrs/esm-framework';
+import { patientRegistration, personRelationshipRepresentation } from './constants';
 import {
   fetchAddressTemplate,
   fetchAllFieldDefinitionTypes,
   fetchAllRelationshipTypes,
   fetchCurrentSession,
   fetchPatientIdentifierTypesWithSources,
-} from "./offline.resources";
-import { FormManager } from "./patient-registration/form-manager";
-import { type PatientRegistration } from "./patient-registration/patient-registration.types";
+} from './offline.resources';
+import { FormManager } from './patient-registration/form-manager';
+import { type PatientRegistration } from './patient-registration/patient-registration.types';
 
 export function setupOffline() {
   setupOfflineSync(patientRegistration, [], syncPatientRegistration, {
     onBeginEditSyncItem(syncItem) {
-      navigate({
-        to: `\${openmrsSpaBase}/patient/${syncItem.content.fhirPatient.id}/edit`,
-      });
+      navigate({ to: `\${openmrsSpaBase}/patient/${syncItem.content.fhirPatient.id}/edit` });
     },
   });
 
   precacheStaticAssets();
 
   setupDynamicOfflineDataHandler({
-    id: "esm-patient-registration-app:patient",
-    type: "patient",
-    displayName: "Patient registration",
+    id: 'esm-patient-registration-app:patient',
+    type: 'patient',
+    displayName: 'Patient registration',
     async isSynced(patientUuid) {
       const expectedUrls = getPatientUrlsToBeCached(patientUuid);
-      const cache = await caches.open("omrs-spa-cache-v1");
+      const cache = await caches.open('omrs-spa-cache-v1');
       const keys = (await cache.keys()).map((key) => key.url);
       return expectedUrls.every((url) => keys.includes(url));
     },
@@ -46,12 +43,12 @@ export function setupOffline() {
       await Promise.allSettled(
         urlsToCache.map(async (url) => {
           await messageOmrsServiceWorker({
-            type: "registerDynamicRoute",
+            type: 'registerDynamicRoute',
             url,
           });
 
           await fetch(url);
-        })
+        }),
       );
     },
   });
@@ -59,10 +56,10 @@ export function setupOffline() {
 
 function getPatientUrlsToBeCached(patientUuid: string) {
   return [
-    `/ws/fhir2/R4/Patient/${patientUuid}`,
-    `/ws/rest/v1/relationship?v=${personRelationshipRepresentation}&person=${patientUuid}`,
-    `/ws/rest/v1/person/${patientUuid}/attribute`,
-    `/ws/rest/v1/patient/${patientUuid}/identifier?v=custom:(uuid,identifier,identifierType:(uuid,required,name),preferred)`,
+    `${fhirBaseUrl}/Patient/${patientUuid}`,
+    `${restBaseUrl}/relationship?v=${personRelationshipRepresentation}&person=${patientUuid}`,
+    `${restBaseUrl}/person/${patientUuid}/attribute`,
+    `${restBaseUrl}/patient/${patientUuid}/identifier?v=custom:(uuid,identifier,identifierType:(uuid,required,name),preferred)`,
   ].map((url) => window.origin + makeUrl(url));
 }
 
@@ -78,7 +75,7 @@ async function precacheStaticAssets() {
 
 export async function syncPatientRegistration(
   queuedPatient: PatientRegistration,
-  options: SyncProcessOptions<PatientRegistration>
+  options: SyncProcessOptions<PatientRegistration>,
 ) {
   await FormManager.savePatientFormOnline(
     queuedPatient._patientRegistrationData.isNewPatient,
@@ -91,6 +88,6 @@ export async function syncPatientRegistration(
     queuedPatient._patientRegistrationData.currentUser,
     queuedPatient._patientRegistrationData.config,
     queuedPatient._patientRegistrationData.savePatientTransactionManager,
-    options.abort
+    options.abort,
   );
 }

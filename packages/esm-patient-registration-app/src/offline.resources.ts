@@ -1,19 +1,14 @@
-import React from "react";
-import find from "lodash-es/find";
-import camelCase from "lodash-es/camelCase";
-import escapeRegExp from "lodash-es/escapeRegExp";
-import {
-  getConfig,
-  messageOmrsServiceWorker,
-  openmrsFetch,
-  type Session,
-} from "@openmrs/esm-framework";
+import React from 'react';
+import find from 'lodash-es/find';
+import camelCase from 'lodash-es/camelCase';
+import escapeRegExp from 'lodash-es/escapeRegExp';
+import { getConfig, messageOmrsServiceWorker, openmrsFetch, restBaseUrl, type Session } from '@openmrs/esm-framework';
 import type {
   PatientIdentifierType,
   FetchedPatientIdentifierType,
   AddressTemplate,
-} from "./patient-registration/patient-registration.types";
-import { cacheForOfflineHeaders, moduleName } from "./constants";
+} from './patient-registration/patient-registration.types';
+import { cacheForOfflineHeaders, moduleName } from './constants';
 
 export interface Resources {
   addressTemplate: AddressTemplate;
@@ -25,21 +20,17 @@ export interface Resources {
 export const ResourcesContext = React.createContext<Resources>(null);
 
 export async function fetchCurrentSession(): Promise<Session> {
-  const { data } = await cacheAndFetch<Session>("/ws/rest/v1/session");
+  const { data } = await cacheAndFetch<Session>(`${restBaseUrl}/session`);
   return data;
 }
 
 export async function fetchAddressTemplate() {
-  const { data } = await cacheAndFetch<AddressTemplate>(
-    "/ws/rest/v1/addresstemplate"
-  );
+  const { data } = await cacheAndFetch<AddressTemplate>(`${restBaseUrl}/addresstemplate`);
   return data;
 }
 
 export async function fetchAllRelationshipTypes() {
-  const { data } = await cacheAndFetch(
-    "/ws/rest/v1/relationshiptype?v=default"
-  );
+  const { data } = await cacheAndFetch(`${restBaseUrl}/relationshiptype?v=default`);
   return data;
 }
 
@@ -50,9 +41,7 @@ export async function fetchAllFieldDefinitionTypes() {
     return;
   }
 
-  const fieldDefinitionPromises = config.fieldDefinitions.map((def) =>
-    fetchFieldDefinitionType(def)
-  );
+  const fieldDefinitionPromises = config.fieldDefinitions.map((def) => fetchFieldDefinitionType(def));
 
   const fieldDefinitionResults = await Promise.all(fieldDefinitionPromises);
 
@@ -67,74 +56,67 @@ export async function fetchAllFieldDefinitionTypes() {
 }
 
 async function fetchFieldDefinitionType(fieldDefinition) {
-  let apiUrl = "";
+  let apiUrl = '';
 
-  if (fieldDefinition.type === "person attribute") {
-    apiUrl = `/ws/rest/v1/personattributetype/${fieldDefinition.uuid}`;
+  if (fieldDefinition.type === 'person attribute') {
+    apiUrl = `${restBaseUrl}/personattributetype/${fieldDefinition.uuid}`;
   }
 
   if (fieldDefinition.answerConceptSetUuid) {
-    await cacheAndFetch(
-      `/ws/rest/v1/concept/${fieldDefinition.answerConceptSetUuid}`
-    );
+    await cacheAndFetch(`${restBaseUrl}/concept/${fieldDefinition.answerConceptSetUuid}`);
   }
   const { data } = await cacheAndFetch(apiUrl);
   return data;
 }
 
-export async function fetchPatientIdentifierTypesWithSources(): Promise<
-  Array<PatientIdentifierType>
-> {
+export async function fetchPatientIdentifierTypesWithSources(): Promise<Array<PatientIdentifierType>> {
   const patientIdentifierTypes = await fetchPatientIdentifierTypes();
 
   // @ts-ignore Reason: The required props of the type are generated below.
-  const identifierTypes: Array<PatientIdentifierType> =
-    patientIdentifierTypes.filter(Boolean);
+  const identifierTypes: Array<PatientIdentifierType> = patientIdentifierTypes.filter(Boolean);
 
-  const [autoGenOptions, ...allIdentifierSources] = await Promise.all([
+  const [autoGenOptions, identifierSourcesResponse] = await Promise.all([
     fetchAutoGenerationOptions(),
-    ...identifierTypes.map((identifierType) =>
-      fetchIdentifierSources(identifierType.uuid)
-    ),
+    fetchIdentifierSources(),
   ]);
 
+  const allIdentifierSources = identifierSourcesResponse.data.results;
+
   for (let i = 0; i < identifierTypes?.length; i++) {
-    identifierTypes[i].identifierSources = allIdentifierSources[
-      i
-    ].data.results.map((source) => {
-      const option = find(autoGenOptions.data.results, {
-        source: { uuid: source.uuid },
+    identifierTypes[i].identifierSources = allIdentifierSources
+      .filter((source) => source.identifierType.uuid === identifierTypes[i].uuid)
+      .map((source) => {
+        const option = find(autoGenOptions.data.results, { source: { uuid: source.uuid } });
+        source.autoGenerationOption = option;
+        return source;
       });
-      source.autoGenerationOption = option;
-      return source;
-    });
   }
 
   return identifierTypes;
 }
 
-async function fetchPatientIdentifierTypes(): Promise<
-  Array<FetchedPatientIdentifierType>
-> {
-  const [patientIdentifierTypesResponse, primaryIdentifierTypeResponse] =
-    await Promise.all([
-      cacheAndFetch(
-        "/ws/rest/v1/patientidentifiertype?v=custom:(display,uuid,name,format,required,uniquenessBehavior)"
-      ),
-      cacheAndFetch(
-        "/ws/rest/v1/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType"
-      ),
-    ]);
+async function fetchPatientIdentifierTypes(): Promise<Array<FetchedPatientIdentifierType>> {
+  const [patientIdentifierTypesResponse, primaryIdentifierTypeResponse] = await Promise.all([
+    cacheAndFetch(
+      `${restBaseUrl}/patientidentifiertype?v=custom:(display,uuid,name,format,required,uniquenessBehavior)`,
+    ),
+    cacheAndFetch(`${restBaseUrl}/metadatamapping/termmapping?v=full&code=emr.primaryIdentifierType`),
+  ]);
 
   if (patientIdentifierTypesResponse.ok) {
     // Primary identifier type is to be kept at the top of the list.
-    const patientIdentifierTypes =
-      patientIdentifierTypesResponse?.data?.results;
+    const patientIdentifierTypes = patientIdentifierTypesResponse?.data?.results;
 
-    const primaryIdentifierTypeUuid =
-      primaryIdentifierTypeResponse?.data?.results?.[0]?.metadataUuid;
+    const primaryIdentifierTypeUuid = primaryIdentifierTypeResponse?.data?.results?.[0]?.metadataUuid;
 
-    let identifierTypes = [];
+    let identifierTypes = primaryIdentifierTypeResponse?.ok
+      ? [
+          // mapPatientIdentifierType(
+          //   patientIdentifierTypes?.find((type) => type.uuid === primaryIdentifierTypeUuid),
+          //   true,
+          // ),
+        ]
+      : [];
 
     patientIdentifierTypes.forEach((type) => {
       if (type.uuid !== primaryIdentifierTypeUuid) {
@@ -147,28 +129,23 @@ async function fetchPatientIdentifierTypes(): Promise<
   return [];
 }
 
-async function fetchIdentifierSources(identifierType: string) {
-  return await cacheAndFetch(
-    `/ws/rest/v1/idgen/identifiersource?v=default&identifierType=${identifierType}`
-  );
+async function fetchIdentifierSources() {
+  return await cacheAndFetch(`${restBaseUrl}/idgen/identifiersource?v=default`);
 }
 
 async function fetchAutoGenerationOptions(abortController?: AbortController) {
-  return await cacheAndFetch(`/ws/rest/v1/idgen/autogenerationoption?v=full`);
+  return await cacheAndFetch(`${restBaseUrl}/idgen/autogenerationoption?v=full`);
 }
 
 async function cacheAndFetch<T = any>(url?: string) {
   const abortController = new AbortController();
 
   await messageOmrsServiceWorker({
-    type: "registerDynamicRoute",
+    type: 'registerDynamicRoute',
     pattern: escapeRegExp(url),
   });
 
-  return await openmrsFetch<T>(url, {
-    headers: cacheForOfflineHeaders,
-    signal: abortController?.signal,
-  });
+  return await openmrsFetch<T>(url, { headers: cacheForOfflineHeaders, signal: abortController?.signal });
 }
 
 function mapPatientIdentifierType(patientIdentifierType, isPrimary) {
@@ -179,6 +156,6 @@ function mapPatientIdentifierType(patientIdentifierType, isPrimary) {
     uuid: patientIdentifierType.uuid,
     format: patientIdentifierType.format,
     isPrimary,
-    uniquenessBehavior: patientIdentifierType.uniquenessBehavior,
+    uniquenessBehavior: patientIdentifierType?.uniquenessBehavior,
   };
 }

@@ -1,15 +1,16 @@
-import { type FetchResponse, openmrsFetch } from "@openmrs/esm-framework";
-import useSWRImmutable from "swr/immutable";
-import { type PersonAttributeTypeResponse } from "../../patient-registration.types";
+import { type FetchResponse, openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import useSWRImmutable from 'swr/immutable';
+import { type PersonAttributeTypeResponse } from '../../patient-registration.types';
 
 export function usePersonAttributeType(personAttributeTypeUuid: string): {
   data: PersonAttributeTypeResponse;
   isLoading: boolean;
   error: any;
 } {
-  const { data, error, isLoading } = useSWRImmutable<
-    FetchResponse<PersonAttributeTypeResponse>
-  >(`/ws/rest/v1/personattributetype/${personAttributeTypeUuid}`, openmrsFetch);
+  const { data, error, isLoading } = useSWRImmutable<FetchResponse<PersonAttributeTypeResponse>>(
+    `${restBaseUrl}/personattributetype/${personAttributeTypeUuid}`,
+    openmrsFetch,
+  );
 
   return {
     data: data?.data,

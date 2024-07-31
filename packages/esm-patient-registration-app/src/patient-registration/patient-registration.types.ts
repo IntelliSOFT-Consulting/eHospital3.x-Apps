@@ -1,6 +1,6 @@
-import { type OpenmrsResource, type Session } from "@openmrs/esm-framework";
-import { type RegistrationConfig } from "../config-schema";
-import { type SavePatientTransactionManager } from "./form-manager";
+import { type OpenmrsResource, type Session } from '@openmrs/esm-framework';
+import { type RegistrationConfig } from '../config-schema';
+import { type SavePatientTransactionManager } from './form-manager';
 
 interface NameValue {
   uuid: string;
@@ -145,7 +145,7 @@ export interface RelationshipValue {
    * @kind DELETE -> deletes an existing relationship
    * @kind undefined -> no operation on the existing relationship
    */
-  action?: "ADD" | "UPDATE" | "DELETE";
+  action?: 'ADD' | 'UPDATE' | 'DELETE';
   /**
    * Value kept for restoring initial relationshipType value
    */
@@ -184,9 +184,6 @@ export interface FormValues {
   address: {
     [addressField: string]: string;
   };
-  observation?: ObsResponse;
-  concepts?: Array<ConceptAnswers>;
-  token?: string;
 }
 
 export interface PatientUuidMapType {
@@ -246,7 +243,7 @@ export interface PersonAttributeResponse {
   attributeType: {
     display: string;
     uuid: string;
-    format: "org.openmrs.Concept" | string;
+    format: 'org.openmrs.Concept' | string;
   };
 }
 
@@ -267,30 +264,28 @@ export interface ConceptAnswers {
 }
 
 export type AddressProperties =
-  | "cityVillage"
-  | "stateProvince"
-  | "countyDistrict"
-  | "postalCode"
-  | "country"
-  | "address1"
-  | "address2"
-  | "address3"
-  | "address4"
-  | "address5"
-  | "address6"
-  | "address7"
-  | "address8"
-  | "address9"
-  | "address10"
-  | "address11"
-  | "address12"
-  | "address13"
-  | "address14"
-  | "address15";
+  | 'cityVillage'
+  | 'stateProvince'
+  | 'countyDistrict'
+  | 'postalCode'
+  | 'country'
+  | 'address1'
+  | 'address2'
+  | 'address3'
+  | 'address4'
+  | 'address5'
+  | 'address6'
+  | 'address7'
+  | 'address8'
+  | 'address9'
+  | 'address10'
+  | 'address11'
+  | 'address12'
+  | 'address13'
+  | 'address14'
+  | 'address15';
 
-export type ExtensibleAddressProperties =
-  | { [p in AddressProperties]?: string }
-  | null;
+export type ExtensibleAddressProperties = { [p in AddressProperties]?: string } | null;
 
 export interface AddressTemplate {
   displayName: string | null;
@@ -298,7 +293,7 @@ export interface AddressTemplate {
   country: string | null;
   lines: Array<
     Array<{
-      isToken: "IS_NOT_ADDR_TOKEN" | "IS_ADDR_TOKEN";
+      isToken: 'IS_NOT_ADDR_TOKEN' | 'IS_ADDR_TOKEN';
       displayText: string;
       codeName?: AddressProperties;
       displaySize?: string;
@@ -320,14 +315,4 @@ export interface RestAddressTemplate {
   property: string;
   display: string;
   value: string;
-}
-export interface ObsResponse {
-  results: Array<{
-    obs: Array<{
-      uuid: string;
-      display: string;
-      value: OpenmrsResource;
-      concept: OpenmrsResource;
-    }>;
-  }>;
 }

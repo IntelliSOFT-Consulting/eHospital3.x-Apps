@@ -5,13 +5,13 @@ export const generateFormatting = (order: Array<string>, separator: string) => {
 
     order.forEach((key, index) => {
       switch (key) {
-        case "d":
+        case 'd':
           date.setDate(parseInt(parts[index]));
           break;
-        case "m":
+        case 'm':
           date.setMonth(parseInt(parts[index]) - 1);
           break;
-        case "Y":
+        case 'Y':
           date.setFullYear(parseInt(parts[index]));
           break;
       }
@@ -21,7 +21,7 @@ export const generateFormatting = (order: Array<string>, separator: string) => {
 
   const format = (date: Date) => {
     if (date === null) {
-      return "";
+      return '';
     } else if (!(date instanceof Date)) {
       return date;
     } else {
@@ -29,13 +29,13 @@ export const generateFormatting = (order: Array<string>, separator: string) => {
 
       order.forEach((key, index) => {
         switch (key) {
-          case "d":
+          case 'd':
             parts[index] = date.getDate();
             break;
-          case "m":
+          case 'm':
             parts[index] = date.getMonth() + 1;
             break;
-          case "Y":
+          case 'Y':
             parts[index] = date.getFullYear();
             break;
         }
@@ -45,9 +45,7 @@ export const generateFormatting = (order: Array<string>, separator: string) => {
     }
   };
 
-  const placeHolder = order
-    .map((x) => (x === "Y" ? "YYYY" : x + x))
-    .join(separator);
+  const placeHolder = order.map((x) => (x === 'Y' ? 'YYYY' : x + x)).join(separator);
   const dateFormat = order.join(separator);
 
   return { parse, format, placeHolder, dateFormat };

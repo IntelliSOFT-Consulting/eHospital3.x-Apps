@@ -1,58 +1,37 @@
-import React, { useState, useCallback, useContext, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { useField } from "formik";
-import { Button } from "@carbon/react";
-import { TrashCan, Edit, Reset } from "@carbon/react/icons";
-import { ResourcesContext } from "../../../../offline.resources";
-import { showModal, useConfig, UserHasAccess } from "@openmrs/esm-framework";
-import { shouldBlockPatientIdentifierInOfflineMode } from "./utils";
-import {
-  deleteIdentifierType,
-  setIdentifierSource,
-} from "../../../field/id/id-field.component";
-import { type PatientIdentifierValue } from "../../../patient-registration.types";
-import { PatientRegistrationContext } from "../../../patient-registration-context";
-import { Input } from "../../basic-input/input/input.component";
-import styles from "../../input.scss";
+import React, { useState, useCallback, useContext, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useField } from 'formik';
+import { Button } from '@carbon/react';
+import { TrashCan, Edit, Reset } from '@carbon/react/icons';
+import { ResourcesContext } from '../../../../offline.resources';
+import { showModal, useConfig, UserHasAccess } from '@openmrs/esm-framework';
+import { shouldBlockPatientIdentifierInOfflineMode } from './utils';
+import { deleteIdentifierType, setIdentifierSource } from '../../../field/id/id-field.component';
+import { type PatientIdentifierValue } from '../../../patient-registration.types';
+import { PatientRegistrationContext } from '../../../patient-registration-context';
+import { Input } from '../../basic-input/input/input.component';
+import styles from '../../input.scss';
 
 interface IdentifierInputProps {
   patientIdentifier: PatientIdentifierValue;
   fieldName: string;
 }
 
-export const IdentifierInput: React.FC<IdentifierInputProps> = ({
-  patientIdentifier,
-  fieldName,
-}) => {
+export const IdentifierInput: React.FC<IdentifierInputProps> = ({ patientIdentifier, fieldName }) => {
   const { t } = useTranslation();
   const { defaultPatientIdentifierTypes } = useConfig();
   const { identifierTypes } = useContext(ResourcesContext);
-  const { isOffline, values, setFieldValue } = useContext(
-    PatientRegistrationContext
-  );
+  const { isOffline, values, setFieldValue } = useContext(PatientRegistrationContext);
   const identifierType = useMemo(
-    () =>
-      identifierTypes.find(
-        (identifierType) =>
-          identifierType.uuid === patientIdentifier.identifierTypeUuid
-      ),
-    [patientIdentifier, identifierTypes]
+    () => identifierTypes.find((identifierType) => identifierType.uuid === patientIdentifier.identifierTypeUuid),
+    [patientIdentifier, identifierTypes],
   );
-  const {
-    autoGeneration,
-    initialValue,
-    identifierValue,
-    identifierName,
-    required,
-  } = patientIdentifier;
-  const [hideInputField, setHideInputField] = useState(
-    autoGeneration || initialValue === identifierValue
-  );
+  const { autoGeneration, initialValue, identifierValue, identifierName, required } = patientIdentifier;
+  const [hideInputField, setHideInputField] = useState(autoGeneration || initialValue === identifierValue);
   const name = `identifiers.${fieldName}.identifierValue`;
   const [identifierField, identifierFieldMeta] = useField(name);
 
-  const disabled =
-    isOffline && shouldBlockPatientIdentifierInOfflineMode(identifierType);
+  const disabled = isOffline && shouldBlockPatientIdentifierInOfflineMode(identifierType);
 
   const defaultPatientIdentifierTypesMap = useMemo(() => {
     const map = {};
@@ -77,11 +56,7 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
     setHideInputField(false);
     setFieldValue(`identifiers.${fieldName}`, {
       ...patientIdentifier,
-      ...setIdentifierSource(
-        identifierType?.identifierSources?.[0],
-        initialValue,
-        initialValue
-      ),
+      ...setIdentifierSource(identifierType?.identifierSources?.[0], initialValue, initialValue),
     });
   };
 
@@ -93,27 +68,18 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
     */
 
     if (initialValue) {
-      const confirmDeleteIdentifierModal = showModal(
-        "delete-identifier-confirmation-modal",
-        {
-          deleteIdentifier: (deleteIdentifier) => {
-            if (deleteIdentifier) {
-              setFieldValue(
-                "identifiers",
-                deleteIdentifierType(values.identifiers, fieldName)
-              );
-            }
-            confirmDeleteIdentifierModal();
-          },
-          identifierName,
-          initialValue,
-        }
-      );
+      const confirmDeleteIdentifierModal = showModal('delete-identifier-confirmation-modal', {
+        deleteIdentifier: (deleteIdentifier) => {
+          if (deleteIdentifier) {
+            setFieldValue('identifiers', deleteIdentifierType(values.identifiers, fieldName));
+          }
+          confirmDeleteIdentifierModal();
+        },
+        identifierName,
+        initialValue,
+      });
     } else {
-      setFieldValue(
-        "identifiers",
-        deleteIdentifierType(values.identifiers, fieldName)
-      );
+      setFieldValue('identifiers', deleteIdentifierType(values.identifiers, fieldName));
     }
   };
 
@@ -127,9 +93,7 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
           disabled={disabled}
           required={required}
           invalid={!!(identifierFieldMeta.touched && identifierFieldMeta.error)}
-          invalidText={
-            identifierFieldMeta.error && t(identifierFieldMeta.error)
-          }
+          invalidText={identifierFieldMeta.error && t(identifierFieldMeta.error)}
           // t('identifierValueRequired', 'Identifier value is required')
           {...identifierField}
         />
@@ -137,67 +101,55 @@ export const IdentifierInput: React.FC<IdentifierInputProps> = ({
         <div className={styles.textID}>
           <p className={styles.label}>{identifierName}</p>
           <p className={styles.bodyShort02}>
-            {autoGeneration
-              ? t("autoGeneratedPlaceholderText", "Auto-generated")
-              : identifierValue}
+            {autoGeneration ? t('autoGeneratedPlaceholderText', 'Auto-generated') : identifierValue}
           </p>
           <input type="hidden" {...identifierField} disabled />
           {/* This is added for any error descriptions */}
           {!!(identifierFieldMeta.touched && identifierFieldMeta.error) && (
-            <span className={styles.dangerLabel01}>
-              {identifierFieldMeta.error && t(identifierFieldMeta.error)}
-            </span>
+            <span className={styles.dangerLabel01}>{identifierFieldMeta.error && t(identifierFieldMeta.error)}</span>
           )}
         </div>
       )}
-      <div style={{ marginBottom: "1rem" }}>
-        {!patientIdentifier.required &&
-          patientIdentifier.initialValue &&
-          hideInputField && (
-            <UserHasAccess privilege="Edit Patient Identifiers">
-              <Button
-                size="md"
-                kind="ghost"
-                onClick={handleEdit}
-                iconDescription={t("editIdentifierTooltip", "Edit")}
-                disabled={disabled}
-                hasIconOnly
-              >
-                <Edit size={16} />
-              </Button>
-            </UserHasAccess>
-          )}
+      <div style={{ marginBottom: '1rem' }}>
+        {!patientIdentifier.required && patientIdentifier.initialValue && hideInputField && (
+          <UserHasAccess privilege="Edit Patient Identifiers">
+            <Button
+              size="md"
+              kind="ghost"
+              onClick={handleEdit}
+              iconDescription={t('editIdentifierTooltip', 'Edit')}
+              disabled={disabled}
+              hasIconOnly>
+              <Edit size={16} />
+            </Button>
+          </UserHasAccess>
+        )}
         {initialValue && initialValue !== identifierValue && (
           <UserHasAccess privilege="Edit Patient Identifiers">
             <Button
               size="md"
               kind="ghost"
               onClick={handleReset}
-              iconDescription={t("resetIdentifierTooltip", "Reset")}
+              iconDescription={t('resetIdentifierTooltip', 'Reset')}
               disabled={disabled}
-              hasIconOnly
-            >
+              hasIconOnly>
               <Reset size={16} />
             </Button>
           </UserHasAccess>
         )}
-        {!patientIdentifier.required &&
-          !defaultPatientIdentifierTypesMap[
-            patientIdentifier.identifierTypeUuid
-          ] && (
-            <UserHasAccess privilege="Delete Patient Identifiers">
-              <Button
-                size="md"
-                kind="danger--ghost"
-                onClick={handleDelete}
-                iconDescription={t("deleteIdentifierTooltip", "Delete")}
-                disabled={disabled}
-                hasIconOnly
-              >
-                <TrashCan size={16} />
-              </Button>
-            </UserHasAccess>
-          )}
+        {!patientIdentifier.required && !defaultPatientIdentifierTypesMap[patientIdentifier.identifierTypeUuid] && (
+          <UserHasAccess privilege="Delete Patient Identifiers">
+            <Button
+              size="md"
+              kind="ghost"
+              onClick={handleDelete}
+              iconDescription={t('deleteIdentifierTooltip', 'Delete')}
+              disabled={disabled}
+              hasIconOnly>
+              <TrashCan size={16} />
+            </Button>
+          </UserHasAccess>
+        )}
       </div>
     </div>
   );

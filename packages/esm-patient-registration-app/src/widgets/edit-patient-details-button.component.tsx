@@ -1,17 +1,14 @@
-import React from "react";
-import { navigate } from "@openmrs/esm-framework";
-import { useTranslation } from "react-i18next";
-import styles from "./edit-patient-details-button.scss";
+import React from 'react';
+import { navigate } from '@openmrs/esm-framework';
+import { useTranslation } from 'react-i18next';
+import styles from './edit-patient-details-button.scss';
 
 interface EditPatientDetailsButtonProps {
   onTransition?: () => void;
   patientUuid: string;
 }
 
-const EditPatientDetailsButton: React.FC<EditPatientDetailsButtonProps> = ({
-  patientUuid,
-  onTransition,
-}) => {
+const EditPatientDetailsButton: React.FC<EditPatientDetailsButtonProps> = ({ patientUuid, onTransition }) => {
   const { t } = useTranslation();
   const handleClick = React.useCallback(() => {
     navigate({ to: `\${openmrsSpaBase}/patient/${patientUuid}/edit` });
@@ -23,12 +20,11 @@ const EditPatientDetailsButton: React.FC<EditPatientDetailsButtonProps> = ({
       <button
         className="cds--overflow-menu-options__btn"
         role="menuitem"
-        title={t("editPatientDetails", "Edit patient details")}
+        title={t('editPatientDetails', 'Edit patient details')}
         data-floating-menu-primary-focus
-        onClick={handleClick}
-      >
+        onClick={handleClick}>
         <span className="cds--overflow-menu-options__option-content">
-          {t("editPatientDetails", "Edit patient details")}
+          {t('editPatientDetails', 'Edit patient details')}
         </span>
       </button>
     </li>

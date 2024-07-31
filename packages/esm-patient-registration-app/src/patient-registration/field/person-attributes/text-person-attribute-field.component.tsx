@@ -1,10 +1,10 @@
-import React from "react";
-import classNames from "classnames";
-import { Field } from "formik";
-import { useTranslation } from "react-i18next";
-import { Input } from "../../input/basic-input/input/input.component";
-import { type PersonAttributeTypeResponse } from "../../patient-registration.types";
-import styles from "./../field.scss";
+import React from 'react';
+import classNames from 'classnames';
+import { Field } from 'formik';
+import { useTranslation } from 'react-i18next';
+import { Input } from '../../input/basic-input/input/input.component';
+import { type PersonAttributeTypeResponse } from '../../patient-registration.types';
+import styles from './../field.scss';
 
 export interface TextPersonAttributeFieldProps {
   id: string;
@@ -24,29 +24,21 @@ export function TextPersonAttributeField({
   const { t } = useTranslation();
 
   const validateInput = (value: string) => {
-    if (
-      !value ||
-      !validationRegex ||
-      validationRegex === "" ||
-      typeof validationRegex !== "string" ||
-      value === ""
-    ) {
+    if (!value || !validationRegex || validationRegex === '' || typeof validationRegex !== 'string' || value === '') {
       return;
     }
     const regex = new RegExp(validationRegex);
     if (regex.test(value)) {
       return;
     } else {
-      return t("invalidInput", "Invalid Input");
+      return t('invalidInput', 'Invalid Input');
     }
   };
 
   const fieldName = `attributes.${personAttributeType.uuid}`;
 
   return (
-    <div
-      className={classNames(styles.customField, styles.halfWidthInDesktopView)}
-    >
+    <div className={classNames(styles.customField, styles.halfWidthInDesktopView)}>
       <Field name={fieldName} validate={validateInput}>
         {({ field, form: { touched, errors }, meta }) => {
           return (

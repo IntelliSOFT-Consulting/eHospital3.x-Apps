@@ -1,12 +1,12 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { DummyDataInput, dummyFormValues } from "./dummy-data-input.component";
-import { initialFormValues } from "../../patient-registration.component";
-import { type FormValues } from "../../patient-registration-types";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { DummyDataInput, dummyFormValues } from './dummy-data-input.component';
+import { initialFormValues } from '../../patient-registration.component';
+import { type FormValues } from '../../patient-registration-types';
 
-jest.mock("@openmrs/esm-framework", () => {
-  const originalModule = jest.requireActual("@openmrs/esm-framework");
+jest.mock('@openmrs/esm-framework', () => {
+  const originalModule = jest.requireActual('@openmrs/esm-framework');
 
   return {
     ...originalModule,
@@ -14,7 +14,7 @@ jest.mock("@openmrs/esm-framework", () => {
   };
 });
 
-describe("dummy data input", () => {
+describe('dummy data input', () => {
   let formValues: FormValues = initialFormValues;
 
   const setupInput = async () => {
@@ -23,17 +23,17 @@ describe("dummy data input", () => {
         setValues={(values) => {
           formValues = values;
         }}
-      />
+      />,
     );
-    return screen.getByLabelText("Dummy Data Input") as HTMLButtonElement;
+    return screen.getByLabelText('Dummy Data Input') as HTMLButtonElement;
   };
 
-  it("exists", async () => {
+  it('exists', async () => {
     const input = await setupInput();
-    expect(input.type).toEqual("button");
+    expect(input.type).toEqual('button');
   });
 
-  it("can input data on button click", async () => {
+  it('can input data on button click', async () => {
     const user = userEvent.setup();
     const input = await setupInput();
 

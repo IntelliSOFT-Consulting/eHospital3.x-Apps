@@ -1,13 +1,13 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { Formik, Form } from "formik";
-import { initialFormValues } from "../../patient-registration.component";
-import { DeathInfoSection } from "./death-info-section.component";
-import { type FormValues } from "../../patient-registration.types";
-import { PatientRegistrationContext } from "../../patient-registration-context";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { Formik, Form } from 'formik';
+import { initialFormValues } from '../../patient-registration.component';
+import { DeathInfoSection } from './death-info-section.component';
+import { type FormValues } from '../../patient-registration.types';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
-jest.mock("@openmrs/esm-framework", () => {
-  const originalModule = jest.requireActual("@openmrs/esm-framework");
+jest.mock('@openmrs/esm-framework', () => {
+  const originalModule = jest.requireActual('@openmrs/esm-framework');
 
   return {
     ...originalModule,
@@ -16,7 +16,7 @@ jest.mock("@openmrs/esm-framework", () => {
 });
 
 const initialContextValues = {
-  currentPhoto: "data:image/png;base64,1234567890",
+  currentPhoto: 'data:image/png;base64,1234567890',
   identifierTypes: [],
   inEditMode: false,
   initialFormValues: {} as FormValues,
@@ -30,7 +30,7 @@ const initialContextValues = {
   } as FormValues,
 };
 
-describe("Death info section", () => {
+describe('Death info section', () => {
   const renderDeathInfoSection = (isDead) => {
     initialContextValues.values.isDead = isDead;
 
@@ -41,38 +41,24 @@ describe("Death info section", () => {
             <DeathInfoSection />
           </Form>
         </Formik>
-      </PatientRegistrationContext.Provider>
+      </PatientRegistrationContext.Provider>,
     );
   };
 
-  it("shows fields for recording death info when the patient is marked as dead", () => {
+  it('shows fields for recording death info when the patient is marked as dead', () => {
     renderDeathInfoSection(true);
 
-    expect(
-      screen.getByRole("region", { name: /death info section/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /death info/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: /is dead \(optional\)/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("textbox", { name: /date of death \(optional\)/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("combobox", { name: /cause of death \(optional\)/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /death info section/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /death info/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /is dead \(optional\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /date of death \(optional\)/i })).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: /cause of death \(optional\)/i })).toBeInTheDocument();
   });
 
-  it("has the correct number of inputs if is dead is not checked", async () => {
+  it('has the correct number of inputs if is dead is not checked', async () => {
     renderDeathInfoSection(false);
 
-    expect(
-      screen.queryByRole("textbox", { name: /date of death \(optional\)/i })
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("combobox", { name: /cause of death \(optional\)/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole('textbox', { name: /date of death \(optional\)/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole('combobox', { name: /cause of death \(optional\)/i })).not.toBeInTheDocument();
   });
 });

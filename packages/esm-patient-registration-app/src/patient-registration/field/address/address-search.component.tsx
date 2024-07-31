@@ -1,26 +1,21 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
-import { useAddressHierarchy } from "./address-hierarchy.resource";
-import { Search } from "@carbon/react";
-import { useTranslation } from "react-i18next";
-import { useFormikContext } from "formik";
-import styles from "./address-search.scss";
+import React, { useState, useRef, useEffect, useMemo } from 'react';
+import { useAddressHierarchy } from './address-hierarchy.resource';
+import { Search } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
+import { useFormikContext } from 'formik';
+import styles from './address-search.scss';
 
 interface AddressSearchComponentProps {
   addressLayout: Array<any>;
 }
 
-const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({
-  addressLayout,
-}) => {
+const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({ addressLayout }) => {
   const { t } = useTranslation();
-  const separator = " > ";
+  const separator = ' > ';
   const searchBox = useRef(null);
   const wrapper = useRef(null);
-  const [searchString, setSearchString] = useState<string>("");
-  const { addresses, isLoading, error } = useAddressHierarchy(
-    searchString,
-    separator
-  );
+  const [searchString, setSearchString] = useState<string>('');
+  const { addresses, isLoading, error } = useAddressHierarchy(searchString, separator);
   const addressOptions: Array<string> = useMemo(() => {
     const options: Set<string> = new Set();
     addresses.forEach((address) => {
@@ -44,36 +39,32 @@ const AddressSearchComponent: React.FC<AddressSearchComponentProps> = ({
     if (address) {
       const values = address.split(separator);
       addressLayout.map(({ name }, index) => {
-        setFieldValue(`address.${name}`, values?.[index] ?? "");
+        setFieldValue(`address.${name}`, values?.[index] ?? '');
       });
-      setSearchString("");
+      setSearchString('');
     }
   };
 
   const handleClickOutsideComponent = (e) => {
     if (wrapper.current && !wrapper.current.contains(e.target)) {
-      setSearchString("");
+      setSearchString('');
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutsideComponent);
+    document.addEventListener('mousedown', handleClickOutsideComponent);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutsideComponent);
+      document.removeEventListener('mousedown', handleClickOutsideComponent);
     };
   }, [wrapper]);
 
   return (
-    <div
-      className={styles.autocomplete}
-      ref={wrapper}
-      style={{ marginBottom: "1rem" }}
-    >
+    <div className={styles.autocomplete} ref={wrapper} style={{ marginBottom: '1rem' }}>
       <Search
         onChange={handleInputChange}
-        labelText={t("searchAddress", "Search address")}
-        placeholder={t("searchAddress", "Search address")}
+        labelText={t('searchAddress', 'Search address')}
+        placeholder={t('searchAddress', 'Search address')}
         ref={searchBox}
         value={searchString}
       />

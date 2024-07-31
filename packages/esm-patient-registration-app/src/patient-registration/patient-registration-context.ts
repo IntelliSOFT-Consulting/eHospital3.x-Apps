@@ -1,10 +1,7 @@
-import { useConfig } from "@openmrs/esm-framework";
-import { createContext, type SetStateAction } from "react";
-import { type RegistrationConfig } from "../config-schema";
-import {
-  type FormValues,
-  type CapturePhotoProps,
-} from "./patient-registration.types";
+import { useConfig } from '@openmrs/esm-framework';
+import { createContext, type SetStateAction } from 'react';
+import { type RegistrationConfig } from '../config-schema';
+import { type FormValues, type CapturePhotoProps } from './patient-registration.types';
 
 export interface PatientRegistrationContextProps {
   identifierTypes: Array<any>;
@@ -19,9 +16,7 @@ export interface PatientRegistrationContextProps {
   setInitialFormValues?: React.Dispatch<SetStateAction<FormValues>>;
 }
 
-export const PatientRegistrationContext = createContext<
-  PatientRegistrationContextProps | undefined
->(undefined);
+export const PatientRegistrationContext = createContext<PatientRegistrationContextProps | undefined>(undefined);
 
 export function useFieldConfig(field: string) {
   const { fieldConfigurations } = useConfig() as RegistrationConfig;

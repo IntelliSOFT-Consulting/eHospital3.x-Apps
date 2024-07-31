@@ -1,20 +1,16 @@
-import { useCallback, useContext, useEffect, useMemo } from "react";
-import { useField } from "formik";
-import useSWRImmutable from "swr/immutable";
-import { type FetchResponse, openmrsFetch } from "@openmrs/esm-framework";
-import { PatientRegistrationContext } from "../../patient-registration-context";
+import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useField } from 'formik';
+import useSWRImmutable from 'swr/immutable';
+import { type FetchResponse, openmrsFetch } from '@openmrs/esm-framework';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 
 interface AddressFields {
   addressField: string;
 }
 
 export function useOrderedAddressHierarchyLevels() {
-  const url =
-    "/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form";
-  const { data, isLoading, error } = useSWRImmutable<
-    FetchResponse<Array<AddressFields>>,
-    Error
-  >(url, openmrsFetch);
+  const url = '/module/addresshierarchy/ajax/getOrderedAddressHierarchyLevels.form';
+  const { data, isLoading, error } = useSWRImmutable<FetchResponse<Array<AddressFields>>, Error>(url, openmrsFetch);
 
   const results = useMemo(
     () => ({
@@ -22,7 +18,7 @@ export function useOrderedAddressHierarchyLevels() {
       isLoadingFieldOrder: isLoading,
       errorFetchingFieldOrder: error,
     }),
-    [data, isLoading, error]
+    [data, isLoading, error],
   );
 
   return results;
@@ -30,13 +26,11 @@ export function useOrderedAddressHierarchyLevels() {
 
 export function useAddressEntries(fetchResults, searchString) {
   const encodedSearchString = encodeURIComponent(searchString);
-  const { data, isLoading, error } = useSWRImmutable<
-    FetchResponse<Array<{ name: string }>>
-  >(
+  const { data, isLoading, error } = useSWRImmutable<FetchResponse<Array<{ name: string }>>>(
     fetchResults
       ? `module/addresshierarchy/ajax/getChildAddressHierarchyEntries.form?searchString=${encodedSearchString}`
       : null,
-    openmrsFetch
+    openmrsFetch,
   );
 
   useEffect(() => {
@@ -51,7 +45,7 @@ export function useAddressEntries(fetchResults, searchString) {
       isLoadingAddressEntries: isLoading,
       errorFetchingAddressEntries: error,
     }),
-    [data, isLoading, error]
+    [data, isLoading, error],
   );
   return results;
 }
@@ -62,17 +56,13 @@ export function useAddressEntries(fetchResults, searchString) {
  * This also returns the function to reset the lower ordered fields if the value of a field is changed.
  */
 export function useAddressEntryFetchConfig(addressField: string) {
-  const { orderedFields, isLoadingFieldOrder } =
-    useOrderedAddressHierarchyLevels();
+  const { orderedFields, isLoadingFieldOrder } = useOrderedAddressHierarchyLevels();
   const { setFieldValue } = useContext(PatientRegistrationContext);
-  const [, { value: addressValues }] = useField("address");
+  const [, { value: addressValues }] = useField('address');
 
   const index = useMemo(
-    () =>
-      !isLoadingFieldOrder
-        ? orderedFields.findIndex((field) => field === addressField)
-        : -1,
-    [orderedFields, addressField, isLoadingFieldOrder]
+    () => (!isLoadingFieldOrder ? orderedFields.findIndex((field) => field === addressField) : -1),
+    [orderedFields, addressField, isLoadingFieldOrder],
   );
 
   const addressFieldSearchConfig = useMemo(() => {
@@ -88,7 +78,7 @@ export function useAddressEntryFetchConfig(addressField: string) {
     }
     return {
       fetchEntriesForField,
-      searchString: previousSelectedValues.join("|"),
+      searchString: previousSelectedValues.join('|'),
     };
   }, [orderedFields, index, addressValues]);
 
@@ -97,7 +87,7 @@ export function useAddressEntryFetchConfig(addressField: string) {
       return;
     }
     orderedFields.slice(index + 1).map((fieldName) => {
-      setFieldValue(`address.${fieldName}`, "");
+      setFieldValue(`address.${fieldName}`, '');
     });
   }, [index, isLoadingFieldOrder, orderedFields, setFieldValue]);
 
@@ -106,7 +96,7 @@ export function useAddressEntryFetchConfig(addressField: string) {
       ...addressFieldSearchConfig,
       updateChildElements,
     }),
-    [addressFieldSearchConfig, updateChildElements]
+    [addressFieldSearchConfig, updateChildElements],
   );
 
   return results;
@@ -124,7 +114,7 @@ export function useAddressHierarchy(searchString: string, separator: string) {
     searchString
       ? `/module/addresshierarchy/ajax/getPossibleFullAddresses.form?separator=${separator}&searchString=${searchString}`
       : null,
-    openmrsFetch
+    openmrsFetch,
   );
 
   const results = useMemo(
@@ -133,16 +123,12 @@ export function useAddressHierarchy(searchString: string, separator: string) {
       error,
       isLoading,
     }),
-    [data?.data, error, isLoading]
+    [data?.data, error, isLoading],
   );
   return results;
 }
 
-export function useAddressHierarchyWithParentSearch(
-  addressField: string,
-  parentid: string,
-  query: string
-) {
+export function useAddressHierarchyWithParentSearch(addressField: string, parentid: string, query: string) {
   const { data, error, isLoading } = useSWRImmutable<
     FetchResponse<
       Array<{
@@ -155,7 +141,7 @@ export function useAddressHierarchyWithParentSearch(
     query
       ? `/module/addresshierarchy/ajax/getPossibleAddressHierarchyEntriesWithParents.form?addressField=${addressField}&limit=20&searchString=${query}&parentUuid=${parentid}`
       : null,
-    openmrsFetch
+    openmrsFetch,
   );
 
   const results = useMemo(
@@ -164,7 +150,7 @@ export function useAddressHierarchyWithParentSearch(
       isLoading,
       addresses: data?.data ?? [],
     }),
-    [data?.data, error, isLoading]
+    [data?.data, error, isLoading],
   );
 
   return results;

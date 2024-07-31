@@ -1,24 +1,19 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Button, SkeletonText } from "@carbon/react";
-import { ArrowRight } from "@carbon/react/icons";
-import {
-  useLayoutType,
-  useConfig,
-  isDesktop,
-  UserHasAccess,
-} from "@openmrs/esm-framework";
-import IdentifierSelectionOverlay from "./identifier-selection-overlay.component";
-import { IdentifierInput } from "../../input/custom-input/identifier/identifier-input.component";
-import { PatientRegistrationContext } from "../../patient-registration-context";
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Button, SkeletonText } from '@carbon/react';
+import { ArrowRight } from '@carbon/react/icons';
+import { useLayoutType, useConfig, isDesktop, UserHasAccess } from '@openmrs/esm-framework';
+import IdentifierSelectionOverlay from './identifier-selection-overlay.component';
+import { IdentifierInput } from '../../input/custom-input/identifier/identifier-input.component';
+import { PatientRegistrationContext } from '../../patient-registration-context';
 import {
   type FormValues,
   type IdentifierSource,
   type PatientIdentifierType,
   type PatientIdentifierValue,
-} from "../../patient-registration.types";
-import { ResourcesContext } from "../../../offline.resources";
-import styles from "../field.scss";
+} from '../../patient-registration.types';
+import { ResourcesContext } from '../../../offline.resources';
+import styles from '../field.scss';
 
 export function setIdentifierSource(
   identifierSource: IdentifierSource,
@@ -113,7 +108,7 @@ export const Identifiers: React.FC = () => {
         fall into an infinite run.
       */
       if (Object.keys(identifiers).length) {
-        setFieldValue("identifiers", {
+        setFieldValue('identifiers', {
           ...values.identifiers,
           ...identifiers,
         });
@@ -130,19 +125,14 @@ export const Identifiers: React.FC = () => {
 
   const closeIdentifierSelectionOverlay = useCallback(
     () => setShowIdentifierOverlay(false),
-    [setShowIdentifierOverlay]
+    [setShowIdentifierOverlay],
   );
 
   if (isLoading && !isOffline) {
     return (
-      <div
-        data-testid="loading-skeleton"
-        className={styles.halfWidthInDesktopView}
-      >
+      <div data-testid="loading-skeleton" className={styles.halfWidthInDesktopView}>
         <div className={styles.identifierLabelText}>
-          <h4 className={styles.productiveHeading02Light}>
-            {t("idFieldLabelText", "Identifiers")}
-          </h4>
+          <h4 className={styles.productiveHeading02Light}>{t('idFieldLabelText', 'Identifiers')}</h4>
         </div>
         <SkeletonText />
       </div>
@@ -151,36 +141,24 @@ export const Identifiers: React.FC = () => {
 
   return (
     <div className={styles.halfWidthInDesktopView}>
-      <UserHasAccess
-        privilege={["Get Identifier Types", "Add Patient Identifiers"]}
-      >
+      <UserHasAccess privilege={['Get Identifier Types', 'Add Patient Identifiers']}>
         <div className={styles.identifierLabelText}>
-          <h4 className={styles.productiveHeading02Light}>
-            {t("idFieldLabelText", "Identifiers")}
-          </h4>
+          <h4 className={styles.productiveHeading02Light}>{t('idFieldLabelText', 'Identifiers')}</h4>
           <Button
             kind="ghost"
             className={styles.setIDNumberButton}
-            onClick={() => setShowIdentifierOverlay(true)}
-            size={isDesktop(layout) ? "sm" : "md"}
-          >
-            {t("configure", "Configure")} <ArrowRight size={16} />
+            onClick={() => setShowIdentifierOverlay(true)}z
+            size={isDesktop(layout) ? 'sm' : 'md'}>
+            {t('configure', 'Configure')} <ArrowRight size={16} />
           </Button>
         </div>
       </UserHasAccess>
       <div>
         {Object.entries(values.identifiers).map(([fieldName, identifier]) => (
-          <IdentifierInput
-            key={fieldName}
-            fieldName={fieldName}
-            patientIdentifier={identifier}
-          />
+          <IdentifierInput key={fieldName} fieldName={fieldName} patientIdentifier={identifier} />
         ))}
         {showIdentifierOverlay && (
-          <IdentifierSelectionOverlay
-            setFieldValue={setFieldValue}
-            closeOverlay={closeIdentifierSelectionOverlay}
-          />
+          <IdentifierSelectionOverlay setFieldValue={setFieldValue} closeOverlay={closeIdentifierSelectionOverlay} />
         )}
       </div>
     </div>
