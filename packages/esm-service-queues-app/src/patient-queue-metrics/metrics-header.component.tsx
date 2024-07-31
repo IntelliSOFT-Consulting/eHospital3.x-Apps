@@ -7,7 +7,9 @@ import {
   showModal,
   useLayoutType,
   useSession,
+  ExtensionSlot
 } from '@openmrs/esm-framework';
+import { Add } from '@carbon/react/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { spaBasePath } from '../constants';
@@ -26,8 +28,25 @@ const MetricsHeader = () => {
   };
   return (
     <div className={styles.metricsContainer}>
-      <span className={styles.metricsTitle}>{metricsTitle}</span>
-      <ComboButton
+      {/* <span className={styles.metricsTitle}>{metricsTitle}</span> */}
+      <div className={styles.headerButtons}>
+          <ExtensionSlot
+            name="patient-search-button-slot"
+            state={{
+              buttonText: t('addPatientToQueue', 'Add patient to queue'),
+              overlayHeader: t('addPatientToQueue', 'Add patient to queue'),
+              buttonProps: {
+                kind: 'secondary',
+                renderIcon: (props) => <Add size={16} {...props} />,
+                size: 'sm',
+              },
+              selectPatientAction: (selectedPatientUuid) => {
+                launchWorkspace('service-queues-patient-search', { viewState: { selectedPatientUuid } });
+              },
+            }}
+          />
+        </div>
+      {/* <ComboButton
         label={queueScreenText}
         size={isDesktop(layout) ? 'sm' : 'lg'}
         menuAlignment="bottom-end"
@@ -53,7 +72,7 @@ const MetricsHeader = () => {
             });
           }}
         />
-      </ComboButton>
+      </ComboButton> */}
     </div>
   );
 };

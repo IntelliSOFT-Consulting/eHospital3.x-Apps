@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { DataTableSkeleton, Dropdown, TableToolbarSearch } from '@carbon/react';
+import { DataTableSkeleton, Dropdown, TableToolbarSearch, ComboButton, MenuItem } from '@carbon/react';
 import { Add } from '@carbon/react/icons';
-import { ExtensionSlot, isDesktop, launchWorkspace, showSnackbar, showToast, useLayoutType } from '@openmrs/esm-framework';
+import { ExtensionSlot, isDesktop, launchWorkspace, showSnackbar, showToast, useLayoutType, UserHasAccess, showModal, useSession, navigate } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 import ClearQueueEntries from '../clear-queue-entries-dialog/clear-queue-entries.component';
 import {
@@ -17,6 +17,7 @@ import QueueTableExpandedRow from './queue-table-expanded-row.component';
 import QueueTable from './queue-table.component';
 import styles from './queue-table.scss';
 import { useColumns } from './cells/columns.resource';
+import { spaBasePath } from '../constants';
 
 /*
 Component with default values / sub-components passed into the more generic QueueTable.
@@ -32,6 +33,10 @@ function DefaultQueueTable() {
   });
 
   const { t } = useTranslation();
+  const queueScreenText = t('queueScreen', 'Queue screen');
+  const currentUserSession = useSession();
+  const providerUuid = currentUserSession?.currentProvider?.uuid;
+
 
   useEffect(() => {
     if (error?.message) {
@@ -80,18 +85,23 @@ function DefaultQueueTable() {
     return <DataTableSkeleton role="progressbar" />;
   }
 
+  const navigateToQueueScreen = () => {
+    navigate({ to: `${spaBasePath}/service-queues/screen` });
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.headerContainer}>
         <div className={!isDesktop(layout) ? styles.tabletHeading : styles.desktopHeading}>
           <h4>{t('patientsCurrentlyInQueue', 'Patients currently in queue')}</h4>
         </div>
-        <div className={styles.headerButtons}>
+        {/* <div className={styles.headerButtons}>
           <ExtensionSlot
             name="patient-search-button-slot"
             state={{
               buttonText: t('addPatientToQueue', 'Add patient to queue'),
               overlayHeader: t('addPatientToQueue', 'Add patient to queue'),
+
               buttonProps: {
                 kind: 'secondary',
                 renderIcon: (props) => <Add size={16} {...props} />,
@@ -102,7 +112,34 @@ function DefaultQueueTable() {
               },
             }}
           />
-        </div>
+        </div> */}
+        <ComboButton
+          label={queueScreenText}
+          size={isDesktop(layout) ? 'sm' : 'lg'}
+          menuAlignment="bottom-end"
+          className={styles.comboBtn}
+          tooltipAlignment="top-right"
+          onClick={navigateToQueueScreen}>
+          <UserHasAccess privilege="Emr: View Legacy Interface">
+            <MenuItem
+              label={t('addNewService', 'Add new service')}
+              onClick={() => launchWorkspace('service-queues-service-form')}
+            />
+            <MenuItem
+              label={t('addNewServiceRoom', 'Add new service room')}
+              onClick={() => launchWorkspace('service-queues-room-form')}
+            />
+          </UserHasAccess>
+          <MenuItem
+            label={t('addProviderQueueRoom', 'Add provider queue room')}
+            onClick={() => {
+              const dispose = showModal('add-provider-to-room-modal', {
+                closeModal: () => dispose(),
+                providerUuid,
+              });
+            }}
+          />
+        </ComboButton>
       </div>
       <QueueTable
         queueEntries={filteredQueueEntries ?? []}
