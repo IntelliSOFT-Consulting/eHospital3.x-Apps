@@ -1,25 +1,25 @@
-import React from "react";
-import { Autosuggest } from "./autosuggest.component";
-import { BrowserRouter } from "react-router-dom";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import React from 'react';
+import { Autosuggest } from './autosuggest.component';
+import { BrowserRouter } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 const mockPersons = [
   {
-    uuid: "randomuuid1",
-    display: "John Doe",
+    uuid: 'randomuuid1',
+    display: 'John Doe',
   },
   {
-    uuid: "randomuuid2",
-    display: "John Smith",
+    uuid: 'randomuuid2',
+    display: 'John Smith',
   },
   {
-    uuid: "randomuuid3",
-    display: "James Smith",
+    uuid: 'randomuuid3',
+    display: 'James Smith',
   },
   {
-    uuid: "randomuuid4",
-    display: "Spider Man",
+    uuid: 'randomuuid4',
+    display: 'Spider Man',
   },
 ];
 
@@ -29,95 +29,89 @@ const mockedGetSearchResults = async (query: string) => {
   });
 };
 
-const mockedHandleSuggestionSelected = jest.fn((field, value) => [
-  field,
-  value,
-]);
+const mockedHandleSuggestionSelected = jest.fn((field, value) => [field, value]);
 
-describe("Autosuggest", () => {
+describe('Autosuggest', () => {
   afterEach(() => mockedHandleSuggestionSelected.mockClear());
 
-  it("renders a search box", () => {
+  it('renders a search box', () => {
     renderAutosuggest();
 
-    expect(screen.getByRole("searchbox")).toBeInTheDocument();
-    expect(screen.queryByRole("list")).toBeNull();
+    expect(screen.getByRole('searchbox')).toBeInTheDocument();
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
-  it("renders matching search results in a list when the user types a query", async () => {
+  it('renders matching search results in a list when the user types a query', async () => {
     const user = userEvent.setup();
 
     renderAutosuggest();
 
-    const searchbox = screen.getByRole("searchbox");
-    await user.type(searchbox, "john");
+    const searchbox = screen.getByRole('searchbox');
+    await user.type(searchbox, 'john');
 
-    const list = screen.getByRole("list");
+    const list = screen.getByRole('list');
 
     expect(list).toBeInTheDocument();
-    expect(list.children).toHaveLength(2);
-    expect(screen.getAllByRole("listitem")[0]).toHaveTextContent("John Doe");
-    expect(screen.getAllByRole("listitem")[1]).toHaveTextContent("John Smith");
+    expect(screen.getAllByRole('listitem').length).toEqual(2);
+    expect(screen.getAllByRole('listitem')[0]).toHaveTextContent('John Doe');
+    expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('John Smith');
   });
 
-  it("clears the list of suggestions when a suggestion is selected", async () => {
+  it('clears the list of suggestions when a suggestion is selected', async () => {
     const user = userEvent.setup();
 
     renderAutosuggest();
 
-    let list = screen.queryByRole("list");
-    expect(list).toBeNull();
+    let list = screen.queryByRole('list');
+    expect(list).not.toBeInTheDocument();
 
-    const searchbox = screen.getByRole("searchbox");
-    await user.type(searchbox, "john");
+    const searchbox = screen.getByRole('searchbox');
+    await user.type(searchbox, 'john');
 
-    list = screen.getByRole("list");
+    list = screen.getByRole('list');
     expect(list).toBeInTheDocument();
 
-    const listitems = screen.getAllByRole("listitem");
+    const listitems = screen.getAllByRole('listitem');
     await user.click(listitems[0]);
 
-    expect(mockedHandleSuggestionSelected).toHaveBeenLastCalledWith(
-      "person",
-      "randomuuid1"
-    );
+    expect(mockedHandleSuggestionSelected).toHaveBeenLastCalledWith('person', 'randomuuid1');
 
-    list = screen.queryByRole("list");
-    expect(list).toBeNull();
+    list = screen.queryByRole('list');
+    expect(list).not.toBeInTheDocument();
   });
 
-  it("changes suggestions when a search input is changed", async () => {
+  it('changes suggestions when a search input is changed', async () => {
     const user = userEvent.setup();
 
     renderAutosuggest();
 
-    let list = screen.queryByRole("list");
-    expect(list).toBeNull();
+    let list = screen.queryByRole('list');
+    expect(list).not.toBeInTheDocument();
 
-    const searchbox = screen.getByRole("searchbox");
-    await user.type(searchbox, "john");
+    const searchbox = screen.getByRole('searchbox');
+    await user.type(searchbox, 'john');
 
-    const suggestion = await screen.findByText("John Doe");
+    const suggestion = await screen.findByText('John Doe');
     expect(suggestion).toBeInTheDocument();
 
     await user.clear(searchbox);
 
-    list = screen.queryByRole("list");
-    expect(list).toBeNull();
+    list = screen.queryByRole('list');
+    expect(list).not.toBeInTheDocument();
   });
 
-  it("hides the list of suggestions when the user clicks outside of the component", async () => {
+  it('hides the list of suggestions when the user clicks outside of the component', async () => {
     const user = userEvent.setup();
 
     renderAutosuggest();
 
-    const input = screen.getByRole("searchbox");
+    const input = screen.getByRole('searchbox');
 
-    await user.type(input, "john");
-    await screen.findByText("John Doe");
+    await user.type(input, 'john');
+    await screen.findByText('John Doe');
     await user.click(document.body);
 
-    expect(screen.queryByText("John Doe")).not.toBeInTheDocument();
+    expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
   });
 });
 
@@ -133,6 +127,6 @@ function renderAutosuggest() {
         onSuggestionSelected={mockedHandleSuggestionSelected}
         placeholder="Find Person"
       />
-    </BrowserRouter>
+    </BrowserRouter>,
   );
 }

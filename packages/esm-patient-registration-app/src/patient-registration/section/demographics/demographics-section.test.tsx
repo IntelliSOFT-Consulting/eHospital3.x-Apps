@@ -1,28 +1,40 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { Formik, Form } from "formik";
-import { initialFormValues } from "../../patient-registration.component";
-import { DemographicsSection } from "./demographics-section.component";
-import { PatientRegistrationContext } from "../../patient-registration-context";
-import { type FormValues } from "../../patient-registration.types";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { Formik, Form } from 'formik';
+import { initialFormValues } from '../../patient-registration.component';
+import { DemographicsSection } from './demographics-section.component';
+import { PatientRegistrationContext } from '../../patient-registration-context';
+import { type FormValues } from '../../patient-registration.types';
+import dayjs from 'dayjs';
 
-jest.mock("@openmrs/esm-framework", () => {
-  const originalModule = jest.requireActual("@openmrs/esm-framework");
+jest.mock('@openmrs/esm-framework', () => {
+  const originalModule = jest.requireActual('@openmrs/esm-framework');
 
   return {
     ...originalModule,
     validator: jest.fn(),
     useConfig: jest.fn().mockImplementation(() => ({
-      fieldConfigurations: {
-        dateOfBirth: {
-          useEstimatedDateOfBirth: { enabled: true, dayOfMonth: 0, month: 0 },
-        },
-      },
+      fieldConfigurations: { dateOfBirth: { useEstimatedDateOfBirth: { enabled: true, dayOfMonth: 0, month: 0 } } },
     })),
+    getLocale: jest.fn().mockReturnValue('en'),
+    OpenmrsDatePicker: jest.fn().mockImplementation(({ id, labelText, value, onChange }) => {
+      return (
+        <>
+          <label htmlFor={id}>{labelText}</label>
+          <input
+            id={id}
+            value={value ? dayjs(value).format('DD/MM/YYYY') : ''}
+            onChange={(evt) => {
+              onChange(dayjs(evt.target.value).toDate());
+            }}
+          />
+        </>
+      );
+    }),
   };
 });
 
-jest.mock("../../field/name/name-field.component", () => {
+jest.mock('../../field/name/name-field.component', () => {
   return {
     NameField: () => (
       <div>
@@ -32,7 +44,7 @@ jest.mock("../../field/name/name-field.component", () => {
   };
 });
 
-jest.mock("../../field/gender/gender-field.component", () => {
+jest.mock('../../field/gender/gender-field.component', () => {
   return {
     GenderField: () => (
       <div>
@@ -42,7 +54,7 @@ jest.mock("../../field/gender/gender-field.component", () => {
   };
 });
 
-jest.mock("../../field/id/id-field.component", () => {
+jest.mock('../../field/id/id-field.component', () => {
   return {
     IdField: () => (
       <div>
@@ -52,53 +64,35 @@ jest.mock("../../field/id/id-field.component", () => {
   };
 });
 
-describe("demographics section", () => {
+describe('demographics section', () => {
   const formValues: FormValues = initialFormValues;
 
-  const setupSection = async (
-    birthdateEstimated?: boolean,
-    addNameInLocalLanguage?: boolean
-  ) => {
+  const setupSection = async (birthdateEstimated?: boolean, addNameInLocalLanguage?: boolean) => {
     render(
-      <Formik
-        initialValues={{
-          ...initialFormValues,
-          birthdateEstimated,
-          addNameInLocalLanguage,
-        }}
-        onSubmit={null}
-      >
+      <Formik initialValues={{ ...initialFormValues, birthdateEstimated, addNameInLocalLanguage }} onSubmit={null}>
         <Form>
           <PatientRegistrationContext.Provider
             value={{
               initialFormValues: null,
               identifierTypes: [],
               validationSchema: {},
-              values: {
-                ...initialFormValues,
-                birthdateEstimated,
-                addNameInLocalLanguage,
-              },
+              values: { ...initialFormValues, birthdateEstimated, addNameInLocalLanguage },
               inEditMode: false,
               setFieldValue: () => {},
-              currentPhoto: "TEST",
+              currentPhoto: 'TEST',
               isOffline: true,
               setCapturePhotoProps: (value) => {},
-            }}
-          >
-            <DemographicsSection
-              fields={["name", "gender", "dob"]}
-              id="demographics"
-            />
+            }}>
+            <DemographicsSection fields={['name', 'gender', 'dob']} id="demographics" />
           </PatientRegistrationContext.Provider>
         </Form>
-      </Formik>
+      </Formik>,
     );
-    const allInputs = screen.getAllByRole("textbox") as Array<HTMLInputElement>;
+    const allInputs = screen.getAllByRole('textbox') as Array<HTMLInputElement>;
     return allInputs.map((input) => input.name);
   };
 
-  it("inputs corresponding to number of fields", async () => {
+  it('inputs corresponding to number of fields', async () => {
     const inputNames = await setupSection();
     expect(inputNames.length).toBe(3);
   });

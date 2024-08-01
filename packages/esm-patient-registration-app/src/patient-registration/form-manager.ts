@@ -1,10 +1,13 @@
 import {
   type FetchResponse,
+  type Session,
+  type StyleguideConfigObject,
+  getConfig,
   openmrsFetch,
   queueSynchronizationItem,
-  type Session,
-} from "@openmrs/esm-framework";
-import { patientRegistration } from "../constants";
+  restBaseUrl,
+} from '@openmrs/esm-framework';
+import { patientRegistration } from '../constants';
 import {
   type FormValues,
   type AttributeValue,
@@ -15,7 +18,7 @@ import {
   type PatientRegistration,
   type RelationshipValue,
   type Encounter,
-} from "./patient-registration.types";
+} from './patient-registration.types';
 import {
   addPatientIdentifier,
   deletePatientIdentifier,
@@ -28,8 +31,8 @@ import {
   updateRelationship,
   updatePatientIdentifier,
   saveEncounter,
-} from "./patient-registration.resource";
-import { type RegistrationConfig } from "../config-schema";
+} from './patient-registration.resource';
+import { type RegistrationConfig } from '../config-schema';
 
 export type SavePatientForm = (
   isNewPatient: boolean,
@@ -38,11 +41,11 @@ export type SavePatientForm = (
   initialAddressFieldValues: Record<string, any>,
   capturePhotoProps: CapturePhotoProps,
   currentLocation: string,
-  initialIdentifierValues: FormValues["identifiers"],
+  initialIdentifierValues: FormValues['identifiers'],
   currentUser: Session,
   config: RegistrationConfig,
   savePatientTransactionManager: SavePatientTransactionManager,
-  abortController?: AbortController
+  abortController?: AbortController,
 ) => Promise<string | void>;
 
 export class FormManager {
@@ -55,17 +58,11 @@ export class FormManager {
     currentLocation,
     initialIdentifierValues,
     currentUser,
-    config
+    config,
   ) => {
     const syncItem: PatientRegistration = {
       fhirPatient: FormManager.mapPatientToFhirPatient(
-        FormManager.getPatientToCreate(
-          isNewPatient,
-          values,
-          patientUuidMap,
-          initialAddressFieldValues,
-          []
-        )
+        FormManager.getPatientToCreate(isNewPatient, values, patientUuidMap, initialAddressFieldValues, []),
       ),
       _patientRegistrationData: {
         isNewPatient,
@@ -83,7 +80,7 @@ export class FormManager {
 
     await queueSynchronizationItem(patientRegistration, syncItem, {
       id: values.patientUuid,
-      displayName: "Patient registration",
+      displayName: 'Patient registration',
       patientUuid: syncItem.fhirPatient.id,
       dependencies: [],
     });
@@ -102,57 +99,48 @@ export class FormManager {
     currentUser,
     config,
     savePatientTransactionManager,
-    abortController
+    abortController,
   ) => {
-    const patientIdentifiers: Array<PatientIdentifier> =
-      await FormManager.savePatientIdentifiers(
-        isNewPatient,
-        values.patientUuid,
-        values.identifiers,
-        initialIdentifierValues,
-        currentLocation
-      );
+    const patientIdentifiers: Array<PatientIdentifier> = await FormManager.savePatientIdentifiers(
+      isNewPatient,
+      values.patientUuid,
+      values.identifiers,
+      initialIdentifierValues,
+      currentLocation,
+    );
 
     const createdPatient = FormManager.getPatientToCreate(
       isNewPatient,
       values,
       patientUuidMap,
       initialAddressFieldValues,
-      patientIdentifiers
+      patientIdentifiers,
     );
 
-    FormManager.getDeletedNames(values.patientUuid, patientUuidMap).forEach(
-      async (name) => {
-        await deletePersonName(name.nameUuid, name.personUuid);
-      }
-    );
+    FormManager.getDeletedNames(values.patientUuid, patientUuidMap).forEach(async (name) => {
+      await deletePersonName(name.nameUuid, name.personUuid);
+    });
 
     const savePatientResponse = await savePatient(
       createdPatient,
-      isNewPatient && !savePatientTransactionManager.patientSaved
-        ? undefined
-        : values.patientUuid
+      isNewPatient && !savePatientTransactionManager.patientSaved ? undefined : values.patientUuid,
     );
 
     if (savePatientResponse.ok) {
       savePatientTransactionManager.patientSaved = true;
       await this.saveRelationships(values.relationships, savePatientResponse);
 
-      await this.saveObservations(
-        values.obs,
-        savePatientResponse,
-        currentLocation,
-        currentUser,
-        config
-      );
+      await this.saveObservations(values.obs, savePatientResponse, currentLocation, currentUser, config);
 
-      if (config.concepts.patientPhotoUuid && capturePhotoProps?.imageData) {
+      const { patientPhotoConceptUuid } = await getConfig<StyleguideConfigObject>('@openmrs/esm-styleguide');
+
+      if (patientPhotoConceptUuid && capturePhotoProps?.imageData) {
         await savePatientPhoto(
           savePatientResponse.data.uuid,
           capturePhotoProps.imageData,
-          "/ws/rest/v1/obs",
+          `${restBaseUrl}/obs`,
           capturePhotoProps.dateTime || new Date().toISOString(),
-          config.concepts.patientPhotoUuid
+          patientPhotoConceptUuid,
         );
       }
     }
@@ -160,40 +148,30 @@ export class FormManager {
     return savePatientResponse.data.uuid;
   };
 
-  static async saveRelationships(
-    relationships: Array<RelationshipValue>,
-    savePatientResponse: FetchResponse
-  ) {
+  static async saveRelationships(relationships: Array<RelationshipValue>, savePatientResponse: FetchResponse) {
     return Promise.all(
       relationships
         .filter((m) => m.relationshipType)
         .filter((relationship) => !!relationship.action)
-        .map(
-          ({
-            relatedPersonUuid,
-            relationshipType,
-            uuid: relationshipUuid,
-            action,
-          }) => {
-            const [type, direction] = relationshipType.split("/");
-            const thisPatientUuid = savePatientResponse.data.uuid;
-            const isAToB = direction === "aIsToB";
-            const relationshipToSave = {
-              personA: isAToB ? relatedPersonUuid : thisPatientUuid,
-              personB: isAToB ? thisPatientUuid : relatedPersonUuid,
-              relationshipType: type,
-            };
+        .map(({ relatedPersonUuid, relationshipType, uuid: relationshipUuid, action }) => {
+          const [type, direction] = relationshipType.split('/');
+          const thisPatientUuid = savePatientResponse.data.uuid;
+          const isAToB = direction === 'aIsToB';
+          const relationshipToSave = {
+            personA: isAToB ? relatedPersonUuid : thisPatientUuid,
+            personB: isAToB ? thisPatientUuid : relatedPersonUuid,
+            relationshipType: type,
+          };
 
-            switch (action) {
-              case "ADD":
-                return saveRelationship(relationshipToSave);
-              case "UPDATE":
-                return updateRelationship(relationshipUuid, relationshipToSave);
-              case "DELETE":
-                return deleteRelationship(relationshipUuid);
-            }
+          switch (action) {
+            case 'ADD':
+              return saveRelationship(relationshipToSave);
+            case 'UPDATE':
+              return updateRelationship(relationshipUuid, relationshipToSave);
+            case 'DELETE':
+              return deleteRelationship(relationshipUuid);
           }
-        )
+        }),
     );
   }
 
@@ -202,14 +180,14 @@ export class FormManager {
     savePatientResponse: FetchResponse,
     currentLocation: string,
     currentUser: Session,
-    config: RegistrationConfig
+    config: RegistrationConfig,
   ) {
     if (obss && Object.keys(obss).length > 0) {
       if (!config.registrationObs.encounterTypeUuid) {
         console.error(
-          "The registration form has been configured to have obs fields, " +
-            "but no registration encounter type has been configured. Obs field values " +
-            "will not be saved."
+          'The registration form has been configured to have obs fields, ' +
+            'but no registration encounter type has been configured. Obs field values ' +
+            'will not be saved.',
         );
       } else {
         const encounterToSave: Encounter = {
@@ -225,7 +203,7 @@ export class FormManager {
           ],
           form: config.registrationObs.registrationFormUuid,
           obs: Object.entries(obss)
-            .filter(([, value]) => value !== "")
+            .filter(([, value]) => value !== '')
             .map(([conceptUuid, value]) => ({ concept: conceptUuid, value })),
         };
         return saveEncounter(encounterToSave);
@@ -236,9 +214,9 @@ export class FormManager {
   static async savePatientIdentifiers(
     isNewPatient: boolean,
     patientUuid: string,
-    patientIdentifiers: FormValues["identifiers"], // values.identifiers
-    initialIdentifierValues: FormValues["identifiers"], // Initial identifiers assigned to the patient
-    location: string
+    patientIdentifiers: FormValues['identifiers'], // values.identifiers
+    initialIdentifierValues: FormValues['identifiers'], // Initial identifiers assigned to the patient
+    location: string,
   ): Promise<Array<PatientIdentifier>> {
     let identifierTypeRequests = Object.values(patientIdentifiers)
       /* Since default identifier-types will be present on the form and are also in the not-required state,
@@ -246,8 +224,7 @@ export class FormManager {
         hence filtering these fields out.
       */
       .filter(
-        ({ identifierValue, autoGeneration, selectedSource }) =>
-          identifierValue || (autoGeneration && selectedSource)
+        ({ identifierValue, autoGeneration, selectedSource }) => identifierValue || (autoGeneration && selectedSource),
       )
       .map(async (patientIdentifier) => {
         const {
@@ -277,11 +254,7 @@ export class FormManager {
           if (!initialValue) {
             await addPatientIdentifier(patientUuid, identifierToCreate);
           } else if (initialValue !== identifier) {
-            await updatePatientIdentifier(
-              patientUuid,
-              identifierUuid,
-              identifierToCreate.identifier
-            );
+            await updatePatientIdentifier(patientUuid, identifierUuid, identifierToCreate.identifier);
           }
         }
 
@@ -297,24 +270,16 @@ export class FormManager {
 
     if (patientUuid) {
       Object.keys(initialIdentifierValues)
-        .filter(
-          (identifierFieldName) => !patientIdentifiers[identifierFieldName]
-        )
+        .filter((identifierFieldName) => !patientIdentifiers[identifierFieldName])
         .forEach(async (identifierFieldName) => {
-          await deletePatientIdentifier(
-            patientUuid,
-            initialIdentifierValues[identifierFieldName].identifierUuid
-          );
+          await deletePatientIdentifier(patientUuid, initialIdentifierValues[identifierFieldName].identifierUuid);
         });
     }
 
     return Promise.all(identifierTypeRequests);
   }
 
-  static getDeletedNames(
-    patientUuid: string,
-    patientUuidMap: PatientUuidMapType
-  ) {
+  static getDeletedNames(patientUuid: string, patientUuidMap: PatientUuidMapType) {
     if (patientUuidMap?.additionalNameUuid) {
       return [
         {
@@ -331,15 +296,13 @@ export class FormManager {
     values: FormValues,
     patientUuidMap: PatientUuidMapType,
     initialAddressFieldValues: Record<string, any>,
-    identifiers: Array<PatientIdentifier>
+    identifiers: Array<PatientIdentifier>,
   ): Patient {
     let birthdate;
     if (values.birthdate instanceof Date) {
-      birthdate = [
-        values.birthdate.getFullYear(),
-        values.birthdate.getMonth() + 1,
-        values.birthdate.getDate(),
-      ].join("-");
+      birthdate = [values.birthdate.getFullYear(), values.birthdate.getMonth() + 1, values.birthdate.getDate()].join(
+        '-',
+      );
     } else {
       birthdate = values.birthdate;
     }
@@ -352,11 +315,7 @@ export class FormManager {
         gender: values.gender.charAt(0).toUpperCase(),
         birthdate,
         birthdateEstimated: values.birthdateEstimated,
-        attributes: FormManager.getPatientAttributes(
-          isNewPatient,
-          values,
-          patientUuidMap
-        ),
+        attributes: FormManager.getPatientAttributes(isNewPatient, values, patientUuidMap),
         addresses: [values.address],
         ...FormManager.getPatientDeathInfo(values),
       },
@@ -388,11 +347,7 @@ export class FormManager {
     return names;
   }
 
-  static getPatientAttributes(
-    isNewPatient: boolean,
-    values: FormValues,
-    patientUuidMap: PatientUuidMapType
-  ) {
+  static getPatientAttributes(isNewPatient: boolean, values: FormValues, patientUuidMap: PatientUuidMapType) {
     const attributes: Array<AttributeValue> = [];
     if (values.attributes) {
       Object.entries(values.attributes)
@@ -409,12 +364,9 @@ export class FormManager {
           .filter(([, value]) => !value)
           .forEach(async ([key]) => {
             const attributeUuid = patientUuidMap[`attribute.${key}`];
-            await openmrsFetch(
-              `/ws/rest/v1/person/${values.patientUuid}/attribute/${attributeUuid}`,
-              {
-                method: "DELETE",
-              }
-            ).catch((err) => {
+            await openmrsFetch(`${restBaseUrl}/person/${values.patientUuid}/attribute/${attributeUuid}`, {
+              method: 'DELETE',
+            }).catch((err) => {
               console.error(err);
             });
           });
@@ -460,11 +412,9 @@ export class FormManager {
         country: address.country,
         postalCode: address.postalCode,
         state: address.stateProvince,
-        use: "home",
+        use: 'home',
       })),
-      telecom: patient.person.attributes?.filter(
-        (attribute) => attribute.attributeType === "Telephone Number"
-      ),
+      telecom: patient.person.attributes?.filter((attribute) => attribute.attributeType === 'Telephone Number'),
     };
   }
 }

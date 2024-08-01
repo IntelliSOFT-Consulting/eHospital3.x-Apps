@@ -1,11 +1,11 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import Root from "./root.component";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import Root from './root.component';
 
-window["getOpenmrsSpaBase"] = jest.fn().mockImplementation(() => "/");
+window['getOpenmrsSpaBase'] = jest.fn().mockImplementation(() => '/');
 
-jest.mock("@openmrs/esm-framework", () => {
-  const originalModule = jest.requireActual("@openmrs/esm-framework");
+jest.mock('@openmrs/esm-framework', () => {
+  const originalModule = jest.requireActual('@openmrs/esm-framework');
 
   return {
     ...originalModule,
@@ -13,9 +13,9 @@ jest.mock("@openmrs/esm-framework", () => {
   };
 });
 
-describe("root component", () => {
-  it("renders without crashing", () => {
-    const div = document.createElement("div");
+describe('root component', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div');
     const root = createRoot(div);
 
     root.render(
@@ -26,7 +26,7 @@ describe("root component", () => {
         relationshipTypes={{ results: [] }}
         identifierTypes={[]}
         isOffline={false}
-      />
+      />,
     );
   });
 });

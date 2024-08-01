@@ -1,13 +1,13 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Formik, Form } from "formik";
-import { Input } from "./input.component";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { Formik, Form } from 'formik';
+import { Input } from './input.component';
 
-describe("text input", () => {
+describe('text input', () => {
   const setupInput = async () => {
     render(
-      <Formik initialValues={{ text: "" }} onSubmit={() => {}}>
+      <Formik initialValues={{ text: '' }} onSubmit={() => {}}>
         <Form>
           <Input
             id="text"
@@ -17,63 +17,56 @@ describe("text input", () => {
             required
             checkWarning={(value) => {
               if (value.length > 5) {
-                return "name should be of 5 char";
+                return 'name should be of 5 char';
               }
             }}
           />
         </Form>
-      </Formik>
+      </Formik>,
     );
-    return screen.getByLabelText("Text") as HTMLInputElement;
+    return screen.getByLabelText('Text') as HTMLInputElement;
   };
 
-  it("exists", async () => {
+  it('exists', async () => {
     const input = await setupInput();
-    expect(input.type).toEqual("text");
+    expect(input.type).toEqual('text');
   });
 
-  it("can input valid data without warning", async () => {
+  it('can input valid data without warning', async () => {
     const user = userEvent.setup();
 
     const input = await setupInput();
-    const userInput = "text";
+    const userInput = 'text';
 
     await user.type(input, userInput);
     await user.tab();
 
     expect(input.value).toEqual(userInput);
-    expect(
-      screen.queryByText("name should be of 5 char")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('name should be of 5 char')).not.toBeInTheDocument();
   });
 
-  it("should show a warning when the invalid input is entered", async () => {
+  it('should show a warning when the invalid input is entered', async () => {
     const user = userEvent.setup();
 
     const input = await setupInput();
-    const userInput = "Hello World";
+    const userInput = 'Hello World';
 
     await userEvent.clear(input);
 
     await user.type(input, userInput);
     await user.tab();
 
-    expect(screen.getByText("name should be of 5 char")).toBeInTheDocument();
+    expect(screen.getByText('name should be of 5 char')).toBeInTheDocument();
   });
 
-  it("should show the correct label text if the field is not required", () => {
+  it('should show the correct label text if the field is not required', () => {
     render(
-      <Formik initialValues={{ text: "" }} onSubmit={() => {}}>
+      <Formik initialValues={{ text: '' }} onSubmit={() => {}}>
         <Form>
-          <Input
-            id="text"
-            labelText="Text"
-            name="text"
-            placeholder="Enter text"
-          />
+          <Input id="text" labelText="Text" name="text" placeholder="Enter text" />
         </Form>
-      </Formik>
+      </Formik>,
     );
-    expect(screen.getByLabelText("Text (optional)")).toBeInTheDocument();
+    expect(screen.getByLabelText('Text (optional)')).toBeInTheDocument();
   });
 });

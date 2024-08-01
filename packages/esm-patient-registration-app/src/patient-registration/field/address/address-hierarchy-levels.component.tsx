@@ -1,19 +1,14 @@
-import React, { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import {
-  useAddressEntries,
-  useAddressEntryFetchConfig,
-} from "./address-hierarchy.resource";
-import { useField } from "formik";
-import ComboInput from "../../input/combo-input/combo-input.component";
+import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useAddressEntries, useAddressEntryFetchConfig } from './address-hierarchy.resource';
+import { useField } from 'formik';
+import ComboInput from '../../input/combo-input/combo-input.component';
 
 interface AddressHierarchyLevelsProps {
   orderedAddressFields: Array<any>;
 }
 
-const AddressHierarchyLevels: React.FC<AddressHierarchyLevelsProps> = ({
-  orderedAddressFields,
-}) => {
+const AddressHierarchyLevels: React.FC<AddressHierarchyLevelsProps> = ({ orderedAddressFields }) => {
   const { t } = useTranslation();
 
   return (
@@ -40,18 +35,15 @@ interface AddressComboBoxProps {
 const AddressComboBox: React.FC<AddressComboBoxProps> = ({ attribute }) => {
   const { t } = useTranslation();
   const [field, meta, { setValue }] = useField(`address.${attribute.name}`);
-  const { fetchEntriesForField, searchString, updateChildElements } =
-    useAddressEntryFetchConfig(attribute.name);
+  const { fetchEntriesForField, searchString, updateChildElements } = useAddressEntryFetchConfig(attribute.name);
   const { entries } = useAddressEntries(fetchEntriesForField, searchString);
-  const label =
-    t(attribute.label) +
-    (attribute?.required ? "" : ` (${t("optional", "optional")})`);
+  const label = t(attribute.label) + (attribute?.required ? '' : ` (${t('optional', 'optional')})`);
 
   const handleInputChange = useCallback(
     (newValue) => {
       setValue(newValue);
     },
-    [setValue]
+    [setValue],
   );
 
   const handleSelection = useCallback(
@@ -61,7 +53,7 @@ const AddressComboBox: React.FC<AddressComboBoxProps> = ({ attribute }) => {
         updateChildElements();
       }
     },
-    [updateChildElements, meta.value, setValue]
+    [updateChildElements, meta.value, setValue],
   );
 
   return (

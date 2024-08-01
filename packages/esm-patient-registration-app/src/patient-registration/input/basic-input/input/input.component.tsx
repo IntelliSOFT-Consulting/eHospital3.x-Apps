@@ -1,14 +1,11 @@
-import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import { Layer, TextInput } from "@carbon/react";
-import { useField } from "formik";
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Layer, TextInput } from '@carbon/react';
+import { useField } from 'formik';
 
 // FIXME Temporarily imported here
 export interface TextInputProps
-  extends Omit<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    "defaultValue" | "id" | "size" | "value"
-  > {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue' | 'id' | 'size' | 'value'> {
   /**
    * Specify an optional className to be applied to the `<input>` node
    */
@@ -103,7 +100,7 @@ export interface TextInputProps
   /**
    * Specify the size of the Text Input. Currently supports the following:
    */
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 
   /**
    * Specify the type of the `<input>`
@@ -150,10 +147,10 @@ export const Input: React.FC<InputProps> = ({ checkWarning, ...props }) => {
     t('yearsEstimateRequired')
   */
 
-  const value = field.value || "";
+  const value = field.value || '';
   const invalidText = meta.error && t(meta.error);
   const warnText = useMemo(() => {
-    if (!invalidText && typeof checkWarning === "function") {
+    if (!invalidText && typeof checkWarning === 'function') {
       const warning = checkWarning(value);
       return warning && t(warning);
     }
@@ -161,12 +158,10 @@ export const Input: React.FC<InputProps> = ({ checkWarning, ...props }) => {
     return undefined;
   }, [checkWarning, invalidText, value, t]);
 
-  const labelText = props.required
-    ? props.labelText
-    : `${props.labelText} (${t("optional", "optional")})`;
+  const labelText = props.required ? props.labelText : `${props.labelText} (${t('optional', 'optional')})`;
 
   return (
-    <div style={{ marginBottom: "1rem" }}>
+    <div style={{ marginBottom: '1rem' }}>
       <Layer>
         <TextInput
           {...props}

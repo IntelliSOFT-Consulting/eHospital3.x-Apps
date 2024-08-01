@@ -1,10 +1,10 @@
-import React, { type HTMLAttributes, useEffect, useRef, useState } from "react";
-import { Layer, Search, type SearchProps } from "@carbon/react";
-import classNames from "classnames";
-import styles from "./autosuggest.scss";
+import React, { type HTMLAttributes, useEffect, useRef, useState } from 'react';
+import { Layer, Search, type SearchProps } from '@carbon/react';
+import classNames from 'classnames';
+import styles from './autosuggest.scss';
 
 // FIXME Temporarily included types from Carbon
-type InputPropsBase = Omit<HTMLAttributes<HTMLInputElement>, "onChange">;
+type InputPropsBase = Omit<HTMLAttributes<HTMLInputElement>, 'onChange'>;
 
 interface SearchProps extends InputPropsBase {
   /**
@@ -51,7 +51,7 @@ interface SearchProps extends InputPropsBase {
   /**
    * Optional callback called when the search value changes.
    */
-  onChange?(e: { target: HTMLInputElement; type: "change" }): void;
+  onChange?(e: { target: HTMLInputElement; type: 'change' }): void;
 
   /**
    * Optional callback called when the search value is cleared.
@@ -61,9 +61,7 @@ interface SearchProps extends InputPropsBase {
   /**
    * Optional callback called when the magnifier icon is clicked in ExpandableSearch.
    */
-  onExpand?(
-    e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>
-  ): void;
+  onExpand?(e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>): void;
 
   /**
    * Provide an optional placeholder text for the Search.
@@ -86,7 +84,7 @@ interface SearchProps extends InputPropsBase {
   /**
    * Specify the size of the Search
    */
-  size?: "sm" | "md" | "lg";
+  size?: 'sm' | 'md' | 'lg';
 
   /**
    * Optional prop to specify the type of the `<input>`
@@ -123,10 +121,10 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
   const { id: name, labelText } = searchProps;
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutsideComponent);
+    document.addEventListener('mousedown', handleClickOutsideComponent);
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutsideComponent);
+      document.removeEventListener('mousedown', handleClickOutsideComponent);
     };
   }, [wrapper]);
 
@@ -183,11 +181,7 @@ export const Autosuggest: React.FC<AutosuggestProps> = ({
           ))}
         </ul>
       )}
-      {invalid ? (
-        <label className={classNames(styles.invalidMsg)}>{invalidText}</label>
-      ) : (
-        <></>
-      )}
+      {invalid ? <label className={classNames(styles.invalidMsg)}>{invalidText}</label> : <></>}
     </div>
   );
 };

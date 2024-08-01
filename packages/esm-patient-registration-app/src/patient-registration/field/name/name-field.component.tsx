@@ -1,20 +1,19 @@
-import React, { useCallback, useContext } from "react";
-import { useTranslation } from "react-i18next";
-import { ContentSwitcher, Switch } from "@carbon/react";
-import { useField } from "formik";
-import { ExtensionSlot, useConfig } from "@openmrs/esm-framework";
-import { Input } from "../../input/basic-input/input/input.component";
-import { PatientRegistrationContext } from "../../patient-registration-context";
-import styles from "../field.scss";
-import { type RegistrationConfig } from "../../../config-schema";
+import React, { useCallback, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ContentSwitcher, Switch } from '@carbon/react';
+import { useField } from 'formik';
+import { ExtensionSlot, useConfig } from '@openmrs/esm-framework';
+import { Input } from '../../input/basic-input/input/input.component';
+import { PatientRegistrationContext } from '../../patient-registration-context';
+import styles from '../field.scss';
+import { type RegistrationConfig } from '../../../config-schema';
 
-export const unidentifiedPatientAttributeTypeUuid =
-  "8b56eac7-5c76-4b9c-8c6f-1deab8d3fc47";
+export const unidentifiedPatientAttributeTypeUuid = '8b56eac7-5c76-4b9c-8c6f-1deab8d3fc47';
 const containsNoNumbers = /^([^0-9]*)$/;
 
 function checkNumber(value: string) {
   if (!containsNoNumbers.test(value)) {
-    return "numberInNameDubious";
+    return 'numberInNameDubious';
   }
 
   return undefined;
@@ -22,9 +21,7 @@ function checkNumber(value: string) {
 
 export const NameField = () => {
   const { t } = useTranslation();
-  const { setCapturePhotoProps, currentPhoto, setFieldValue } = useContext(
-    PatientRegistrationContext
-  );
+  const { setCapturePhotoProps, currentPhoto, setFieldValue } = useContext(PatientRegistrationContext);
   const {
     fieldConfigurations: {
       name: {
@@ -38,10 +35,11 @@ export const NameField = () => {
     },
   } = useConfig<RegistrationConfig>();
 
-  const [{ value: isPatientUnknownValue }, , { setValue: setUnknownPatient }] =
-    useField<string>(`attributes.${unidentifiedPatientAttributeTypeUuid}`);
+  const [{ value: isPatientUnknownValue }, , { setValue: setUnknownPatient }] = useField<string>(
+    `attributes.${unidentifiedPatientAttributeTypeUuid}`,
+  );
 
-  const isPatientUnknown = isPatientUnknownValue === "true";
+  const isPatientUnknown = isPatientUnknownValue === 'true';
 
   const onCapturePhoto = useCallback(
     (dataUri: string, photoDateTime: string) => {
@@ -52,18 +50,18 @@ export const NameField = () => {
         });
       }
     },
-    [setCapturePhotoProps]
+    [setCapturePhotoProps],
   );
 
   const toggleNameKnown = (e) => {
-    if (e.name === "known") {
-      setFieldValue("givenName", "");
-      setFieldValue("familyName", "");
-      setUnknownPatient("false");
+    if (e.name === 'known') {
+      setFieldValue('givenName', '');
+      setFieldValue('familyName', '');
+      setUnknownPatient('false');
     } else {
-      setFieldValue("givenName", defaultUnknownGivenName);
-      setFieldValue("familyName", defaultUnknownFamilyName);
-      setUnknownPatient("true");
+      setFieldValue('givenName', defaultUnknownGivenName);
+      setFieldValue('familyName', defaultUnknownFamilyName);
+      setUnknownPatient('true');
     }
   };
 
@@ -71,7 +69,7 @@ export const NameField = () => {
     <Input
       id="givenName"
       name="givenName"
-      labelText={t("givenNameLabelText", "First Name")}
+      labelText={t('givenNameLabelText', 'First Name')}
       checkWarning={checkNumber}
       required
     />
@@ -81,7 +79,7 @@ export const NameField = () => {
     <Input
       id="middleName"
       name="middleName"
-      labelText={t("middleNameLabelText", "Middle Name")}
+      labelText={t('middleNameLabelText', 'Middle Name')}
       checkWarning={checkNumber}
     />
   );
@@ -90,7 +88,7 @@ export const NameField = () => {
     <Input
       id="familyName"
       name="familyName"
-      labelText={t("familyNameLabelText", "Family Name")}
+      labelText={t('familyNameLabelText', 'Family Name')}
       checkWarning={checkNumber}
       required
     />
@@ -98,9 +96,7 @@ export const NameField = () => {
 
   return (
     <div>
-      <h4 className={styles.productiveHeading02Light}>
-        {t("fullNameLabelText", "Full Name")}
-      </h4>
+      <h4 className={styles.productiveHeading02Light}>{t('fullNameLabelText', 'Full Name')}</h4>
       <div className={styles.grid}>
         {displayCapturePhoto && (
           <ExtensionSlot
@@ -114,17 +110,14 @@ export const NameField = () => {
           {(allowUnidentifiedPatients || isPatientUnknown) && (
             <>
               <div className={styles.dobContentSwitcherLabel}>
-                <span className={styles.label01}>
-                  {t("patientNameKnown", "Patient's Name is Known?")}
-                </span>
+                <span className={styles.label01}>{t('patientNameKnown', "Patient's Name is Known?")}</span>
               </div>
               <ContentSwitcher
                 className={styles.contentSwitcher}
                 selectedIndex={isPatientUnknown ? 1 : 0}
-                onChange={toggleNameKnown}
-              >
-                <Switch name="known" text={t("yes", "Yes")} />
-                <Switch name="unknown" text={t("no", "No")} />
+                onChange={toggleNameKnown}>
+                <Switch name="known" text={t('yes', 'Yes')} />
+                <Switch name="unknown" text={t('no', 'No')} />
               </ContentSwitcher>
             </>
           )}

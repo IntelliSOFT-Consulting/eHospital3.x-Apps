@@ -1,30 +1,30 @@
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import { useConceptAnswers } from "../field.resource";
-import { CodedPersonAttributeField } from "./coded-person-attribute-field.component";
-import { Form, Formik } from "formik";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { useConceptAnswers } from '../field.resource';
+import { CodedPersonAttributeField } from './coded-person-attribute-field.component';
+import { Form, Formik } from 'formik';
 
-jest.mock("formik", () => ({
-  ...jest.requireActual("formik"),
+jest.mock('formik', () => ({
+  ...jest.requireActual('formik'),
 }));
 
-jest.mock("../field.resource"); // Mock the useConceptAnswers hook
+jest.mock('../field.resource'); // Mock the useConceptAnswers hook
 
 const mockedUseConceptAnswers = useConceptAnswers as jest.Mock;
 
-describe("CodedPersonAttributeField", () => {
+describe('CodedPersonAttributeField', () => {
   const conceptAnswers = [
-    { uuid: "1", display: "Option 1" },
-    { uuid: "2", display: "Option 2" },
+    { uuid: '1', display: 'Option 1' },
+    { uuid: '2', display: 'Option 2' },
   ];
   const personAttributeType = {
-    format: "org.openmrs.Concept",
-    display: "Referred by",
-    uuid: "4dd56a75-14ab-4148-8700-1f4f704dc5b0",
-    name: "",
-    description: "",
+    format: 'org.openmrs.Concept',
+    display: 'Referred by',
+    uuid: '4dd56a75-14ab-4148-8700-1f4f704dc5b0',
+    name: '',
+    description: '',
   };
-  const answerConceptSetUuid = "6682d17f-0777-45e4-a39b-93f77eb3531c";
+  const answerConceptSetUuid = '6682d17f-0777-45e4-a39b-93f77eb3531c';
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -34,7 +34,7 @@ describe("CodedPersonAttributeField", () => {
     });
   });
 
-  it("shows error if there is no concept answer set provided", () => {
+  it('shows error if there is no concept answer set provided', () => {
     expect(() => {
       render(
         <Formik initialValues={{}} onSubmit={() => {}}>
@@ -47,16 +47,12 @@ describe("CodedPersonAttributeField", () => {
               customConceptAnswers={[]}
             />
           </Form>
-        </Formik>
+        </Formik>,
       );
-    }).toThrow(
-      expect.stringMatching(
-        /has been defined without an answer concept set UUID/i
-      )
-    );
+    }).toThrow(expect.stringMatching(/has been defined without an answer concept set UUID/i));
   });
 
-  it("shows error if the concept answer set does not have any concept answers", () => {
+  it('shows error if the concept answer set does not have any concept answers', () => {
     mockedUseConceptAnswers.mockReturnValue({
       data: [],
       isLoading: false,
@@ -73,12 +69,12 @@ describe("CodedPersonAttributeField", () => {
               customConceptAnswers={[]}
             />
           </Form>
-        </Formik>
+        </Formik>,
       );
     }).toThrow(expect.stringMatching(/does not have any concept answers/i));
   });
 
-  it("renders the conceptAnswers as select options", () => {
+  it('renders the conceptAnswers as select options', () => {
     render(
       <Formik initialValues={{}} onSubmit={() => {}}>
         <Form>
@@ -90,7 +86,7 @@ describe("CodedPersonAttributeField", () => {
             customConceptAnswers={[]}
           />
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(screen.getByLabelText(/Referred by/i)).toBeInTheDocument();
@@ -98,7 +94,7 @@ describe("CodedPersonAttributeField", () => {
     expect(screen.getByText(/Option 2/i)).toBeInTheDocument();
   });
 
-  it("renders customConceptAnswers as select options when they are provided", () => {
+  it('renders customConceptAnswers as select options when they are provided', () => {
     render(
       <Formik initialValues={{}} onSubmit={() => {}}>
         <Form>
@@ -109,17 +105,17 @@ describe("CodedPersonAttributeField", () => {
             label={personAttributeType.display}
             customConceptAnswers={[
               {
-                uuid: "A",
-                label: "Special Option A",
+                uuid: 'A',
+                label: 'Special Option A',
               },
               {
-                uuid: "B",
-                label: "Special Option B",
+                uuid: 'B',
+                label: 'Special Option B',
               },
             ]}
           />
         </Form>
-      </Formik>
+      </Formik>,
     );
 
     expect(screen.getByLabelText(/Referred by/i)).toBeInTheDocument();

@@ -32,7 +32,7 @@
       "offline": true
     },
     {
-      "component": "patientPhoto",
+      "component": "patientPhotoExtension",
       "name": "patient-photo-widget",
       "slot": "patient-photo-slot",
       "online": true,
@@ -57,19 +57,6 @@
       "name": "delete-identifier-confirmation-modal",
       "online": true,
       "offline": true
-    },
-    {
-      "component": "emptyClientRegistryModal",
-      "name": "empty-client-registry-modal",
-      "online": true,
-      "offline": true
-    },
-    {
-      "component": "confirmClientRegistryModal",
-      "name": "confirm-client-registry-modal",
-      "online": true,
-      "offline": true
     }
   ]
 }
-    
