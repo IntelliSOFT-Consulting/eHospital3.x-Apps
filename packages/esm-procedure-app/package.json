@@ -17,7 +17,6 @@
     "test": "jest --config jest.config.js --passWithNoTests",
     "verify": "turbo lint typescript coverage",
     "coverage": "yarn test --coverage",
-    "prepare": "husky install",
     "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ./i18next-parser.config.js",
     "test-e2e": "playwright test"
   },
@@ -113,5 +112,6 @@
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "gitHead": "78b4607eb60ac752a66fd5a6579e33a528024daf"
 }
