@@ -10,6 +10,7 @@ import {
   useLayoutType,
   useSession,
   useConfig,
+  ExtensionSlot,
 } from "@openmrs/esm-framework";
 import {
   careSettingUuid,
@@ -248,6 +249,11 @@ export function ProceduresOrderForm({
         id="procedureOrderForm"
       >
         <div className={styles.form}>
+          <ExtensionSlot
+            name="top-of-procedure-order-form-slot"
+            state={{ order: initialOrder }}
+          />
+
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>

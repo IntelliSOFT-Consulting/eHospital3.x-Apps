@@ -1,7 +1,7 @@
 import { ConfigObject, openmrsFetch, useConfig } from "@openmrs/esm-framework";
 import useSWR from "swr";
-import { Result } from "../work-list/work-list.resource";
 import { ProcedureConceptClass_UUID } from "../constants";
+import { Result } from "../types";
 export function useOrdersWorklist(
   activatedOnOrAfterDate: string,
   fulfillerStatus: string
@@ -11,7 +11,7 @@ export function useOrdersWorklist(
   const responseFormat =
     "custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,procedures,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment,frequency,numberOfRepeats)";
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
-  const apiUrl = `/ws/rest/v2/order?${orderTypeParam}`;
+  const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const { data, error, isLoading } = useSWR<
     { data: { results: Array<Result> } },

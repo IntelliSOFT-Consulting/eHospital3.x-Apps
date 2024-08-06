@@ -8,7 +8,7 @@ import {
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "../procedure-instructions/instructions.scss";
-import { Result } from "../../work-list/work-list.resource";
+import { Result } from "../../types";
 
 interface ProcedureRejectReasonModalProps {
   order: Result;

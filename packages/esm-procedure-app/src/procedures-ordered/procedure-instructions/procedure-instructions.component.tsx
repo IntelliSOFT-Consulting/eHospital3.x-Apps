@@ -12,8 +12,8 @@ import {
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./instructions.scss";
-import { Result } from "../../work-list/work-list.resource";
 import { formatDate, parseDate } from "@openmrs/esm-framework";
+import { Result } from "../../types";
 
 interface ProcedureInstructionsModalProps {
   order: Result;

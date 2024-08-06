@@ -1,16 +1,13 @@
 import useSWR, { mutate } from "swr";
-import useSWRImmutable from "swr/immutable";
 import {
   ConfigObject,
-  FetchResponse,
   openmrsFetch,
   restBaseUrl,
   useConfig,
 } from "@openmrs/esm-framework";
-
-import { Result } from "../work-list/work-list.resource";
 import { useCallback } from "react";
 import { ProcedureConceptClass_UUID } from "../constants";
+import { Result } from "../types";
 
 export function useMetrics() {
   const metrics = {
@@ -35,7 +32,7 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;
 
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
-  const apiUrl = `/ws/rest/v2/order?${orderTypeParam}`;
+  const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const { data, error, isLoading } = useSWR<
     { data: { results: Array<Result> } },
