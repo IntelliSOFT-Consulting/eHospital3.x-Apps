@@ -1,0 +1,38 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+.dashboardCardContainer{
+    border-radius: 10px;
+    border: 1px solid;
+    @include brand-01(border-color);
+    flex: 1;
+    min-width: max-content;
+    height: 154px;
+    padding: 0 spacing.$spacing-05;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.label{
+    @include type.type-style("body-compact-02");
+    font-size: 1.2rem;
+    color:  #666666;
+    padding-top: spacing.$spacing-06;
+}
+
+.count {
+    @include type.type-style("heading-07");
+    color: colors.$gray-100;
+    padding-bottom: spacing.$spacing-05;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &> svg{
+        @include brand-03(fill)
+    }
+}
