@@ -187,3 +187,16 @@ html[dir='rtl'] {
   width: 100%;
   border: 1px solid $ui-03;
 }
+
+.cardContainerParent {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.metricsCard {
+  width: 100%; /* Full width within its grid cell */
+  box-sizing: border-box; /* Ensure padding/border are included in width */
+}

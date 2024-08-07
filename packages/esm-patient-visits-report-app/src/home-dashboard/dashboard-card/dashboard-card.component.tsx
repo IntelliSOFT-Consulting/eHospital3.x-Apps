@@ -7,6 +7,7 @@ import { ConfigurableLink } from "@openmrs/esm-framework";
 import styles from "../home-dashboard.scss";
 
 interface MetricsCardProps {
+  className?: string;
   label: string;
   value: number | string;
   headerLabel: string;
@@ -17,6 +18,7 @@ interface MetricsCardProps {
 }
 
 const MetricsCard: React.FC<MetricsCardProps> = ({
+  className,
   label,
   value,
   headerLabel,

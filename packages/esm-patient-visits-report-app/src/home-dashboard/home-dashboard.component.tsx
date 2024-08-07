@@ -69,12 +69,19 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               </div>
             </div>
           </div>
+
+         
           <div className={styles.homeContainer}>
-            <div
-              className={styles.cardContainer}
-              data-testid="registered-patients"
-            >
+          <div className={styles.cardContainerParent} data-testid="clinic-metrics">
               <MetricsCard
+                className="metricsCard"
+                label={t("total", "Total")}
+                value={totalPatients.toString()}
+                headerLabel={t("registeredPatients", "Registered Patients")}
+                service="scheduled"
+              />
+              <MetricsCard
+                className="metricsCard"
                 label={t("total", "Total")}
                 value={totalPatients.toString()}
                 headerLabel={t("registeredPatients", "Registered Patients")}
