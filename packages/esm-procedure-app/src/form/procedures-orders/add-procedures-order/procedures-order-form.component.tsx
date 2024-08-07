@@ -10,6 +10,7 @@ import {
   useLayoutType,
   useSession,
   useConfig,
+  ExtensionSlot,
 } from "@openmrs/esm-framework";
 import {
   careSettingUuid,
@@ -92,9 +93,10 @@ export function ProceduresOrderForm({
     ) || {}
   ).required;
 
-  const {
-    items: { answers: bodySiteItems },
-  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  // const {
+  //   items: { answers: bodySiteItems },
+  // } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
 
   const proceduresOrderFormSchema = z.object({
     instructions: z.string().optional(),
@@ -248,6 +250,11 @@ export function ProceduresOrderForm({
         id="procedureOrderForm"
       >
         <div className={styles.form}>
+          <ExtensionSlot
+            name="top-of-procedure-order-form-slot"
+            state={{ order: initialOrder }}
+          />
+
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
@@ -367,7 +374,7 @@ export function ProceduresOrderForm({
               </Column>
             </Grid>
           )}
-          <Grid className={styles.gridRow}>
+          {/* <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
                 <Controller
@@ -396,7 +403,7 @@ export function ProceduresOrderForm({
                 />
               </InputWrapper>
             </Column>
-          </Grid>
+          </Grid> */}
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
