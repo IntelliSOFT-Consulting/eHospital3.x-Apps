@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import classNames from "classnames";
 import {
-  type DefaultWorkspaceProps,
+  type DefaultPatientWorkspaceProps,
   launchPatientWorkspace,
   useOrderBasket,
 } from "@openmrs/esm-patient-common-lib";
@@ -47,9 +47,9 @@ import { moduleName } from "../../../constants";
 
 export interface ProceduresOrderFormProps {
   initialOrder: ProcedureOrderBasketItem;
-  closeWorkspace: DefaultWorkspaceProps["closeWorkspace"];
-  closeWorkspaceWithSavedChanges: DefaultWorkspaceProps["closeWorkspaceWithSavedChanges"];
-  promptBeforeClosing: DefaultWorkspaceProps["promptBeforeClosing"];
+  closeWorkspace: DefaultPatientWorkspaceProps["closeWorkspace"];
+  closeWorkspaceWithSavedChanges: DefaultPatientWorkspaceProps["closeWorkspaceWithSavedChanges"];
+  promptBeforeClosing: DefaultPatientWorkspaceProps["promptBeforeClosing"];
 }
 
 export function ProceduresOrderForm({
@@ -93,10 +93,9 @@ export function ProceduresOrderForm({
     ) || {}
   ).required;
 
-  // const {
-  //   items: { answers: bodySiteItems },
-  // } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-
+  const {
+    items: { answers: bodySiteItems, name },
+  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
   const proceduresOrderFormSchema = z.object({
     instructions: z.string().optional(),
@@ -374,36 +373,38 @@ export function ProceduresOrderForm({
               </Column>
             </Grid>
           )}
-          {/* <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="bodySite"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="bodySiteInput"
-                      titleText={t("bodySite", "Body Site")}
-                      selectedItem={
-                        bodySiteItems?.find(
-                          (option) => option.uuid === value
-                        ) || null
-                      }
-                      items={bodySiteItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) =>
-                        onChange(selectedItem?.uuid || "")
-                      }
-                      invalid={errors.bodySite?.message}
-                      invalidText={errors.bodySite?.message}
-                      itemToString={(item) => item?.display}
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid> */}
+          {bodySiteItems && (
+            <Grid className={styles.gridRow}>
+              <Column lg={16} md={8} sm={4}>
+                <InputWrapper>
+                  <Controller
+                    name="bodySite"
+                    control={control}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <ComboBox
+                        size="lg"
+                        id="bodySiteInput"
+                        titleText={t("bodySite", "Body Site")}
+                        selectedItem={
+                          bodySiteItems?.find(
+                            (option) => option.uuid === value
+                          ) || null
+                        }
+                        items={bodySiteItems}
+                        onBlur={onBlur}
+                        onChange={({ selectedItem }) =>
+                          onChange(selectedItem?.uuid || "")
+                        }
+                        invalid={errors.bodySite?.message}
+                        invalidText={errors.bodySite?.message}
+                        itemToString={(item) => item?.display}
+                      />
+                    )}
+                  />
+                </InputWrapper>
+              </Column>
+            </Grid>
+          )}
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
