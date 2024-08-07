@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -30,9 +30,8 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
     currentPaginationState,
     getAllClients,
     clear,
+    totalPatients,
   } = usePatientList();
-
-  const totalPatients = 0;
 
   return (
     <>
@@ -107,13 +106,13 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
                     size="md"
                   />
                 </DatePicker>
-                <Button
+                {/* <Button
                   onClick={clear}
                   kind="secondary"
                   style={styles.FilterButton}
                 >
                   Clear
-                </Button>
+                </Button> */}
               </div>
               <DataTable
                 paginationPerPage={15}
