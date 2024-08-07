@@ -6,10 +6,10 @@ import {
 import { moduleName } from "./constants";
 import { configSchema } from "./config-schema";
 import { homeVisitsDashboardMeta } from "./dashboard.meta";
-import { createVisitsDashboardLink as createVisitsHomeDashboardLink } from "./DashboardLink";
+import { createDashboardLink as createHomeDashboardLink } from "./DashboardLink";
 
 const options = {
-  featureName: "esm-patient-visit-report-app",
+  featureName: "esm-patient-visits-report-app",
   moduleName,
 };
 
@@ -29,7 +29,7 @@ export const rootHome = getAsyncLifecycle(
   options
 );
 
-export const homeTodayVisitsLink = getSyncLifecycle(
-  createVisitsHomeDashboardLink(homeVisitsDashboardMeta),
+export const homePatientRegisterationLink = getSyncLifecycle(
+  createHomeDashboardLink(homeVisitsDashboardMeta),
   options
 );

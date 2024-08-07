@@ -1,9 +1,9 @@
 {
-  "name": "@sjthc/esm-patient-visit-report-app",
+  "name": "@sjthc/esm-patient-visits-report-app",
   "version": "1.0.0",
   "license": "MPL-2.0",
-  "description": "Custom Patient list microfrontend for the OpenMRS SPA",
-  "browser": "dist/sjthc-esm-patient-visit-report-app.js",
+  "description": "Custom Patient Visits Reports microfrontend for the OpenMRS SPA",
+  "browser": "dist/sjthc-esm-patient-visits-report-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
