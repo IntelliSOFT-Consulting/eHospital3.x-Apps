@@ -1,0 +1,6 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+
+:global(div.cds--cc--legend.vertical){
+    width: fit-content;
+}
