@@ -18,9 +18,9 @@ import {
   useLayoutType,
   useSession,
   ResponsiveWrapper,
+  closeWorkspace,
 } from "@openmrs/esm-framework";
 import {
-  closeWorkspace,
   launchPatientWorkspace,
   useOrderBasket,
 } from "@openmrs/esm-patient-common-lib";

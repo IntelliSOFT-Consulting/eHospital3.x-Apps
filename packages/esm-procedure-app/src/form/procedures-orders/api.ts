@@ -286,7 +286,7 @@ export interface Concept extends BaseOpenmrsObject, Auditable, Retireable {
 }
 
 export function useConceptById(id: string) {
-  const apiUrl = `ws/rest/v2/concept/${id}`;
+  const apiUrl = `ws/rest/v1/concept/${id}`;
   const { data, error, isLoading } = useSWR<
     {
       data: Concept;

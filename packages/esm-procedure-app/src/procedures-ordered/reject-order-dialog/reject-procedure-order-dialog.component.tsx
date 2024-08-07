@@ -10,10 +10,10 @@ import {
 } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import styles from "./reject-order-dialog.scss";
-import { Result } from "../../work-list/work-list.resource";
 import { showNotification, showSnackbar } from "@openmrs/esm-framework";
 import { mutate } from "swr";
 import { updateOrder } from "../pick-procedure-order/add-to-worklist-dialog.resource";
+import { Result } from "../../types";
 interface RejectProcedureOrderDialogProps {
   order: Result;
   closeModal: () => void;
@@ -48,7 +48,7 @@ const RejectProcedureOrderDialog: React.FC<RejectProcedureOrderDialogProps> = ({
         closeModal();
         mutate(
           (key) =>
-            typeof key === "string" && key.startsWith("/ws/rest/v2/order"),
+            typeof key === "string" && key.startsWith("/ws/rest/v1/order"),
           undefined,
           { revalidate: true }
         );

@@ -20,8 +20,8 @@ import {
   useGetOrderConceptByUuid,
   saveProcedureReport,
 } from "./result-form.resource";
-import { Result } from "../work-list/work-list.resource";
 import { useForm } from "react-hook-form";
+import { Result } from "../types";
 
 interface ResultFormProps {
   patientUuid: string;

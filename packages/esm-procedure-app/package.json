@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-procedure-app",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
   "browser": "dist/sjthc-esm-procedure-app.js",
@@ -9,15 +9,16 @@
   "scripts": {
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",
-    "debug": "npm run serve",
     "build": "webpack --mode production",
-    "analyze": "webpack --mode=production --env.analyze=true",
-    "lint": "cross-env eslint src --ext ts,tsx",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
-    "coverage": "yarn test --coverage",
+    "analyze": "webpack --mode=production --env analyze=true",
+    "lint": "TIMING=1 eslint src --ext js,jsx,ts,tsx",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\" --list-different",
     "typescript": "tsc",
-    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*modal.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js"
+    "test": "jest --config jest.config.js --passWithNoTests",
+    "verify": "turbo lint typescript coverage",
+    "coverage": "yarn test --coverage",
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ./i18next-parser.config.js",
+    "test-e2e": "playwright test"
   },
   "husky": {
     "hooks": {
@@ -112,5 +113,5 @@
     "webpack-cli": "^5.1.4"
   },
   "packageManager": "yarn@3.6.1",
-  "gitHead": "f1661da45d2c1cd9be4305a0e015a6f66685af85"
+  "gitHead": "50c3c5d51d59bbab87b49e830a948aab4a152e44"
 }

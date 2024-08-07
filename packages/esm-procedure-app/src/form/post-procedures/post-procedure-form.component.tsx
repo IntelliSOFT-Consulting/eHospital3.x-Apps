@@ -30,14 +30,17 @@ import {
   useConditionsSearch,
   useProvidersSearch,
 } from "./post-procedure.resource";
-import { CodedProvider, CodedCondition, ProcedurePayload } from "../../types";
-import { Result } from "../../work-list/work-list.resource";
+import {
+  CodedProvider,
+  CodedCondition,
+  ProcedurePayload,
+  Result,
+} from "../../types";
 import dayjs from "dayjs";
 import { closeOverlay } from "../../components/overlay/hook";
 import { type ConfigObject, StringPath } from "../../config-schema";
 import { updateOrder } from "../../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource";
 import { mutate } from "swr";
-import { closeWorkspace } from "@openmrs/esm-patient-common-lib";
 
 const validationSchema = z.object({
   startDatetime: z.date({ required_error: "Start datetime is required" }),
@@ -221,7 +224,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         });
       }
       mutate(
-        (key) => typeof key === "string" && key.startsWith("/ws/rest/v2/order"),
+        (key) => typeof key === "string" && key.startsWith("/ws/rest/v1/order"),
         undefined,
         { revalidate: true }
       );
