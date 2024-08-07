@@ -11,9 +11,10 @@ export function usePatientList() {
     page: 0
   });
   const [dateRange, setDateRange] = React.useState({
-    start: `01-01-${new Date().getFullYear()}`,
-    end: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
+    start: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`,
+    end: `${new Date().getDate() + 1}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
   });
+  const [totalPatients, setTotalPatients] = useState(0);
 
   const getAllClients = async ({page, size}) => {
     try {
@@ -34,8 +35,9 @@ export function usePatientList() {
 
 
       const url = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-      const {data} = await openmrsFetch(url);
-
+      const { data } = await openmrsFetch(url);
+      
+      setData([])
       if (data.results.length > 0) {
         setData(prev => [...prev, ...data.results.map(result => ({
           ...result,
@@ -45,6 +47,7 @@ export function usePatientList() {
           openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
           opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
         }))]);
+        setTotalPatients(data.totalPatients);
       }
 
       if (data.results.length === size)
@@ -60,16 +63,18 @@ export function usePatientList() {
     }
   }
 
-
-  useEffect(() => {
-    getAllClients({...currentPaginationState})
-  }, [currentPaginationState.page]);
+  // useEffect(() => {
+  //   // setData((prev) => {
+  //   //   return prev.slice(0, 0);
+  //   // });
+  //   getAllClients({...currentPaginationState})
+  // }, [dateRange.start, dateRange.end]);
 
   useEffect(() => {
     setCurrentPaginationState(prev => ({...prev, page: 0}))
-    setData([]);
+    // setData([]);
     getAllClients({...currentPaginationState})
-  }, [dateRange]);
+  }, [dateRange, currentPaginationState.page]);
 
   const tableColumns = [
     {
@@ -145,6 +150,8 @@ export function usePatientList() {
     setDateRange,
     getAllClients,
     currentPaginationState,
-    clear
+    clear,
+    totalPatients,
+    // returnClients
   };
 }
