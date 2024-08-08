@@ -13,11 +13,11 @@ import {
 import {usePatientList} from "../hooks/usePatientList";
 import DataTable from "react-data-table-component";
 
-type TodaysVisitHomeProps = {
+type PatientVisistsReportHomeProps = {
   patientUuid?: string;
 };
 
-const TodaysVisitHome: React.FC<TodaysVisitHomeProps> = () => {
+const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const {t} = useTranslation();
 
   const {
@@ -45,8 +45,7 @@ const TodaysVisitHome: React.FC<TodaysVisitHomeProps> = () => {
             <div className={styles["left-justified-items"]}>
               <PatientQueueIllustration/>
               <div className={styles["page-labels"]}>
-                <p className={styles.title}>{t("patients", "Patients")}</p>
-                <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
+                <p className={styles.title}>{t("outPatient", "Out Patient")}</p>
               </div>
             </div>
           </div>
@@ -66,17 +65,23 @@ const TodaysVisitHome: React.FC<TodaysVisitHomeProps> = () => {
             <div className={styles["left-justified-items"]}>
               <PatientQueueIllustration/>
               <div className={styles["page-labels"]}>
-                <p className={styles.title}>{t("patients", "Patients")}</p>
-                <p className={styles.subTitle}>{t("dashboard", "Dashboard")}</p>
+                <p className={styles.title}>{t("outPatient", "Out Patient")}</p>
               </div>
             </div>
           </div>
+
+         
           <div className={styles.homeContainer}>
-            <div
-              className={styles.cardContainer}
-              data-testid="registered-patients"
-            >
+          <div className={styles.cardContainerParent} data-testid="clinic-metrics">
               <MetricsCard
+                className="metricsCard"
+                label={t("total", "Total")}
+                value={totalPatients.toString()}
+                headerLabel={t("registeredPatients", "Registered Patients")}
+                service="scheduled"
+              />
+              <MetricsCard
+                className="metricsCard"
                 label={t("total", "Total")}
                 value={totalPatients.toString()}
                 headerLabel={t("registeredPatients", "Registered Patients")}
@@ -136,4 +141,4 @@ const TodaysVisitHome: React.FC<TodaysVisitHomeProps> = () => {
   );
 };
 
-export default TodaysVisitHome;
+export default PatientVisitsReportHome;

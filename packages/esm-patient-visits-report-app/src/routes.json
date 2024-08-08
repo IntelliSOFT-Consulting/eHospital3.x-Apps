@@ -2,21 +2,21 @@
   "$schema": "https://json.openmrs.org/routes.schema.json",
   "extensions": [
     {
-      "name": "home-today-visits-dashboard-link",
-      "component": "homeTodayVisitsLink",
+      "name": "home-visits-report-dashboard-link",
+      "component": "homePatientRegisterationLink",
       "slot": "homepage-dashboard-slot",
       "order": 0,
       "meta": {
-        "name": "patient-visit-report",
-        "slot": "patients-visit-report-dashboard-slot",
-        "title": "Today's Visits Reports"
+        "name": "patients-visits-dashboard",
+        "slot": "patients-visits-dashboard-slot",
+        "title": "OPD Visit's Reports"
       },
       "online": true,
       "offline": true
     },
     {
       "name": "root-visits-report-dashboard",
-      "slot": "patients-visit-report-dashboard-slot",
+      "slot": "patients-visits-dashboard-slot",
       "component": "rootHome"
     }
   ],

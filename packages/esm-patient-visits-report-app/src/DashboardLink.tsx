@@ -31,12 +31,12 @@ function DashboardExtension({
         navLink.match(name) && "active-left-nav-link"
       }`}
     >
-      {t("todayVisitsReports", "Today's Visit Reports")}
+      {t("outPatient", "Out Patient")}
     </ConfigurableLink>
   );
 }
 
-export const createVisitsDashboardLink =
+export const createDashboardLink =
   (dashboardLinkConfig: DashboardLinkConfig) => () =>
     (
       <BrowserRouter>
