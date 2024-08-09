@@ -89,7 +89,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       id: patient.openmrsID,
       fullName: () => (
         <Link
-          href={`/${window.getOpenmrsSpaBase()}/patient/${
+          href={`${window.getOpenmrsSpaBase()}patient/${
             patient.uuid
           }/chart/Patient%20Summary`}
         >
@@ -223,7 +223,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                            >
                             {row.cells.map((cell, index) => (
                               console.log(cell),
-                              <TableCell key={index}>{cell.value}</TableCell>
+                              <TableCell key={index}>{typeof cell.value === 'function' ? cell.value() : cell.value}</TableCell>
                             ))}
                           </TableRow>)
                           })}
