@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-patient-visits-report-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MPL-2.0",
   "description": "Custom Patient Visits Reports microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-visits-report-app.js",
@@ -60,5 +60,5 @@
     "@types/uuid": "^9.0.4",
     "webpack": "^5.88.2"
   },
-  "gitHead": "d7d166c3689faa62126922b80e2e08829952a7fa"
+  "gitHead": "bafac090b17085a332cd7f84384ef9d450a84c0d"
 }

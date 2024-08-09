@@ -20,10 +20,10 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
   DataTableSkeleton,
-  Pagination
+  Pagination,
+  Link
 } from "@carbon/react";
 import {useOPDPatientList} from "../hooks/useOPDPatientList";
-import { Link, useNavigate } from "react-router-dom";
 // import DataTable from "react-data-table-component";
 
 type PatientVisistsReportHomeProps = {
@@ -35,7 +35,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [searchString, setSearchString] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     isLoading,
@@ -87,9 +87,9 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const rowData = filteredData?.map((patient) => {
     return {
       id: patient.openmrsID,
-      fullName: (
+      fullName: () => (
         <Link
-          to={`/${window.getOpenmrsSpaBase()}/patient/${
+          href={`/${window.getOpenmrsSpaBase()}/patient/${
             patient.uuid
           }/chart/Patient%20Summary`}
         >
