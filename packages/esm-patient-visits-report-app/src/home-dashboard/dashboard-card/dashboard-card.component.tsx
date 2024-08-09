@@ -12,7 +12,7 @@ interface MetricsCardProps {
   value: number | string;
   headerLabel: string;
   children?: React.ReactNode;
-  service?: string;
+  // service?: string;
   serviceUuid?: string;
   locationUuid?: string;
 }
@@ -23,15 +23,15 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
   value,
   headerLabel,
   children,
-  service,
+  // service,
   serviceUuid,
   locationUuid,
 }) => {
   const { t } = useTranslation();
 
-  const queueListPath =
-    window.getOpenmrsSpaBase() +
-    `home/service-queues/queue-list/${service}/${serviceUuid}/${locationUuid}`;
+  // const queueListPath =
+  //   window.getOpenmrsSpaBase() +
+  //   `home/service-queues/queue-list/${service}/${serviceUuid}/${locationUuid}`;
 
   return (
     <Layer
@@ -45,7 +45,7 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
             <label className={styles.headerLabel}>{headerLabel}</label>
             {children}
           </div>
-          {service == "scheduled" ? (
+          {/* {service == "scheduled" ? (
             <div className={styles.link}>
               <ConfigurableLink
                 className={styles.link}
@@ -61,8 +61,8 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
                 {t("activeVisit", "Active Visit")}
               </ConfigurableLink>
               <ArrowRight size={16} />
-            </div>
-          )}
+            </div> */}
+          {/* )} */}
         </div>
         <div>
           <label className={styles.totalsLabel}>{label}</label>
