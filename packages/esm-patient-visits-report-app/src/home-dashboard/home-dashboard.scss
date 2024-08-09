@@ -30,6 +30,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-wrap: nowrap;
+  // flex-grow: 1;
 }
 
 .right-justified-items {
@@ -42,6 +44,7 @@
     @include type.type-style("heading-05");
     color: colors.$gray-100;
     margin: spacing.$spacing-03 0;
+    // white-space: nowrap;
 }
 
 .subTitle{
@@ -104,7 +107,7 @@
   height: 7.875rem;
   padding: spacing.$spacing-05;
   margin: spacing.$spacing-03 spacing.$spacing-03;
-  width: 30%;
+  width: 60%;
 }
 
 .tileHeader {
@@ -165,25 +168,25 @@ html[dir='rtl'] {
   }
 }
 
-.listFilter {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  height: spacing.$spacing-12;
-  min-height: 2rem;
-  align-items: end;
-  border-left: 0px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  position: absolute;
-  z-index: 20;
-  padding: 10px;
-  right: 0px;
-  gap: 12px;
-}
+// .listFilter {
+//   // @include type.type-style('body-compact-02');
+//   color: $text-02;
+//   height: spacing.$spacing-12;
+//   min-height: 2rem;
+//   // align-items: end;
+//   border-left: 0px;
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+//   // position: absolute;
+//   // z-index: 20;
+//   padding: 10px;
+//   // right: 0px;
+//   gap: 12px;
+// }
 
 .datatable{
-  position: relative;
+  // position: relative;
   width: 100%;
   border: 1px solid $ui-03;
 }
@@ -199,4 +202,35 @@ html[dir='rtl'] {
 .metricsCard {
   width: 100%;
   box-sizing: border-box;
+}
+
+.tableToolbarContent {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.filterDatePicker {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 12px;
+}
+
+.tableTitle {
+  padding-left: 10px;
+  padding-top: 10px;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #525252;
+  font-weight: 600;
+}
+
+.tableBody {
+  margin-top: 3rem;
+}
+
+.pageLabels {
+  // white-space: nowrap;
+  // overflow: hidden;
+  // flex-grow: 1;
 }

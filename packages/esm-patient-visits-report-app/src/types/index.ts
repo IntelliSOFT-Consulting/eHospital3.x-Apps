@@ -30,3 +30,13 @@ interface LinkItem {
   uri: string;
   resourceAlias: null | string;
 }
+
+export interface PatientData {
+  uuid: string;
+  fullName: string;
+  openmrsID: string;
+  gender: string;
+  age: number;
+  opdNumber: string;
+  diagnosis: string;
+}

@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import {openmrsFetch} from "@openmrs/esm-framework";
 import {getPaddedDateString} from "../helpers/dateOps";
 import {Link} from "@carbon/react";
+import { PatientData } from "../types";
 
-export function usePatientList() {
+export function useOPDPatientList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPaginationState, setCurrentPaginationState] = useState({
@@ -15,8 +16,9 @@ export function usePatientList() {
     end: `${new Date().getDate() + 1}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
   });
   const [totalPatients, setTotalPatients] = useState(0);
+  const [totalOpdPatients, setTotalOpdPatients] = useState(0);
 
-  const getAllClients = async ({page, size}) => {
+  const getOPDClients = async ({page, size}) => {
     try {
       if (page === 0) setLoading(true);
 
@@ -34,7 +36,7 @@ export function usePatientList() {
       }
 
 
-      const url = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
+      const url = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}`;
       const { data } = await openmrsFetch(url);
       
       setData([])
@@ -44,18 +46,21 @@ export function usePatientList() {
           fullName: result?.name,
           age: result?.age,
           gender: result?.sex,
-          openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
           opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+          openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+          diagnosis: result?.diagnosis
         }))]);
+        setTotalOpdPatients(data.totalOpdPatients);
         setTotalPatients(data.totalPatients);
       }
+
+      // console.log(data.results)
 
       if (data.results.length === size)
         setCurrentPaginationState(prev => ({
           ...prev,
           page: ++prev.page
         }))
-
     } catch (e) {
       return e
     } finally {
@@ -63,57 +68,46 @@ export function usePatientList() {
     }
   }
 
-  // useEffect(() => {
-  //   // setData((prev) => {
-  //   //   return prev.slice(0, 0);
-  //   // });
-  //   getAllClients({...currentPaginationState})
-  // }, [dateRange.start, dateRange.end]);
-
   useEffect(() => {
     setCurrentPaginationState(prev => ({...prev, page: 0}))
-    // setData([]);
-    getAllClients({...currentPaginationState})
-  }, [dateRange, currentPaginationState.page]);
+    getOPDClients({...currentPaginationState})
+    
+  }, [dateRange]);
 
-  const tableColumns = [
-    {
-      name: "Name",
-      cell: (row) => (
-        <Link
-          href={`${window.getOpenmrsSpaBase()}patient/${
-            row.uuid
-          }/chart/Patient%20Summary`}
-        >
-          {row.fullName}
-        </Link>
-      ),
-    },
-    {
-      name: "ID",
-      selector: (row) => row.openmrsID,
-    },
-    {
-      name: "Gender",
-      selector: (row) => row.gender,
-    },
-    {
-      name: "Age",
-      selector: (row) => row.age,
-    },
-    {
-      name: "OPD Number",
-      selector: (row) => row.opdNumber,
-    },
-    {
-      name: "Date Registered",
-      selector: (row) => row.dateRegistered,
-    },
-    {
-      name: "Time Registered",
-      selector: (row) => row.timeRegistered,
-    },
-  ];
+  // const tableColumns = [
+  //   {
+  //     name: "Name",
+  //     cell: (row: PatientData) => (
+  //       <Link
+  //         href={`${window.getOpenmrsSpaBase()}patient/${
+  //           row.uuid
+  //         }/chart/Patient%20Summary`}
+  //       >
+  //         {row.fullName}
+  //       </Link>
+  //     ),
+  //   },
+  //   {
+  //     name: "ID",
+  //     selector: (row: PatientData) => row.openmrsID,
+  //   },
+  //   {
+  //     name: "Gender",
+  //     selector: (row: PatientData) => row.gender,
+  //   },
+  //   {
+  //     name: "Age",
+  //     selector: (row: PatientData) => row.age,
+  //   },
+  //   {
+  //     name: "OPD Number",
+  //     selector: (row: PatientData) => row.opdNumber,
+  //   },
+  //   {
+  //     name: "Diagnosis",
+  //     selector: (row: PatientData) => row.diagnosis,
+  //   }
+  // ];
 
 
   const clear = () => {
@@ -122,7 +116,7 @@ export function usePatientList() {
       end: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
     });
     setData([]);
-    getAllClients({...currentPaginationState})
+    getOPDClients({...currentPaginationState})
   };
   const customStyles = {
     cells: {
@@ -142,16 +136,18 @@ export function usePatientList() {
 
   return {
     customStyles,
-    tableColumns,
+    // tableColumns,
     data,
     patient: data,
     isLoading: loading,
     dateRange,
     setDateRange,
-    getAllClients,
+    getOPDClients,
     currentPaginationState,
     clear,
     totalPatients,
-    // returnClients
+    totalOpdPatients,
+    setTotalOpdPatients,
+    setTotalPatients
   };
 }
