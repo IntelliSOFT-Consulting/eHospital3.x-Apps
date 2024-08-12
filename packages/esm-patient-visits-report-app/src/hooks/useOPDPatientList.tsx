@@ -17,6 +17,11 @@ export function useOPDPatientList() {
   });
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalOpdPatients, setTotalOpdPatients] = useState(0);
+  const [summary, setSummary] = useState({
+    groupYear: {},
+    groupMonth: {},
+    groupWeek: {}
+  })
 
   const getOPDClients = async ({page, size}) => {
     try {
@@ -52,9 +57,16 @@ export function useOPDPatientList() {
         }))]);
         setTotalOpdPatients(data.totalOpdPatients);
         setTotalPatients(data.totalPatients);
+        setSummary(data.summary);
+      } else {
+        setTotalOpdPatients(0);
+        setTotalPatients(0);
+        setSummary({
+          groupYear: {},
+          groupMonth: {},
+          groupWeek: {}
+        })
       }
-
-      // console.log(data.results)
 
       if (data.results.length === size)
         setCurrentPaginationState(prev => ({
@@ -73,41 +85,6 @@ export function useOPDPatientList() {
     getOPDClients({...currentPaginationState})
     
   }, [dateRange]);
-
-  // const tableColumns = [
-  //   {
-  //     name: "Name",
-  //     cell: (row: PatientData) => (
-  //       <Link
-  //         href={`${window.getOpenmrsSpaBase()}patient/${
-  //           row.uuid
-  //         }/chart/Patient%20Summary`}
-  //       >
-  //         {row.fullName}
-  //       </Link>
-  //     ),
-  //   },
-  //   {
-  //     name: "ID",
-  //     selector: (row: PatientData) => row.openmrsID,
-  //   },
-  //   {
-  //     name: "Gender",
-  //     selector: (row: PatientData) => row.gender,
-  //   },
-  //   {
-  //     name: "Age",
-  //     selector: (row: PatientData) => row.age,
-  //   },
-  //   {
-  //     name: "OPD Number",
-  //     selector: (row: PatientData) => row.opdNumber,
-  //   },
-  //   {
-  //     name: "Diagnosis",
-  //     selector: (row: PatientData) => row.diagnosis,
-  //   }
-  // ];
 
 
   const clear = () => {
@@ -148,6 +125,7 @@ export function useOPDPatientList() {
     totalPatients,
     totalOpdPatients,
     setTotalOpdPatients,
-    setTotalPatients
+    setTotalPatients,
+    summary
   };
 }
