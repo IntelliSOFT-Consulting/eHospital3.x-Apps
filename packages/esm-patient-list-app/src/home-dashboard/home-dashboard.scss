@@ -103,7 +103,7 @@
   border: 0.0625rem solid $ui-03;
   height: 7.875rem;
   padding: spacing.$spacing-05;
-  margin: spacing.$spacing-03 spacing.$spacing-03;
+  // margin: spacing.$spacing-03 spacing.$spacing-03;
   width: 30%;
 }
 
@@ -165,25 +165,50 @@ html[dir='rtl'] {
   }
 }
 
-.listFilter {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  height: spacing.$spacing-12;
-  min-height: 2rem;
-  align-items: end;
-  border-left: 0px;
+// .listFilter {
+//   @include type.type-style('body-compact-02');
+//   color: $text-02;
+//   height: spacing.$spacing-12;
+//   min-height: 2rem;
+//   align-items: end;
+//   border-left: 0px;
+//   display: flex;
+//   flex-direction: row;
+//   flex-wrap: wrap;
+//   position: absolute;
+//   z-index: 20;
+//   padding: 10px;
+//   right: 0px;
+//   gap: 12px;
+// }
+
+.datatable{
+  // position: relative;
+  width: 100%;
+  border: 1px solid $ui-03;
+}
+
+.tableTitle {
+  padding-top: 10px;
+  font-size: 1.5rem;
+  color: #525252;
+  font-weight: 600;
+}
+
+.filterDatePicker {
+  margin-bottom: 1.5rem;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  position: absolute;
-  z-index: 20;
-  padding: 10px;
-  right: 0px;
   gap: 12px;
 }
 
-.datatable{
-  position: relative;
-  width: 100%;
-  border: 1px solid $ui-03;
+.tableBody {
+  margin-top: 0.7rem;
+}
+
+.emptyStateText {
+  text-align: center;
+}
+
+.emptyStateTile{
+  margin: auto;
 }

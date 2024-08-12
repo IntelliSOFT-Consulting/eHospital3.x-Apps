@@ -21,10 +21,15 @@ import {
   TableToolbarSearch,
   DataTableSkeleton,
   Pagination,
-  Link
+  Link,
+  Layer,
+  Tab,
+  TabList,
+  IconSwitch,
 } from "@carbon/react";
+import { ChartLineSmooth, Table as TableIcon } from "@carbon/react/icons";
 import {useOPDPatientList} from "../hooks/useOPDPatientList";
-// import DataTable from "react-data-table-component";
+import HomeDashboardChart from "./home-dashboard-chart.component";
 
 type PatientVisistsReportHomeProps = {
   patientUuid?: string;
@@ -35,7 +40,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [searchString, setSearchString] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  // const navigate = useNavigate();
+  const [chartActive, setChartActive] = useState(false);
+  const [listActive, setListActive] = useState(true);
 
   const {
     isLoading,
@@ -50,7 +56,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     totalPatients,
     totalOpdPatients,
     setTotalOpdPatients,
-    setTotalPatients
+    setTotalPatients,
+    summary
   } = useOPDPatientList();
 
   const tableData = [
@@ -109,6 +116,16 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     currentPage * itemsPerPage
   );
 
+  const activateChart = () => {
+    setChartActive(true);
+    setListActive(false);
+  }
+
+  const activateList = () => {
+    setChartActive(false);
+    setListActive(true);
+  }
+
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -165,7 +182,29 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                 // service="scheduled"
               />
             </div>
-            <div className={styles.datatable}>
+
+            <div className={styles.dashboardIcons}>
+              <div>
+                <TabList contained>
+                  <Tab>Consultation</Tab>
+                  <Tab>Dental</Tab>
+                  <Tab>Ultra Sound</Tab>
+                  <Tab>Pharmacy</Tab>
+                  <Tab>Laboratory</Tab>
+                </TabList>
+              </div>
+
+              <div className={styles.iconSwitch}>
+                <IconSwitch name="tableView" text="Table view" onClick={activateList}>
+                  <TableIcon size={16} />
+                </IconSwitch>
+                <IconSwitch name="chartView" text="Chart view" onClick={activateChart}>
+                  <ChartLineSmooth size={16} />
+                </IconSwitch>
+              </div>
+            </div>
+
+            {listActive && (<div className={styles.datatable}>
               <h1 className={styles.tableTitle}></h1>
               <DataTable
                 useZebraStyles={true}
@@ -216,13 +255,11 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                       </TableHead>
                       <TableBody>
                         {rows.map((row) => {
-                          console.log(row);
                           return (<TableRow
                             key={row.id}
                             {...getRowProps({row})}
                            >
                             {row.cells.map((cell, index) => (
-                              console.log(cell),
                               <TableCell key={index}>{typeof cell.value === 'function' ? cell.value() : cell.value}</TableCell>
                             ))}
                           </TableRow>)
@@ -232,6 +269,17 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   </TableContainer>
                 )}
               </DataTable>
+              {rowData?.length === 0 && (
+                <div className={styles.emptyStateText}>
+                  <Layer level={0}>
+                    <Tile className={styles.emptyStateTile}>
+                      <p className={styles.filterEmptyStateContent}>
+                        {t('noData', 'No data to display. Please select a date range to fetch data.')}
+                      </p>
+                    </Tile>
+                  </Layer>
+                </div>
+              )}
               <Pagination 
                 totalItems={rowData.length}
                 backwardText={t("previous", "Previous")}
@@ -245,7 +293,9 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   setItemsPerPage(pageSize);
                 }}
               />
-            </div>
+            </div>)}
+
+            {chartActive && <HomeDashboardChart summary={summary} dateRange={dateRange} setDateRange={setDateRange} />}
           </div>
         </>
       )}

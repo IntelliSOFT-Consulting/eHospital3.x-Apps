@@ -8,10 +8,24 @@ import {
   DatePickerInput,
   Button,
   Tile,
-  SkeletonPlaceholder
+  SkeletonPlaceholder,
+  Link,
+  DataTable,
+  DataTableSkeleton,
+  TableContainer,
+  Table,
+  TableHead,
+  TableRow,
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableToolbar,
+  TableToolbarContent,
+  TableToolbarSearch,
+  Pagination,
+  Layer
 } from "@carbon/react";
 import {usePatientList} from "../hooks/usePatientList";
-import DataTable from "react-data-table-component";
 
 type PatientListHomeProps = {
   patientUuid?: string;
@@ -19,6 +33,8 @@ type PatientListHomeProps = {
 
 const PatientListHome: React.FC<PatientListHomeProps> = () => {
   const {t} = useTranslation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   const {
     isLoading,
@@ -32,6 +48,63 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
     clear,
     totalPatients,
   } = usePatientList();
+
+  const tableData = [
+    {
+      header: t('name', 'Name'),
+      key: 'fullName',
+    },
+    {
+      header: t('age', 'Age'),
+      key: 'age',
+    },
+    {
+      header: t('gender', 'Gender'),
+      key: 'gender',
+    },
+    {
+      header: t('opdNumber', 'OPD Number'),
+      key: 'opdNumber',
+    },
+    {
+      header: t('id', 'ID'),
+      key: 'openmrsID',
+    },
+    {
+      header: t('dateRegistered', 'Date Registered'),
+      key: 'dateRegistered',
+    },
+    {
+      header: t('timeRegistered', 'Time Registered'),
+      key: 'timeRegistered',
+    }
+  ]
+
+  const rowData = data?.map((patient) => {
+    return {
+      id: patient.openmrsID,
+      fullName: () => (
+        <Link
+          href={`${window.getOpenmrsSpaBase()}patient/${
+            patient.uuid
+          }/chart/Patient%20Summary`}
+        >
+          {patient.fullName}
+        </Link>
+      ),
+      age: patient.age,
+      gender: patient.gender,
+      opdNumber: patient.opdNumber,
+      openmrsID: patient.openmrsID,
+      dateRegistered: patient.dateRegistered,
+      timeRegistered: patient.timeRegistered
+    }
+  })
+
+  const paginatedData = rowData?.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <>
@@ -59,6 +132,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
             </Tile>
           </div>
           <br/>
+          <DataTableSkeleton columns={tableData?.length} />
         </div>
       ) : (
         <>
@@ -84,51 +158,95 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
               />
             </div>
             <div className={styles.datatable}>
-              <div className={styles.listFilter}>
-                <DatePicker
-                  onChange={(value) =>
-                    setDateRange({start: value[0], end: value[1]})
-                  }
-                  value={[dateRange.start, dateRange.end]}
-                  datePickerType="range"
-                  dateFormat="d/m/Y"
-                >
-                  <DatePickerInput
-                    id="date-picker-input-id-start"
-                    placeholder="dd/mm/yyyy"
-                    labelText="Start date"
-                    size="md"
-                  />
-                  <DatePickerInput
-                    id="date-picker-input-id-finish"
-                    placeholder="dd/mm/yyyy"
-                    labelText="End date"
-                    size="md"
-                  />
-                </DatePicker>
-                {/* <Button
-                  onClick={clear}
-                  kind="secondary"
-                  style={styles.FilterButton}
-                >
-                  Clear
-                </Button> */}
-              </div>
               <DataTable
-                paginationPerPage={15}
-                columns={tableColumns}
-                data={data}
-                responsive
-                pagination
-                customStyles={customStyles}
-                subHeader
-                striped
-                title="Registered Patients"
-                fixedHeader
-                pointerOnHover
-                className="rounded"
-              />
+                rows={paginatedData}
+                headers={tableData}
+              >
+                {({ rows, headers, getRowProps, getTableProps }) => (
+                  <TableContainer 
+                    {...getTableProps()} 
+                    className={styles.table} 
+                    title={<span className={styles.tableTitle}>{t("registeredPatients", "Registered Patients")}</span>}
+                    >
+                    <TableToolbar className={styles.tableToolbar}>
+                      <TableToolbarContent className={styles.tableToolbarContent}>
+                        <div className={styles.listFilter}>
+                          <DatePicker
+                            onChange={(value) =>
+                              setDateRange({start: value[0], end: value[1]})
+                            }
+                            value={[dateRange.start, dateRange.end]}
+                            datePickerType="range"
+                            dateFormat="d/m/Y"
+                            className={styles.filterDatePicker}
+                          >
+                            <DatePickerInput
+                              id="date-picker-input-id-start"
+                              placeholder="dd/mm/yyyy"
+                              labelText="Start date"
+                              size="md"
+                            />
+                            <DatePickerInput
+                              id="date-picker-input-id-finish"
+                              placeholder="dd/mm/yyyy"
+                              labelText="End date"
+                              size="md"
+                            />
+                          </DatePicker>
+                        </div>
+                      </TableToolbarContent>
+                    </TableToolbar>
+                    <Table className={styles.tableBody}>
+                      <TableHead>
+                        <TableRow>
+                          {headers.map((col) => (
+                            <TableHeader key={col.key}>{col.header}</TableHeader>
+                          ))}
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {rows.map((row) => {
+                          return (
+                            <TableRow
+                              key={row.id}
+                              {...getRowProps({row})}
+                            >
+                              {row.cells.map((cell, index) => (
+                                <TableCell key={index}>{typeof cell.value === 'function' ? cell.value() : cell.value}</TableCell>
+                              ))}
+                            </TableRow>
+                          )
+                        })}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                )}
+              </DataTable>
+              {rowData?.length === 0 && (
+                <div className={styles.emptyStateText}>
+                  <Layer level={0}>
+                    <Tile className={styles.emptyStateTile}>
+                      <p className={styles.filterEmptyStateContent}>
+                        {t('noData', 'No data to display')}
+                      </p>
+                    </Tile>
+                  </Layer>
+                </div>
+              )}
             </div>
+            <Pagination 
+              totalItems={rowData.length}
+              backwardText={t("previous", "Previous")}
+              forwardText={t("next", "Next")}
+              itemsPerPageText={t("itemsPerPage", "Items per page:")}
+              page={currentPage}
+              pageSize={itemsPerPage}
+              pageSizes={[10, 20, 30, 40, 50]}
+              onChange={({page, pageSize}) => {
+                setCurrentPage(page);
+                setItemsPerPage(pageSize);
+              }}
+            />
           </div>
         </>
       )}

@@ -106,7 +106,7 @@
   border: 0.0625rem solid $ui-03;
   height: 7.875rem;
   padding: spacing.$spacing-05;
-  margin: spacing.$spacing-03 spacing.$spacing-03;
+  // margin: spacing.$spacing-03 spacing.$spacing-03;
   width: 60%;
 }
 
@@ -230,8 +230,29 @@ html[dir='rtl'] {
   margin-top: 3rem;
 }
 
-.pageLabels {
-  // white-space: nowrap;
-  // overflow: hidden;
-  // flex-grow: 1;
+.emptyStateText {
+  text-align: center;
+}
+
+.dashboardIcons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 4rem;
+}
+
+.iconSwitch {
+  margin-bottom: 1rem;
+}
+
+.filterElements {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  margin-bottom: 1.5rem;
 }
