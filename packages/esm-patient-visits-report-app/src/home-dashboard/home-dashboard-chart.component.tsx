@@ -3,7 +3,6 @@ import { SimpleBarChart } from "@carbon/charts-react";
 import '@carbon/charts-react/styles.css';
 import { ScaleTypes } from "@carbon/charts-react";
 import { useTranslation } from "react-i18next";
-import { useOPDPatientList } from "../hooks/useOPDPatientList";
 import { DatePicker, DatePickerInput, RadioButton } from "@carbon/react";
 import styles from "./home-dashboard.scss";
 
@@ -66,10 +65,12 @@ const HomeDashboardChart: React.FC<PatientChartsProps> = ({ summary, dateRange, 
     axes: {
       left: {
         mapsTo: 'value',
+        title: t("numberOfPatients", "No. of Patients"),
       },
       bottom: {
         mapsTo: 'group',
         scaleType: ScaleTypes.LABELS,
+        title: t("period", "Period"),
       }
     },
     height: '400px',

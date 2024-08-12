@@ -274,7 +274,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   <Layer level={0}>
                     <Tile className={styles.emptyStateTile}>
                       <p className={styles.filterEmptyStateContent}>
-                        {t('noData', 'No data to display. Please select a date range to see data.')}
+                        {t('noData', 'No data to display. Please select a date range to fetch data.')}
                       </p>
                     </Tile>
                   </Layer>
