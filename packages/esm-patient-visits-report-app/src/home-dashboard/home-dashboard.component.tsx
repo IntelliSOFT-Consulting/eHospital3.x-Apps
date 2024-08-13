@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -24,6 +24,7 @@ import {
   Link,
   Layer,
   Tab,
+  Tabs,
   TabList,
   IconSwitch,
 } from "@carbon/react";
@@ -46,17 +47,10 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const {
     isLoading,
     data,
-    // tableColumns,
-    customStyles,
     setDateRange,
     dateRange,
-    currentPaginationState,
-    getOPDClients,
-    clear,
     totalPatients,
     totalOpdPatients,
-    setTotalOpdPatients,
-    setTotalPatients,
     summary
   } = useOPDPatientList();
 
@@ -170,28 +164,34 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalOpdPatients ? totalOpdPatients.toString() : 0}
-                headerLabel={t("totalOPDVisits", "Total OPD Visits")}
-                // service="scheduled"
+                value={totalPatients.toString()}
+                headerLabel={t("totalOPDVisits", "Total Patients")}
               />
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalPatients ? totalPatients.toString() : 0}
-                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Visits for Period")}
-                // service="scheduled"
+                value={totalOpdPatients.toString()}
+                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Visits")}
+              />
+              <MetricsCard
+                className="metricsCard"
+                label={t("total", "Total")}
+                value={totalPatients.toString()}
+                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Re-visits")}
               />
             </div>
 
             <div className={styles.dashboardIcons}>
               <div>
-                <TabList contained>
-                  <Tab>Consultation</Tab>
-                  <Tab>Dental</Tab>
-                  <Tab>Ultra Sound</Tab>
-                  <Tab>Pharmacy</Tab>
-                  <Tab>Laboratory</Tab>
-                </TabList>
+                <Tabs>
+                  <TabList contained>
+                    <Tab>Consultation</Tab>
+                    <Tab>Dental</Tab>
+                    <Tab>Ultra Sound</Tab>
+                    <Tab>Pharmacy</Tab>
+                    <Tab>Laboratory</Tab>
+                  </TabList>
+                </Tabs>
               </div>
 
               <div className={styles.iconSwitch}>
