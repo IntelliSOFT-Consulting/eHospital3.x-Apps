@@ -16,7 +16,8 @@ export function useOPDPatientList() {
     end: `${new Date().getDate() + 1}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
   });
   const [totalPatients, setTotalPatients] = useState(0);
-  const [totalOpdPatients, setTotalOpdPatients] = useState(0);
+  const [totalOpdVisits, setTotalOpdVisits] = useState(0);
+  const [totalOpdRevisits, setTotalOpdRevisits] = useState(0);
   const [summary, setSummary] = useState({
     groupYear: {},
     groupMonth: {},
@@ -53,14 +54,21 @@ export function useOPDPatientList() {
           gender: result?.sex,
           opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
           openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-          diagnosis: result?.diagnosis
+          diagnosis: result?.diagnosis,
+          consultation: result?.Consultation,
+          dental: result?.Dental,
+          ultraSound: result?.Ultrasound,
+          opdVisits: result["OPD Visits"],
+          opdRevisits: result["OPD Revisit"],
         }))]);
-        setTotalOpdPatients(data.totalOpdPatients);
+        setTotalOpdVisits(data.totalOpdVisits);
         setTotalPatients(data.totalPatients);
+        setTotalOpdRevisits(data.totalOpdRevisits);
         setSummary(data.summary);
       } else {
-        setTotalOpdPatients(0);
+        setTotalOpdVisits(0);
         setTotalPatients(0);
+        setTotalOpdRevisits(0);
         setSummary({
           groupYear: {},
           groupMonth: {},
@@ -123,8 +131,8 @@ export function useOPDPatientList() {
     currentPaginationState,
     clear,
     totalPatients,
-    totalOpdPatients,
-    setTotalOpdPatients,
+    totalOpdVisits,
+    totalOpdRevisits,
     setTotalPatients,
     summary
   };

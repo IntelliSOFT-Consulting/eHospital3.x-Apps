@@ -11,9 +11,10 @@ type PatientChartsProps = {
   summary: any;
   dateRange: {start: string, end: string};
   setDateRange: (range: {start: string, end: string}) => void;
+  activeFilter: string;
 };
 
-const HomeDashboardChart: React.FC<PatientChartsProps> = ({ summary, dateRange, setDateRange }) => {
+const HomeDashboardChart: React.FC<PatientChartsProps> = ({ summary, dateRange, setDateRange, activeFilter }) => {
   const {t} = useTranslation();
 
   const [chartData, setChartData] = useState([]);
