@@ -195,10 +195,24 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               </div>
 
               <div className={styles.iconSwitch}>
-                <IconSwitch name="tableView" text="Table view" onClick={activateList}>
+                <IconSwitch 
+                  name="tableView" 
+                  text="Table view" 
+                  onClick={activateList}
+                  style={{
+                    backgroundColor: listActive ? "#2357871A" : "",
+                  }}
+                >
                   <TableIcon size={16} />
                 </IconSwitch>
-                <IconSwitch name="chartView" text="Chart view" onClick={activateChart}>
+                <IconSwitch 
+                  name="chartView" 
+                  text="Chart view" 
+                  onClick={activateChart}
+                  style={{
+                    backgroundColor: chartActive ? "#2357871A" : "",
+                  }}
+                >
                   <ChartLineSmooth size={16} />
                 </IconSwitch>
               </div>
