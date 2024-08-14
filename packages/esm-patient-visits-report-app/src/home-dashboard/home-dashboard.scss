@@ -34,7 +34,6 @@
   flex-direction: row;
   align-items: center;
   flex-wrap: nowrap;
-  // flex-grow: 1;
 }
 
 .right-justified-items {
@@ -48,6 +47,9 @@
   color: colors.$gray-100;
   margin: spacing.$spacing-03 0;
   // white-space: nowrap;
+    @include type.type-style("heading-05");
+    color: colors.$gray-100;
+    margin: spacing.$spacing-03 0;
 }
 
 .subTitle {
@@ -112,8 +114,7 @@
   border: 0.0625rem solid $ui-03;
   height: 7.875rem;
   padding: spacing.$spacing-05;
-  // margin: spacing.$spacing-03 spacing.$spacing-03;
-  width: 60%;
+  width: 100%;
 }
 
 .tileHeader {
@@ -174,8 +175,7 @@ html[dir='rtl'] {
   }
 }
 
-
-.datatable {
+.datatable{
   width: 100%;
   border: 1px solid $ui-03;
 }

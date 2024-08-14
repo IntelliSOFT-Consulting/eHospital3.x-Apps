@@ -13,7 +13,8 @@ export function useOPDPatientList() {
 
   const [dateRange, setDateRange] = React.useState<{ start: any, end: any }>(getPaddedTodayDateRange);
   const [totalPatients, setTotalPatients] = useState(0);
-  const [totalOpdPatients, setTotalOpdPatients] = useState(0);
+  const [totalOpdVisits, setTotalOpdVisits] = useState(0);
+  const [totalOpdRevisits, setTotalOpdRevisits] = useState(0);
   const [summary, setSummary] = useState({
     groupYear: {},
     groupMonth: {},
@@ -48,16 +49,23 @@ export function useOPDPatientList() {
           fullName: result?.name,
           age: result?.age,
           gender: result?.sex,
-          opdNumber: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-          openmrsID: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-          diagnosis: result?.diagnosis
+          opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+          openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+          diagnosis: result?.diagnosis,
+          consultation: result?.Consultation,
+          dental: result?.Dental,
+          ultraSound: result?.Ultrasound,
+          opdVisits: result["OPD Visits"],
+          opdRevisits: result["OPD Revisit"],
         }))]);
-        setTotalOpdPatients(data.totalOpdPatients);
+        setTotalOpdVisits(data.totalOpdVisits);
         setTotalPatients(data.totalPatients);
+        setTotalOpdRevisits(data.totalOpdRevisits);
         setSummary(data.summary);
       } else {
-        setTotalOpdPatients(0);
+        setTotalOpdVisits(0);
         setTotalPatients(0);
+        setTotalOpdRevisits(0);
         setSummary({
           groupYear: {},
           groupMonth: {},
@@ -91,6 +99,9 @@ export function useOPDPatientList() {
     dateRange,
     totalPatients,
     totalOpdPatients,
+    totalOpdVisits,
+    totalOpdRevisits,
+    setTotalPatients,
     summary
   };
 }

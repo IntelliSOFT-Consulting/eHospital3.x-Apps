@@ -11,6 +11,7 @@ import {
   DataTableSkeleton,
   Link,
   Tab,
+  Tabs,
   TabList,
   IconSwitch, ContentSwitcher, TextInput, RadioButton, TableToolbarSearch, ExpandableSearch,
 } from "@carbon/react";
@@ -31,6 +32,14 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [chartActive, setChartActive] = useState(false);
   const [listActive, setListActive] = useState(true);
+  const [consultation, setConsultation] = useState(false);
+  const [dental, setDental] = useState(false);
+  const [ultraSound, setUltraSound] = useState(false);
+  const [pharmacy, setPharmacy] = useState(false);
+  const [laboratory, setLaboratory] = useState(false);
+  const [opdVisits, setOpdVisits] = useState(false);
+  const [opdRevisits, setOpdRevisits] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
   const [view, setView] = useState("yearly");
   const datePickerRef = useRef(null)
 
@@ -42,6 +51,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     dateRange,
     totalPatients,
     totalOpdPatients,
+    totalOpdVisits,
+    totalOpdRevisits,
     summary
   } = useOPDPatientList();
 
@@ -76,6 +87,94 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     return patient.diagnosis?.toLowerCase().includes(searchString.toLowerCase())
   })
 
+  const getConsultations = () => {
+    setConsultation(true);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('consultation');
+  }
+
+  const getDental = () => {
+    setConsultation(false);
+    setDental(true);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('dental');
+  }
+
+  const getUltraSound = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(true);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('ultrasound');
+  }
+
+  const getPharmacy = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(true);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('pharmacy');
+  }
+
+  const getLaboratory = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(true);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('laboratory');
+  }
+
+  const getOpdVisits = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(true);
+    setOpdRevisits(false);
+    setActiveFilter('opdVisits');
+  }
+
+  const getOpdRevisits = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(true);
+    setActiveFilter('opdRevisits');
+  }
+
+  const getAll = () => {
+    setConsultation(false);
+    setDental(false);
+    setUltraSound(false);
+    setPharmacy(false);
+    setLaboratory(false);
+    setOpdVisits(false);
+    setOpdRevisits(false);
+    setActiveFilter('all');
+  }
+
   const rowData = filteredData?.map((patient) => {
     return {
       id: patient.openmrsID,
@@ -92,11 +191,34 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       gender: patient.gender,
       age: patient.age,
       opdNumber: patient.opdNumber,
-      diagnosis: patient.diagnosis
+      diagnosis: patient.diagnosis,
+      consultation: patient.consultation,
+      dental: patient.dental,
+      ultraSound: patient.ultraSound,
+      opdVisits: patient.opdVisits,
+      opdRevisits: patient.opdRevisits
     }
   }) || [];
 
-  const paginatedData = rowData?.slice(
+  const filteredRowData = rowData?.filter((patient) => {
+    if (!consultation && !dental && !ultraSound && !opdVisits && !opdRevisits) {
+      return true;
+    } else if (consultation && patient.consultation) {
+      return true;
+    } else if (dental && patient.dental) {
+      return true;
+    } else if (ultraSound && patient.ultraSound) {
+      return true;
+    } else if (opdVisits && patient.opdVisits) {
+      return true;
+    } else if (opdRevisits && patient.opdRevisits) {
+      return true;
+    }
+
+    return false;
+  })
+
+  const paginatedData = filteredRowData?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -210,25 +332,61 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalOpdPatients ? totalOpdPatients.toString() : 0}
-                headerLabel={t("totalOPDVisits", "Total OPD Visits")}
+                value={totalPatients.toString()}
+                headerLabel={t("totalOPDVisits", "Total Patients")}
               />
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalPatients ? totalPatients.toString() : 0}
-                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Visits for Period")}
+                value={totalOpdVisits.toString()}
+                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Visits")}
+              />
+              <MetricsCard
+                className="metricsCard"
+                label={t("total", "Total")}
+                value={totalOpdRevisits.toString()}
+                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Re-visits")}
               />
             </div>
 
-            <div className={styles.departmentTabs}>
-              <TabList contained>
-                <Tab>Consultation</Tab>
-                <Tab>Dental</Tab>
-                <Tab>Ultra Sound</Tab>
-                <Tab>Pharmacy</Tab>
-                <Tab>Laboratory</Tab>
-              </TabList>
+            <div className={styles.dashboardIcons}>
+              <div>
+                <Tabs>
+                  <TabList contained>
+                    <Tab onClick={getAll}>All</Tab>
+                    <Tab onClick={getOpdVisits}>OPD Visits</Tab>
+                    <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
+                    <Tab onClick={getConsultations}>Consultation</Tab>
+                    <Tab onClick={getDental}>Dental</Tab>
+                    <Tab onClick={getUltraSound}>Ultra Sound</Tab>
+                    <Tab onClick={getPharmacy}>Pharmacy</Tab>
+                    <Tab onClick={getLaboratory}>Laboratory</Tab>
+                  </TabList>
+                </Tabs>
+              </div>
+
+              <div className={styles.iconSwitch}>
+                <IconSwitch
+                  name="tableView"
+                  text="Table view"
+                  onClick={activateList}
+                  style={{
+                    backgroundColor: listActive ? "#2357871A" : "",
+                  }}
+                >
+                  <TableIcon size={16} />
+                </IconSwitch>
+                <IconSwitch
+                  name="chartView"
+                  text="Chart view"
+                  onClick={activateChart}
+                  style={{
+                    backgroundColor: chartActive ? "#2357871A" : "",
+                  }}
+                >
+                  <ChartLineSmooth size={16} />
+                </IconSwitch>
+              </div>
             </div>
 
             <div className={styles.contentContainer}>
