@@ -417,7 +417,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
 
                 </div>
 
-                <ContentSwitcher size="sm" className={styles.contentSwitcher}>
+                <ContentSwitcher size="sm" className={styles.contentSwitcher} selectedIndex={listActive ? 0 : 1}>
                   <IconSwitch name="tableView" text="Table view" onClick={activateList}>
                     <TableIcon size={16}/>
                   </IconSwitch>
