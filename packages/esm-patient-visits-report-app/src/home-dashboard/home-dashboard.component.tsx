@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -8,29 +8,18 @@ import {
   DatePickerInput,
   Tile,
   SkeletonPlaceholder,
-  DataTable,
-  TableContainer,
-  Table,
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  TableCell,
-  TableToolbar,
-  TableToolbarContent,
-  TableToolbarSearch,
   DataTableSkeleton,
-  Pagination,
   Link,
-  Layer,
   Tab,
   Tabs,
   TabList,
-  IconSwitch,
+  IconSwitch, ContentSwitcher, TextInput, RadioButton, TableToolbarSearch, ExpandableSearch,
 } from "@carbon/react";
-import { ChartLineSmooth, Table as TableIcon } from "@carbon/react/icons";
+import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
 import {useOPDPatientList} from "../hooks/useOPDPatientList";
-import HomeDashboardChart from "./home-dashboard-chart.component";
+import ReportsTableComponent from "../components/reports-table.component";
+import ReportsGraphicalChartComponent from "../components/reports-graphical-chart.component";
+import {getPaddedTodayDateRange} from "../helpers/dateOps";
 
 type PatientVisistsReportHomeProps = {
   patientUuid?: string;
@@ -51,6 +40,9 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [opdVisits, setOpdVisits] = useState(false);
   const [opdRevisits, setOpdRevisits] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
+  const [view, setView] = useState("yearly");
+  const datePickerRef = useRef(null)
+
 
   const {
     isLoading,
@@ -181,7 +173,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     setOpdRevisits(false);
     setActiveFilter('all');
   }
-  
+
   const rowData = filteredData?.map((patient) => {
     return {
       id: patient.openmrsID,
@@ -240,6 +232,60 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     setListActive(true);
   }
 
+
+  const [chartData, setChartData] = useState([]);
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ]
+
+
+  const formatWeekLabel = (label: string) => {
+    const [monthAbbrev, week] = label.split("_");
+    const monthName = months.find(month => month.startsWith(monthAbbrev));
+    return `Week ${week.slice(-1)} of ${monthAbbrev}`
+  }
+
+  useEffect(() => {
+    let updatedChartData = [];
+
+    if (view === "yearly") {
+      updatedChartData = months.map(month => {
+        const monthAbbrev = month.substring(0, 3);
+        return {
+          group: month,
+          value: summary.groupYear[monthAbbrev] || 0
+        }
+      })
+    } else if (view === "monthly") {
+      updatedChartData = Object.keys(summary.groupMonth || {}).map(week => ({
+        group: formatWeekLabel(week),
+        value: summary.groupMonth[week] || 0
+      }));
+    }
+    setChartData(updatedChartData)
+  }, [summary, dateRange, view]);
+
+  useEffect(() => {
+    if (datePickerRef?.current) {
+      const inputs = datePickerRef.current.querySelectorAll("input");
+      inputs.forEach(input => input.focus());
+    }
+    datePickerRef.current.focus();
+
+  }, [datePickerRef]);
+
   return (
     <div className={styles.container}>
       {isLoading ? (
@@ -261,11 +307,11 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             data-testid="registered-patients"
           >
             <Tile className={styles.tileContainer}>
-              <SkeletonPlaceholder />
+              <SkeletonPlaceholder/>
             </Tile>
           </div>
           <br/>
-          <DataTableSkeleton columns={tableData?.length} rows={5} />
+          <DataTableSkeleton columns={tableData?.length} rows={5}/>
         </div>
       ) : (
         <>
@@ -278,7 +324,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             </div>
           </div>
 
-         
+
           <div className={styles.homeContainer}>
             <div className={styles.cardContainerParent} data-testid="clinic-metrics">
               <MetricsCard
@@ -302,144 +348,98 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             </div>
 
             <div className={styles.dashboardIcons}>
-              <div>
-                <Tabs>
-                  <TabList contained>
-                    <Tab onClick={getAll}>All</Tab>
-                    <Tab onClick={getOpdVisits}>OPD Visits</Tab>
-                    <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
-                    <Tab onClick={getConsultations}>Consultation</Tab>
-                    <Tab onClick={getDental}>Dental</Tab>
-                    <Tab onClick={getUltraSound}>Ultra Sound</Tab>
-                    <Tab onClick={getPharmacy}>Pharmacy</Tab>
-                    <Tab onClick={getLaboratory}>Laboratory</Tab>
-                  </TabList>
-                </Tabs>
-              </div>
-
-              <div className={styles.iconSwitch}>
-                <IconSwitch 
-                  name="tableView" 
-                  text="Table view" 
-                  onClick={activateList}
-                  style={{
-                    backgroundColor: listActive ? "#2357871A" : "",
-                  }}
-                >
-                  <TableIcon size={16} />
-                </IconSwitch>
-                <IconSwitch 
-                  name="chartView" 
-                  text="Chart view" 
-                  onClick={activateChart}
-                  style={{
-                    backgroundColor: chartActive ? "#2357871A" : "",
-                  }}
-                >
-                  <ChartLineSmooth size={16} />
-                </IconSwitch>
-              </div>
+              <Tabs>
+                <TabList contained>
+                  <Tab onClick={getAll}>All</Tab>
+                  <Tab onClick={getOpdVisits}>OPD Visits</Tab>
+                  <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
+                  <Tab onClick={getConsultations}>Consultation</Tab>
+                  <Tab onClick={getDental}>Dental</Tab>
+                  <Tab onClick={getUltraSound}>Ultra Sound</Tab>
+                  <Tab onClick={getPharmacy}>Pharmacy</Tab>
+                  <Tab onClick={getLaboratory}>Laboratory</Tab>
+                </TabList>
+              </Tabs>
             </div>
 
-            {listActive && (<div className={styles.datatable}>
-              <h1 className={styles.tableTitle}></h1>
-              <DataTable
-                useZebraStyles={true}
-                rows={paginatedData}
-                headers={tableData}
-              >
-                {({ rows, headers, getRowProps, getTableProps }) => (
-                  <TableContainer {...getTableProps()} className={styles.table}>
-                    <TableToolbar className={styles.tableToolbar}>
-                      <TableToolbarContent className={styles.tableToolbarContent}>
-                        <TableToolbarSearch
-                          onChange={(e) => setSearchString(e.target.value)}
-                          placeholder={t("searchByDiagnosis", "Search by Diagnosis")}
-                        />
-                        <div className={styles.listFilter}>
-                          <DatePicker
-                            onChange={(value) =>
-                              setDateRange({start: value[0], end: value[1]})
-                            }
-                            value={[dateRange.start, dateRange.end]}
-                            datePickerType="range"
-                            dateFormat="d/m/Y"
-                            className={styles.filterDatePicker}
-                          >
-                            <DatePickerInput
-                              id="date-picker-input-id-start"
-                              placeholder="dd/mm/yyyy"
-                              labelText="Start date"
-                              size="md"
-                            />
-                            <DatePickerInput
-                              id="date-picker-input-id-finish"
-                              placeholder="dd/mm/yyyy"
-                              labelText="End date"
-                              size="md"
-                            />
-                          </DatePicker>
-                        </div>
-                      </TableToolbarContent>
-                    </TableToolbar>
-                    <Table className={styles.tableBody}>
-                      <TableHead>
-                        <TableRow>
-                          {headers.map((col) => (
-                            <TableHeader key={col.key}>{col.header}</TableHeader>
-                          ))}
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {rows.map((row) => {
-                          return (<TableRow
-                            key={row.id}
-                            {...getRowProps({row})}
-                           >
-                            {row.cells.map((cell, index) => (
-                              <TableCell key={index}>{typeof cell.value === 'function' ? cell.value() : cell.value}</TableCell>
-                            ))}
-                          </TableRow>)
-                          })}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
+            <div className={styles.contentContainer}>
+              {/*......................FILTERS..................................*/}
+              <div className={styles.filterWrapper}>
+                {listActive ? <ExpandableSearch
+                  size="sm"
+                  className={styles.searchField}
+                  value={searchString}
+                  onChange={(e) => setSearchString(e.target.value)}
+                  placeholder={t("searchByDiagnosis", "Search by Diagnosis")}
+                /> : (
+                  <div className={styles.timeFilters}>
+                    <RadioButton
+                      id="yearly"
+                      labelText={t("yearly", "Yearly")}
+                      value="yearly"
+                      checked={view === "yearly"}
+                      onClick={() => setView("yearly")}
+                    />
+                    <RadioButton
+                      id="monthly"
+                      labelText={t("monthly", "Monthly")}
+                      value="monthly"
+                      checked={view === "monthly"}
+                      onClick={() => setView("monthly")}
+                    />
+                  </div>
                 )}
-              </DataTable>
-              {filteredRowData?.length === 0 && (
-                <div className={styles.emptyStateText}>
-                  <Layer level={0}>
-                    <Tile className={styles.emptyStateTile}>
-                      <p className={styles.filterEmptyStateContent}>
-                        {t('noData', 'No data to display. Please select a date range to fetch data.')}
-                      </p>
-                    </Tile>
-                  </Layer>
-                </div>
-              )}
-              <Pagination 
-                totalItems={rowData.length}
-                backwardText={t("previous", "Previous")}
-                forwardText={t("next", "Next")}
-                itemsPerPageText={t("itemsPerPage", "Items per page:")}
-                page={currentPage}
-                pageSize={itemsPerPage}
-                pageSizes={[10, 20, 30, 40, 50]}
-                onChange={({page, pageSize}) => {
-                  setCurrentPage(page);
-                  setItemsPerPage(pageSize);
-                }}
-              />
-            </div>)}
 
-            {chartActive && (
-              <HomeDashboardChart 
-                summary={summary} 
-                dateRange={dateRange} 
-                setDateRange={setDateRange} 
-                activeFilter={activeFilter}
-              />
-            )}
+                <div ref={datePickerRef} className={styles.filterDatePicker}>
+                  {dateRange.start && (
+                    <DatePicker
+                      onChange={(value) => {
+                        setDateRange({start: value[0], end: value[1]})
+                      }}
+                      value={[dateRange.start, dateRange.end]}
+                      datePickerType="range"
+                      dateFormat="d/m/Y"
+                    >
+                      <DatePickerInput
+                        id="date-picker-input-id-start"
+                        placeholder="dd/mm/yyyy"
+                        labelText="Start date"
+                        size="sm"
+                      />
+                      <DatePickerInput
+                        id="date-picker-input-id-finish"
+                        placeholder="dd/mm/yyyy"
+                        labelText="End date"
+                        size="sm"
+                      />
+                    </DatePicker>
+                  )}
+
+                </div>
+
+                <ContentSwitcher size="sm" className={styles.contentSwitcher}>
+                  <IconSwitch name="tableView" text="Table view" onClick={activateList}>
+                    <TableIcon size={16}/>
+                  </IconSwitch>
+                  <IconSwitch name="chartView" text="Chart view" onClick={activateChart}>
+                    <ChartLineSmooth size={16}/>
+                  </IconSwitch>
+                </ContentSwitcher>
+              </div>
+              {listActive ? (
+                <ReportsTableComponent
+                  dateRange={dateRange}
+                  tableData={tableData}
+                  paginatedData={paginatedData}
+                  rowData={rowData}
+                />
+              ) : (
+                <ReportsGraphicalChartComponent
+                  chartData={chartData}
+                />
+              )}
+            </div>
+
           </div>
         </>
       )}
