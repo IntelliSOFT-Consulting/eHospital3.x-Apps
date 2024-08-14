@@ -9,11 +9,23 @@ export const getPaddedDateString = (date) => {
 
 }
 
-export const getPaddedDate = (date: Date) => {
+ const padDate = (date: Date) => {
   const day = String(date.getDate());
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const year = date.getFullYear();
 
-  return `${day}/${month}/${year}`
+  return `${day}-${month}-${year}`
 }
+
+export const getPaddedTodayDateRange = ()=>{
+  const today = new Date();
+  const tomorrow = new Date(today)
+  tomorrow.setDate(today.getDate() + 1)
+
+  return {
+    start: padDate(today),
+    end: padDate(tomorrow)
+  }
+}
+
 

@@ -6,14 +6,10 @@ import { useTranslation } from "react-i18next";
 import styles from "../home-dashboard/home-dashboard.scss";
 
 type PatientChartsProps = {
-  patientUuid?: string;
-  summary: any;
-  dateRange: {start: Date, end: Date};
-  setDateRange: (range: {start: Date, end: Date}) => void;
   chartData: any
 };
 
-const ReportsGraphicalChartComponent: React.FC<PatientChartsProps> = ({ summary, dateRange, setDateRange, chartData }) => {
+const ReportsGraphicalChartComponent: React.FC<PatientChartsProps> = ({ chartData }) => {
   const {t} = useTranslation();
 
 

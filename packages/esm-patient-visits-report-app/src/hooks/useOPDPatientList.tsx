@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {openmrsFetch} from "@openmrs/esm-framework";
-import {getPaddedDate, getPaddedDateString} from "../helpers/dateOps";
+import {getPaddedDateString, getPaddedTodayDateRange} from "../helpers/dateOps";
 
 
 export function useOPDPatientList() {
@@ -10,13 +10,8 @@ export function useOPDPatientList() {
     size: 50,
     page: 0
   });
-  const today = new Date();
-  const tomorrow = new Date(today)
-  tomorrow.setDate(today.getDate() + 1)
-  const [dateRange, setDateRange] = React.useState<{ start: any, end: any }>({
-    start: getPaddedDate(today),
-    end: getPaddedDate(tomorrow)
-  });
+
+  const [dateRange, setDateRange] = React.useState<{ start: any, end: any }>(getPaddedTodayDateRange);
   const [totalPatients, setTotalPatients] = useState(0);
   const [totalOpdPatients, setTotalOpdPatients] = useState(0);
   const [summary, setSummary] = useState({

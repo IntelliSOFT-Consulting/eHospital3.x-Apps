@@ -252,7 +252,7 @@ html[dir='rtl'] {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 4rem;
+  //gap: 2rem;
 }
 
 .filterWrapper {
@@ -261,7 +261,7 @@ html[dir='rtl'] {
   align-self: flex-end;
   gap: 2rem;
   align-items: end;
-  width: fit-content;
+  width: 100%;
 }
 
 .contentSwitcher {
@@ -272,8 +272,12 @@ html[dir='rtl'] {
 .filterDatePicker {
   display: flex;
   width: fit-content;
+  margin-right: 0px;
+  justify-items: flex-end;
 }
 
 .searchField {
-  width: fit-content;
+  width: 100%;
 }
+
+//.searchField

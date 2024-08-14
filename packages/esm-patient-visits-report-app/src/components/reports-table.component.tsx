@@ -22,12 +22,11 @@ interface tableProps {
     start: String;
     end: String,
   },
-  setDateRange: Dispatch<SetStateAction<{ start: string; end: string; }>>
   rowData: any;
 }
 
 
-const ReportsTableComponent: React.FC<tableProps> = ({paginatedData, tableData, dateRange, setDateRange, rowData}) => {
+const ReportsTableComponent: React.FC<tableProps> = ({paginatedData, tableData, dateRange, rowData}) => {
   const {t} = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);

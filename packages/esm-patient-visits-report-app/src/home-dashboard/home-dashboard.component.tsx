@@ -12,12 +12,13 @@ import {
   Link,
   Tab,
   TabList,
-  IconSwitch, ContentSwitcher, TextInput, RadioButton,
+  IconSwitch, ContentSwitcher, TextInput, RadioButton, TableToolbarSearch, ExpandableSearch,
 } from "@carbon/react";
 import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
 import {useOPDPatientList} from "../hooks/useOPDPatientList";
 import ReportsTableComponent from "../components/reports-table.component";
 import ReportsGraphicalChartComponent from "../components/reports-graphical-chart.component";
+import {getPaddedTodayDateRange} from "../helpers/dateOps";
 
 type PatientVisistsReportHomeProps = {
   patientUuid?: string;
@@ -145,7 +146,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
           value: summary.groupYear[monthAbbrev] || 0
         }
       })
-    }else if (view === "monthly") {
+    } else if (view === "monthly") {
       updatedChartData = Object.keys(summary.groupMonth || {}).map(week => ({
         group: formatWeekLabel(week),
         value: summary.groupMonth[week] || 0
@@ -153,6 +154,11 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     }
     setChartData(updatedChartData)
   }, [summary, dateRange, view]);
+
+  useEffect(() => {
+    console.log("hit")
+    setDateRange(getPaddedTodayDateRange)
+  }, [chartActive]);
 
   return (
     <div className={styles.container}>
@@ -222,7 +228,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             <div className={styles.contentContainer}>
               {/*......................FILTERS..................................*/}
               <div className={styles.filterWrapper}>
-                {listActive ? <TextInput
+                {listActive ? <ExpandableSearch
                   size="sm"
                   className={styles.searchField}
                   value={searchString}
@@ -246,28 +252,33 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                     />
                   </div>
                 )}
-                <DatePicker
-                  onChange={(value) => {
-                    setDateRange({start: value[0], end: value[1]})
-                  }}
-                  value={[dateRange.start, dateRange.end]}
-                  datePickerType="range"
-                  dateFormat="d/m/Y"
-                  className={styles.filterDatePicker}
-                >
-                  <DatePickerInput
-                    id="date-picker-input-id-start"
-                    placeholder="dd/mm/yyyy"
-                    labelText="Start date"
-                    size="md"
-                  />
-                  <DatePickerInput
-                    id="date-picker-input-id-finish"
-                    placeholder="dd/mm/yyyy"
-                    labelText="End date"
-                    size="md"
-                  />
-                </DatePicker>
+                <div className={styles.filterDatePicker}>
+                  {dateRange.start && (
+                    <DatePicker
+                      onChange={(value) => {
+                        setDateRange({start: value[0], end: value[1]})
+                      }}
+                      value={[dateRange.start, dateRange.end]}
+                      datePickerType="range"
+                      dateFormat="d/m/Y"
+                    >
+                      <DatePickerInput
+                        id="date-picker-input-id-start"
+                        placeholder="dd/mm/yyyy"
+                        labelText="Start date"
+                        size="sm"
+                      />
+                      <DatePickerInput
+                        id="date-picker-input-id-finish"
+                        placeholder="dd/mm/yyyy"
+                        labelText="End date"
+                        size="sm"
+                      />
+                    </DatePicker>
+                  )}
+
+                </div>
+
                 <ContentSwitcher size="sm" className={styles.contentSwitcher}>
                   <IconSwitch name="tableView" text="Table view" onClick={activateList}>
                     <TableIcon size={16}/>
@@ -280,13 +291,14 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               {listActive ? (
                 <ReportsTableComponent
                   dateRange={dateRange}
-                  setDateRange={setDateRange}
                   tableData={tableData}
                   paginatedData={paginatedData}
                   rowData={rowData}
                 />
               ) : (
-                <ReportsGraphicalChartComponent summary={summary} dateRange={dateRange} setDateRange={setDateRange} chartData={chartData}/>
+                <ReportsGraphicalChartComponent
+                  chartData={chartData}
+                />
               )}
             </div>
 
