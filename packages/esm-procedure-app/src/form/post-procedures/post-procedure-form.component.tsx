@@ -264,11 +264,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="startDatetime"
                 labelText={t("startDatetime", "Start Datetime")}
-                onChange={(calendar) =>
-                  onChange(
-                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
-                  )
-                }
+                onChange={(calendar) => {
+                  if (calendar instanceof Date) {
+                    onChange(calendar);
+                  } else {
+                    console.error("Invalid calendar value:", calendar);
+                  }
+                }}
                 isInvalid={!!errors.startDatetime}
               />
             )}
@@ -283,11 +285,13 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 value={value}
                 id="endDatetime"
                 labelText={t("endDatetime", "End Datetime")}
-                onChange={(calendar) =>
-                  onChange(
-                    new Date(calendar.year, calendar.month, calendar.day, 0, 0)
-                  )
-                }
+                onChange={(calendar) => {
+                  if (calendar instanceof Date) {
+                    onChange(calendar);
+                  } else {
+                    console.error("Invalid calendar value:", calendar);
+                  }
+                }}
                 isInvalid={!!errors.endDatetime}
               />
             )}
