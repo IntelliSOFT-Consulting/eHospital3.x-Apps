@@ -98,7 +98,6 @@ export function useOPDPatientList() {
     setDateRange,
     dateRange,
     totalPatients,
-    totalOpdPatients,
     totalOpdVisits,
     totalOpdRevisits,
     setTotalPatients,

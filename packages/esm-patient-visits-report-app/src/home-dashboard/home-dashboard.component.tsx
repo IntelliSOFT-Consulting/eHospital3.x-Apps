@@ -50,7 +50,6 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     setDateRange,
     dateRange,
     totalPatients,
-    totalOpdPatients,
     totalOpdVisits,
     totalOpdRevisits,
     summary
@@ -279,12 +278,11 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   }, [summary, dateRange, view]);
 
   useEffect(() => {
-    console.log("ref", datePickerRef.current)
-    if (datePickerRef?.current){
+    if (datePickerRef?.current) {
       const inputs = datePickerRef.current.querySelectorAll("input");
       inputs.forEach(input => input.focus());
     }
-      datePickerRef.current.focus();
+    datePickerRef.current.focus();
 
   }, [datePickerRef]);
 
@@ -350,43 +348,18 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             </div>
 
             <div className={styles.dashboardIcons}>
-              <div>
-                <Tabs>
-                  <TabList contained>
-                    <Tab onClick={getAll}>All</Tab>
-                    <Tab onClick={getOpdVisits}>OPD Visits</Tab>
-                    <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
-                    <Tab onClick={getConsultations}>Consultation</Tab>
-                    <Tab onClick={getDental}>Dental</Tab>
-                    <Tab onClick={getUltraSound}>Ultra Sound</Tab>
-                    <Tab onClick={getPharmacy}>Pharmacy</Tab>
-                    <Tab onClick={getLaboratory}>Laboratory</Tab>
-                  </TabList>
-                </Tabs>
-              </div>
-
-              <div className={styles.iconSwitch}>
-                <IconSwitch
-                  name="tableView"
-                  text="Table view"
-                  onClick={activateList}
-                  style={{
-                    backgroundColor: listActive ? "#2357871A" : "",
-                  }}
-                >
-                  <TableIcon size={16} />
-                </IconSwitch>
-                <IconSwitch
-                  name="chartView"
-                  text="Chart view"
-                  onClick={activateChart}
-                  style={{
-                    backgroundColor: chartActive ? "#2357871A" : "",
-                  }}
-                >
-                  <ChartLineSmooth size={16} />
-                </IconSwitch>
-              </div>
+              <Tabs>
+                <TabList contained>
+                  <Tab onClick={getAll}>All</Tab>
+                  <Tab onClick={getOpdVisits}>OPD Visits</Tab>
+                  <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
+                  <Tab onClick={getConsultations}>Consultation</Tab>
+                  <Tab onClick={getDental}>Dental</Tab>
+                  <Tab onClick={getUltraSound}>Ultra Sound</Tab>
+                  <Tab onClick={getPharmacy}>Pharmacy</Tab>
+                  <Tab onClick={getLaboratory}>Laboratory</Tab>
+                </TabList>
+              </Tabs>
             </div>
 
             <div className={styles.contentContainer}>
@@ -399,7 +372,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   onChange={(e) => setSearchString(e.target.value)}
                   placeholder={t("searchByDiagnosis", "Search by Diagnosis")}
                 /> : (
-                  <div className={styles.filterElements}>
+                  <div className={styles.timeFilters}>
                     <RadioButton
                       id="yearly"
                       labelText={t("yearly", "Yearly")}

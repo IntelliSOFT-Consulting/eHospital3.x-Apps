@@ -240,12 +240,6 @@ html[dir='rtl'] {
 
 }
 
-.filterElements {
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  margin-bottom: 1.5rem;
-}
 
 
 .contentContainer {
@@ -276,8 +270,14 @@ html[dir='rtl'] {
   justify-items: flex-end;
 }
 
+.timeFilters {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+
 .searchField {
   width: 100%;
 }
 
-//.searchField
