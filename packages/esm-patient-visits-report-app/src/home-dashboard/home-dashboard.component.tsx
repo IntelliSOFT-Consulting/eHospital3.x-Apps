@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -32,6 +32,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [chartActive, setChartActive] = useState(false);
   const [listActive, setListActive] = useState(true);
   const [view, setView] = useState("yearly");
+  const datePickerRef = useRef(null)
 
 
   const {
@@ -156,9 +157,14 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   }, [summary, dateRange, view]);
 
   useEffect(() => {
-    console.log("hit")
-    setDateRange(getPaddedTodayDateRange)
-  }, [chartActive]);
+    console.log("ref", datePickerRef.current)
+    if (datePickerRef?.current){
+      const inputs = datePickerRef.current.querySelectorAll("input");
+      inputs.forEach(input => input.focus());
+    }
+      datePickerRef.current.focus();
+
+  }, [datePickerRef]);
 
   return (
     <div className={styles.container}>
@@ -252,7 +258,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                     />
                   </div>
                 )}
-                <div className={styles.filterDatePicker}>
+
+                <div ref={datePickerRef} className={styles.filterDatePicker}>
                   {dateRange.start && (
                     <DatePicker
                       onChange={(value) => {
