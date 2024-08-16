@@ -20,6 +20,7 @@ import {
 } from "@carbon/react";
 import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
 import { useOPDCategories } from "../hooks/useOPDCategories";
+import { useOPDPatientList } from "../hooks/useOPDPatientList";
 import ReportsTableComponent from "../components/reports-table.component";
 import ReportsGraphicalChartComponent from "../components/reports-graphical-chart.component";
 
@@ -170,7 +171,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       const inputs = datePickerRef.current.querySelectorAll("input");
       inputs.forEach(input => input.focus());
     }
-    datePickerRef.current.focus();
+    // datePickerRef.current.focus();
 
   }, [datePickerRef]);
 
@@ -264,12 +265,12 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             <div className={styles.dashboardIcons}>
               <Tabs selectedIndex={categoryToIndexMap[category]} onChange={handleTabClick}>
                 <TabList contained>
-                  <Tab onClick={() => setCategory("outPatientClients")}>All</Tab>
-                  <Tab onClick={() => setCategory("opdVisits")}>OPD Visits</Tab>
-                  <Tab onClick={() => setCategory("opdRevisits")}>OPD Revisits</Tab>
-                  <Tab onClick={() => setCategory("consultation")}>Consultation</Tab>
-                  <Tab onClick={() => setCategory("dental")}>Dental</Tab>
-                  <Tab onClick={() => setCategory("ultrasound")}>Ultrasound</Tab>
+                  <Tab onClick={() => handleTabClick(0)}>All</Tab>
+                  <Tab onClick={() => handleTabClick(1)}>OPD Visits</Tab>
+                  <Tab onClick={() => handleTabClick(2)}>OPD Revisits</Tab>
+                  <Tab onClick={() => handleTabClick(3)}>Consultation</Tab>
+                  <Tab onClick={() => handleTabClick(4)}>Dental</Tab>
+                  <Tab onClick={() => handleTabClick(5)}>Ultrasound</Tab>
                   <Tab>Pharmacy</Tab>
                   <Tab>Laboratory</Tab>
                 </TabList>
