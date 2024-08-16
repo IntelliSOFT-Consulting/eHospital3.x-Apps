@@ -13,13 +13,15 @@ import {
   Tab,
   Tabs,
   TabList,
-  IconSwitch, ContentSwitcher, TextInput, RadioButton, TableToolbarSearch, ExpandableSearch,
+  IconSwitch, 
+  ContentSwitcher, 
+  RadioButton, 
+  ExpandableSearch,
 } from "@carbon/react";
 import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
-import {useOPDPatientList} from "../hooks/useOPDPatientList";
+import { useOPDCategories } from "../hooks/useOPDCategories";
 import ReportsTableComponent from "../components/reports-table.component";
 import ReportsGraphicalChartComponent from "../components/reports-graphical-chart.component";
-import {getPaddedTodayDateRange} from "../helpers/dateOps";
 
 type PatientVisistsReportHomeProps = {
   patientUuid?: string;
@@ -32,28 +34,22 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [chartActive, setChartActive] = useState(false);
   const [listActive, setListActive] = useState(true);
-  const [consultation, setConsultation] = useState(false);
-  const [dental, setDental] = useState(false);
-  const [ultraSound, setUltraSound] = useState(false);
-  const [pharmacy, setPharmacy] = useState(false);
-  const [laboratory, setLaboratory] = useState(false);
-  const [opdVisits, setOpdVisits] = useState(false);
-  const [opdRevisits, setOpdRevisits] = useState(false);
-  const [activeFilter, setActiveFilter] = useState('all');
   const [view, setView] = useState("yearly");
   const datePickerRef = useRef(null)
 
-
   const {
-    isLoading,
-    data,
-    setDateRange,
-    dateRange,
-    totalPatients,
-    totalOpdVisits,
-    totalOpdRevisits,
-    summary
-  } = useOPDPatientList();
+    data: opdCategoriesData,
+    totalPatients: totalOPDCategoryPatients,
+    totalOpdVisits: totalOPDCategoryVisits,
+    totalOpdRevisits: totalOPDCategoryRevisits,
+    summary: opdCategorySummary,
+    dateRange: opdCategoryDateRange,
+    loading,
+    getOPDVisits,
+    setCategory,
+    setDateRange: setCategoryDateRange,
+    category
+  } = useOPDCategories();
 
   const tableData = [
     {
@@ -75,104 +71,19 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     {
       header: t('id', 'ID'),
       key: 'openmrsID',
-    },
-    {
-      header: t('diagnosis', 'Diagnosis'),
-      key: 'diagnosis',
     }
   ]
 
-  const filteredData = data?.filter((patient) => {
+  if (category === "outPatientClients" || category === "opdVisits" || category === "opdRevisits" || category === "consultation"){
+    tableData.push({
+      header: t('diagnosis', 'Diagnosis'),
+      key: 'diagnosis'
+    })
+  }
+
+  const filteredData = opdCategoriesData?.filter((patient) => {
     return patient.diagnosis?.toLowerCase().includes(searchString.toLowerCase())
   })
-
-  const getConsultations = () => {
-    setConsultation(true);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('consultation');
-  }
-
-  const getDental = () => {
-    setConsultation(false);
-    setDental(true);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('dental');
-  }
-
-  const getUltraSound = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(true);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('ultrasound');
-  }
-
-  const getPharmacy = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(true);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('pharmacy');
-  }
-
-  const getLaboratory = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(true);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('laboratory');
-  }
-
-  const getOpdVisits = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(true);
-    setOpdRevisits(false);
-    setActiveFilter('opdVisits');
-  }
-
-  const getOpdRevisits = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(true);
-    setActiveFilter('opdRevisits');
-  }
-
-  const getAll = () => {
-    setConsultation(false);
-    setDental(false);
-    setUltraSound(false);
-    setPharmacy(false);
-    setLaboratory(false);
-    setOpdVisits(false);
-    setOpdRevisits(false);
-    setActiveFilter('all');
-  }
 
   const rowData = filteredData?.map((patient) => {
     return {
@@ -191,33 +102,10 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       age: patient.age,
       opdNumber: patient.opdNumber,
       diagnosis: patient.diagnosis,
-      consultation: patient.consultation,
-      dental: patient.dental,
-      ultraSound: patient.ultraSound,
-      opdVisits: patient.opdVisits,
-      opdRevisits: patient.opdRevisits
     }
   }) || [];
 
-  const filteredRowData = rowData?.filter((patient) => {
-    if (!consultation && !dental && !ultraSound && !opdVisits && !opdRevisits) {
-      return true;
-    } else if (consultation && patient.consultation) {
-      return true;
-    } else if (dental && patient.dental) {
-      return true;
-    } else if (ultraSound && patient.ultraSound) {
-      return true;
-    } else if (opdVisits && patient.opdVisits) {
-      return true;
-    } else if (opdRevisits && patient.opdRevisits) {
-      return true;
-    }
-
-    return false;
-  })
-
-  const paginatedData = filteredRowData?.slice(
+  const paginatedData = rowData?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -265,17 +153,17 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
         const monthAbbrev = month.substring(0, 3);
         return {
           group: month,
-          value: summary.groupYear[monthAbbrev] || 0
+          value: opdCategorySummary.groupYear[monthAbbrev] || 0
         }
       })
     } else if (view === "monthly") {
-      updatedChartData = Object.keys(summary.groupMonth || {}).map(week => ({
+      updatedChartData = Object.keys(opdCategorySummary.groupMonth || {}).map(week => ({
         group: formatWeekLabel(week),
-        value: summary.groupMonth[week] || 0
+        value: opdCategorySummary.groupMonth[week] || 0
       }));
     }
     setChartData(updatedChartData)
-  }, [summary, dateRange, view]);
+  }, [opdCategorySummary, opdCategoryDateRange, view]);
 
   useEffect(() => {
     if (datePickerRef?.current) {
@@ -286,9 +174,35 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
 
   }, [datePickerRef]);
 
+  const categoryToIndexMap = {
+    outPatientClients: 0,
+    opdVisits: 1,
+    opdRevisits: 2,
+    consultation: 3,
+    dental: 4,
+    ultrasound: 5,
+    pharmacy: 6,
+    laboratory: 7,
+  };
+  
+  const indexToCategoryMap = {
+    0: "outPatientClients",
+    1: "opdVisits",
+    2: "opdRevisits",
+    3: "consultation",
+    4: "dental",
+    5: "ultrasound",
+    6: "pharmacy",
+    7: "laboratory",
+  };
+  
+  const handleTabClick = (index) => {
+    setCategory(indexToCategoryMap[index]);
+  };
+
   return (
     <div className={styles.container}>
-      {isLoading ? (
+      {loading ? (
         <div
           style={{
             width: "100%"
@@ -330,34 +244,34 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalPatients.toString()}
+                value={totalOPDCategoryPatients.toString()}
                 headerLabel={t("totalOPDVisits", "Total Patients")}
               />
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalOpdVisits.toString()}
+                value={totalOPDCategoryVisits.toString()}
                 headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Visits")}
               />
               <MetricsCard
                 className="metricsCard"
                 label={t("total", "Total")}
-                value={totalOpdRevisits.toString()}
+                value={totalOPDCategoryRevisits.toString()}
                 headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Re-visits")}
               />
             </div>
 
             <div className={styles.dashboardIcons}>
-              <Tabs>
+              <Tabs selectedIndex={categoryToIndexMap[category]} onChange={handleTabClick}>
                 <TabList contained>
-                  <Tab onClick={getAll}>All</Tab>
-                  <Tab onClick={getOpdVisits}>OPD Visits</Tab>
-                  <Tab onClick={getOpdRevisits}>OPD Re-visits</Tab>
-                  <Tab onClick={getConsultations}>Consultation</Tab>
-                  <Tab onClick={getDental}>Dental</Tab>
-                  <Tab onClick={getUltraSound}>Ultra Sound</Tab>
-                  <Tab onClick={getPharmacy}>Pharmacy</Tab>
-                  <Tab onClick={getLaboratory}>Laboratory</Tab>
+                  <Tab onClick={() => setCategory("outPatientClients")}>All</Tab>
+                  <Tab onClick={() => setCategory("opdVisits")}>OPD Visits</Tab>
+                  <Tab onClick={() => setCategory("opdRevisits")}>OPD Revisits</Tab>
+                  <Tab onClick={() => setCategory("consultation")}>Consultation</Tab>
+                  <Tab onClick={() => setCategory("dental")}>Dental</Tab>
+                  <Tab onClick={() => setCategory("ultrasound")}>Ultrasound</Tab>
+                  <Tab>Pharmacy</Tab>
+                  <Tab>Laboratory</Tab>
                 </TabList>
               </Tabs>
             </div>
@@ -391,12 +305,12 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                 )}
 
                 <div ref={datePickerRef} className={styles.filterDatePicker}>
-                  {dateRange.start && (
+                  {opdCategoryDateRange.start && (
                     <DatePicker
                       onChange={(value) => {
-                        setDateRange({start: value[0], end: value[1]})
+                        setCategoryDateRange({start: value[0], end: value[1]})
                       }}
-                      value={[dateRange.start, dateRange.end]}
+                      value={[opdCategoryDateRange.start, opdCategoryDateRange.end]}
                       datePickerType="range"
                       dateFormat="d/m/Y"
                     >
@@ -432,7 +346,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
               </div>
               {listActive ? (
                 <ReportsTableComponent
-                  dateRange={dateRange}
+                  dateRange={opdCategoryDateRange}
                   tableData={tableData}
                   paginatedData={paginatedData}
                   rowData={rowData}
