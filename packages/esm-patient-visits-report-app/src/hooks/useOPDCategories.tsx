@@ -58,9 +58,6 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 					setTotalOpdRevisits(cardData.totalOpdRevisits);
 					setSummary(data.summary)
         }else {
-					setTotalPatients(0);
-					setTotalOpdVisits(0);
-					setTotalOpdRevisits(0);
 					setSummary({
 						groupYear: {},
 						groupMonth: {},
