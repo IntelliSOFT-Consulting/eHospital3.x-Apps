@@ -39,7 +39,7 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 
     const getOPDVisits = async ({page, size}) => {
       try {
-        if (page === 0) setLoading(true);
+        setLoading(true);
 
 		const formatDateForReq = (dateString) => {
 			const date = new Date(dateString);
