@@ -10,7 +10,24 @@ export function useOPDCategories(initialCategory="outPatientClients") {
       page: 0
     });
 		const [category, setCategory] = useState(initialCategory);
-    const [dateRange, setDateRange] = useState<{ start: any, end: any }>(getPaddedTodayDateRange);
+	const formatDate = (date) => {
+		const year = date.getFullYear();
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const day = String(date.getDate()).padStart(2, '0');
+
+		return `${day}/${month}/${year}`
+	}
+
+	const [dateRange, setDateRange] = useState(() => {
+		const today = new Date();
+		const tomorrow = new Date()
+		tomorrow.setDate(today.getDate() + 1)
+
+		return {
+			start: today,
+			end: tomorrow
+		}
+	})
     const [summary, setSummary] = useState({
       groupYear: {},
       groupMonth: {},
@@ -26,16 +43,6 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 
         let startString = dateRange.start;
         let endString = dateRange.end;
-
-        if (typeof dateRange.start === "object") {
-          const dateObject = new Date(dateRange.start);
-          startString = getPaddedDateString(dateObject);
-        }
-
-        if (typeof dateRange.end === "object") {
-          const dateObject = new Date(dateRange.end);
-          endString = getPaddedDateString(dateObject)
-        }
 
         const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}`;
         const {data} = await openmrsFetch(url);
