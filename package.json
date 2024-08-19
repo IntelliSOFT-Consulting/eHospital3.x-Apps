@@ -65,7 +65,7 @@
   "devDependencies": {
     "@openmrs/esm-error-handling": "next",
     "@openmrs/esm-extensions": "next",
-    "@openmrs/esm-framework": "next",
+    "@openmrs/esm-framework": "^5.7.2",
     "@openmrs/esm-navigation": "next",
     "@openmrs/esm-react-utils": "next",
     "@openmrs/esm-state": "next",
@@ -103,7 +103,7 @@
     "jest-cli": "^28.1.3",
     "jest-environment-jsdom": "^28.1.3",
     "lerna": "^8.1.6",
-    "openmrs": "next",
+    "openmrs": "^5.7.2",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",
     "react": "^18.2.0",
