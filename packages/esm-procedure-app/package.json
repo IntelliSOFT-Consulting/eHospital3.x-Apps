@@ -113,5 +113,5 @@
     "webpack-cli": "^5.1.4"
   },
   "packageManager": "yarn@3.6.1",
-  "gitHead": "901123a0200b2198e056aa6ffe42c39b8cfadf85"
+  "gitHead": "834fe2543c91e446b7274a33acf573491107dfd1"
 }
