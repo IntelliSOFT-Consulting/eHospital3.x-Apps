@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-procedure-app",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
   "browser": "dist/sjthc-esm-procedure-app.js",
@@ -113,5 +113,5 @@
     "webpack-cli": "^5.1.4"
   },
   "packageManager": "yarn@3.6.1",
-  "gitHead": "6118545c871209a88d3d95d5221212c5bf7ded9d"
+  "gitHead": "834fe2543c91e446b7274a33acf573491107dfd1"
 }
