@@ -166,15 +166,6 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     setChartData(updatedChartData)
   }, [opdCategorySummary, opdCategoryDateRange, view]);
 
-  useEffect(() => {
-    if (datePickerRef?.current) {
-      const inputs = datePickerRef.current.querySelectorAll("input");
-      inputs.forEach(input => input.focus());
-    }
-    // datePickerRef.current.focus();
-
-  }, [datePickerRef]);
-
   const categoryToIndexMap = {
     outPatientClients: 0,
     opdVisits: 1,
@@ -203,32 +194,6 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
 
   return (
     <div className={styles.container}>
-      {loading ? (
-        <div
-          style={{
-            width: "100%"
-          }}
-        >
-          <div className={styles.header} data-testid="patient-queue-header">
-            <div className={styles["left-justified-items"]}>
-              <PatientQueueIllustration/>
-              <div className={styles["page-labels"]}>
-                <p className={styles.title}>{t("outPatient", "Out Patient")}</p>
-              </div>
-            </div>
-          </div>
-          <div
-            className={styles.cardContainer}
-            data-testid="registered-patients"
-          >
-            <Tile className={styles.tileContainer}>
-              <SkeletonPlaceholder/>
-            </Tile>
-          </div>
-          <br/>
-          <DataTableSkeleton columns={tableData?.length} rows={5}/>
-        </div>
-      ) : (
         <>
           <div className={styles.header} data-testid="patient-queue-header">
             <div className={styles["left-justified-items"]}>
@@ -345,23 +310,35 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   </IconSwitch>
                 </ContentSwitcher>
               </div>
-              {listActive ? (
-                <ReportsTableComponent
-                  dateRange={opdCategoryDateRange}
-                  tableData={tableData}
-                  paginatedData={paginatedData}
-                  rowData={rowData}
-                />
+              {loading ? (
+                <div>
+                  {listActive ? (
+                    <DataTableSkeleton columns={tableData?.length} rows={5} />
+                  ) : (
+                    <div style={{ width: '100%', height: '400px' }}>
+                      <SkeletonPlaceholder style={{ width: '100%', height: '100%' }} />
+                    </div>
+                  )}
+                </div>
               ) : (
-                <ReportsGraphicalChartComponent
-                  chartData={chartData}
-                />
+                <div>
+                  {listActive ? (
+                    <ReportsTableComponent
+                      dateRange={opdCategoryDateRange}
+                      tableData={tableData}
+                      paginatedData={paginatedData}
+                      rowData={rowData}
+                    />
+                  ) : (
+                    <ReportsGraphicalChartComponent chartData={chartData} />
+                  )}
+                </div>
               )}
             </div>
 
           </div>
         </>
-      )}
+      
     </div>
   );
 };
