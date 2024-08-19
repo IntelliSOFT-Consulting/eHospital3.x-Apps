@@ -12,7 +12,7 @@ import {
   usePatient,
 } from "@openmrs/esm-framework";
 import {
-  type DefaultWorkspaceProps,
+  type DefaultPatientWorkspaceProps,
   launchPatientWorkspace,
   type OrderBasketItem,
 } from "@openmrs/esm-patient-common-lib";
@@ -26,7 +26,7 @@ export interface AddProcedureOrderWorkspaceAdditionalProps {
 }
 
 export interface AddProceduresOrderWorkspace
-  extends DefaultWorkspaceProps,
+  extends DefaultPatientWorkspaceProps,
     AddProcedureOrderWorkspaceAdditionalProps {}
 
 export default function AddProceduresOrderWorkspace({
