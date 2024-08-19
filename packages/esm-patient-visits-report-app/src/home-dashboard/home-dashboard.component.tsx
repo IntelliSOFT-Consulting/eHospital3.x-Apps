@@ -313,7 +313,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                       }}
                       value={[opdCategoryDateRange.start, opdCategoryDateRange.end]}
                       datePickerType="range"
-                      dateFormat="d-m-Y"
+                      dateFormat="d/m/Y"
                     >
                       <DatePickerInput
                         id="date-picker-input-id-start"
