@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, {useContext, useEffect} from 'react';
 import { RadioButton, RadioButtonGroup } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { PatientRegistrationContext } from '../../patient-registration-context';
@@ -24,6 +24,16 @@ export const GenderField: React.FC = () => {
    * t('other', 'Other')
    * t('unknown', 'Unknown')
    */
+
+  /**
+   * Initialize the gender field each time the page is loaded
+   * This is useful for edit scenarios
+   *
+   */
+  useEffect(() => {
+    if(field?.value)
+      setGender(field?.value);
+  }, [field?.value]);
 
   return (
     <div className={styles.halfWidthInDesktopView}>

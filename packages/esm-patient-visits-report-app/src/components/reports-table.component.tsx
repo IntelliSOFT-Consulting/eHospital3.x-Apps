@@ -19,8 +19,8 @@ interface tableProps {
   paginatedData: any;
   tableData: any;
   dateRange: {
-    start: String;
-    end: String,
+    start: Date;
+    end: Date,
   },
   rowData: any;
 }
