@@ -199,7 +199,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
             <div className={styles["left-justified-items"]}>
               <PatientQueueIllustration/>
               <div className={styles.pageLabels}>
-                <p className={styles.title}>{t("outPatient", "Out Patient")}</p>
+                <p className={styles.title}>{t("outPatient", "Outpatient")}</p>
               </div>
             </div>
           </div>
@@ -223,7 +223,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                 className="metricsCard"
                 label={t("total", "Total")}
                 value={totalOPDCategoryRevisits.toString()}
-                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Re-visits")}
+                headerLabel={t("totalOPDVisitsForPeriod", "Total OPD Revisits")}
               />
             </div>
 

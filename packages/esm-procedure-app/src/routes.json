@@ -89,7 +89,7 @@
     "component": "notDoneProceduresTabComponent",
     "meta": {
         "name": "proceduresPanelSlot",
-        "title": "Not Done"
+        "title": "Rejected"
     }
 },
   {
