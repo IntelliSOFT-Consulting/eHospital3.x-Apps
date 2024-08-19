@@ -21,6 +21,7 @@
   height: spacing.$spacing-12;
   min-height: 5rem;
   margin-bottom: 2rem;
+  // margin-left: 6rem;
   background-color: $ui-02;
   border: 1px solid $ui-03;
   border-left: 0px;
@@ -47,9 +48,6 @@
   color: colors.$gray-100;
   margin: spacing.$spacing-03 0;
   // white-space: nowrap;
-    @include type.type-style("heading-05");
-    color: colors.$gray-100;
-    margin: spacing.$spacing-03 0;
 }
 
 .subTitle {

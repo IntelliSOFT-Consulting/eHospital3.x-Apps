@@ -31,7 +31,7 @@ function DashboardExtension({
         navLink.match(name) && "active-left-nav-link"
       }`}
     >
-      {t("outPatient", "Out Patient")}
+      {t("outPatient", "Outpatient")}
     </ConfigurableLink>
   );
 }
