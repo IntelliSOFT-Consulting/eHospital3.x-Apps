@@ -41,8 +41,16 @@ export function useOPDCategories(initialCategory="outPatientClients") {
       try {
         if (page === 0) setLoading(true);
 
-        let startString = dateRange.start;
-        let endString = dateRange.end;
+		const formatDateForReq = (dateString) => {
+			const date = new Date(dateString);
+      		const year = date.getFullYear();
+      		const month = String(date.getMonth() + 1).padStart(2, '0');
+      		const day = String(date.getDate()).padStart(2, '0');
+      		return `${day}-${month}-${year}`;
+		} 
+
+        let startString = formatDateForReq(dateRange.start);
+        let endString = formatDateForReq(dateRange.end);
 
         const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}`;
         const {data} = await openmrsFetch(url);
