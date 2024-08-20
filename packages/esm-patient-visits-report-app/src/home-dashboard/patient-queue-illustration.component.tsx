@@ -7,7 +7,7 @@ const PatientQueueIllustration: React.FC = () => {
     data-name="Layer 1"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 64 64"
-    style={{ width: "100px", height: "100px" }}
+    style={{ width: "64px", height: "64px" }}
   >
     <title>medical, medicine, healthcare, health, chart, edit, clipboard</title>
     <rect
