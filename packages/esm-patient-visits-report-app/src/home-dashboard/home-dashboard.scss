@@ -48,6 +48,7 @@
   color: colors.$gray-100;
   margin: spacing.$spacing-03 0;
   // white-space: nowrap;
+  font-size: 1.5rem;
 }
 
 .subTitle {
@@ -279,3 +280,8 @@ html[dir='rtl'] {
   width: 100%;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

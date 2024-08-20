@@ -6,8 +6,6 @@ import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
   DatePicker,
   DatePickerInput,
-  Tile,
-  SkeletonPlaceholder,
   DataTableSkeleton,
   Link,
   Tab,
@@ -17,6 +15,7 @@ import {
   ContentSwitcher, 
   RadioButton, 
   ExpandableSearch,
+  InlineLoading
 } from "@carbon/react";
 import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
 import { useOPDCategories } from "../hooks/useOPDCategories";
@@ -236,8 +235,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   <Tab onClick={() => handleTabClick(3)}>Consultation</Tab>
                   <Tab onClick={() => handleTabClick(4)}>Dental</Tab>
                   <Tab onClick={() => handleTabClick(5)}>Ultrasound</Tab>
-                  <Tab>Pharmacy</Tab>
-                  <Tab>Laboratory</Tab>
+                  {/* <Tab>Pharmacy</Tab> */}
+                  {/* <Tab>Laboratory</Tab> */}
                 </TabList>
               </Tabs>
             </div>
@@ -315,8 +314,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   {listActive ? (
                     <DataTableSkeleton columns={tableData?.length} rows={5} />
                   ) : (
-                    <div style={{ width: '100%', height: '400px' }}>
-                      <SkeletonPlaceholder style={{ width: '100%', height: '100%' }} />
+                    <div className={styles.loading} style={{ width: '100%', height: '400px' }}>
+                      <InlineLoading className={styles.loading} description={t('loading', 'Loading...')} />
                     </div>
                   )}
                 </div>
