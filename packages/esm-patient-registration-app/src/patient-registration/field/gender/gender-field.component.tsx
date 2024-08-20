@@ -40,11 +40,10 @@ export const GenderField: React.FC = () => {
       <h4 className={styles.productiveHeading02Light}>{t('sexFieldLabelText', 'Sex')}</h4>
       <div className={styles.sexField}>
         <p className="cds--label">{t('genderLabelText', 'Sex')}</p>
-        <RadioButtonGroup name="gender" orientation="vertical" onChange={setGender} valueSelected={field.value}
+        <RadioButtonGroup name="gender" orientation="vertical" onChange={setGender} valueSelected={field.value} defaultSelected={field.value}
         >
           {fieldConfigs.map((option) => (
             <RadioButton
-              checked={option.value == field.value}
               key={option.label ?? option.value}
               id={`gender-option-${option.value}`}
               value={option.value}
