@@ -152,7 +152,7 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = (props) => {
             {props.showStatus && (
               <OrderDetail
                 label={t("status", "Status").toUpperCase()}
-                value={row.status}
+                value={row.status.replace(/_/g, " ")}
               />
             )}
             <OrderDetail
