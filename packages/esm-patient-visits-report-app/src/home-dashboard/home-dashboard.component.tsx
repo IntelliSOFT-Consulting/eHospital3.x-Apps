@@ -327,6 +327,10 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                       tableData={tableData}
                       paginatedData={paginatedData}
                       rowData={rowData}
+                      currentPage={currentPage}
+                      itemsPerPage={itemsPerPage}
+                      setCurrentPage={setCurrentPage}
+                      setItemsPerPage={setItemsPerPage}
                     />
                   ) : (
                     <ReportsGraphicalChartComponent chartData={chartData} />

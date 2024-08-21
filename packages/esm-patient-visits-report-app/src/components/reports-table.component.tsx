@@ -23,13 +23,24 @@ interface tableProps {
     end: Date,
   },
   rowData: any;
+  currentPage: number;
+  itemsPerPage: number;
+  setCurrentPage: Dispatch<SetStateAction<number>>;
+  setItemsPerPage: Dispatch<SetStateAction<number>>
 }
 
 
-const ReportsTableComponent: React.FC<tableProps> = ({paginatedData, tableData, dateRange, rowData}) => {
+const ReportsTableComponent: React.FC<tableProps> = ({
+  paginatedData, 
+  tableData, 
+  dateRange, 
+  rowData,
+  currentPage,
+  itemsPerPage,
+  setCurrentPage,
+  setItemsPerPage
+}) => {
   const {t} = useTranslation();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   return (
     <div className={styles.datatable}>
