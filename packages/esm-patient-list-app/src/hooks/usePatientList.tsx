@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {openmrsFetch} from "@openmrs/esm-framework";
 import {getPaddedDateString} from "../helpers/dateOps";
-import {Link} from "@carbon/react";
 
 export function usePatientList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPaginationState, setCurrentPaginationState] = useState({
-    size: 50,
+    size: 100,
     page: 0
   });
   const [dateRange, setDateRange] = React.useState({
@@ -63,86 +62,13 @@ export function usePatientList() {
     }
   }
 
-  // useEffect(() => {
-  //   // setData((prev) => {
-  //   //   return prev.slice(0, 0);
-  //   // });
-  //   getAllClients({...currentPaginationState})
-  // }, [dateRange.start, dateRange.end]);
-
   useEffect(() => {
     setCurrentPaginationState(prev => ({...prev, page: 0}))
-    // setData([]);
     getAllClients({...currentPaginationState})
-  }, [dateRange, currentPaginationState.page]);
+  }, [dateRange]);
 
-  const tableColumns = [
-    {
-      name: "Name",
-      cell: (row) => (
-        <Link
-          href={`${window.getOpenmrsSpaBase()}patient/${
-            row.uuid
-          }/chart/Patient%20Summary`}
-        >
-          {row.fullName}
-        </Link>
-      ),
-    },
-    {
-      name: "ID",
-      selector: (row) => row.openmrsID,
-    },
-    {
-      name: "Gender",
-      selector: (row) => row.gender,
-    },
-    {
-      name: "Age",
-      selector: (row) => row.age,
-    },
-    {
-      name: "OPD Number",
-      selector: (row) => row.opdNumber,
-    },
-    {
-      name: "Date Registered",
-      selector: (row) => row.dateRegistered,
-    },
-    {
-      name: "Time Registered",
-      selector: (row) => row.timeRegistered,
-    },
-  ];
-
-
-  const clear = () => {
-    setDateRange({
-      start: `01-01-${new Date().getFullYear()}`,
-      end: `${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`
-    });
-    setData([]);
-    getAllClients({...currentPaginationState})
-  };
-  const customStyles = {
-    cells: {
-      style: {
-        minHeight: "22px",
-        fontSize: "14px",
-        fontWeight: "500",
-      },
-    },
-    headCells: {
-      style: {
-        fontSize: ".9rem",
-        fontWeight: "600",
-      },
-    },
-  };
 
   return {
-    customStyles,
-    tableColumns,
     data,
     patient: data,
     isLoading: loading,
@@ -150,8 +76,6 @@ export function usePatientList() {
     setDateRange,
     getAllClients,
     currentPaginationState,
-    clear,
     totalPatients,
-    // returnClients
   };
 }
