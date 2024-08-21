@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -36,6 +36,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const {
     isLoading,
+    backgroundLoading,
     data,
     setDateRange,
     dateRange,

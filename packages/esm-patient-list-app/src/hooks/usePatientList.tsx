@@ -5,8 +5,9 @@ import {getPaddedDateString} from "../helpers/dateOps";
 export function usePatientList() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [backgroundLoading, setBackgroundLoading] = useState(false);
   const [currentPaginationState, setCurrentPaginationState] = useState({
-    size: 100,
+    size: 50,
     page: 0
   });
   const [dateRange, setDateRange] = React.useState({
@@ -15,56 +16,88 @@ export function usePatientList() {
   });
   const [totalPatients, setTotalPatients] = useState(0);
 
-  const getAllClients = async ({page, size}) => {
+  const getAllClients = async () => {
     try {
-      if (page === 0) setLoading(true);
-
-      let startString =dateRange.start;
-      let endString =dateRange.end;
-
-      if(typeof dateRange.start === "object"){
+      let startString = dateRange.start;
+      let endString = dateRange.end;
+  
+      if (typeof dateRange.start === "object") {
         const dateObject = new Date(dateRange.start);
         startString = getPaddedDateString(dateObject);
       }
-
-      if(typeof dateRange.end === "object"){
+  
+      if (typeof dateRange.end === "object") {
         const dateObject = new Date(dateRange.end);
-        endString = getPaddedDateString(dateObject)
+        endString = getPaddedDateString(dateObject);
       }
-
-
-      const url = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-      const { data } = await openmrsFetch(url);
-      
-      setData([])
-      if (data.results.length > 0) {
-        setData(prev => [...prev, ...data.results.map(result => ({
-          ...result,
-          fullName: result?.name,
-          age: result?.age,
-          gender: result?.sex,
-          openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-          opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-        }))]);
-        setTotalPatients(data.totalPatients);
+  
+      let currentPage = 0;
+      let allData = [];
+      let hasMoreData = true;
+      let totalFetchedPatients = 0;
+  
+      setLoading(true);
+  
+      const firstBatchUrl = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=0&size=50`;
+      const firstBatchResponse = await openmrsFetch(firstBatchUrl);
+  
+      const firstBatchData = firstBatchResponse.data.results.map(result => ({
+        ...result,
+        fullName: result?.name,
+        age: result?.age,
+        gender: result?.sex,
+        openmrsID: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+        opdNumber: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+      }));
+  
+      setData(firstBatchData);
+      totalFetchedPatients += firstBatchData.length;
+      if (firstBatchData.length < 50) {
+        setTotalPatients(firstBatchResponse.data.totalPatients);
       }
-
-      if (data.results.length === size)
-        setCurrentPaginationState(prev => ({
-          ...prev,
-          page: ++prev.page
-        }))
-
-    } catch (e) {
-      return e
-    } finally {
       setLoading(false);
+  
+      if (firstBatchData.length === 50) {
+        setBackgroundLoading(true);
+        currentPage += 1;
+  
+        while (hasMoreData) {
+          const url = `/ws/rest/v1/ehospital/allClients?startDate=${startString}&endDate=${endString}&page=${currentPage}&size=50`;
+          const response = await openmrsFetch(url);
+  
+          const fetchedData = response.data.results.map(result => ({
+            ...result,
+            fullName: result?.name,
+            age: result?.age,
+            gender: result?.sex,
+            openmrsID: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+            opdNumber: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+          }));
+  
+          allData = [...allData, ...fetchedData];
+          totalFetchedPatients += fetchedData.length;
+          setData(prevData => [...prevData, ...fetchedData]);
+          currentPage += 1;
+  
+          if (fetchedData.length < 50) {
+            hasMoreData = false;
+          }
+        }
+  
+        setTotalPatients(totalFetchedPatients);
+        setBackgroundLoading(false);
+      }
+  
+    } catch (e) {
+      console.error(e);
+      setLoading(false);
+      setBackgroundLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     setCurrentPaginationState(prev => ({...prev, page: 0}))
-    getAllClients({...currentPaginationState})
+    getAllClients();
   }, [dateRange]);
 
 
@@ -72,6 +105,7 @@ export function usePatientList() {
     data,
     patient: data,
     isLoading: loading,
+    backgroundLoading,
     dateRange,
     setDateRange,
     getAllClients,
