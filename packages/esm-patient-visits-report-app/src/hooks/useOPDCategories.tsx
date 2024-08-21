@@ -52,9 +52,9 @@ export function useOPDCategories(initialCategory="outPatientClients") {
         let startString = formatDateForReq(dateRange.start);
         let endString = formatDateForReq(dateRange.end);
 
-        const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}`;
+        const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
         const {data} = await openmrsFetch(url);
-				const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}`;
+				const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
 				const {data: cardData} = await openmrsFetch(cardUrl);
 
         setData([])

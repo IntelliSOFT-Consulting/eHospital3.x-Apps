@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -87,7 +87,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
 
   const rowData = filteredData?.map((patient) => {
     return {
-      id: patient.openmrsID,
+      id: patient.opdNumber,
       fullName: () => (
         <Link
           href={`${window.getOpenmrsSpaBase()}patient/${
@@ -103,7 +103,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       opdNumber: patient.opdNumber,
       diagnosis: patient.diagnosis,
     }
-  }) || [];
+  })
 
   const paginatedData = rowData?.slice(
     (currentPage - 1) * itemsPerPage,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -6,7 +6,6 @@ import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
   DatePicker,
   DatePickerInput,
-  Button,
   Tile,
   SkeletonPlaceholder,
   Link,
@@ -21,7 +20,6 @@ import {
   TableCell,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarSearch,
   Pagination,
   Layer
 } from "@carbon/react";
@@ -39,13 +37,8 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
   const {
     isLoading,
     data,
-    tableColumns,
-    customStyles,
     setDateRange,
     dateRange,
-    currentPaginationState,
-    getAllClients,
-    clear,
     totalPatients,
   } = usePatientList();
 
@@ -82,7 +75,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const rowData = data?.map((patient) => {
     return {
-      id: patient.openmrsID,
+      id: patient.opdNumber,
       fullName: () => (
         <Link
           href={`${window.getOpenmrsSpaBase()}patient/${

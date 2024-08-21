@@ -1,6 +1,6 @@
 {
   "name": "@sjthc/esm-patient-list-app",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "license": "MPL-2.0",
   "description": "Custom Patient list microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-list-app.js",
@@ -60,5 +60,5 @@
     "@types/uuid": "^9.0.4",
     "webpack": "^5.88.2"
   },
-  "gitHead": "673ad31115e2e9da02ecaa47747c9fad09eb624e"
+  "gitHead": "dc93f7cfebbe379ad5b7f10b2aaab622e78f9b53"
 }
