@@ -38,62 +38,6 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 		const [totalOpdVisits, setTotalOpdVisits] = useState(0);
 		const [totalOpdRevisits, setTotalOpdRevisits] = useState(0);
 
-    // const getOPDVisits = async ({page, size}) => {
-    //   try {
-    //     setLoading(true);
-
-		// 		const formatDateForReq = (dateString) => {
-		// 			const date = new Date(dateString);
-		// 					const year = date.getFullYear();
-		// 					const month = String(date.getMonth() + 1).padStart(2, '0');
-		// 					const day = String(date.getDate()).padStart(2, '0');
-		// 					return `${day}-${month}-${year}`;
-		// 		} 
-
-    //     let startString = formatDateForReq(dateRange.start);
-    //     let endString = formatDateForReq(dateRange.end);
-
-    //     const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-    //     const {data} = await openmrsFetch(url);
-		// 		const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-		// 		const {data: cardData} = await openmrsFetch(cardUrl);
-
-    //     setData([])
-    //     if (data.results.length > 0) {
-		// 			setData(prev => [...prev, ...data.results.map(result => ({
-		// 				...result,
-		// 				fullName: result?.name,
-		// 				age: result?.age,
-		// 				gender: result?.sex,
-		// 				opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-		// 				openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-		// 				diagnosis: result?.diagnosis
-		// 			}))])
-		// 			setTotalPatients(cardData.totalPatients);
-		// 			setTotalOpdVisits(cardData.totalOpdVisits);
-		// 			setTotalOpdRevisits(cardData.totalOpdRevisits);
-		// 			setSummary(data.summary)
-    //     }else {
-		// 			setSummary({
-		// 				groupYear: {},
-		// 				groupMonth: {},
-		// 				groupWeek: {}
-		// 			})
-		// 		}
-
-		// 		if (data.results.length === size) 
-		// 			setCurrentPaginationState(prev => ({
-		// 				...prev,
-		// 				page: ++prev.page
-		// 			}))
-
-    //     }catch(e) {
-		// 			return e
-		// 		}finally{
-		// 			setLoading(false)
-		// 		}
-    // }
-
 		const getOPDVisits = async () => {
 			try {
 					const formatDateForReq = (dateString) => {
@@ -178,7 +122,6 @@ export function useOPDCategories(initialCategory="outPatientClients") {
                 const [aMonth, aWeek] = a.split('_Week');
                 const [bMonth, bWeek] = b.split('_Week');
 
-                // Convert month names to Date objects for proper chronological sorting
                 const aDate: any = new Date(`${aMonth} 1, 2024`);
                 const bDate: any = new Date(`${bMonth} 1, 2024`);
 
