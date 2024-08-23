@@ -76,6 +76,7 @@ export function ProceduresOrderForm({
     error: errorLoadingTestTypes,
   } = useProceduresTypes();
   const [showErrorNotification, setShowErrorNotification] = useState(false);
+  const [showSpecifyBodySite, setShowSpecifyBodySite] = useState(false);
   const {
     items: { answers: specimenSourceItems },
     isLoading: isLoadingSpecimenSourceItems,
@@ -93,9 +94,11 @@ export function ProceduresOrderForm({
     ) || {}
   ).required;
 
+  const bleedingSiteID = "5677a925-fbf4-4646-b2e6-4ebee029ef32"
+  const otherBleedingSiteOptionID = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
   const {
-    items: { answers: bodySiteItems, name },
-  } = useConceptById("162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+    items: {answers: bodySiteItems, name},
+  } = useConceptById(bleedingSiteID);
 
   const proceduresOrderFormSchema = z.object({
     instructions: z.string().optional(),
@@ -146,6 +149,7 @@ export function ProceduresOrderForm({
     previousOrder: z.string().optional(),
     frequency: z.string().optional(),
     bodySite: z.string().optional(),
+    specifyBodySite: z.string().optional(),
   });
 
   const orderFrequencies: Array<OrderFrequency> = useMemo(
@@ -156,7 +160,8 @@ export function ProceduresOrderForm({
   const {
     control,
     handleSubmit,
-    formState: { errors, defaultValues, isDirty },
+    formState: {errors, defaultValues, isDirty,},
+    watch
   } = useForm<ProcedureOrderBasketItem>({
     mode: "all",
     resolver: zodResolver(proceduresOrderFormSchema),
@@ -164,6 +169,17 @@ export function ProceduresOrderForm({
       ...initialOrder,
     },
   });
+
+  useEffect(() => {
+    const subscription = watch((value, {name, type}) => {
+      if (name === "bodySite") {
+          setShowSpecifyBodySite(value.bodySite == otherBleedingSiteOptionID)
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch]);
+  watch('bodySite',)
 
   const orderReasonUuids =
     (
@@ -398,6 +414,35 @@ export function ProceduresOrderForm({
                         invalid={errors.bodySite?.message}
                         invalidText={errors.bodySite?.message}
                         itemToString={(item) => item?.display}
+                      />
+                    )}
+                  />
+                </InputWrapper>
+              </Column>
+            </Grid>
+          )}
+          {showSpecifyBodySite && (
+            <Grid className={styles.gridRow}>
+              <Column lg={16} md={8} sm={4}>
+                <InputWrapper>
+                  <Controller
+                    name="specifyBodySite"
+                    control={control}
+                    render={({field: {onChange, onBlur, value}}) => (
+                      <TextArea
+                        enableCounter
+                        id="specifyBodySite"
+                        size="lg"
+                        labelText={t(
+                          "specifyBodySite",
+                          "Specify Body Site"
+                        )}
+                        value={value}
+                        onChange={onChange}
+                        onBlur={onBlur}
+                        maxCount={500}
+                        invalid={errors.specifyBodySite?.message}
+                        invalidText={errors.specifyBodySite?.message}
                       />
                     )}
                   />

@@ -425,6 +425,7 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
   urgency?: string;
   instructions?: string;
   previousOrder?: string;
+  specifyBodySite?: string;
   orderReason?: string;
   scheduledDate?: string | Date;
   commentsToFulfiller?: string;
