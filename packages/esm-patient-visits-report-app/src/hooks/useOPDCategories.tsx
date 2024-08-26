@@ -38,74 +38,6 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 		const [totalOpdVisits, setTotalOpdVisits] = useState(0);
 		const [totalOpdRevisits, setTotalOpdRevisits] = useState(0);
 
-    // const getOPDVisits = async ({page, size}) => {
-    //   try {
-    //     setLoading(true);
-
-		// 		const formatDateForReq = (dateString) => {
-		// 			const date = new Date(dateString);
-		// 					const year = date.getFullYear();
-		// 					const month = String(date.getMonth() + 1).padStart(2, '0');
-		// 					const day = String(date.getDate()).padStart(2, '0');
-		// 					return `${day}-${month}-${year}`;
-		// 		} 
-
-    //     let startString = formatDateForReq(dateRange.start);
-    //     let endString = formatDateForReq(dateRange.end);
-
-    //     const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-    //     const {data} = await openmrsFetch(url);
-		// 		const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}&page=${page}&size=${size}`;
-		// 		const {data: cardData} = await openmrsFetch(cardUrl);
-
-    //     setData([])
-    //     if (data.results.length > 0) {
-		// 			setData(prev => [...prev, ...data.results.map(result => ({
-		// 				...result,
-		// 				fullName: result?.name,
-		// 				age: result?.age,
-		// 				gender: result?.sex,
-		// 				opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-		// 				openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-		// 				diagnosis: result?.diagnosis
-		// 			}))])
-		// 			setTotalPatients(cardData.totalPatients);
-		// 			setTotalOpdVisits(cardData.totalOpdVisits);
-		// 			setTotalOpdRevisits(cardData.totalOpdRevisits);
-		// 			setSummary(data.summary)
-    //     }else {
-		// 			setSummary({
-		// 				groupYear: {},
-		// 				groupMonth: {},
-		// 				groupWeek: {}
-		// 			})
-		// 		}
-
-		// 		if (data.results.length === size) 
-		// 			setCurrentPaginationState(prev => ({
-		// 				...prev,
-		// 				page: ++prev.page
-		// 			}))
-
-    //     }catch(e) {
-		// 			return e
-		// 		}finally{
-		// 			setLoading(false)
-		// 		}
-    // }
-
-		const deepMerge = (target, source) => {
-			for (let key in source) {
-				if (source[key] instanceof Object) {
-					if (!target[key]) Object.assign(target, { [key]: {} });
-					deepMerge(target[key], source[key]);
-				} else {
-					Object.assign(target, { [key]: source[key] });
-				}
-			}
-			return target;
-		};
-
 		const getOPDVisits = async () => {
 			try {
 					const formatDateForReq = (dateString) => {
@@ -114,97 +46,106 @@ export function useOPDCategories(initialCategory="outPatientClients") {
 							const month = String(date.getMonth() + 1).padStart(2, '0');
 							const day = String(date.getDate()).padStart(2, '0');
 							return `${day}-${month}-${year}`;
-					}
+					};
 	
 					let startString = formatDateForReq(dateRange.start);
 					let endString = formatDateForReq(dateRange.end);
-
+	
 					let currentPage = 0;
-					let allData = [];
+					let allData = []; 
 					let hasMoreData = true;
 					let totalFetchedPatients = 0;
 					let totalFetchedOpdVisits = 0;
 					let totalFetchedOpdRevisits = 0;
-					let fetchedSummary = {
-						groupYear: {},
-						groupMonth: {},
-						groupWeek: {}
-					}
-
+	
+					let cumulativeSummary = {
+							groupYear: {},
+							groupMonth: {},
+							groupWeek: {},
+					};
+	
 					setLoading(true);
-
-					const firstBatchUrl = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}&page=0&size=25`;
-					const { data: firstBatchResponse } = await openmrsFetch(firstBatchUrl);
-					const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}&page=0&size=25`;
-					const { data: cardData } = await openmrsFetch(cardUrl);
-
-					const firstBatchData = firstBatchResponse.results.map(result => ({
-						...result,
-						fullName: result?.name,
-						age: result?.age,
-						gender: result?.sex,
-						opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-						openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-						diagnosis: result?.diagnosis
-					}))
-
-					setData(firstBatchData);
-					totalFetchedPatients += cardData.totalPatients;
-					totalFetchedOpdVisits += cardData.totalOpdVisits;
-					totalFetchedOpdRevisits += cardData.totalOpdRevisits;
-					fetchedSummary = cardData.summary
-					setSummary(fetchedSummary)
-
-					if (firstBatchData.length < 25) {
-						setTotalPatients(firstBatchResponse.totalPatients);
-					}
-
-					setLoading(false);
-
-					if (firstBatchData.length === 25) {
-						setBackgroundLoading(true);
-						currentPage += 1;
-
-						while (hasMoreData) {
+	
+					while (hasMoreData) {
 							const url = `/ws/rest/v1/ehospital/${category}?startDate=${startString}&endDate=${endString}&page=${currentPage}&size=25`;
-							const { data } = await openmrsFetch(url);
-
-							const fetchedData = data.results.map(result => ({
-								...result,
-								fullName: result?.name,
-								age: result?.age,
-								gender: result?.sex,
-								opdNumber: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
-								openmrsID: result.identifiers.find(item =>  item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
-								diagnosis: result?.diagnosis
-							}))
-
+							const { data: batchResponse } = await openmrsFetch(url);
+							const cardUrl = `/ws/rest/v1/ehospital/outPatientClients?startDate=${startString}&endDate=${endString}&page=${currentPage}&size=25`;
+							const { data: cardData } = await openmrsFetch(cardUrl);
+	
+							const fetchedData = batchResponse.results.map(result => ({
+									...result,
+									fullName: result?.name,
+									age: result?.age,
+									gender: result?.sex,
+									opdNumber: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("opd"))?.identifier,
+									openmrsID: result.identifiers.find(item => item.identifierType.toLowerCase()?.includes("openmrs"))?.identifier,
+									diagnosis: result?.diagnosis
+							}));
+							
 							allData = [...allData, ...fetchedData];
-							totalFetchedPatients += fetchedData.length;
-							fetchedSummary = deepMerge(fetchedSummary, data.summary)
-							setData(prevData => [...prevData, ...fetchedData]);
-							currentPage += 1;
+							setData(allData);
 
+							if (currentPage === 0) {
+								totalFetchedOpdVisits += cardData.totalOpdVisits;
+								totalFetchedOpdRevisits += cardData.totalOpdRevisits;
+								setLoading(false);
+							} else {
+								setBackgroundLoading(true);
+							}
+	
+							totalFetchedPatients += cardData.totalPatients;
+	
+							const updateSummary = (sourceSummary, targetSummary) => {
+									Object.keys(sourceSummary).forEach(key => {
+											if (targetSummary[key]) {
+													targetSummary[key] += sourceSummary[key];
+											} else {
+													targetSummary[key] = sourceSummary[key];
+											}
+									});
+							};
+	
+							updateSummary(batchResponse.summary.groupYear, cumulativeSummary.groupYear);
+							updateSummary(batchResponse.summary.groupMonth, cumulativeSummary.groupMonth);
+							updateSummary(batchResponse.summary.groupWeek, cumulativeSummary.groupWeek);
+	
+							currentPage += 1;
+	
 							if (fetchedData.length < 25) {
 								hasMoreData = false;
+								setBackgroundLoading(false);
 							}
-						}
-
-						setTotalPatients(totalFetchedPatients);
-						setTotalOpdVisits(totalFetchedOpdVisits);
-						setTotalOpdRevisits(totalFetchedOpdRevisits);
-						setSummary(fetchedSummary)
-						// setData(allData);
-						setLoading(false);
-						setBackgroundLoading(false);
 					}
 
+					cumulativeSummary.groupMonth = Object.keys(cumulativeSummary.groupMonth)
+            .sort((a, b) => {
+                const [aMonth, aWeek] = a.split('_Week');
+                const [bMonth, bWeek] = b.split('_Week');
+
+                const aDate: any = new Date(`${aMonth} 1, 2024`);
+                const bDate: any = new Date(`${bMonth} 1, 2024`);
+
+                return aDate - bDate || parseInt(aWeek) - parseInt(bWeek);
+            })
+            .reduce((sortedSummary, key) => {
+                sortedSummary[key] = cumulativeSummary.groupMonth[key];
+                return sortedSummary;
+            }, {});
+	
+					setData(allData); 
+					setTotalPatients(totalFetchedPatients);
+					setTotalOpdVisits(totalFetchedOpdVisits);
+					setTotalOpdRevisits(totalFetchedOpdRevisits);
+					setSummary(cumulativeSummary);
+					setLoading(false);
+					setBackgroundLoading(false);
+	
 			} catch (e) {
 					console.error(e);
 					setLoading(false);
 					setBackgroundLoading(false);
 			}
-	};
+		};
 
 		useEffect(() => {
 			setCurrentPaginationState(prev => ({...prev, page: 0}))

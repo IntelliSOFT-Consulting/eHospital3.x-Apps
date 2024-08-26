@@ -71,15 +71,12 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     {
       header: t('id', 'ID'),
       key: 'openmrsID',
+    },
+    {
+      header: t('diagnosis', 'Diagnosis'),
+      key: 'diagnosis',
     }
   ]
-
-  if (category === "outPatientClients" || category === "opdVisits" || category === "opdRevisits" || category === "consultation"){
-    tableData.push({
-      header: t('diagnosis', 'Diagnosis'),
-      key: 'diagnosis'
-    })
-  }
 
   const filteredData = opdCategoriesData?.filter((patient) => {
     return patient.diagnosis?.toLowerCase().includes(searchString.toLowerCase())
