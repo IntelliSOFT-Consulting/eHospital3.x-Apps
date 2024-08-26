@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import styles from "./home-dashboard.scss";
 import {useTranslation} from "react-i18next";
 import PatientQueueIllustration from "./patient-queue-illustration.component";
@@ -6,8 +6,6 @@ import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
   DatePicker,
   DatePickerInput,
-  Tile,
-  SkeletonPlaceholder,
   DataTableSkeleton,
   Link,
   Tab,
@@ -17,6 +15,7 @@ import {
   ContentSwitcher, 
   RadioButton, 
   ExpandableSearch,
+  InlineLoading
 } from "@carbon/react";
 import {ChartLineSmooth, Table as TableIcon} from "@carbon/react/icons";
 import { useOPDCategories } from "../hooks/useOPDCategories";
@@ -72,15 +71,12 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
     {
       header: t('id', 'ID'),
       key: 'openmrsID',
+    },
+    {
+      header: t('diagnosis', 'Diagnosis'),
+      key: 'diagnosis',
     }
   ]
-
-  if (category === "outPatientClients" || category === "opdVisits" || category === "opdRevisits" || category === "consultation"){
-    tableData.push({
-      header: t('diagnosis', 'Diagnosis'),
-      key: 'diagnosis'
-    })
-  }
 
   const filteredData = opdCategoriesData?.filter((patient) => {
     return patient.diagnosis?.toLowerCase().includes(searchString.toLowerCase())
@@ -88,7 +84,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
 
   const rowData = filteredData?.map((patient) => {
     return {
-      id: patient.openmrsID,
+      id: patient.opdNumber,
       fullName: () => (
         <Link
           href={`${window.getOpenmrsSpaBase()}patient/${
@@ -104,7 +100,7 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
       opdNumber: patient.opdNumber,
       diagnosis: patient.diagnosis,
     }
-  }) || [];
+  })
 
   const paginatedData = rowData?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -236,8 +232,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   <Tab onClick={() => handleTabClick(3)}>Consultation</Tab>
                   <Tab onClick={() => handleTabClick(4)}>Dental</Tab>
                   <Tab onClick={() => handleTabClick(5)}>Ultrasound</Tab>
-                  <Tab>Pharmacy</Tab>
-                  <Tab>Laboratory</Tab>
+                  {/* <Tab>Pharmacy</Tab> */}
+                  {/* <Tab>Laboratory</Tab> */}
                 </TabList>
               </Tabs>
             </div>
@@ -315,8 +311,8 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                   {listActive ? (
                     <DataTableSkeleton columns={tableData?.length} rows={5} />
                   ) : (
-                    <div style={{ width: '100%', height: '400px' }}>
-                      <SkeletonPlaceholder style={{ width: '100%', height: '100%' }} />
+                    <div className={styles.loading} style={{ width: '100%', height: '400px' }}>
+                      <InlineLoading className={styles.loading} description={t('loading', 'Loading...')} />
                     </div>
                   )}
                 </div>
@@ -328,6 +324,10 @@ const PatientVisitsReportHome: React.FC<PatientVisistsReportHomeProps> = () => {
                       tableData={tableData}
                       paginatedData={paginatedData}
                       rowData={rowData}
+                      currentPage={currentPage}
+                      itemsPerPage={itemsPerPage}
+                      setCurrentPage={setCurrentPage}
+                      setItemsPerPage={setItemsPerPage}
                     />
                   ) : (
                     <ReportsGraphicalChartComponent chartData={chartData} />

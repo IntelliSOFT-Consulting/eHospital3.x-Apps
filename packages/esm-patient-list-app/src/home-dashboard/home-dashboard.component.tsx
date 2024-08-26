@@ -6,7 +6,6 @@ import MetricsCard from "./dashboard-card/dashboard-card.component";
 import {
   DatePicker,
   DatePickerInput,
-  Button,
   Tile,
   SkeletonPlaceholder,
   Link,
@@ -21,7 +20,6 @@ import {
   TableCell,
   TableToolbar,
   TableToolbarContent,
-  TableToolbarSearch,
   Pagination,
   Layer
 } from "@carbon/react";
@@ -38,14 +36,10 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const {
     isLoading,
+    backgroundLoading,
     data,
-    tableColumns,
-    customStyles,
     setDateRange,
     dateRange,
-    currentPaginationState,
-    getAllClients,
-    clear,
     totalPatients,
   } = usePatientList();
 
@@ -82,7 +76,7 @@ const PatientListHome: React.FC<PatientListHomeProps> = () => {
 
   const rowData = data?.map((patient) => {
     return {
-      id: patient.openmrsID,
+      id: patient.opdNumber,
       fullName: () => (
         <Link
           href={`${window.getOpenmrsSpaBase()}patient/${
