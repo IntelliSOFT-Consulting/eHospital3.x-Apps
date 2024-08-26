@@ -49,7 +49,7 @@
   "identifierValueRequired": "Identifier value is required",
   "idFieldLabelText": "Identifiers",
   "IDInstructions": "Select the identifiers you'd like to add for this patient:",
-  "incompleteForm": "Incomplete form",
+  "incompleteForm": "Please fill out the",
   "invalidEmail": "A valid email has to be given",
   "invalidInput": "Invalid Input",
   "isDeadInputLabel": "Is Dead",
