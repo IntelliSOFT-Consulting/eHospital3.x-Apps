@@ -232,7 +232,7 @@ export const esmPatientRegistrationSchema = {
           _type: Type.String,
           _description:
             'Value that will be sent to the server. Limited to FHIR-supported values for Administrative Gender',
-          _validators: [validators.oneOf(['male', 'female', 'other', 'unknown'])],
+          _validators: [validators.oneOf(['male', 'female'])],
         },
         label: {
           _type: Type.String,
@@ -247,12 +247,6 @@ export const esmPatientRegistrationSchema = {
         },
         {
           value: 'female',
-        },
-        {
-          value: 'other',
-        },
-        {
-          value: 'unknown',
         },
       ],
       _description:
