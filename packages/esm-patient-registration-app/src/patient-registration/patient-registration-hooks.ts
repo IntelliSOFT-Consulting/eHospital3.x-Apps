@@ -60,7 +60,7 @@ export function useInitialFormValues(patientUuid: string): [FormValues, Dispatch
     identifiers: {},
     address: {},
   });
-
+  console.log("initial form values", initialFormValues)
   useEffect(() => {
     (async () => {
       if (patientToEdit) {
