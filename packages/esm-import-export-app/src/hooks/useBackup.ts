@@ -1,10 +1,13 @@
-import {useState} from "react";
+import { useState } from "react";
 
 export const useBackup = () => {
-  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState<boolean>(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] =
+    useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const [isNewModalOpen, setIsNewModalOpen] = useState<boolean>(false);
   const [isRetryModalOpen, setIsRetryModalOpen] = useState<boolean>(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
 
   const tableHeaders = [
     {
@@ -19,7 +22,7 @@ export const useBackup = () => {
       key: "status",
       header: "Status",
     },
-  ]
+  ];
 
   return {
     tableHeaders,
@@ -31,5 +34,9 @@ export const useBackup = () => {
     setIsNewModalOpen,
     setIsRetryModalOpen,
     isRetryModalOpen,
-  }
-}
+    setIsImportModalOpen,
+    isImportModalOpen,
+    isInfoModalOpen,
+    setIsInfoModalOpen,
+  };
+};

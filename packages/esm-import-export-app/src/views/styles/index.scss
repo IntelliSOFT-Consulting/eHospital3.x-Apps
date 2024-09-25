@@ -60,15 +60,25 @@
   width: fit-content;
 }
 
+.importButton{
+  margin-bottom: 5rem;
+  width: fit-content;
+  margin-right: 2rem;
+}
+
 .actionCell{
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   padding: 0.5rem;
 }
 
 .actionButton{
-  width: 50%;
+  width: 55%;
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  padding: 0;
 }
 
 
