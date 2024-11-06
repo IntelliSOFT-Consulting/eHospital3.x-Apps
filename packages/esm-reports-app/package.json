@@ -53,5 +53,6 @@
     "react-router-dom": "6.x",
     "rxjs": "6.x"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "gitHead": "549ebd050b1691ec861ca175e18fcff6f7ff6ed4"
 }
