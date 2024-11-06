@@ -6,7 +6,7 @@ export const personRelationshipRepresentation =
   'personB:(age,display,birthdate,uuid),' +
   'relationshipType:(uuid,display,description,aIsToB,bIsToA))';
 
-export const moduleName = '@sjthc/esm-patient-registration-app';
+export const moduleName = '@ehospital/esm-patient-registration-app';
 export const patientRegistration = 'patient-registration';
 
 export const cacheForOfflineHeaders: OmrsOfflineHttpHeaders = {

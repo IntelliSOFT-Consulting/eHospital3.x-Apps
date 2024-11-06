@@ -1,5 +1,5 @@
 {
-  "name": "@sjthc/esm-billing-app",
+  "name": "@ehospital/esm-billing-app",
   "version": "1.0.5",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/sjthc-esm-billing-app.js",

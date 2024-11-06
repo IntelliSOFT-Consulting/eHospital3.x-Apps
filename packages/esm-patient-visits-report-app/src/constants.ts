@@ -1,1 +1,1 @@
-export const moduleName = "@sjthc/esm-patient-visits-report-app";
+export const moduleName = "@ehospital/esm-patient-visits-report-app";

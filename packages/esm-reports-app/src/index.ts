@@ -15,7 +15,7 @@ import { homeDashboardMeta } from "./dashboard.meta";
 import { createDashboardLink as createHomeDashboardLink } from "./createDashboardLink.component";
 
 
-const moduleName = "@sjthc/esm-reports-app";
+const moduleName = "@ehospital/esm-reports-app";
 
 const options = {
   featureName: "reports",
