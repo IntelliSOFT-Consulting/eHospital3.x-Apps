@@ -9,7 +9,7 @@ import homeDashboardComponent from './views/export.component';
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
-const moduleName = '@sjthc/esm-import-export-app';
+const moduleName = '@ehospital/esm-import-export-app';
 
 const options = {
   featureName: 'esm-import-export-app',

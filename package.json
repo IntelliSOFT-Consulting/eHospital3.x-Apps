@@ -1,5 +1,5 @@
 {
-  "name": "@sjthc/eHospital3.x-Apps",
+  "name": "@ehospital/eHospital3.x-Apps",
   "private": true,
   "workspaces": [
     "packages/*"

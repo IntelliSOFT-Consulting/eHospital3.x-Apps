@@ -1,6 +1,6 @@
 {
-  "name": "@sjthc/esm-reports-app",
-  "version": "1.0.3",
+  "name": "@ehospital/esm-reports-app",
+  "version": "1.0.0",
   "license": "MPL-2.0",
   "description": "Reports Admin page for OpenMRS",
   "browser": "dist/sjthc-esm-reports-app.js",
@@ -53,5 +53,6 @@
     "react-router-dom": "6.x",
     "rxjs": "6.x"
   },
-  "packageManager": "yarn@3.6.1"
+  "packageManager": "yarn@3.6.1",
+  "gitHead": "88728baaf0c8c1127aa782d7957c18ef4d1d2fdf"
 }

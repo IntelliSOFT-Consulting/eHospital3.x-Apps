@@ -13,7 +13,7 @@ import VisitAttributeTags from './invoice/payments/visit-tags/visit-attribute.co
 import ServiceMetrics from './billable-services/dashboard/service-metrics.component';
 import appMenu from './billable-services/billable-services-menu-item/item.component';
 
-const moduleName = '@sjthc/esm-billing-app';
+const moduleName = '@ehospital/esm-billing-app';
 
 const options = {
   featureName: 'billing',
