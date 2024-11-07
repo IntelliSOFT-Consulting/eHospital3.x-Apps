@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@openmrs/esm-extensions": "next",
-    "@openmrs/esm-framework": "^5.7.2",
+    "@openmrs/esm-framework": "next",
     "@openmrs/esm-patient-common-lib": "next",
     "@openmrs/esm-react-utils": "next",
     "@openmrs/esm-styleguide": "next",

@@ -1,0 +1,28 @@
+@use '@carbon/layout';
+
+.mainContainer {
+  display: flex;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  gap: layout.$spacing-05;
+}
+
+:global(.omrs-breakpoint-lt-desktop) {
+  .mainContainer {
+    flex-direction: column;
+  }
+
+  .content {
+    flex-direction: column;
+  }
+}
+
+.claimContainer,
+.form {
+  flex: 1;
+}
