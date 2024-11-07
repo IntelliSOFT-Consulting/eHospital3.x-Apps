@@ -1808,6 +1808,395 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ehospital/eHospital3.x-Apps@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/eHospital3.x-Apps@workspace:."
+  dependencies:
+    "@carbon/charts-react": ^1.5.2
+    "@carbon/react": ^1.33.1
+    "@openmrs/esm-error-handling": next
+    "@openmrs/esm-extensions": next
+    "@openmrs/esm-framework": ^5.7.2
+    "@openmrs/esm-navigation": next
+    "@openmrs/esm-react-utils": next
+    "@openmrs/esm-state": next
+    "@openmrs/esm-styleguide": next
+    "@openmrs/esm-translations": next
+    "@playwright/test": ^1.30.0
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.68
+    "@swc/jest": ^0.2.26
+    "@testing-library/dom": ^8.20.1
+    "@testing-library/jest-dom": ^5.16.5
+    "@testing-library/react": ^13.4.0
+    "@testing-library/user-event": ^14.4.3
+    "@types/jest": ^28.1.8
+    "@types/react": ^18.2.14
+    "@types/react-dom": ^18.2.6
+    "@types/react-router": ^5.1.20
+    "@types/react-router-dom": ^5.3.3
+    "@types/uuid": ^9.0.4
+    "@types/webpack-env": ^1.18.1
+    "@typescript-eslint/eslint-plugin": ^5.61.0
+    "@typescript-eslint/parser": ^5.61.0
+    cross-env: ^7.0.3
+    css-loader: ^6.8.1
+    dotenv: ^16.0.3
+    eslint: ^8.44.0
+    eslint-config-prettier: ^8.8.0
+    eslint-config-ts-react-important-stuff: ^3.0.0
+    eslint-plugin-prettier: ^4.2.1
+    husky: ^8.0.3
+    i18next: ^23.2.8
+    i18next-parser: ^8.0.0
+    identity-obj-proxy: ^3.0.0
+    jest: ^28.1.3
+    jest-cli: ^28.1.3
+    jest-environment-jsdom: ^28.1.3
+    lerna: ^8.1.6
+    lodash-es: ^4.17.21
+    openmrs: ^5.7.2
+    prettier: ^2.8.8
+    pretty-quick: ^3.1.3
+    react: ^18.2.0
+    react-data-table-component: ^7.6.2
+    react-dom: ^18.3.1
+    react-i18next: ^11.18.6
+    react-image-annotate: ^1.8.0
+    react-is: ^18.3.1
+    react-router-dom: ^6.14.1
+    rxjs: ^6.6.7
+    single-spa: ^6.0.1
+    styled-components: ^5
+    swc-loader: ^0.2.3
+    turbo: ^1.12.4
+    typescript: ^4.9.5
+    uuid: ^8.3.2
+    webpack: ^5.88.1
+    webpack-cli: ^5.1.4
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    lodash-es: 4.x
+    react: 18.x
+    react-i18next: "*"
+    react-router-dom: 6.x
+    rxjs: 6.x
+    sass: ^1.33.0
+    single-spa-react: 5.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    "@openmrs/esm-patient-common-lib": ^8.0.0
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-billing-app@workspace:packages/esm-billing-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-billing-app@workspace:packages/esm-billing-app"
+  dependencies:
+    "@carbon/react": ^1.48.1
+    "@hookform/resolvers": ^3.3.4
+    "@openmrs/esm-framework": ^5.7.2
+    "@openmrs/esm-patient-common-lib": next
+    "@playwright/test": ^1.41.1
+    "@swc/cli": ^0.3.2
+    "@swc/core": ^1.3.106
+    "@swc/jest": ^0.2.31
+    "@testing-library/dom": ^9.3.4
+    "@testing-library/jest-dom": ^6.3.0
+    "@testing-library/react": ^14.1.2
+    "@testing-library/user-event": ^14.5.2
+    "@types/jest": ^29.5.11
+    "@types/lodash-es": ^4.17.12
+    "@types/react": ^18.2.48
+    "@types/react-dom": ^18.2.18
+    "@types/webpack-env": ^1.18.4
+    "@typescript-eslint/eslint-plugin": ^6.19.1
+    "@typescript-eslint/parser": ^6.19.1
+    babel-preset-minify: ^0.5.2
+    classnames: ^2.5.1
+    concurrently: ^8.2.2
+    cross-env: ^7.0.3
+    css-loader: ^6.9.1
+    d3-selection: ^3.0.0
+    dayjs: ^1.11.10
+    dotenv: ^16.4.1
+    eslint: ^8.56.0
+    eslint-config-prettier: ^9.1.0
+    eslint-plugin-prettier: ^5.1.3
+    fuzzy: ^0.1.3
+    husky: ^9.0.6
+    i18next: ^23.7.20
+    i18next-parser: ^8.12.0
+    identity-obj-proxy: ^3.0.0
+    jest: ^29.7.0
+    jest-cli: ^29.7.0
+    jest-environment-jsdom: ^29.7.0
+    lerna: ^8.0.2
+    lodash: ^4.17.21
+    lodash-es: ^4.17.21
+    openmrs: ^5.7.2
+    pinst: ^3.0.0
+    prettier: ^3.2.4
+    pretty-quick: ^4.0.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-hook-form: ^7.49.3
+    react-i18next: ^14.0.1
+    react-router-dom: ^6.21.3
+    react-to-print: ^2.14.15
+    rxjs: ^6.6.7
+    sass: ^1.70.0
+    swc-loader: ^0.2.3
+    swr: ^2.2.4
+    turbo: ^1.13.0
+    typescript: ^4.9.5
+    webpack-cli: ^5.1.4
+    webpack-dev-server: ^4.15.1
+    zod: ^3.22.4
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": 7.x
+    react: 18.x
+    react-dom: 18.x
+    react-i18next: 11.x
+    rxjs: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app"
+  dependencies:
+    "@carbon/react": ^1.48.1
+    lodash-es: ^4.17.21
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": 7.x
+    react: 18.x
+    react-dom: 18.x
+    react-i18next: 11.x
+    rxjs: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app"
+  dependencies:
+    "@carbon/charts-react": ^1.5.2
+    "@types/uuid": ^9.0.4
+    lodash-es: ^4.17.21
+    react-data-table-component: ^7.6.2
+    styled-components: ^5
+    uuid: ^8.3.2
+    webpack: ^5.88.2
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    lodash-es: 4.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 5.x
+    single-spa-react: 5.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
+  dependencies:
+    "@carbon/react": ~1.37.0
+    dayjs: 1.x
+    formik: ^2.1.5
+    lodash-es: ^4.17.15
+    uuid: ^8.3.2
+    webpack: ^5.74.0
+    yup: ^0.29.1
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app"
+  dependencies:
+    "@carbon/charts-react": ^1.5.2
+    "@types/uuid": ^9.0.4
+    lodash-es: ^4.17.21
+    react-data-table-component: ^7.6.2
+    styled-components: ^5
+    uuid: ^8.3.2
+    webpack: ^5.88.2
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    lodash-es: 4.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+    single-spa: 5.x
+    single-spa-react: 5.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app"
+  dependencies:
+    "@carbon/react": ^1.33.1
+    "@hookform/resolvers": ^3.3.4
+    "@openmrs/esm-extensions": next
+    "@openmrs/esm-framework": ^5.7.2
+    "@openmrs/esm-patient-common-lib": next
+    "@openmrs/esm-react-utils": next
+    "@openmrs/esm-styleguide": next
+    "@playwright/test": ^1.30.0
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.68
+    "@swc/jest": ^0.2.26
+    "@testing-library/dom": ^8.20.1
+    "@testing-library/jest-dom": ^5.16.5
+    "@testing-library/react": ^13.4.0
+    "@testing-library/user-event": ^14.4.3
+    "@types/jest": ^28.1.8
+    "@types/react": ^18.2.14
+    "@types/react-dom": ^18.2.6
+    "@types/react-router": ^5.1.20
+    "@types/react-router-dom": ^5.3.3
+    "@types/webpack-env": ^1.18.1
+    "@typescript-eslint/eslint-plugin": ^5.61.0
+    "@typescript-eslint/parser": ^5.61.0
+    css-loader: ^6.8.1
+    dayjs: ^1.11.10
+    dotenv: ^16.0.3
+    eslint: ^8.44.0
+    eslint-config-prettier: ^8.8.0
+    eslint-config-ts-react-important-stuff: ^3.0.0
+    eslint-plugin-prettier: ^4.2.1
+    fuzzy: ^0.1.3
+    husky: ^8.0.3
+    i18next: ^23.2.8
+    i18next-parser: ^8.0.0
+    identity-obj-proxy: ^3.0.0
+    jest: ^28.1.3
+    jest-cli: ^28.1.3
+    jest-environment-jsdom: ^28.1.3
+    lodash-es: ^4.17.21
+    openmrs: ^5.7.2
+    prettier: ^2.8.8
+    pretty-quick: ^3.1.3
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-hook-form: ^7.51.1
+    react-i18next: ^11.18.6
+    react-image-annotate: ^1.8.0
+    react-router-dom: ^6.14.1
+    react-to-print: ^2.15.1
+    rxjs: ^6.6.7
+    swc-loader: ^0.2.3
+    turbo: ^1.12.4
+    typescript: ^4.9.5
+    webpack: ^5.88.1
+    webpack-cli: ^5.1.4
+    zod: ^3.22.4
+  peerDependencies:
+    "@openmrs/esm-framework": ^5.6.0
+    "@openmrs/esm-patient-common-lib": ^8.x
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-reports-app@workspace:packages/esm-reports-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-reports-app@workspace:packages/esm-reports-app"
+  dependencies:
+    "@carbon/react": ^1.33.1
+    "@datasert/cronjs-matcher": ^1.2.0
+    "@datasert/cronjs-parser": ^1.2.0
+    cronstrue: ^2.41.0
+    dayjs: ^1.8.36
+    lodash-es: ^4.17.21
+    react-image-annotate: ^1.8.0
+  peerDependencies:
+    "@openmrs/esm-framework": "*"
+    dayjs: 1.x
+    react: 18.x
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    rxjs: 6.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app"
+  dependencies:
+    "@carbon/react": ~1.37.0
+    "@hookform/resolvers": ^3.3.4
+    dayjs: 1.x
+    lodash-es: ^4.17.15
+    react-hook-form: ^7.49.3
+    webpack: ^5.74.0
+    zod: ^3.22.4
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
 "@emnapi/core@npm:^1.1.0":
   version: 1.2.0
   resolution: "@emnapi/core@npm:1.2.0"
@@ -6895,380 +7284,6 @@ __metadata:
   checksum: 7d3aef54e17c1073101cb64d953157c19d62a40e261a30923fa1ee337b049c5f29cc47b1f0c477880f42b5659848ba9ab897607ac8ea4acd5c30ddcfac57fca6
   languageName: node
   linkType: hard
-
-"@sjthc/eHospital3.x-Apps@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/eHospital3.x-Apps@workspace:."
-  dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@carbon/react": ^1.33.1
-    "@openmrs/esm-error-handling": next
-    "@openmrs/esm-extensions": next
-    "@openmrs/esm-framework": ^5.7.2
-    "@openmrs/esm-navigation": next
-    "@openmrs/esm-react-utils": next
-    "@openmrs/esm-state": next
-    "@openmrs/esm-styleguide": next
-    "@openmrs/esm-translations": next
-    "@playwright/test": ^1.30.0
-    "@swc/cli": ^0.1.62
-    "@swc/core": ^1.3.68
-    "@swc/jest": ^0.2.26
-    "@testing-library/dom": ^8.20.1
-    "@testing-library/jest-dom": ^5.16.5
-    "@testing-library/react": ^13.4.0
-    "@testing-library/user-event": ^14.4.3
-    "@types/jest": ^28.1.8
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
-    "@types/react-router": ^5.1.20
-    "@types/react-router-dom": ^5.3.3
-    "@types/uuid": ^9.0.4
-    "@types/webpack-env": ^1.18.1
-    "@typescript-eslint/eslint-plugin": ^5.61.0
-    "@typescript-eslint/parser": ^5.61.0
-    cross-env: ^7.0.3
-    css-loader: ^6.8.1
-    dotenv: ^16.0.3
-    eslint: ^8.44.0
-    eslint-config-prettier: ^8.8.0
-    eslint-config-ts-react-important-stuff: ^3.0.0
-    eslint-plugin-prettier: ^4.2.1
-    husky: ^8.0.3
-    i18next: ^23.2.8
-    i18next-parser: ^8.0.0
-    identity-obj-proxy: ^3.0.0
-    jest: ^28.1.3
-    jest-cli: ^28.1.3
-    jest-environment-jsdom: ^28.1.3
-    lerna: ^8.1.6
-    lodash-es: ^4.17.21
-    openmrs: ^5.7.2
-    prettier: ^2.8.8
-    pretty-quick: ^3.1.3
-    react: ^18.2.0
-    react-data-table-component: ^7.6.2
-    react-dom: ^18.3.1
-    react-i18next: ^11.18.6
-    react-image-annotate: ^1.8.0
-    react-is: ^18.3.1
-    react-router-dom: ^6.14.1
-    rxjs: ^6.6.7
-    single-spa: ^6.0.1
-    styled-components: ^5
-    swc-loader: ^0.2.3
-    turbo: ^1.12.4
-    typescript: ^4.9.5
-    uuid: ^8.3.2
-    webpack: ^5.88.1
-    webpack-cli: ^5.1.4
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-i18next: "*"
-    react-router-dom: 6.x
-    rxjs: 6.x
-    sass: ^1.33.0
-    single-spa-react: 5.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-admin-nav-app@workspace:packages/esm-admin-nav-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
-  dependencies:
-    "@carbon/react": ^1.42.1
-    "@openmrs/esm-patient-common-lib": ^8.0.0
-    lodash-es: ^4.17.15
-    webpack: ^5.74.0
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-billing-app@workspace:packages/esm-billing-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-billing-app@workspace:packages/esm-billing-app"
-  dependencies:
-    "@carbon/react": ^1.48.1
-    "@hookform/resolvers": ^3.3.4
-    "@openmrs/esm-framework": ^5.7.2
-    "@openmrs/esm-patient-common-lib": next
-    "@playwright/test": ^1.41.1
-    "@swc/cli": ^0.3.2
-    "@swc/core": ^1.3.106
-    "@swc/jest": ^0.2.31
-    "@testing-library/dom": ^9.3.4
-    "@testing-library/jest-dom": ^6.3.0
-    "@testing-library/react": ^14.1.2
-    "@testing-library/user-event": ^14.5.2
-    "@types/jest": ^29.5.11
-    "@types/lodash-es": ^4.17.12
-    "@types/react": ^18.2.48
-    "@types/react-dom": ^18.2.18
-    "@types/webpack-env": ^1.18.4
-    "@typescript-eslint/eslint-plugin": ^6.19.1
-    "@typescript-eslint/parser": ^6.19.1
-    babel-preset-minify: ^0.5.2
-    classnames: ^2.5.1
-    concurrently: ^8.2.2
-    cross-env: ^7.0.3
-    css-loader: ^6.9.1
-    d3-selection: ^3.0.0
-    dayjs: ^1.11.10
-    dotenv: ^16.4.1
-    eslint: ^8.56.0
-    eslint-config-prettier: ^9.1.0
-    eslint-plugin-prettier: ^5.1.3
-    fuzzy: ^0.1.3
-    husky: ^9.0.6
-    i18next: ^23.7.20
-    i18next-parser: ^8.12.0
-    identity-obj-proxy: ^3.0.0
-    jest: ^29.7.0
-    jest-cli: ^29.7.0
-    jest-environment-jsdom: ^29.7.0
-    lerna: ^8.0.2
-    lodash: ^4.17.21
-    lodash-es: ^4.17.21
-    openmrs: ^5.7.2
-    pinst: ^3.0.0
-    prettier: ^3.2.4
-    pretty-quick: ^4.0.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-hook-form: ^7.49.3
-    react-i18next: ^14.0.1
-    react-router-dom: ^6.21.3
-    react-to-print: ^2.14.15
-    rxjs: ^6.6.7
-    sass: ^1.70.0
-    swc-loader: ^0.2.3
-    swr: ^2.2.4
-    turbo: ^1.13.0
-    typescript: ^4.9.5
-    webpack-cli: ^5.1.4
-    webpack-dev-server: ^4.15.1
-    zod: ^3.22.4
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": 7.x
-    react: 18.x
-    react-dom: 18.x
-    react-i18next: 11.x
-    rxjs: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-import-export-app@workspace:packages/esm-import-export-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-import-export-app@workspace:packages/esm-import-export-app"
-  dependencies:
-    "@carbon/react": ^1.48.1
-    lodash-es: ^4.17.21
-    webpack: ^5.74.0
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": 7.x
-    react: 18.x
-    react-dom: 18.x
-    react-i18next: 11.x
-    rxjs: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-patient-list-app@workspace:packages/esm-patient-list-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-patient-list-app@workspace:packages/esm-patient-list-app"
-  dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@types/uuid": ^9.0.4
-    lodash-es: ^4.17.21
-    react-data-table-component: ^7.6.2
-    styled-components: ^5
-    uuid: ^8.3.2
-    webpack: ^5.88.2
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 5.x
-    single-spa-react: 5.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
-  dependencies:
-    "@carbon/react": ~1.37.0
-    dayjs: 1.x
-    formik: ^2.1.5
-    lodash-es: ^4.17.15
-    uuid: ^8.3.2
-    webpack: ^5.74.0
-    yup: ^0.29.1
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app"
-  dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@types/uuid": ^9.0.4
-    lodash-es: ^4.17.21
-    react-data-table-component: ^7.6.2
-    styled-components: ^5
-    uuid: ^8.3.2
-    webpack: ^5.88.2
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 5.x
-    single-spa-react: 5.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-procedure-app@workspace:packages/esm-procedure-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-procedure-app@workspace:packages/esm-procedure-app"
-  dependencies:
-    "@carbon/react": ^1.33.1
-    "@hookform/resolvers": ^3.3.4
-    "@openmrs/esm-extensions": next
-    "@openmrs/esm-framework": ^5.7.2
-    "@openmrs/esm-patient-common-lib": next
-    "@openmrs/esm-react-utils": next
-    "@openmrs/esm-styleguide": next
-    "@playwright/test": ^1.30.0
-    "@swc/cli": ^0.1.62
-    "@swc/core": ^1.3.68
-    "@swc/jest": ^0.2.26
-    "@testing-library/dom": ^8.20.1
-    "@testing-library/jest-dom": ^5.16.5
-    "@testing-library/react": ^13.4.0
-    "@testing-library/user-event": ^14.4.3
-    "@types/jest": ^28.1.8
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
-    "@types/react-router": ^5.1.20
-    "@types/react-router-dom": ^5.3.3
-    "@types/webpack-env": ^1.18.1
-    "@typescript-eslint/eslint-plugin": ^5.61.0
-    "@typescript-eslint/parser": ^5.61.0
-    css-loader: ^6.8.1
-    dayjs: ^1.11.10
-    dotenv: ^16.0.3
-    eslint: ^8.44.0
-    eslint-config-prettier: ^8.8.0
-    eslint-config-ts-react-important-stuff: ^3.0.0
-    eslint-plugin-prettier: ^4.2.1
-    fuzzy: ^0.1.3
-    husky: ^8.0.3
-    i18next: ^23.2.8
-    i18next-parser: ^8.0.0
-    identity-obj-proxy: ^3.0.0
-    jest: ^28.1.3
-    jest-cli: ^28.1.3
-    jest-environment-jsdom: ^28.1.3
-    lodash-es: ^4.17.21
-    openmrs: ^5.7.2
-    prettier: ^2.8.8
-    pretty-quick: ^3.1.3
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    react-hook-form: ^7.51.1
-    react-i18next: ^11.18.6
-    react-image-annotate: ^1.8.0
-    react-router-dom: ^6.14.1
-    react-to-print: ^2.15.1
-    rxjs: ^6.6.7
-    swc-loader: ^0.2.3
-    turbo: ^1.12.4
-    typescript: ^4.9.5
-    webpack: ^5.88.1
-    webpack-cli: ^5.1.4
-    zod: ^3.22.4
-  peerDependencies:
-    "@openmrs/esm-framework": ^5.6.0
-    "@openmrs/esm-patient-common-lib": ^8.x
-    dayjs: 1.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-reports-app@workspace:packages/esm-reports-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-reports-app@workspace:packages/esm-reports-app"
-  dependencies:
-    "@carbon/react": ^1.33.1
-    "@datasert/cronjs-matcher": ^1.2.0
-    "@datasert/cronjs-parser": ^1.2.0
-    cronstrue: ^2.41.0
-    dayjs: ^1.8.36
-    lodash-es: ^4.17.21
-    react-image-annotate: ^1.8.0
-  peerDependencies:
-    "@openmrs/esm-framework": "*"
-    dayjs: 1.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-  languageName: unknown
-  linkType: soft
-
-"@sjthc/esm-service-queues-app@workspace:packages/esm-service-queues-app":
-  version: 0.0.0-use.local
-  resolution: "@sjthc/esm-service-queues-app@workspace:packages/esm-service-queues-app"
-  dependencies:
-    "@carbon/react": ~1.37.0
-    "@hookform/resolvers": ^3.3.4
-    dayjs: 1.x
-    lodash-es: ^4.17.15
-    react-hook-form: ^7.49.3
-    webpack: ^5.74.0
-    zod: ^3.22.4
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
 
 "@storybook/cli@npm:5.3.22":
   version: 5.3.22
