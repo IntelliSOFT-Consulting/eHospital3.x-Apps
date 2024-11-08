@@ -8,7 +8,8 @@ import {
   User,
   Report,
   InventoryManagement,
-  ImportExport
+  ImportExport,
+  HospitalBed,
 } from '@carbon/react/icons';
 const openmrsSpaBase = window['getOpenmrsSpaBase']();
 
@@ -51,6 +52,11 @@ export const moduleLinks = [
     label: 'Cohort Builder ',
     url: `${openmrsSpaBase}cohort-builder`,
     icon: <Events size={24} />,
+  },
+  {
+    label: 'Bed Management',
+    url: `${openmrsSpaBase}bed-management`,
+    icon: <HospitalBed size={24} />,
   },
   {
     label: 'Dispensing App',
