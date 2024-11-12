@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-billing-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Billing app for eHospital",
   "browser": "dist/ehospital-esm-billing-app.js",
   "main": "src/index.ts",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@carbon/react": "^1.42.1",
+    "@openmrs/esm-patient-common-lib": "^8.2.0",
     "lodash-es": "^4.17.15",
     "react-to-print": "^2.14.13"
   },
@@ -51,5 +52,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "b6304f1acad784ecdf3f39838e50f62ece78f140"
+  "gitHead": "1b0db9d0685f7c3463e2ae1a354ebe8ccf71880d"
 }
