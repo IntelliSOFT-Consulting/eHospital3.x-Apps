@@ -1,28 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, InlineLoading } from '@carbon/react';
-import { BaggageClaim, Printer, Wallet, ConvertToCloud } from '@carbon/react/icons';
+import { Printer } from '@carbon/react/icons';
 import { useParams } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 import { useTranslation } from 'react-i18next';
-import {
-  ExtensionSlot,
-  usePatient,
-  showModal,
-  formatDatetime,
-  parseDate,
-  navigate,
-  useFeatureFlag,
-  useVisit,
-} from '@openmrs/esm-framework';
+import { ExtensionSlot, useConfig, usePatient } from '@openmrs/esm-framework';
 import { ErrorState } from '@openmrs/esm-patient-common-lib';
 import { convertToCurrency } from '../helpers';
-import { LineItem } from '../types';
-import { useBill, useDefaultFacility } from '../billing.resource';
+import { type LineItem } from '../types';
+import { useBill } from '../billing.resource';
 import InvoiceTable from './invoice-table.component';
 import Payments from './payments/payments.component';
+import PrintReceipt from './printable-invoice/print-receipt.component';
 import PrintableInvoice from './printable-invoice/printable-invoice.component';
 import styles from './invoice.scss';
-import { spaBasePath } from '../constants';
 
 interface InvoiceDetailsProps {
   label: string;
@@ -31,55 +22,62 @@ interface InvoiceDetailsProps {
 
 const Invoice: React.FC = () => {
   const { t } = useTranslation();
-  const { data: facilityInfo } = useDefaultFacility();
   const { billUuid, patientUuid } = useParams();
+  const { patient, isLoading: isLoadingPatient } = usePatient(patientUuid);
+  const { bill, isLoading: isLoadingBill, error, mutate } = useBill(billUuid);
   const [isPrinting, setIsPrinting] = useState(false);
-  const { patient, isLoading: isLoadingPatient, error: patientError } = usePatient(patientUuid);
-  const { bill, isLoading: isLoadingBill, error: billingError } = useBill(billUuid);
-  const { currentVisit, isLoading: isVisitLoading, error: visitError } = useVisit(patientUuid);
-  const [selectedLineItems, setSelectedLineItems] = useState([]);
+  const [selectedLineItems, setSelectedLineItems] = useState<LineItem[]>([]);
   const componentRef = useRef<HTMLDivElement>(null);
-  const isProcessClaimsFormEnabled = useFeatureFlag('healthInformationExchange');
-  const handleSelectItem = (lineItems: Array<LineItem>) => {
-    const paidLineItems = bill?.lineItems?.filter((item) => item.paymentStatus === 'PAID') ?? [];
-    setSelectedLineItems([...lineItems, ...paidLineItems]);
+  const onBeforeGetContentResolve = useRef<(() => void) | null>(null);
+  const { defaultCurrency } = useConfig();
+  const handleSelectItem = (lineItems: LineItem[]) => {
+    setSelectedLineItems(lineItems);
   };
 
+  const handleAfterPrint = useCallback(() => {
+    onBeforeGetContentResolve.current = null;
+    setIsPrinting(false);
+  }, []);
+
+  const reactToPrintContent = useCallback(() => componentRef.current, []);
+
+  const handleOnBeforeGetContent = useCallback(() => {
+    return new Promise<void>((resolve) => {
+      if (patient && bill) {
+        setIsPrinting(true);
+        onBeforeGetContentResolve.current = resolve;
+      }
+    });
+  }, [bill, patient]);
+
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-    documentTitle: `Invoice ${bill?.receiptNumber} - ${patient?.name?.[0]?.given?.join(' ')} ${
-      patient?.name?.[0].family
-    }`,
-    onBeforePrint() {
-      setIsPrinting(true);
-    },
-    onAfterPrint() {
-      setIsPrinting(false);
-    },
+    content: reactToPrintContent,
+    documentTitle: `Invoice ${bill?.receiptNumber} - ${patient?.name?.[0]?.given?.join(' ')} ${patient?.name?.[0].family}`,
+    onBeforeGetContent: handleOnBeforeGetContent,
+    onAfterPrint: handleAfterPrint,
     removeAfterPrint: true,
   });
 
-  const handleBillPayment = () => {
-    const dispose = showModal('initiate-payment-modal', {
-      closeModal: () => dispose(),
-      bill: bill,
-    });
-  };
+  useEffect(() => {
+    if (isPrinting && onBeforeGetContentResolve.current) {
+      onBeforeGetContentResolve.current();
+    }
+  }, [isPrinting]);
 
   useEffect(() => {
-    const paidLineItems = bill?.lineItems?.filter((item) => item.paymentStatus === 'PAID') ?? [];
-    setSelectedLineItems(paidLineItems);
-  }, [bill.lineItems]);
+    const unPaidLineItems = bill?.lineItems?.filter((item) => item.paymentStatus === 'PENDING') ?? [];
+    setSelectedLineItems(unPaidLineItems);
+  }, [bill?.lineItems]);
 
   const invoiceDetails = {
-    'Total Amount': convertToCurrency(bill?.totalAmount),
-    'Amount Tendered': convertToCurrency(bill?.tenderedAmount),
-    'Invoice Number': bill.receiptNumber,
-    'Date And Time': formatDatetime(parseDate(bill.dateCreated), { mode: 'standard', noToday: true }),
+    'Total Amount': convertToCurrency(bill?.totalAmount, defaultCurrency),
+    'Amount Tendered': convertToCurrency(bill?.tenderedAmount, defaultCurrency),
+    'Invoice Number': bill?.receiptNumber,
+    'Date And Time': bill?.dateCreated,
     'Invoice Status': bill?.status,
   };
 
-  if (isLoadingPatient || isLoadingBill || isVisitLoading) {
+  if (isLoadingPatient && isLoadingBill) {
     return (
       <div className={styles.invoiceContainer}>
         <InlineLoading
@@ -92,27 +90,13 @@ const Invoice: React.FC = () => {
     );
   }
 
-  if (billingError || patientError || visitError) {
+  if (error) {
     return (
       <div className={styles.errorContainer}>
-        <ErrorState
-          headerTitle={t('invoiceError', 'Invoice error')}
-          error={billingError ?? patientError ?? visitError}
-        />
+        <ErrorState headerTitle={t('invoiceError', 'Invoice error')} error={error} />
       </div>
     );
   }
-
-  const handleViewClaims = () => {
-    if (currentVisit) {
-      const dispose = showModal('end-visit-dialog', {
-        closeModal: () => dispose(),
-        patientUuid,
-      });
-    } else {
-      navigate({ to: `${spaBasePath}/billing/patient/${patientUuid}/${billUuid}/claims` });
-    }
-  };
 
   return (
     <div className={styles.invoiceContainer}>
@@ -123,60 +107,24 @@ const Invoice: React.FC = () => {
             <InvoiceDetails key={key} label={key} value={val} />
           ))}
         </section>
-      </div>
-      <div className={styles.actionArea}>
-        <Button
-          kind="secondary"
-          size="sm"
-          disabled={bill?.status !== 'PAID'}
-          onClick={() => navigate({ to: `\${openmrsBase}/ws/rest/v1/cashier/receipt?billId=${bill.id}` })}
-          renderIcon={Printer}
-          iconDescription="Add">
-          {t('printRecept', 'Print receipt')}
-        </Button>
-        <Button
-          onClick={handlePrint}
-          kind="tertiary"
-          size="sm"
-          disabled={isPrinting}
-          renderIcon={Printer}
-          iconDescription="Add"
-          tooltipPosition="right">
-          {isPrinting ? t('printingInvoice', 'Printing invoice...') : t('printInvoice', 'Print invoice')}
-        </Button>
-        <Button
-          onClick={handleBillPayment}
-          disabled={bill?.status === 'PAID'}
-          size="sm"
-          renderIcon={Wallet}
-          iconDescription="Add"
-          tooltipPosition="left">
-          {t('mpesaPayment', 'MPESA Payment')}
-        </Button>
-        {isProcessClaimsFormEnabled && (
+        <div>
           <Button
-            onClick={handleViewClaims}
-            kind="danger"
-            size="sm"
-            renderIcon={BaggageClaim}
-            iconDescription="Add"
-            tooltipPosition="bottom">
-            {currentVisit ? t('endVisitAndClaim', 'End visit and Process claims') : t('claim', 'Process claims')}
+            disabled={isPrinting}
+            onClick={handlePrint}
+            renderIcon={(props) => <Printer size={24} {...props} />}
+            iconDescription="Print bill"
+            size="md">
+            {t('printBill', 'Print bill')}
           </Button>
-        )}
+          {(bill?.status === 'PAID' || bill?.tenderedAmount > 0) && <PrintReceipt billId={bill?.id} />}
+        </div>
       </div>
 
       <InvoiceTable bill={bill} isLoadingBill={isLoadingBill} onSelectItem={handleSelectItem} />
-      <Payments bill={bill} selectedLineItems={selectedLineItems} />
+      <Payments bill={bill} mutate={mutate} selectedLineItems={selectedLineItems} />
 
-      <div className={styles.printContainer}>
-        <PrintableInvoice
-          ref={componentRef}
-          facilityInfo={facilityInfo}
-          bill={bill}
-          patient={patient}
-          isPrinting={isPrinting}
-        />
+      <div className={styles.printContainer} ref={componentRef}>
+        {isPrinting && <PrintableInvoice bill={bill} patient={patient} isLoading={isLoadingPatient} />}
       </div>
     </div>
   );

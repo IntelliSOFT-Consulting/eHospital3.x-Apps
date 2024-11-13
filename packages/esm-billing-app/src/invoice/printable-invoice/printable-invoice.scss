@@ -7,10 +7,6 @@
   flex-direction: row;
 }
 
-.container {
-  margin-top: layout.$spacing-05;
-}
-
 .itemsContainer {
   display: flex;
   flex-direction: column;
@@ -25,7 +21,7 @@
 }
 
 .tableContainer {
-  margin-bottom: layout.$spacing-05;
+  min-height: 50vh;
 }
 
 .totalContainer {
@@ -38,23 +34,17 @@
 }
 
 .itemHeading {
-  @include type.type-style('label-02');
-  font-style: bold;
+  @include type.type-style('body-compact-02');
+  font-weight: bold;
   color: colors.$cool-gray-90;
-  margin-bottom: layout.$spacing-01;
-}
-
-.itemValue {
-  @include type.type-style('legal-01');
-  color: colors.$cool-gray-90;
+  margin-bottom: layout.$spacing-02;
 }
 
 .itemTotal {
-  border-bottom: solid 0.00125rem colors.$cool-gray-10;
+  border-top: solid 0.1pt colors.$cool-gray-30;
   padding: layout.$spacing-02;
 }
 
 .itemLabel {
   float: right;
-  @include type.type-style('label-01');
 }

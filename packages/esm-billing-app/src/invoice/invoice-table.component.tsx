@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import fuzzy from 'fuzzy';
 import {
@@ -12,17 +12,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  TableToolbar,
-  TableToolbarContent,
+  type DataTableRow,
   TableToolbarSearch,
   TableSelectRow,
   Tile,
-  type DataTableHeader,
-  type DataTableRow,
+  Button,
 } from '@carbon/react';
-import { isDesktop, useDebounce, useLayoutType } from '@openmrs/esm-framework';
-import { LineItem, MappedBill } from '../types';
+import { isDesktop, showModal, useConfig, useDebounce, useLayoutType } from '@openmrs/esm-framework';
+import { type LineItem, type MappedBill } from '../types';
 import styles from './invoice-table.scss';
+import { convertToCurrency } from '../helpers';
+import { Edit } from '@carbon/react/icons';
 
 type InvoiceTableProps = {
   bill: MappedBill;
@@ -33,13 +33,21 @@ type InvoiceTableProps = {
 
 const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, isLoadingBill, onSelectItem }) => {
   const { t } = useTranslation();
-  const { lineItems } = bill;
+  const lineItems = bill?.lineItems ?? [];
   const paidLineItems = lineItems?.filter((item) => item.paymentStatus === 'PAID') ?? [];
   const layout = useLayoutType();
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
   const [selectedLineItems, setSelectedLineItems] = useState(paidLineItems ?? []);
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedSearchTerm = useDebounce(searchTerm);
+  const { defaultCurrency, showEditBillButton } = useConfig();
+
+  useEffect(() => {
+    if (onSelectItem) {
+      onSelectItem(selectedLineItems);
+    }
+  }, [selectedLineItems, onSelectItem]);
+
   const filteredLineItems = useMemo(() => {
     if (!debouncedSearchTerm) {
       return lineItems;
@@ -55,16 +63,24 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
       : lineItems;
   }, [debouncedSearchTerm, lineItems]);
 
-  const tableHeaders: Array<typeof DataTableHeader> = [
-    { header: 'No', key: 'no' },
-    { header: 'Bill item', key: 'billItem' },
-    { header: 'Bill code', key: 'billCode' },
-    { header: 'Status', key: 'status' },
-    { header: 'Quantity', key: 'quantity' },
-    { header: 'Price', key: 'price' },
-    { header: 'Total', key: 'total' },
+  const tableHeaders = [
+    { header: 'No', key: 'no', width: 7 }, // Width as a percentage
+    { header: 'Bill item', key: 'billItem', width: 25 },
+    { header: 'Bill code', key: 'billCode', width: 20 },
+    { header: 'Status', key: 'status', width: 25 },
+    { header: 'Quantity', key: 'quantity', width: 15 },
+    { header: 'Price', key: 'price', width: 24 },
+    { header: 'Total', key: 'total', width: 15 },
+    { header: t('actions', 'Actions'), key: 'actionButton' },
   ];
-  const processBillItem = (item) => (item.item || item.billableService)?.split(':')[1];
+
+  const handleSelectBillItem = (row: LineItem) => {
+    const dispose = showModal('edit-bill-line-item-dialog', {
+      bill,
+      item: row,
+      closeModal: () => dispose(),
+    });
+  };
 
   const tableRows: Array<typeof DataTableRow> = useMemo(
     () =>
@@ -72,21 +88,39 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
         return {
           no: `${index + 1}`,
           id: `${item.uuid}`,
-          billItem: processBillItem(item),
-          billCode: bill.receiptNumber,
+          billItem: item.billableService ? item.billableService : item?.item,
+          billCode: <span data-testid={`receipt-number-${index}`}>{bill?.receiptNumber}</span>,
           status: item.paymentStatus,
           quantity: item.quantity,
-          price: item.price,
+          price: convertToCurrency(item.price, defaultCurrency),
           total: item.price * item.quantity,
+          actionButton: (
+            <span>
+              {showEditBillButton ? (
+                <Button
+                  data-testid={`edit-button-${item.uuid}`}
+                  renderIcon={Edit}
+                  hasIconOnly
+                  kind="ghost"
+                  iconDescription={t('editThisBillItem', 'Edit this bill item')}
+                  tooltipPosition="left"
+                  onClick={() => handleSelectBillItem(item)}
+                />
+              ) : (
+                '--'
+              )}
+            </span>
+          ),
         };
       }) ?? [],
-    [bill.receiptNumber, filteredLineItems],
+    [bill?.receiptNumber, filteredLineItems, defaultCurrency, showEditBillButton, t],
   );
 
   if (isLoadingBill) {
     return (
       <div className={styles.loaderContainer}>
         <DataTableSkeleton
+          data-testid="loader"
           columnCount={tableHeaders.length}
           showHeader={false}
           showToolbar={false}
@@ -121,20 +155,17 @@ const InvoiceTable: React.FC<InvoiceTableProps> = ({ bill, isSelectable = true, 
               </span>
             }
             title={t('lineItems', 'Line items')}>
-            <div className={styles.toolbarWrapper}>
-              <TableToolbar {...getToolbarProps()} className={styles.tableToolbar} size={responsiveSize}>
-                <TableToolbarContent className={styles.headerContainer}>
-                  <TableToolbarSearch
-                    className={styles.searchbox}
-                    expanded
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-                    placeholder={t('searchThisTable', 'Search this table')}
-                    size={responsiveSize}
-                  />
-                </TableToolbarContent>
-              </TableToolbar>
-            </div>
-            <Table {...getTableProps()} aria-label="Invoice line items" className={styles.table}>
+            <TableToolbarSearch
+              className={styles.searchbox}
+              expanded
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+              placeholder={t('searchThisTable', 'Search this table')}
+              size={responsiveSize}
+            />
+            <Table
+              {...getTableProps()}
+              aria-label="Invoice line items"
+              className={`${styles.invoiceTable} billingTable`}>
               <TableHead>
                 <TableRow>
                   {rows.length > 1 && isSelectable ? <TableHeader /> : null}

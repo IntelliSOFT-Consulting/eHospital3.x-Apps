@@ -1,25 +1,25 @@
 import React from 'react';
-import { PatientDetails } from '../../types';
-import styles from './printable-invoice-header.scss';
+import { type PatientDetails } from '../../types';
 import { useConfig } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
-import startCase from 'lodash-es/startCase';
+import { useDefaultFacility } from '../../billing.resource';
+import styles from './printable-invoice-header.scss';
 
 interface PrintableInvoiceHeaderProps {
   patientDetails: PatientDetails;
-  facilityInfo: Record<string, any>;
 }
 
-const PrintableInvoiceHeader: React.FC<PrintableInvoiceHeaderProps> = ({ patientDetails, facilityInfo }) => {
+const PrintableInvoiceHeader: React.FC<PrintableInvoiceHeaderProps> = ({ patientDetails }) => {
   const { t } = useTranslation();
-  const { logo } = useConfig({ externalModuleName: '@kenyaemr/esm-login-app' });
+  const { logo } = useConfig();
+  const { data } = useDefaultFacility();
 
   return (
     <div className={styles.container}>
       <div className={styles.printableHeader}>
         <p className={styles.heading}>{t('invoice', 'Invoice')}</p>
         {logo?.src ? (
-          <img className={styles.img} height={60} width={250} src={logo.src} alt={logo.alt} />
+          <img className={styles.img} src={logo.src} alt={logo.alt} />
         ) : logo?.name ? (
           logo.name
         ) : (
@@ -43,7 +43,7 @@ const PrintableInvoiceHeader: React.FC<PrintableInvoiceHeaderProps> = ({ patient
       <div className={styles.printableBody}>
         <div className={styles.billDetails}>
           <p className={styles.itemHeading}>{t('billedTo', 'Billed to')}</p>
-          <p className={styles.itemLabel}>{startCase(patientDetails?.name)}</p>
+          <p className={styles.itemLabel}>{patientDetails?.name}</p>
           <p className={styles.itemLabel}>{patientDetails?.county}</p>
           <p className={styles.itemLabel}>
             {patientDetails?.subCounty}
@@ -52,7 +52,7 @@ const PrintableInvoiceHeader: React.FC<PrintableInvoiceHeaderProps> = ({ patient
         </div>
 
         <div className={styles.facilityDetails}>
-          <p className={styles.facilityName}>{facilityInfo?.display}</p>
+          <p className={styles.facilityName}>{data?.display}</p>
           <p className={styles.itemLabel}>Kenya</p>
         </div>
       </div>
