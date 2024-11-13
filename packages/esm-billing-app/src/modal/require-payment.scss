@@ -1,18 +1,7 @@
 @use '@carbon/type';
-@use '@carbon/colors';
+@use '@carbon/layout';
 
 .bodyShort02 {
-  margin-bottom: 0.5rem;
+  margin-bottom: layout.$spacing-03;
   @include type.type-style('body-compact-02');
-}
-
-.providerMessage {
-  @include type.type-style('heading-01');
-  color: colors.$red-50;
-  margin-top: 1.5rem;
-}
-
-.modalTitle {
-  @include type.type-style('productive-heading-03');
-  padding: 0.5rem 0;
 }

@@ -1,5 +1,6 @@
-import dayjs from 'dayjs';
-import { Payment, LineItem } from '../types';
+import { type Payment, type LineItem } from '../types';
+import { type ConfigObject } from '../config-schema';
+import { useConfig } from '@openmrs/esm-framework';
 
 // amount already paid
 export function calculateTotalAmountTendered(payments: Array<Payment>) {
@@ -32,17 +33,18 @@ export function calculateTotalAmount(lineItems: Array<LineItem>) {
     : 0;
 }
 
-export const convertToCurrency = (amountToConvert: number) => {
-  const formatter = new Intl.NumberFormat('en-KE', {
+export const convertToCurrency = (amountToConvert: number, currencyType?: string) => {
+  const locale = window.i18next?.language?.substring(0, 2) ?? '';
+  const formatter = new Intl.NumberFormat(locale, {
     style: 'currency',
-    currency: 'KES',
+    currency: currencyType,
     minimumFractionDigits: 2,
   });
 
   let formattedAmount = formatter.format(Math.abs(amountToConvert));
 
   if (amountToConvert < 0) {
-    formattedAmount = `- ${formattedAmount}`;
+    formattedAmount = `(${formattedAmount})`;
   }
 
   return formattedAmount;
@@ -62,38 +64,3 @@ export const getGender = (gender: string, t) => {
       return gender;
   }
 };
-
-/**
- * Extracts and returns the substring after the first colon (:) in the input string.
- * The input string is expected to be in the format "uuid:string".
- *
- * @param {string} input - The input string from which the substring is to be extracted.
- * @returns {string} The substring found after the first colon in the input string.
- */
-export function extractString(input: string): string {
-  const parts = input
-    .split(' ')
-    .map((s) => s.split(':')[1])
-    .filter((s) => Boolean(s));
-
-  const firstTwoBillableServices = parts.slice(0, 2);
-
-  if (parts.length <= 2) {
-    return firstTwoBillableServices.join(', ');
-  }
-
-  return `${firstTwoBillableServices.join(', ')} & ${parts.length - 2} other services`;
-}
-
-// cleans the provider display name
-export function extractNameString(formattedString: string) {
-  if (!formattedString) {
-    return '';
-  }
-  const parts = formattedString.split(' - ');
-  return parts.length > 1 ? parts[1] : '';
-}
-
-export function formatDate(date) {
-  return dayjs(date).format('YYYY-MM-DD');
-}

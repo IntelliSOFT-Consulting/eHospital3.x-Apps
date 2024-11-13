@@ -1,0 +1,137 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '~@openmrs/esm-styleguide/src/vars' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.section {
+  margin: layout.$spacing-03;
+}
+
+.sectionTitle {
+  @include type.type-style('heading-compact-02');
+  color: $text-02;
+  margin-bottom: layout.$spacing-04;
+}
+
+.modalBody {
+  padding-bottom: layout.$spacing-05;
+}
+
+.container {
+  margin: layout.$spacing-05;
+}
+
+.paymentContainer {
+  margin: layout.$layout-01;
+  padding: layout.$layout-01;
+  width: 70%;
+  border-right: 1px solid colors.$cool-gray-40;
+}
+
+.paymentButtons {
+  margin: layout.$layout-01 0;
+}
+
+.paymentMethodContainer {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(auto, 1fr));
+  align-items: flex-start;
+  column-gap: layout.$spacing-05;
+  margin: 0.625rem 0;
+  width: 100%;
+}
+
+.paymentTotals {
+  margin-top: layout.$spacing-01;
+}
+
+.processPayments {
+  display: flex;
+  justify-content: flex-end;
+  margin: layout.$spacing-05;
+  column-gap: layout.$spacing-04;
+}
+
+.errorPaymentContainer {
+  margin: layout.$spacing-04;
+  min-height: layout.$spacing-09;
+}
+
+.removeButtonContainer {
+  display: flex;
+  align-self: center;
+  cursor: pointer;
+  margin-left: layout.$spacing-07;
+}
+
+.removeButton {
+  color: colors.$red-60;
+}
+
+.service {
+  padding: layout.$spacing-05 layout.$spacing-04;
+}
+
+.conceptsList {
+  background-color: $ui-02;
+  max-height: 14rem;
+  overflow-y: auto;
+  border: 1px solid $ui-03;
+
+  li:hover {
+    background-color: $ui-03;
+  }
+}
+
+.emptyResults {
+  @include type.type-style('body-compact-01');
+  color: $text-02;
+  min-height: layout.$spacing-05;
+  border: 1px solid $ui-03;
+}
+
+.conceptLabel {
+  @include type.type-style('label-02');
+  margin: layout.$spacing-05;
+}
+
+.errorContainer {
+  margin: layout.$spacing-05;
+}
+
+.serviceError {
+  :global(.cds--search-input):focus {
+    outline: 2.5px solid $danger;
+  }
+
+  :global(.cds--search-magnifier) {
+    svg {
+      fill: $danger;
+    }
+  }
+}
+
+.errorMessage {
+  @include type.type-style('label-02');
+  color: $danger;
+  margin-top: 0.5rem;
+}
+
+.spinner {
+  &:global(.cds--inline-loading) {
+    min-height: layout.$spacing-05;
+  }
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.875rem;
+}
+

@@ -1,6 +1,7 @@
-import { FormPayment, LineItem, MappedBill } from '../../types';
+import { type LineItem, type MappedBill } from '../../types';
+import { type Payment } from './payments.component';
 
-export const hasLineItem = (lineItems: Array<LineItem>, item: LineItem) => {
+const hasLineItem = (lineItems: Array<LineItem>, item: LineItem) => {
   if (lineItems?.length === 0) {
     return false;
   }
@@ -11,18 +12,20 @@ export const hasLineItem = (lineItems: Array<LineItem>, item: LineItem) => {
 export const createPaymentPayload = (
   bill: MappedBill,
   patientUuid: string,
-  formValues: Array<FormPayment>,
+  formValues: Array<Payment>,
   amountDue: number,
+  billableServices: Array<any>,
   selectedLineItems: Array<LineItem>,
 ) => {
   const { cashier } = bill;
   const totalAmount = bill?.totalAmount;
   const paymentStatus = amountDue <= 0 ? 'PAID' : 'PENDING';
-  const previousPayments = bill.payments.map((payment) => ({
+  const previousPayments = bill?.payments.map((payment) => ({
     amount: payment.amount,
     amountTendered: payment.amountTendered,
     attributes: [],
     instanceType: payment.instanceType.uuid,
+    dateCreated: payment.dateCreated,
   }));
 
   const newPayments = formValues.map((formValue) => ({
@@ -30,15 +33,16 @@ export const createPaymentPayload = (
     amountTendered: parseFloat(Number(formValue.amount).toFixed(2)),
     attributes: [],
     instanceType: formValue.method,
+    dateCreated: new Date(),
   }));
 
-  const updatedPayments = newPayments.concat(previousPayments);
+  const updatedPayments = [...newPayments, ...previousPayments];
   const totalAmountRendered = updatedPayments.reduce((acc, payment) => acc + payment.amountTendered, 0);
 
-  const updatedLineItems = bill.lineItems.map((lineItem) => ({
+  const updatedLineItems = bill?.lineItems.map((lineItem) => ({
     ...lineItem,
-    billableService: processBillItem(lineItem),
-    item: processBillItem(lineItem),
+    billableService: getBillableServiceUuid(billableServices, lineItem.billableService),
+    item: processBillItem?.(lineItem),
     paymentStatus:
       bill?.lineItems.length > 1
         ? hasLineItem(selectedLineItems ?? [], lineItem) && totalAmountRendered >= lineItem.price * lineItem.quantity
@@ -51,7 +55,7 @@ export const createPaymentPayload = (
     updatedLineItems.filter((item) => item.paymentStatus === 'PENDING').length === 0 ? 'PAID' : 'PENDING';
 
   const processedPayment = {
-    cashPoint: bill.cashPointUuid,
+    cashPoint: bill?.cashPointUuid,
     cashier: cashier.uuid,
     lineItems: updatedLineItems,
     payments: [...updatedPayments],
@@ -62,22 +66,7 @@ export const createPaymentPayload = (
   return processedPayment;
 };
 
-export const processBillItem = (item: LineItem) => (item.item || item.billableService)?.split(':')[0];
-
-export function formatPhoneNumber(phone) {
-  let phone_ = phone.toString().replace(/\D/g, ''); // Convert to string first
-  const length = phone_.length;
-
-  let _phone = '';
-  if (length === 12 && phone_.substring(0, 3) === '254') {
-    _phone = phone_;
-  } else if (length === 9 && phone_.substring(0, 1) === '7') {
-    _phone = '254' + phone_;
-  } else if (length === 10 && phone_.substring(0, 1) === '0') {
-    _phone = '254' + phone_.substring(1, 10);
-  } else {
-    _phone = 'Invalid Phone Number ' + phone;
-  }
-
-  return _phone;
-}
+export const getBillableServiceUuid = (billableServices: Array<any>, serviceName: string) => {
+  return billableServices.length ? billableServices.find((service) => service.name === serviceName).uuid : null;
+};
+const processBillItem = (item) => (item.item || item.billableService)?.split(':')[0];

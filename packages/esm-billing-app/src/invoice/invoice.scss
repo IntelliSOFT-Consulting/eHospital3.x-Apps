@@ -4,7 +4,7 @@
 
 .invoiceContainer {
   background-color: colors.$gray-10;
-  height: calc(100vh - 3rem);
+  height: calc(100vh - layout.$spacing-09);
 }
 
 .errorContainer {
@@ -28,7 +28,7 @@
   align-items: center;
   justify-content: space-between;
   margin: layout.$spacing-05;
-  row-gap: 1.5rem;
+  row-gap: layout.$spacing-06;
 }
 
 .label {
@@ -62,11 +62,6 @@
   }
 }
 
-.button {
-  margin-left: layout.$spacing-04;
-  min-width: 10rem;
-}
-
 .invoicePaymentsContainer {
   display: flex;
   flex-direction: column;
@@ -94,18 +89,5 @@
   html,
   body {
     background-color: colors.$white !important;
-  }
-}
-
-.actionArea {
-  margin: 0.625rem;
-  padding-top: 0.625rem;
-  display: flex;
-  justify-content: flex-end;
-  column-gap: 0.325rem;
-  border-top: 1px solid colors.$gray-20;
-
-  & > button {
-    max-height: 2rem;
   }
 }
