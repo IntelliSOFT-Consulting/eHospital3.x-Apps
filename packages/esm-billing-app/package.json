@@ -1,8 +1,8 @@
 {
-  "name": "@openmrs/esm-billing-app",
-  "version": "1.0.0",
+  "name": "@ehospital/esm-billing-app",
+  "version": "1.0.4",
   "description": "Billing frontend module for use in O3",
-  "browser": "dist/openmrs-esm-billing-app.js",
+  "browser": "dist/ehospital-esm-billing-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
@@ -119,5 +119,6 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   },
-  "packageManager": "yarn@4.1.1"
+  "packageManager": "yarn@4.1.1",
+  "gitHead": "3da8e933011df5e2d58ecc9e184c9e89119bf91b"
 }
