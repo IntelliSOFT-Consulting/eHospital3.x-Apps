@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-reports-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MPL-2.0",
   "description": "Reports Admin page for OpenMRS",
   "browser": "dist/sjthc-esm-reports-app.js",
@@ -54,5 +54,5 @@
     "rxjs": "6.x"
   },
   "packageManager": "yarn@3.6.1",
-  "gitHead": "88728baaf0c8c1127aa782d7957c18ef4d1d2fdf"
+  "gitHead": "b6304f1acad784ecdf3f39838e50f62ece78f140"
 }
