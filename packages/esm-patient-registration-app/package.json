@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-patient-registration-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Patient registration microfrontend for O3",
   "browser": "dist/sjthc-esm-patient-registration-app.js",
   "main": "src/index.ts",
@@ -54,5 +54,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "88728baaf0c8c1127aa782d7957c18ef4d1d2fdf"
+  "gitHead": "12c269b30d0cbaf91537798bd9f2ca42d62213c4"
 }
