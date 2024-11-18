@@ -26,7 +26,7 @@ export const useBills = (patientUuid: string = '', billStatus: string = '') => {
     patientName: bill?.patient?.display.split('-')?.[1],
     identifier: bill?.patient?.display.split('-')?.[0],
     patientUuid: bill?.patient?.uuid,
-    status: bill.lineItems.some((item) => item.paymentStatus === 'PENDING') ? 'PENDING' : 'PAID',
+    status: bill.status,
     receiptNumber: bill?.receiptNumber,
     cashier: bill?.cashier,
     cashPointUuid: bill?.cashPoint?.uuid,
@@ -66,12 +66,7 @@ export const useBill = (billUuid: string) => {
     patientName: bill?.patient?.display.split('-')?.[1],
     identifier: bill?.patient?.display.split('-')?.[0],
     patientUuid: bill?.patient?.uuid,
-    status:
-      bill.lineItems.length > 1
-        ? bill.lineItems.some((item) => item.paymentStatus === 'PENDING')
-          ? 'PENDING'
-          : 'PAID'
-        : bill.status,
+    status: bill.status,
     receiptNumber: bill?.receiptNumber,
     cashier: bill?.cashier,
     cashPointUuid: bill?.cashPoint?.uuid,
