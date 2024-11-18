@@ -1,5 +1,5 @@
 import { configSchema } from './config-schema';
-import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
+import { createDashboardGroup, createDashboardLink } from '@openmrs/esm-patient-common-lib';
 import { createLeftPanelLink } from './left-panel-link.component';
 import { dashboardMeta } from './dashboard.meta';
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle, registerFeatureFlag } from '@openmrs/esm-framework';
@@ -26,13 +26,12 @@ registerFeatureFlag(
   'This feature introduces navigation links on the patient chart and home page to allow accessing the billing module features',
 );
 
-// t('billing', 'Billing')
 export const billingDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
-    name: 'billing',
-    title: 'Billing',
+    name: "billing",
+    title: "Billing Overview",
   }),
-  options,
+  options
 );
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');

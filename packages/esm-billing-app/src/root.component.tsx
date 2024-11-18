@@ -1,17 +1,39 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { BillingDashboard } from './billing-dashboard/billing-dashboard.component';
 import Invoice from './invoice/invoice.component';
+import { navigate } from '@openmrs/esm-framework';
+import styles from './root.scss';
+import { SideNav } from '@carbon/react';
+import { SideNavItems } from '@carbon/react';
+import { SideNavLink } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
 
 const RootComponent: React.FC = () => {
-  const baseName = window.getOpenmrsSpaBase() + 'home/billing';
+  const basePath = `${window.spaBase}/billing`;
+  const { t } = useTranslation();
+
+  const handleNavigation = (path: string) => {
+    navigate({ to: `${basePath}/${path}` });
+  };
 
   return (
-    <BrowserRouter basename={baseName}>
-      <Routes>
-        <Route path="/" element={<BillingDashboard />} />
-        <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
-      </Routes>
+    <BrowserRouter basename={basePath}>
+      <main className={styles.container}>
+      <section>
+          <SideNav>
+            <SideNavItems>
+              <SideNavLink onClick={() => handleNavigation('')} isActive>
+                {t('billingOverview', 'Billing Overview')}
+              </SideNavLink>
+            </SideNavItems>
+          </SideNav>
+        </section>
+        <Routes>
+          <Route path="/" element={<BillingDashboard />} />
+          <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
+        </Routes>
+      </main>
     </BrowserRouter>
   );
 };

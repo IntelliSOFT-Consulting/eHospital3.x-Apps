@@ -8,24 +8,18 @@
     {
       "component": "billableServicesHome",
       "route":"billable-services"
+    },
+    {
+      "component": "root",
+      "route": "billing"
     }
   ],
   "extensions": [
     {
       "component": "billingDashboardLink",
-      "name": "billing-dashboard-link",
-      "slot": "homepage-dashboard-slot",
-      "meta": {
-        "name": "billing",
-        "title": "billing",
-        "slot": "billing-dashboard-slot"
-      },
-      "featureFlag": "billing"
-    },
-    {
-      "component": "root",
-      "name": "billing-dashboard-root",
-      "slot": "billing-dashboard-slot"
+      "name": "billing-left-panel-link",
+      "slot": "billing-left-panel-slot",
+      "order": 0
     },
     {
       "name": "billing-patient-summary",
