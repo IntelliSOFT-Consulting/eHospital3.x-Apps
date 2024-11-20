@@ -59,6 +59,14 @@ const BillsTable = () => {
       header: t('billedItems', 'Billed Items'),
       key: 'billedItems',
     },
+    {
+      header: t('itemPrice', 'Price'),
+      key: 'billingPrice',
+    },
+    {
+      header: t('billStatus', 'Status'),
+      key: 'status'
+    }
   ];
 
   const searchResults = useMemo(() => {
@@ -90,7 +98,7 @@ const BillsTable = () => {
   const setBilledItems = (bill) =>
     bill?.lineItems?.reduce((acc, item) => acc + (acc ? ' & ' : '') + (item.billableService || item.item || ''), '');
 
-  const billingUrl = '${openmrsSpaBase}/home/billing/patient/${patientUuid}/${uuid}';
+  const billingUrl = '${openmrsSpaBase}/billing/patient/${patientUuid}/${uuid}';
 
   const rowData = results?.map((bill, index) => {
     return {
@@ -108,7 +116,8 @@ const BillsTable = () => {
       identifier: bill.identifier,
       department: '--',
       billedItems: setBilledItems(bill),
-      billingPrice: '--',
+      billingPrice: bill.totalAmount,
+      status: bill.status
     };
   });
 
