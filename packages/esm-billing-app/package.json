@@ -120,5 +120,5 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   },
   "packageManager": "yarn@4.1.1",
-  "gitHead": "27f80c085bda44314a96269a35c1a13907758a0d"
+  "gitHead": "6202441056f704884709c18ffde63df9b6464cb3"
 }
