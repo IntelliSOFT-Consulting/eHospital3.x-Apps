@@ -63,6 +63,10 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
       header: t('billTotal', 'Bill total'),
       key: 'billTotal',
     },
+    {
+      header: t('billStatus', 'Status'),
+      key: 'status',
+    }
   ];
 
   const setBilledItems = (bill) =>
@@ -75,6 +79,7 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
     visitTime: bill.dateCreated,
     identifier: bill.identifier,
     billedItems: setBilledItems(bill),
+    status: bill.status
   }));
 
   if (isLoading) {
