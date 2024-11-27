@@ -1,7 +1,6 @@
 import { Type } from '@openmrs/esm-framework';
 
 export interface BillingConfig {
-
   enforceBillPayment: boolean;
 }
 
@@ -73,6 +72,7 @@ export const configSchema = {
     _description: 'Whether to show the edit bill button or not.',
     _default: false,
   },
+
   enforceBillPayment: {
     _type: Type.Boolean,
     _default: true,

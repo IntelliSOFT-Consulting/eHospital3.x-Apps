@@ -1,46 +1,65 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
   InlineLoading,
   ModalBody,
   ModalFooter,
-  Heading,
+  ModalHeader,
   StructuredListBody,
   StructuredListCell,
   StructuredListHead,
   StructuredListRow,
   StructuredListWrapper,
-  ComposedModal
 } from '@carbon/react';
 import { useBills } from '../billing.resource';
 import { convertToCurrency } from '../helpers';
 import styles from './require-payment.scss';
-import { BillingConfig } from '../config-schema';
 import { navigate, useConfig } from '@openmrs/esm-framework';
+import { ComposedModal } from '@carbon/react';
+import { Heading } from '@carbon/react';
+import { BillingConfig } from '../config-schema';
+import { getPatientUuidFromUrl } from '@openmrs/esm-patient-common-lib';
 
 type RequirePaymentModalProps = {
   closeModal: () => void;
   patientUuid: string;
 };
 
-const RequirePaymentModal: React.FC<RequirePaymentModalProps> = ({ closeModal, patientUuid }) => {
+const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const { t } = useTranslation();
   const { defaultCurrency } = useConfig();
+  const patientUuid = getPatientUuidFromUrl(); 
   const { bills, isLoading, error } = useBills(patientUuid);
-  const [showModal, setShowModal] = useState({ loadingModal: true, billingModal: true });
+  const [showModal, setShowModal] = useState({ loadingModal: true, billingModal: false });
   const { enforceBillPayment } = useConfig<BillingConfig>();
-  const lineItems = bills.filter((bill) => bill?.status !== 'PAID').flatMap((bill) => bill?.lineItems);
+  const openmrsSpaBase = window['getOpenmrsSpaBase']();
+
+  const unpaidBills = bills.filter((bill) => bill.status !== 'PAID');
+  const unpaidBillUuid = unpaidBills.length > 0 ? unpaidBills[0].uuid : null;
 
   const closeButtonText = enforceBillPayment
-  ? t('navigateBack', 'Navigate back')
-  : t('proceedToCare', 'Proceed to care');
+    ? t('navigateBack', 'Proceed to Payment')
+    : t('proceedToCare', 'Proceed to care');
 
-const handleCloseModal = () => {
-  enforceBillPayment
-    ? navigate({ to: `\${openmrsSpaBase}/home` })
-    : setShowModal((prevState) => ({ ...prevState, billingModal: false }));
-};
+    const handleProceedToPay = () => {
+      navigate({ to: `${openmrsSpaBase}billing/patient/${patientUuid}/${unpaidBillUuid}` });
+    };
+
+    const lineItems = bills
+    .filter((bill) => bill.status !== 'PAID')
+    .flatMap((bill) => bill.lineItems)
+    .filter((lineItem) => lineItem.paymentStatus !== 'EXEMPTED' && !lineItem.voided);
+
+    useEffect(() => {
+      if (!isLoading) {
+        if (lineItems.length > 0) {
+          setShowModal({ loadingModal: false, billingModal: true });
+        } else {
+          setShowModal({ loadingModal: false, billingModal: false });
+        }
+      }
+    }, [isLoading, lineItems]);
 
   return (
     <ComposedModal preventCloseOnClickOutside open={showModal.billingModal}>
@@ -72,29 +91,30 @@ const handleCloseModal = () => {
               {lineItems.map((lineItem) => {
                 return (
                   <StructuredListRow>
+                    <StructuredListCell>{(lineItem.billableService)}</StructuredListCell>
                     <StructuredListCell>{lineItem.quantity}</StructuredListCell>
-                    <StructuredListCell>{convertToCurrency(lineItem.price)}</StructuredListCell>
-                    <StructuredListCell>{convertToCurrency(lineItem.quantity * lineItem.price)}</StructuredListCell>
+                    <StructuredListCell>{convertToCurrency(lineItem.price, defaultCurrency)}</StructuredListCell>
+                    <StructuredListCell>{convertToCurrency(lineItem.quantity * lineItem.price, defaultCurrency)}</StructuredListCell>
                   </StructuredListRow>
                 );
               })}
             </StructuredListBody>
           </StructuredListWrapper>
-          {!enforceBillPayment && (
+          {/* {!enforceBillPayment && (
             <p className={styles.providerMessage}>
               {t(
                 'providerMessage',
                 'By clicking Proceed to care, you acknowledge that you have advised the patient to settle the bill.',
               )}
             </p>
-          )}
+          )} */}
         </ModalBody>
       )}
       <ModalFooter>
         <Button kind="secondary" onClick={() => navigate({ to: `\${openmrsSpaBase}/home` })}>
           {t('cancel', 'Cancel')}
         </Button>
-        <Button kind="danger" onClick={handleCloseModal}>
+        <Button kind="danger" onClick={handleProceedToPay}>
           {closeButtonText}
         </Button>
       </ModalFooter>
