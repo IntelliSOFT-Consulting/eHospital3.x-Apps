@@ -1,6 +1,8 @@
 import { Type } from '@openmrs/esm-framework';
 
-export interface BillingConfig {}
+export interface BillingConfig {
+  enforceBillPayment: boolean;
+}
 
 export const configSchema = {
   patientCatergory: {
@@ -69,6 +71,12 @@ export const configSchema = {
     _type: Type.Boolean,
     _description: 'Whether to show the edit bill button or not.',
     _default: false,
+  },
+
+  enforceBillPayment: {
+    _type: Type.Boolean,
+    _default: true,
+    _description: 'Whether to enforce bill payment or not for patient to receive service',
   },
 };
 
