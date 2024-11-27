@@ -12,6 +12,12 @@
     {
       "component": "root",
       "route": "billing"
+    },
+    {
+      "component": "requirePaymentModal",
+      "routeRegex": "^patient\/.+\/chart",
+      "online": true,
+      "offline": false
     }
   ],
   "extensions": [
