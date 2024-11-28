@@ -2,6 +2,8 @@ import { Type } from '@openmrs/esm-framework';
 
 export interface BillingConfig {
   enforceBillPayment: boolean;
+  cashPointUuid: string;
+  cashierUuid: string;
 }
 
 export const configSchema = {
@@ -77,6 +79,18 @@ export const configSchema = {
     _type: Type.Boolean,
     _default: true,
     _description: 'Whether to enforce bill payment or not for patient to receive service',
+  },
+
+  cashPointUuid: {
+    _type: Type.String,
+    _description: 'Where bill is generated from',
+    _default: '54065383-b4d4-42d2-af4d-d250a1fd2590',
+  },
+  
+  cashierUuid: {
+    _type: Type.String,
+    _description: 'Who Generated the bill',
+    _default: '54065383-b4d4-42d2-af4d-d250a1fd2590',
   },
 };
 
