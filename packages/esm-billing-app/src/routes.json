@@ -84,6 +84,25 @@
       "component": "serviceMetrics"
     },
     {
+      "name": "drug-order-billable-item",
+      "component": "drugOrder",
+      "slot": "medication-info-slot"
+    },
+    {
+      "name": "lab-order-billable-item",
+      "component": "labOrder",
+      "slot": "top-of-lab-order-form-slot"
+    },
+    {
+      "name": "procedure-order-billable-item",
+      "component": "procedureOrder",
+      "slot": "top-of-procedure-order-form-slot"
+    },
+    {
+      "name": "price-info-order",
+      "component": "priceInfoOrder"
+    },
+    {
       "name": "edit-bill-line-item-dialog",
       "component": "editBillLineItemDialog",
       "online": true,
