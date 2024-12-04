@@ -12,6 +12,10 @@ import RootComponent from './root.component';
 import VisitAttributeTags from './invoice/payments/visit-tags/visit-attribute.component';
 import ServiceMetrics from './billable-services/dashboard/service-metrics.component';
 import appMenu from './billable-services/billable-services-menu-item/item.component';
+import DrugOrder from './billable-services/billable-item/drug-order/drug-order.component';
+import LabOrder from './billable-services/billable-item/test-order/lab-order.component';
+import ProcedureOrder from './billable-services/billable-item/test-order/procedure-order.component';
+import PriceInfoOrder from './billable-services/billable-item/test-order/price-info-order.componet';
 
 const moduleName = '@ehospital/esm-billing-app';
 
@@ -54,6 +58,11 @@ export const requirePaymentModal = getSyncLifecycle(RequirePaymentModal, options
 export const root = getSyncLifecycle(RootComponent, options);
 export const visitAttributeTags = getSyncLifecycle(VisitAttributeTags, options);
 export const billableServicesAppMenuItem = getSyncLifecycle(appMenu, options);
+
+export const drugOrder = getSyncLifecycle(DrugOrder, options);
+export const labOrder = getSyncLifecycle(LabOrder, options);
+export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
+export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);
 
 export const editBillLineItemDialog = getAsyncLifecycle(() => import('./bill-item-actions/edit-bill-item.component'), {
   featureName: 'edit bill line item',
