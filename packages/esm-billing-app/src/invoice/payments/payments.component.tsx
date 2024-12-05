@@ -86,9 +86,9 @@ const Payments: React.FC<PaymentProps> = ({ bill, mutate, selectedLineItems }) =
             kind: 'success',
             timeoutInMs: 3000,
           });
-          if (currentVisit) {
-            updateBillVisitAttribute(currentVisit);
-          }
+          // if (currentVisit) {
+          //   updateBillVisitAttribute(currentVisit);
+          // }
           methods.reset({ payment: [{ method: '', amount: '0', referenceCode: '' }] });
           mutate();
         },
