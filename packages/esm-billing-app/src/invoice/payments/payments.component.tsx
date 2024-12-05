@@ -86,9 +86,9 @@ const Payments: React.FC<PaymentProps> = ({ bill, mutate, selectedLineItems }) =
             kind: 'success',
             timeoutInMs: 3000,
           });
-          if (currentVisit) {
-            updateBillVisitAttribute(currentVisit);
-          }
+          // if (currentVisit) {
+          //   updateBillVisitAttribute(currentVisit);
+          // }
           methods.reset({ payment: [{ method: '', amount: '0', referenceCode: '' }] });
           mutate();
         },
@@ -102,6 +102,29 @@ const Payments: React.FC<PaymentProps> = ({ bill, mutate, selectedLineItems }) =
   if (!bill) {
     return null;
   }
+
+  // processBillPayment(paymentPayload, bill.uuid).then(
+  //   (resp) => {
+  //     showSnackbar({
+  //       title: t('billPayment', 'Bill payment'),
+  //       subtitle: 'Bill payment processing has been successful',
+  //       kind: 'success',
+  //       timeoutInMs: 3000,
+  //     });
+  //     const url = `/ws/rest/v1/billing/bill/${bill.uuid}`;
+  //     mutate((key) => typeof key === 'string' && key.startsWith(url), undefined, { revalidate: true });
+  //     setPaymentSuccessful(true);
+  //   },
+  //   (error) => {
+  //     showSnackbar({
+  //       title: t('failedBillPayment', 'Bill payment failed'),
+  //       subtitle: `An unexpected error occurred while processing your bill payment. Please contact the system administrator. Error: ${error.message}`,
+  //       kind: 'error',
+  //       timeoutInMs: 3000,
+  //       isLowContrast: true,
+  //     });
+  //   },
+  // );
 
   const amountDueLabel = selectedLineItems.length ? t('amountDue', 'Amount Due') : t('clientBalance', 'Client Balance');
   const amountDueValue = selectedLineItems.length ? amountDue : clientBalance;
