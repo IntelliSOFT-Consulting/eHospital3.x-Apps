@@ -22,7 +22,7 @@ type BillableItemResponse = {
 export const useBillableItem = (billableItemId: string) => {
   const customRepresentation = `v=custom:(uuid,name,concept:(uuid,display),servicePrices:(uuid,price,paymentMode:(uuid,name)))`;
   const { data, error, isLoading } = useSWRImmutable<{ data: { results: Array<BillableItemResponse> } }>(
-    `${restBaseUrl}/cashier/billableService?${customRepresentation}`,
+    `${restBaseUrl}/billing/billableService?${customRepresentation}`,
     openmrsFetch,
   );
   const billableItem = data?.data?.results?.find((item) => item?.concept?.uuid === billableItemId);

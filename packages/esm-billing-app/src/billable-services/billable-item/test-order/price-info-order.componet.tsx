@@ -11,6 +11,7 @@ import {
   Tile,
   InlineNotification,
 } from '@carbon/react';
+import { useConfig } from '@openmrs/esm-framework';
 
 type PriceInfoOrderProps = {
   billableItem: any;
@@ -19,7 +20,7 @@ type PriceInfoOrderProps = {
 
 const PriceInfoOrder: React.FC<PriceInfoOrderProps> = ({ billableItem, error }) => {
   const { t } = useTranslation();
-
+  const {defaultCurrency} = useConfig()
   const hasPrice = billableItem?.servicePrices?.length > 0;
 
   if (error || !hasPrice) {
@@ -46,7 +47,7 @@ const PriceInfoOrder: React.FC<PriceInfoOrderProps> = ({ billableItem, error }) 
             {billableItem.servicePrices.map((priceItem: any) => (
               <StructuredListRow key={priceItem.uuid}>
                 <StructuredListCell className={styles.cell}>{priceItem.paymentMode.name}</StructuredListCell>
-                <StructuredListCell className={styles.cell}>{convertToCurrency(priceItem.price)}</StructuredListCell>
+                <StructuredListCell className={styles.cell}>{convertToCurrency(priceItem.price, defaultCurrency)}</StructuredListCell>
               </StructuredListRow>
             ))}
           </StructuredListBody>

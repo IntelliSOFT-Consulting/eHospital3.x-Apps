@@ -38,6 +38,14 @@ export const billingDashboardLink = getSyncLifecycle(
   options
 );
 
+export const chargeableItemsLink = getSyncLifecycle(
+  createLeftPanelLink({
+    name: 'charge-items',
+    title: 'Charge Items',
+  }),
+  options,
+);
+
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 export function startupApp() {
