@@ -84,6 +84,11 @@
       "component": "serviceMetrics"
     },
     {
+      "component": "chargeableItemsLink",
+      "name": "chargeable-items-link",
+      "slot": "billing-dashboard-link-slot"
+    },
+    {
       "name": "drug-order-billable-item",
       "component": "drugOrder",
       "slot": "medication-info-slot"

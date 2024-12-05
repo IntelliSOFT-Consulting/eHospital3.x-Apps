@@ -8,6 +8,7 @@ import { SideNav } from '@carbon/react';
 import { SideNavItems } from '@carbon/react';
 import { SideNavLink } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
+import { ChargeItemsDashboard } from './billable-services/dashboard/charge-items-dashboard.component';
 
 const RootComponent: React.FC = () => {
   const basePath = `${window.spaBase}/billing`;
@@ -26,16 +27,19 @@ const RootComponent: React.FC = () => {
               <SideNavLink onClick={() => handleNavigation('')} isActive>
                 {t('billingOverview', 'Billing Overview')}
               </SideNavLink>
+              <SideNavLink onClick={() => handleNavigation('charge-items')}>
+                {t('chargeItems', 'Charge Items')}
+              </SideNavLink>
             </SideNavItems>
           </SideNav>
         </section>
         <Routes>
           <Route path="/" element={<BillingDashboard />} />
+          <Route path="/charge-items" element={<ChargeItemsDashboard />} />
           <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
         </Routes>
       </main>
     </BrowserRouter>
   );
 };
-
 export default RootComponent;
