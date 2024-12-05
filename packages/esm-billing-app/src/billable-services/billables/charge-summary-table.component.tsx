@@ -20,7 +20,7 @@ import {
   TableToolbarSearch,
 } from '@carbon/react';
 import { Add, CategoryAdd, Download, Upload, WatsonHealthScalpelSelect } from '@carbon/react/icons';
-import { ErrorState, launchWorkspace, showModal, useLayoutType, usePagination } from '@openmrs/esm-framework';
+import { ErrorState, launchWorkspace, showModal, useLayoutType, usePagination, useConfig } from '@openmrs/esm-framework';
 import { EmptyState, usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -38,6 +38,7 @@ const ChargeSummaryTable: React.FC = () => {
   const { isLoading, isValidating, error, mutate, chargeSummaryItems } = useChargeSummaries();
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [searchString, setSearchString] = useState('');
+  const {defaultCurrency} = useConfig()
 
   const searchResults = useMemo(
     () => searchTableData(chargeSummaryItems, searchString),
@@ -78,7 +79,7 @@ const ChargeSummaryTable: React.FC = () => {
       serviceStatus: service.serviceStatus,
       serviceType: service?.serviceType?.display ?? t('stockItem', 'Stock Item'),
       servicePrices: service.servicePrices
-        .map((price) => `${price.name} : ${convertToCurrency(price.price)}`)
+        .map((price) => `${price.name} : ${convertToCurrency(price.price, defaultCurrency)}`)
         .join(', '),
     };
   });

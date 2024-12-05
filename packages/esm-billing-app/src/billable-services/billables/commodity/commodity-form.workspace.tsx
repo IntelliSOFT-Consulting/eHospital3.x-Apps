@@ -59,7 +59,7 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
           isLowContrast: true,
           timeoutInMs: 5000,
         });
-        handleMutate(`${restBaseUrl}/cashier/billableService?v`);
+        handleMutate(`${restBaseUrl}/billing/billableService?v`);
         closeWorkspaceWithSavedChanges();
       }
     } catch (e) {

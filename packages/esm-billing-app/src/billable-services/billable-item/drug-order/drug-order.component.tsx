@@ -5,6 +5,7 @@ import { useBillableItem, useSockItemInventory } from '../useBillableItem';
 import { useTranslation } from 'react-i18next';
 import styles from './drug-order.scss';
 import { convertToCurrency } from '../../../helpers';
+import { useConfig } from '@openmrs/esm-framework';
 
 type DrugOrderProps = {
   order: {
@@ -25,6 +26,7 @@ const DrugOrder: React.FC<DrugOrderProps> = ({ order }) => {
   const { t } = useTranslation();
   const { stockItem, isLoading: isLoadingInventory } = useSockItemInventory(order?.drug?.uuid);
   const { billableItem, isLoading } = useBillableItem(order?.drug.concept.uuid);
+  const {defaultCurrency} = useConfig()
   if (isLoading || isLoadingInventory) {
     return null;
   }
@@ -53,7 +55,7 @@ const DrugOrder: React.FC<DrugOrderProps> = ({ order }) => {
           billableItem?.servicePrices.map((item) => (
             <div key={item.uuid} className={styles.itemContainer}>
               <span className={styles.bold}>{t('unitPrice', 'Unit price ')}</span>
-              <span>{convertToCurrency(item.price)}</span>
+              <span>{convertToCurrency(item.price, defaultCurrency)}</span>
             </div>
           ))}
       </div>
