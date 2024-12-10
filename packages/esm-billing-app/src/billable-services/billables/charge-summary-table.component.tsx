@@ -18,7 +18,7 @@ import {
   TableToolbar,
   TableToolbarContent,
   TableToolbarSearch,
-  Modal
+  Modal,
 } from '@carbon/react';
 import { Add, CategoryAdd, Download, Upload, WatsonHealthScalpelSelect } from '@carbon/react/icons';
 import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate } from '@openmrs/esm-framework';
@@ -28,7 +28,7 @@ import { useTranslation } from 'react-i18next';
 import { convertToCurrency } from '../../helpers';
 import styles from './charge-summary-table.scss';
 import { useChargeSummaries } from './charge-summary.resource';
-import { searchTableData } from './form-helper';
+import { searchTableData, downloadExcelTemplateFile } from './form-helper';
 import AddServiceForm from './services/service-form.workspace';
 
 const defaultPageSize = 10;
@@ -42,7 +42,9 @@ const ChargeSummaryTable: React.FC = () => {
 
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [searchString, setSearchString] = useState('');
+
   const [showOverlay, setShowOverlay] = useState(false);
+  const [editingService, setEditingService] = useState(null);
 
   const searchResults = useMemo(
     () => searchTableData(chargeSummaryItems, searchString),
@@ -75,27 +77,41 @@ const ChargeSummaryTable: React.FC = () => {
     },
   ];
 
-  const rows = useMemo(() => 
-    results.map((service) => ({
-      id: service.uuid,
-      name: service.name,
-      shortName: service.shortName,
-      serviceStatus: service.serviceStatus,
-      serviceType: service?.serviceType?.display ?? t('stockItem', 'Stock Item'),
-      servicePrices: service.servicePrices
-        .map((price) => `${price.name} : ${convertToCurrency(price.price, defaultCurrency)}`)
-        .join(', '),
-    })),
-  [results, t, defaultCurrency]);
+  const rows = useMemo(
+    () =>
+      results.map((service) => ({
+        id: service.uuid,
+        name: service.name,
+        shortName: service.shortName,
+        serviceStatus: service.serviceStatus,
+        serviceType: service?.serviceType?.display ?? t('stockItem', 'Stock Item'),
+        servicePrices: service.servicePrices
+          .map((price) => `${price.name} : ${convertToCurrency(price.price, defaultCurrency)}`)
+          .join(', '),
+      })),
+    [results, t, defaultCurrency],
+  );
 
   const launchServiceChargeItem = useCallback(() => {
     navigate({ to: window.getOpenmrsSpaBase() + 'billing/charge-items/add-charge-service' });
+    setEditingService(null);
+    setShowOverlay(true);
   }, []);
 
   const openBulkUploadModal = useCallback(() => {
     const dispose = showModal('bulk-import-billable-services-modal', {
       closeModal: () => dispose(),
     });
+  }, []);
+
+  const handleEditService = useCallback((service) => {
+    setEditingService(service);
+    setShowOverlay(true);
+  }, []);
+
+  const closeModal = useCallback(() => {
+    setShowOverlay(false);
+    setEditingService(null);
   }, []);
 
   if (isLoading) {
@@ -149,6 +165,7 @@ const ChargeSummaryTable: React.FC = () => {
                   />
                   <MenuItem onClick={openBulkUploadModal} label={t('bulkUpload', 'Bulk Upload')} renderIcon={Upload} />
                   <MenuItem
+                    onClick={downloadExcelTemplateFile}
                     label={t('downloadTemplate', 'Download template')}
                     renderIcon={Download}
                   />
@@ -163,8 +180,7 @@ const ChargeSummaryTable: React.FC = () => {
                       key={header.key}
                       {...getHeaderProps({
                         header,
-                      })}
-                    >
+                      })}>
                       {header.header}
                     </TableHeader>
                   ))}
@@ -177,8 +193,7 @@ const ChargeSummaryTable: React.FC = () => {
                     key={row.id}
                     {...getRowProps({
                       row,
-                    })}
-                  >
+                    })}>
                     {row.cells.map((cell) => (
                       <TableCell key={cell.id}>{cell.value}</TableCell>
                     ))}
@@ -186,7 +201,7 @@ const ChargeSummaryTable: React.FC = () => {
                       <OverflowMenu size={size} flipped>
                         <OverflowMenuItem
                           itemText={t('editChargeItem', 'Edit charge item')}
-                          // onClick={() => handleEdit(results[index])}
+                          onClick={() => handleEditService(results[index])}
                         />
                       </OverflowMenu>
                     </TableCell>
@@ -211,6 +226,19 @@ const ChargeSummaryTable: React.FC = () => {
         size="sm"
         totalItems={chargeSummaryItems.length}
       />
+      {showOverlay && (
+        <Modal
+          open={showOverlay}
+          modalHeading={t('billableService', 'Billable Service')}
+          primaryButtonText={null}
+          secondaryButtonText={t('cancel', 'Cancel')}
+          onRequestClose={closeModal}
+          onSecondarySubmit={closeModal}
+          size="lg"
+          passiveModal={true}>
+          <AddServiceForm editingService={editingService} onClose={closeModal} />
+        </Modal>
+      )}
     </>
   );
 };
