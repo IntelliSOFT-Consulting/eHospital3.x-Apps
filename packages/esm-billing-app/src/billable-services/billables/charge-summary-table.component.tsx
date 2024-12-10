@@ -229,7 +229,7 @@ const ChargeSummaryTable: React.FC = () => {
       {showOverlay && (
         <Modal
           open={showOverlay}
-          modalHeading={t('billableService', 'Billable Service')}
+          modalHeading={t('chargeItems', 'Charge Items')}
           primaryButtonText={null}
           secondaryButtonText={t('cancel', 'Cancel')}
           onRequestClose={closeModal}
