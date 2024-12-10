@@ -1,11 +1,13 @@
 import useSWR from 'swr';
-import { formatDate, parseDate, openmrsFetch, useSession, useVisit, restBaseUrl } from '@openmrs/esm-framework';
+import { formatDate, parseDate, openmrsFetch, useSession, useVisit, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import type { FacilityDetail, MappedBill, PatientInvoice } from './types';
 import isEmpty from 'lodash-es/isEmpty';
 import sortBy from 'lodash-es/sortBy';
 import { apiBasePath, omrsDateFormat } from './constants';
 import { useContext } from 'react';
 import SelectedDateContext from './hooks/selectedDateContext';
+import { PaymentMethod } from './types';
+import { BillingConfig } from './config-schema';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
@@ -158,6 +160,24 @@ export const updateBillItems = (payload) => {
       'Content-Type': 'application/json',
     },
   });
+};
+
+export const usePaymentModes = (excludeWaiver: boolean = true) => {
+  const { excludedPaymentMode } = useConfig<BillingConfig>();
+  const url = `${restBaseUrl}/billing/paymentMode?v=full`;
+  const { data, isLoading, error, mutate } = useSWR<{ data: { results: Array<PaymentMethod> } }>(url, openmrsFetch, {
+    errorRetryCount: 2,
+  });
+  const allowedPaymentModes =
+    excludedPaymentMode?.length > 0
+      ? data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ?? []
+      : data?.data?.results ?? [];
+  return {
+    paymentModes: excludeWaiver ? allowedPaymentModes : data?.data?.results,
+    isLoading,
+    mutate,
+    error,
+  };
 };
 
 export const billingFormSchema = z.object({

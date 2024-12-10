@@ -119,7 +119,14 @@
       "name": "billing-form-workspace",
       "title": "billingForm",
       "component": "billingFormWorkspace",
-      "type": "form"
+      "type": "form",
+      "width": "extra-wide"
+    }
+  ],
+  "modals": [
+    {
+      "name": "bulk-import-billable-services-modal",
+      "component": "bulkImportBillableServicesModal"
     }
   ]
 }

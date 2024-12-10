@@ -5,7 +5,6 @@ import { Add } from '@carbon/react/icons';
 import { useForm, FormProvider, useFieldArray, Controller } from 'react-hook-form';
 
 import { useLayoutType, ResponsiveWrapper, showSnackbar, restBaseUrl } from '@openmrs/esm-framework';
-import { DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import styles from './commodity-form.scss';
 import StockItemSearch from './stock-search.component';
 import classNames from 'classnames';
@@ -16,22 +15,16 @@ import { formatBillableServicePayloadForSubmission, mapInputToPayloadSchema } fr
 import { createBillableSerice } from '../../billable-service.resource';
 import { handleMutate } from '../../utils';
 
-type CommodityFormProps = DefaultPatientWorkspaceProps & {
-  initialValues?: BillableFormSchema;
-};
-
-const CommodityForm: React.FC<CommodityFormProps> = ({
-  closeWorkspace,
-  closeWorkspaceWithSavedChanges,
-  promptBeforeClosing,
-  initialValues,
+const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
+  editingService,
+  onClose
 }) => {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const formMethods = useForm<BillableFormSchema>({
     resolver: zodResolver(billableFormSchema),
-    defaultValues: initialValues
-      ? mapInputToPayloadSchema(initialValues)
+    defaultValues: editingService
+      ? mapInputToPayloadSchema(editingService)
       : { servicePrices: [], serviceStatus: 'ENABLED' },
   });
 
@@ -39,7 +32,7 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
     setValue,
     control,
     handleSubmit,
-    formState: { errors, isDirty, isSubmitting },
+    formState: { errors,isSubmitting },
   } = formMethods;
 
   const { fields, append, remove } = useFieldArray({
@@ -48,7 +41,7 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
   });
 
   const onSubmit = async (formValues: BillableFormSchema) => {
-    const payload = formatBillableServicePayloadForSubmission(formValues, initialValues?.['uuid']);
+    const payload = formatBillableServicePayloadForSubmission(formValues, editingService?.['uuid']);
     try {
       const response = await createBillableSerice(payload);
       if (response.ok) {
@@ -60,7 +53,7 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
           timeoutInMs: 5000,
         });
         handleMutate(`${restBaseUrl}/billing/billableService?v`);
-        closeWorkspaceWithSavedChanges();
+        onClose()
       }
     } catch (e) {
       showSnackbar({
@@ -72,10 +65,6 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
       });
     }
   };
-
-  useEffect(() => {
-    promptBeforeClosing(() => isDirty);
-  }, [isDirty, promptBeforeClosing]);
 
   const renderServicePriceFields = useMemo(
     () =>
@@ -111,7 +100,7 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
       <form onSubmit={handleSubmit(onSubmit, handleError)} className={styles.form}>
         <div className={styles.formContainer}>
           <Stack className={styles.formStackControl} gap={7}>
-            <StockItemSearch setValue={setValue} defaultStockItem={initialValues?.name} />
+            <StockItemSearch setValue={setValue} defaultStockItem={editingService?.name} />
             <ResponsiveWrapper>
               <Controller
                 control={control}
@@ -145,10 +134,10 @@ const CommodityForm: React.FC<CommodityFormProps> = ({
           </Stack>
         </div>
         <ButtonSet className={classNames({ [styles.tablet]: isTablet, [styles.desktop]: !isTablet })}>
-          <Button style={{ maxWidth: '50%' }} kind="secondary" onClick={closeWorkspace}>
+          <Button style={{ maxWidth: '50%' }} kind="secondary" onClick={onClose}>
             {t('cancel', 'Cancel')}
           </Button>
-          <Button disabled={isSubmitting || !isDirty} style={{ maxWidth: '50%' }} kind="primary" type="submit">
+          <Button disabled={isSubmitting} style={{ maxWidth: '50%' }} kind="primary" type="submit">
             {isSubmitting ? (
               <span style={{ display: 'flex', justifyItems: 'center' }}>
                 {t('submitting', 'Submitting...')} <InlineLoading status="active" iconDescription="Loading" />
