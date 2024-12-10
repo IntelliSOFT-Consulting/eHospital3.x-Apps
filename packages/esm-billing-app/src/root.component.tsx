@@ -9,6 +9,8 @@ import { SideNavItems } from '@carbon/react';
 import { SideNavLink } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { ChargeItemsDashboard } from './billable-services/dashboard/charge-items-dashboard.component';
+import AddServiceForm from './billable-services/billables/services/service-form.workspace';
+import CommodityForm from './billable-services/billables/commodity/commodity-form.workspace';
 
 const RootComponent: React.FC = () => {
   const basePath = `${window.spaBase}/billing`;
@@ -16,6 +18,10 @@ const RootComponent: React.FC = () => {
 
   const handleNavigation = (path: string) => {
     navigate({ to: `${basePath}/${path}` });
+  };
+
+  const handleCloseAddService = () => {
+    navigate({ to: `${basePath}/charge-items` });
   };
 
   return (
@@ -36,6 +42,8 @@ const RootComponent: React.FC = () => {
         <Routes>
           <Route path="/" element={<BillingDashboard />} />
           <Route path="/charge-items" element={<ChargeItemsDashboard />} />
+          <Route path="/charge-items/add-charge-service" element={<AddServiceForm onClose={handleCloseAddService}/>} />
+          <Route path="/charge-items/add-charge-item" element={<CommodityForm onClose={handleCloseAddService}/>} />
           <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
         </Routes>
       </main>

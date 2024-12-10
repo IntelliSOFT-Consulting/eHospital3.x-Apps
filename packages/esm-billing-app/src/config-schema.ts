@@ -4,6 +4,7 @@ export interface BillingConfig {
   enforceBillPayment: boolean;
   cashPointUuid: string;
   cashierUuid: string;
+  excludedPaymentMode: Array<{ uuid: string; label: string }>;
 }
 
 export const configSchema = {

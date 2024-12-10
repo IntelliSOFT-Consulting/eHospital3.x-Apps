@@ -15,7 +15,6 @@ import { Controller, useFieldArray, useForm, FormProvider } from 'react-hook-for
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useLayoutType, useDebounce, ResponsiveWrapper, showSnackbar, restBaseUrl } from '@openmrs/esm-framework';
-import { DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 
 import { createBillableSerice, useConceptsSearch, useServiceTypes } from '../../billable-service.resource';
 import PriceField from './price.component';
@@ -27,29 +26,20 @@ import { formatBillableServicePayloadForSubmission, mapInputToPayloadSchema } fr
 import ConceptSearch from './concept-search.component';
 import { handleMutate } from '../../utils';
 
-interface AddServiceFormProps extends DefaultPatientWorkspaceProps {
-  initialValues?: BillableFormSchema;
-}
-
-const AddServiceForm: React.FC<AddServiceFormProps> = ({
-  closeWorkspace,
-  promptBeforeClosing,
-  closeWorkspaceWithSavedChanges,
-  initialValues,
-}) => {
+const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = ({ onClose, editingService }) => {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const [conceptToLookup, setConceptToLookup] = useState('');
   const debouncedConceptToLookup = useDebounce(conceptToLookup, 500);
   const [selectedConcept, setSelectedConcept] = useState<any>(null);
-  const inEditMode = !!initialValues;
+  const inEditMode = !!editingService;
 
   const { isLoading: isLoadingServiceTypes, serviceTypes } = useServiceTypes();
   const { isSearching, searchResults: concepts } = useConceptsSearch(debouncedConceptToLookup);
   const formMethods = useForm<BillableFormSchema>({
     resolver: zodResolver(billableFormSchema),
-    defaultValues: initialValues
-      ? mapInputToPayloadSchema(initialValues)
+    defaultValues: editingService
+      ? mapInputToPayloadSchema(editingService)
       : { servicePrices: [], serviceStatus: 'ENABLED' },
   });
 
@@ -61,10 +51,10 @@ const AddServiceForm: React.FC<AddServiceFormProps> = ({
   } = formMethods;
 
   useEffect(() => {
-    if (initialValues) {
-      setConceptToLookup(initialValues.concept?.concept?.display);
+    if (editingService) {
+      setConceptToLookup(editingService.concept?.concept?.display);
     }
-  }, [initialValues]);
+  }, [editingService]);
 
   const {
     fields: servicePriceFields,
@@ -81,12 +71,8 @@ const AddServiceForm: React.FC<AddServiceFormProps> = ({
     setConceptToLookup('');
   };
 
-  useEffect(() => {
-    promptBeforeClosing(() => isDirty);
-  }, [isDirty, promptBeforeClosing]);
-
   const onSubmit = async (data: BillableFormSchema) => {
-    const formPayload = formatBillableServicePayloadForSubmission(data, initialValues?.['uuid']);
+    const formPayload = formatBillableServicePayloadForSubmission(data, editingService?.['uuid']);
     try {
       const response = await createBillableSerice(formPayload);
       if (response.ok) {
@@ -101,9 +87,8 @@ const AddServiceForm: React.FC<AddServiceFormProps> = ({
           isLowContrast: true,
           timeoutInMs: 5000,
         });
-        handleMutate(`${restBaseUrl}/cashier/billableService?v`);
-
-        closeWorkspaceWithSavedChanges();
+        handleMutate(`${restBaseUrl}/billing/billableService?v`);
+        onClose();
       }
     } catch (e) {
       showSnackbar({
@@ -248,7 +233,7 @@ const AddServiceForm: React.FC<AddServiceFormProps> = ({
           </Stack>
         </div>
         <ButtonSet className={classNames({ [styles.tablet]: isTablet, [styles.desktop]: !isTablet })}>
-          <Button style={{ maxWidth: '50%' }} kind="secondary" onClick={closeWorkspace}>
+          <Button style={{ maxWidth: '50%' }} kind="secondary" onClick={onClose}>
             {t('cancel', 'Cancel')}
           </Button>
           <Button disabled={isSubmitting || !isDirty} style={{ maxWidth: '50%' }} kind="primary" type="submit">
