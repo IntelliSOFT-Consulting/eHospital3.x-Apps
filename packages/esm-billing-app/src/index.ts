@@ -1,5 +1,5 @@
 import { configSchema } from './config-schema';
-import { createDashboardGroup, createDashboardLink } from '@openmrs/esm-patient-common-lib';
+import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
 import { createLeftPanelLink } from './left-panel-link.component';
 import { dashboardMeta } from './dashboard.meta';
 import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle, registerFeatureFlag } from '@openmrs/esm-framework';
@@ -12,10 +12,13 @@ import RootComponent from './root.component';
 import VisitAttributeTags from './invoice/payments/visit-tags/visit-attribute.component';
 import ServiceMetrics from './billable-services/dashboard/service-metrics.component';
 import appMenu from './billable-services/billable-services-menu-item/item.component';
+
 import DrugOrder from './billable-services/billable-item/drug-order/drug-order.component';
 import LabOrder from './billable-services/billable-item/test-order/lab-order.component';
 import ProcedureOrder from './billable-services/billable-item/test-order/procedure-order.component';
 import PriceInfoOrder from './billable-services/billable-item/test-order/price-info-order.componet';
+
+import { BulkImportBillableServices } from './billable-services/bulk-import-billable-service.modal';
 
 const moduleName = '@ehospital/esm-billing-app';
 
@@ -32,10 +35,10 @@ registerFeatureFlag(
 
 export const billingDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
-    name: "billing",
-    title: "Billing Overview",
+    name: 'billing',
+    title: 'Billing Overview',
   }),
-  options
+  options,
 );
 
 export const chargeableItemsLink = getSyncLifecycle(
@@ -71,6 +74,8 @@ export const drugOrder = getSyncLifecycle(DrugOrder, options);
 export const labOrder = getSyncLifecycle(LabOrder, options);
 export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
 export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);
+
+export const bulkImportBillableServicesModal = getSyncLifecycle(BulkImportBillableServices, options);
 
 export const editBillLineItemDialog = getAsyncLifecycle(() => import('./bill-item-actions/edit-bill-item.component'), {
   featureName: 'edit bill line item',

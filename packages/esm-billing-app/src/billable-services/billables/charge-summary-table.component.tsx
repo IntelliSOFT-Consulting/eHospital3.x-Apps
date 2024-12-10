@@ -98,10 +98,6 @@ const ChargeSummaryTable: React.FC = () => {
     });
   }, []);
 
-  const closeModal = useCallback(() => {
-    setShowOverlay(false);
-  }, []);
-
   if (isLoading) {
     return <DataTableSkeleton headers={headers} aria-label="sample table" showHeader={false} showToolbar={false} />;
   }
