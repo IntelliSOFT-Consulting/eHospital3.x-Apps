@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   DocumentAdd,
   Events,
@@ -10,12 +10,14 @@ import {
   InventoryManagement,
   ImportExport,
   HospitalBed,
-} from '@carbon/react/icons';
-const openmrsSpaBase = window['getOpenmrsSpaBase']();
+} from "@carbon/react/icons";
+const openmrsSpaBase = window["getOpenmrsSpaBase"]();
 
 const handleClearCache = async () => {
-  document.cookie.split(';').forEach((c) => {
-    document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
+  document.cookie.split(";").forEach((c) => {
+    document.cookie = c
+      .replace(/^ +/, "")
+      .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
   });
   localStorage.clear();
   sessionStorage.clear();
@@ -24,53 +26,47 @@ const handleClearCache = async () => {
 
 export const moduleLinks = [
   {
-    label: 'Clear Cache',
+    label: "Clear Cache",
     icon: <Renew size={24} />,
     onClick: handleClearCache,
   },
   {
-    label: 'Form Builder ',
+    label: "Form Builder ",
     url: `${openmrsSpaBase}form-builder`,
     icon: <DocumentAdd size={24} />,
   },
   {
-    label: 'Legacy Admin ',
+    label: "Legacy Admin ",
     url: `/openmrs/index.htm`,
     icon: <User size={24} />,
   },
   {
-    label: 'Manage Stocks ',
+    label: "Manage Stocks ",
     url: `${openmrsSpaBase}stock-management`,
     icon: <Report size={24} />,
   },
   {
-    label: 'Billing ',
+    label: "Billing ",
     url: `${openmrsSpaBase}billing`,
     icon: <Receipt size={24} />,
   },
   {
-    label: 'Cohort Builder ',
+    label: "Cohort Builder ",
     url: `${openmrsSpaBase}cohort-builder`,
     icon: <Events size={24} />,
   },
   {
-    label: 'Bed Management',
+    label: "Bed Management",
     url: `${openmrsSpaBase}bed-management`,
     icon: <HospitalBed size={24} />,
   },
   {
-    label: 'Dispensing App',
+    label: "Dispensing App",
     url: `${openmrsSpaBase}dispensing`,
     icon: <Medication size={24} />,
   },
   {
-    label: 'Billable Services',
-    url: `${openmrsSpaBase}billable-services`,
-    icon: <InventoryManagement size={24} />,
-    requiresAdmin: true,
-  },
-  {
-    label: 'Backup Services',
+    label: "Backup Services",
     url: `${openmrsSpaBase}home/import-export`,
     icon: <ImportExport size={24} />,
     requiresAdmin: true,
