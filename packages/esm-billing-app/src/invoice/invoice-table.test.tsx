@@ -89,6 +89,7 @@ describe('InvoiceTable', () => {
     status: 'PAID',
     identifier: 'receipt-identifier',
     dateCreated: new Date().toISOString(),
+    dateCreatedUnformatted: '2023-09-01T12:00:00Z.000+0300',
     billingService: 'billing-service-uuid',
     payments: [],
     totalAmount: 300,
