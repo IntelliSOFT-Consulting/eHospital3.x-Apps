@@ -123,56 +123,54 @@ const VisitForm: React.FC<VisitFormProps> = ({ patientUuid, toggleSearchType, cl
       const abortController = new AbortController();
 
       saveVisit(payload, abortController)
-        .pipe(first())
-        .subscribe(
-          (response) => {
-            if (response.status === 201) {
-              // add new queue entry if visit created successfully
-              addQueueEntry(
-                response.data.uuid,
-                serviceUuid,
-                patientUuid,
-                priority,
-                status,
-                sortWeight,
-                queueLocation,
-                visitQueueNumberAttributeUuid,
-              ).then(
-                ({ status, data }) => {
-                  if (status === 201) {
-                    showSnackbar({
-                      kind: 'success',
-                      isLowContrast: true,
-                      title: t('startAVisit', 'Start a visit'),
-                      subtitle: t(
-                        'startVisitQueueSuccessfully',
-                        'Patient has been added to active visits list and queue.',
-                        `${hours} : ${minutes}`,
-                      ),
-                    });
-                    closePanel();
-                    emitRefetchQueuesEvent(data?.uuid)
-                  }
-                },
-                (error) => {
-                  showSnackbar({
-                    title: t('queueEntryError', 'Error adding patient to the queue'),
-                    kind: 'error',
-                    subtitle: error?.message,
-                  });
-                },
-              );
-            }
-          },
-          (error) => {
-            showSnackbar({
-              title: t('startVisitError', 'Error starting visit'),
-              kind: 'error',
-              subtitle: error?.message,
-            });
-          },
-        );
-    },
+      .then((response) => {
+        if (response.status === 201) {
+          // add new queue entry if visit created successfully
+          addQueueEntry(
+            response.data.uuid,
+            serviceUuid,
+            patientUuid,
+            priority,
+            status,
+            sortWeight,
+            queueLocation,
+            visitQueueNumberAttributeUuid,
+          ).then(
+            ({ status, data }) => {
+              if (status === 201) {
+                showSnackbar({
+                  kind: 'success',
+                  isLowContrast: true,
+                  title: t('startAVisit', 'Start a visit'),
+                  subtitle: t(
+                    'startVisitQueueSuccessfully',
+                    'Patient has been added to active visits list and queue.',
+                    `${hours} : ${minutes}`,
+                  ),
+                });
+                closePanel();
+                emitRefetchQueuesEvent(data?.uuid);
+              }
+            },
+            (error) => {
+              showSnackbar({
+                title: t('queueEntryError', 'Error adding patient to the queue'),
+                kind: 'error',
+                subtitle: error?.message,
+              });
+            },
+          );
+        }
+      })
+      .catch((error) => {
+        showSnackbar({
+          title: t('startVisitError', 'Error starting visit'),
+          kind: 'error',
+          subtitle: error?.message,
+        });
+      })
+      .finally(() => setIsSubmitting(false));
+  },
     [
       closePanel,
       patientUuid,

@@ -116,58 +116,46 @@ const ScheduledVisitsForVisitType: React.FC<{
         const abortController = new AbortController();
 
         saveVisit(payload, abortController)
-          .pipe(first())
-          .subscribe(
-            (response) => {
-              if (response.status === 201) {
-                addQueueEntry(
-                  response.data.uuid,
-                  patientId,
-                  priority,
-                  defaultStatus,
-                  service,
-                  appointment,
-                  selectedQueueLocation,
-                  visitQueueNumberAttributeUuid,
-                ).then(
-                  ({ status }) => {
-                    if (status === 201) {
-                      showSnackbar({
-                        kind: 'success',
-                        title: t('startAVisit', 'Start a visit'),
-                        subtitle: t(
-                          'startVisitQueueSuccessfully',
-                          'Patient has been added to active visits list and queue.',
-                          `${hours} : ${minutes}`,
-                        ),
-                      });
-                      closeWorkspace();
-                      setIsSubmitting(false);
-                      mutateQueueEntries();
-                    }
-                  },
-                  (error) => {
-                    showSnackbar({
-                      title: t('queueEntryError', 'Error adding patient to the queue'),
-                      kind: 'error',
-                      isLowContrast: false,
-                      subtitle: error?.message,
-                    });
-                    setIsSubmitting(false);
-                  },
-                );
-              }
-            },
-            (error) => {
-              showSnackbar({
-                title: t('startVisitError', 'Error starting visit'),
-                kind: 'error',
-                isLowContrast: false,
-                subtitle: error?.message,
-              });
-              setIsSubmitting(false);
-            },
-          );
+        .then((response) => {
+          if (response.status === 201) {
+            return addQueueEntry(
+              response.data.uuid,
+              patientId,
+              priority,
+              defaultStatus,
+              service,
+              appointment,
+              selectedQueueLocation,
+              visitQueueNumberAttributeUuid,
+            );
+          } else {
+            throw new Error(t('saveVisitFailed', 'Failed to save the visit.'));
+          }
+        })
+        .then(({ status }) => {
+          if (status === 201) {
+            showSnackbar({
+              kind: 'success',
+              title: t('startAVisit', 'Start a visit'),
+              subtitle: t(
+                'startVisitQueueSuccessfully',
+                'Patient has been added to active visits list and queue.',
+                `${hours} : ${minutes}`,
+              ),
+            });
+            closeWorkspace();
+            mutateQueueEntries();
+          }
+        })
+        .catch((error) => {
+          showSnackbar({
+            title: t('queueEntryError', 'Error adding patient to the queue'),
+            kind: 'error',
+            isLowContrast: false,
+            subtitle: error.message,
+          });
+        })
+        .finally(() => setIsSubmitting(false));
       }
     },
     [
