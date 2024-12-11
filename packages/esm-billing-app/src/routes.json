@@ -125,6 +125,10 @@
   ],
   "modals": [
     {
+      "name": "create-payment-point",
+      "component": "createPaymentPoint"
+    },
+    {
       "name": "bulk-import-billable-services-modal",
       "component": "bulkImportBillableServicesModal"
     }

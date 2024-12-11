@@ -282,6 +282,7 @@ export interface CommonMedicationValueCoded extends CommonMedicationProps {
   valueCoded: string;
 }
 
+
 export type ExcelFileRow = {
   concept_id: number;
   name: string;
@@ -320,4 +321,28 @@ export interface PaymentMethod {
   attributeTypes: AttributeType[];
   sortOrder: null;
   resourceVersion: string;
+}
+
+export interface PaymentPoint {
+  uuid: string;
+  name: string;
+  description: string;
+  retired: boolean;
+  location: Location;
+}
+
+export interface Timesheet {
+  uuid: string;
+  display: string;
+  cashier: Cashier;
+  cashPoint: CashPoint;
+  clockIn: string;
+  clockOut: null;
+  id: number;
+}
+
+export interface Cashier {
+  uuid: string;
+  display: string;
+  links: Link[];
 }
