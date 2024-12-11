@@ -20,6 +20,8 @@ import PriceInfoOrder from './billable-services/billable-item/test-order/price-i
 
 import { BulkImportBillableServices } from './billable-services/bulk-import-billable-service.modal';
 
+import { CreatePaymentPoint } from './payment-points/create-payment-point.component';
+
 const moduleName = '@ehospital/esm-billing-app';
 
 const options = {
@@ -69,6 +71,8 @@ export const requirePaymentModal = getSyncLifecycle(RequirePaymentModal, options
 export const root = getSyncLifecycle(RootComponent, options);
 export const visitAttributeTags = getSyncLifecycle(VisitAttributeTags, options);
 export const billableServicesAppMenuItem = getSyncLifecycle(appMenu, options);
+
+export const createPaymentPoint = getSyncLifecycle(CreatePaymentPoint, options);
 
 export const drugOrder = getSyncLifecycle(DrugOrder, options);
 export const labOrder = getSyncLifecycle(LabOrder, options);
