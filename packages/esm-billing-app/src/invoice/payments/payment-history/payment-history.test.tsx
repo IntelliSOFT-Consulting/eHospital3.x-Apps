@@ -76,6 +76,7 @@ describe('PaymentHistory Component', () => {
     status: 'PAID',
     identifier: 'invoice-123',
     dateCreated: '2023-09-01T12:00:00Z',
+    dateCreatedUnformatted: '2023-09-01T12:00:00Z.000+0300',
     lineItems: [],
     billingService: 'Billing Service',
   };
@@ -104,6 +105,7 @@ describe('PaymentHistory Component', () => {
     status: 'PENDING',
     identifier: 'invoice-124',
     dateCreated: '2023-09-02T10:00:00Z',
+    dateCreatedUnformatted: '2023-09-01T12:00:00Z.000+0300',
     lineItems: [],
     billingService: 'Billing Service',
   };

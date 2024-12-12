@@ -21,6 +21,8 @@ import PriceInfoOrder from './billable-services/billable-item/test-order/price-i
 import { BulkImportBillableServices } from './billable-services/bulk-import-billable-service.modal';
 
 import { CreatePaymentPoint } from './payment-points/create-payment-point.component';
+import { ClockIn } from './payment-points/payment-point/clock-in.component';
+import { ClockOut } from './payment-points/payment-point/clock-out.component';
 
 const moduleName = '@ehospital/esm-billing-app';
 
@@ -80,6 +82,8 @@ export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
 export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);
 
 export const bulkImportBillableServicesModal = getSyncLifecycle(BulkImportBillableServices, options);
+export const clockInModal = getSyncLifecycle(ClockIn, options)
+export const clockOut = getSyncLifecycle(ClockOut, options)
 
 export const editBillLineItemDialog = getAsyncLifecycle(() => import('./bill-item-actions/edit-bill-item.component'), {
   featureName: 'edit bill line item',

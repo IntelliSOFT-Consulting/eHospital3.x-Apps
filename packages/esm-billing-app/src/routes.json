@@ -131,6 +131,14 @@
     {
       "name": "bulk-import-billable-services-modal",
       "component": "bulkImportBillableServicesModal"
+    },
+    {
+      "name": "clock-in-modal",
+      "component": "clockInModal"
+    },
+    {
+      "name": "clock-out-modal",
+      "component": "clockOutModal"
     }
   ]
 }

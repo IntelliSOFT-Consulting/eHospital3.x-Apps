@@ -14,6 +14,9 @@ import AddServiceForm from './billable-services/billables/services/service-form.
 import CommodityForm from './billable-services/billables/commodity/commodity-form.workspace';
 
 import { PaymentPoints } from './payment-points/payment-points.component';
+import { PaymentPoint } from './payment-points/payment-point/payment-point.component';
+
+import { PaymentHistory } from './billable-services/payment-history/payment-history.component';
 
 const RootComponent: React.FC = () => {
   const basePath = `${window.spaBase}/billing`;
@@ -42,6 +45,9 @@ const RootComponent: React.FC = () => {
               <SideNavLink onClick={() => handleNavigation('payment-points')}>
                 {t('paymentPoints', 'Payment Points')}
               </SideNavLink>
+              <SideNavLink onClick={() => handleNavigation('payment-history')}>
+                {t('paymentHistory', 'Payment History')}
+              </SideNavLink>
             </SideNavItems>
           </SideNav>
         </section>
@@ -50,7 +56,12 @@ const RootComponent: React.FC = () => {
           <Route path="/charge-items" element={<ChargeItemsDashboard />} />
           <Route path="/charge-items/add-charge-service" element={<AddServiceForm onClose={handleCloseAddService}/>} />
           <Route path="/charge-items/add-charge-item" element={<CommodityForm onClose={handleCloseAddService}/>} />
+
           <Route path="/payment-points" element={<PaymentPoints />} />
+          <Route path="/payment-points/:paymentPointUUID" element={<PaymentPoint />} />
+
+          <Route path='/payment-history' element={<PaymentHistory />} />
+          
           <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
         </Routes>
       </main>

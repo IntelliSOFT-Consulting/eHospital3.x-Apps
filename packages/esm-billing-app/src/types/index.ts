@@ -13,6 +13,7 @@ export interface MappedBill {
   status: string;
   identifier: string;
   dateCreated: string;
+  dateCreatedUnformatted: string;
   lineItems: Array<LineItem>;
   billingService: string;
   payments: Array<Payment>;
@@ -121,6 +122,16 @@ export interface Payment {
   dateCreated: number;
   voided: boolean;
   resourceVersion: string;
+}
+
+export enum PaymentStatus {
+  POSTED = 'POSTED',
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CREDITED = 'CREDITED',
+  CANCELLED = 'CANCELLED',
+  ADJUSTED = 'ADJUSTED',
+  EXEMPTED = 'EXEMPTED',
 }
 
 export interface PatientInvoice {
