@@ -2,18 +2,17 @@ import { Checkbox, SkeletonIcon, usePrefix } from '@carbon/react';
 import React, { ChangeEvent } from 'react';
 import { MappedBill } from '../../types';
 import styles from './payment-history.scss';
-import { useBillsServiceTypes } from './use-bills-service-types';
+import { useServiceTypes } from '../billable-service.resource';
 
 export const ServiceTypeFilter = ({
   selectedServiceTypeCheckboxes,
-  bills,
   applyServiceTypeFilter,
 }: {
   selectedServiceTypeCheckboxes: Array<string>;
   bills: Array<MappedBill>;
   applyServiceTypeFilter: (filters: Array<string>) => void;
 }) => {
-  const { billsServiceTypes, isLoading } = useBillsServiceTypes(bills);
+  const { serviceTypes, isLoading } = useServiceTypes();
   const prefix = usePrefix();
 
   const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +20,7 @@ export const ServiceTypeFilter = ({
     const isChecked = e.target.checked;
 
     const checkboxValue: HTMLSpanElement | null = document.querySelector(`label[for="${checkboxId}"]`);
-    const serviceTypeUUID = billsServiceTypes.find((s) => s.display === checkboxValue.innerText).uuid;
+    const serviceTypeUUID = serviceTypes.find((s) => s.display === checkboxValue.innerText).uuid;
 
     if (isChecked && checkboxValue) {
       applyServiceTypeFilter([...selectedServiceTypeCheckboxes, serviceTypeUUID]);
@@ -38,8 +37,8 @@ export const ServiceTypeFilter = ({
     <div className={styles.checkBoxWrapper}>
       <fieldset className={`${prefix}--fieldset`}>
         <legend className={`${prefix}--label`}>Service type</legend>
-        {billsServiceTypes.length === 0 && <p className={styles.noServiceTypes}>No Service Types In Bills Range</p>}
-        {billsServiceTypes.map((type) => (
+        {serviceTypes.length === 0 && <p className={styles.noServiceTypes}>No Service Types In Bills Range</p>}
+        {serviceTypes.map((type) => (
           <Checkbox
             labelText={type.display}
             id={`checkbox-${type.display}`}

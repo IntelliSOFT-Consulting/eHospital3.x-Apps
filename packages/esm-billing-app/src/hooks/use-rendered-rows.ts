@@ -1,8 +1,8 @@
 import flatMapDeep from 'lodash-es/flatMapDeep';
 import { useLocation, useParams } from 'react-router-dom';
-import { useBillsServiceTypes } from '../billable-services/payment-history/use-bills-service-types';
 import { usePaymentModes } from '../billing.resource';
 import { MappedBill, Timesheet } from '../types';
+import { useServiceTypes } from '../billable-services/billable-service.resource';
 
 const getAllValues = (obj: Object): Array<any> => {
   return flatMapDeep(obj, (value) => {
@@ -15,7 +15,7 @@ const getAllValues = (obj: Object): Array<any> => {
 
 export const useRenderedRows = (bills: MappedBill[], filters: Array<string>, timesheet?: Timesheet) => {
   const { pathname } = useLocation();
-  const { billsServiceTypes } = useBillsServiceTypes(bills);
+  const {serviceTypes} = useServiceTypes()
   const { paymentModes } = usePaymentModes(false);
   const { paymentPointUUID } = useParams();
   const isOnPaymentPointPage = Boolean(paymentPointUUID);
@@ -23,7 +23,7 @@ export const useRenderedRows = (bills: MappedBill[], filters: Array<string>, tim
   const cashiers = Array.from(new Map(bills.map((bill) => [bill.cashier.uuid, bill.cashier])).values());
 
   const cashierFilters = cashiers.filter((c) => filters.includes(c.display)).map((c) => c.display);
-  const serviceTypeFilters = billsServiceTypes.filter((st) => filters.includes(st.uuid)).map((st) => st.uuid);
+  const serviceTypeFilters = serviceTypes.filter((st) => filters.includes(st.uuid)).map((st) => st.uuid);
   const paymentModeFilters = paymentModes?.filter((pm) => filters.includes(pm.name)).map((pm) => pm.name);
 
   const preFiltered = bills
