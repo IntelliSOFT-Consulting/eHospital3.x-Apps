@@ -45,10 +45,26 @@ export const billingDashboardLink = getSyncLifecycle(
   options,
 );
 
-export const chargeableItemsLink = getSyncLifecycle(
+export const chargeItemsPanelLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'charge-items',
     title: 'Charge Items',
+  }),
+  options,
+);
+
+export const paymentHistoryPanelLink = getSyncLifecycle(
+  createLeftPanelLink({
+    name: 'payment-history',
+    title: 'Payment History',
+  }),
+  options,
+);
+
+export const paymentPointsPanelLink = getSyncLifecycle(
+  createLeftPanelLink({
+    name: 'payment-point',
+    title: 'Payment Points',
   }),
   options,
 );

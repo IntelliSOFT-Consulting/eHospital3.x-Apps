@@ -24,8 +24,22 @@
     {
       "component": "billingDashboardLink",
       "name": "billing-left-panel-link",
-      "slot": "billing-left-panel-slot",
-      "order": 0
+      "slot": "billing-left-panel-slot"
+    },
+    {
+      "component": "chargeItemsPanelLink",
+      "name": "charge-items-panel-link",
+      "slot": "billing-left-panel-slot"
+    },
+    {
+      "component": "paymentHistoryPanelLink",
+      "name": "payment-history-panel-link",
+      "slot": "billing-left-panel-slot"
+    },
+    {
+      "component": "paymentPointsPanelLink",
+      "name": "payment-point-panel-link",
+      "slot": "billing-left-panel-slot"
     },
     {
       "name": "billing-patient-summary",
@@ -82,11 +96,6 @@
       "name": "billing-home-tiles-ext",
       "slot": "billing-home-tiles-slot",
       "component": "serviceMetrics"
-    },
-    {
-      "component": "chargeableItemsLink",
-      "name": "chargeable-items-link",
-      "slot": "billing-dashboard-link-slot"
     },
     {
       "name": "drug-order-billable-item",

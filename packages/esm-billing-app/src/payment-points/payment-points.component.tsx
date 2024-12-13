@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import BillingHeader from '../billing-header/billing-header.component';
 import styles from './payment-points-styles.scss';
 import { PaymentPointsTable } from './payment-points-table.component';
+import LeftPanel from '../left-panel/left-panel.component';
 
 export const PaymentPoints = () => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ export const PaymentPoints = () => {
 
   return (
     <div>
+      <LeftPanel />
       <BillingHeader title={t('paymentPoints', 'Payment Points')} />
       <div className={styles.paymentPoints}>
         <Button onClick={() => openPaymentPointModal()} className={styles.createPaymentPointButton}>

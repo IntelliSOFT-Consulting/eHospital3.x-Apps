@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { omrsDateFormat } from '../constants';
 import SelectedDateContext from '../hooks/selectedDateContext';
+import LeftPanel from '../left-panel/left-panel.component';
 
 export function BillingDashboard() {
   const { t } = useTranslation();
@@ -22,6 +23,8 @@ export function BillingDashboard() {
   }, [params.date]);
 
   return (
+    <>
+    <LeftPanel />
     <SelectedDateContext.Provider value={{ selectedDate, setSelectedDate }}>
       <BillingHeader title={t('home', 'Home')} />
       <MetricsCards />
@@ -29,5 +32,6 @@ export function BillingDashboard() {
         <BillsTable />
       </section>
     </SelectedDateContext.Provider>
+    </>
   );
 }
