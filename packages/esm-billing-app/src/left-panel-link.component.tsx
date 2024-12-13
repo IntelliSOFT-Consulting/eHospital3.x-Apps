@@ -26,7 +26,7 @@ export function LinkExtension({ config }: { config: LinkConfig }) {
 
   return (
     <ConfigurableLink
-      to={spaBasePath + '/' + name}
+      to={`${window.getOpenmrsSpaBase()}billing${name && name !== 'billing' ? `/${name}` : ''}`}
       className={`cds--side-nav__link ${name === urlSegment && 'active-left-nav-link'}`}>
       {title}
     </ConfigurableLink>
