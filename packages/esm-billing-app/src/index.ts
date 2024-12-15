@@ -69,6 +69,14 @@ export const paymentPointsPanelLink = getSyncLifecycle(
   options,
 );
 
+export const paymentModesPanelLink = getSyncLifecycle(
+  createLeftPanelLink({
+    name: 'payment-mode',
+    title: 'Payment Modes',
+  }),
+  options,
+);
+
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 
 export function startupApp() {
