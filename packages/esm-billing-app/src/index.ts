@@ -23,6 +23,8 @@ import { BulkImportBillableServices } from './billable-services/bulk-import-bill
 import { CreatePaymentPoint } from './payment-points/create-payment-point.component';
 import { ClockIn } from './payment-points/payment-point/clock-in.component';
 import { ClockOut } from './payment-points/payment-point/clock-out.component';
+import DeletePaymentModeModal from './payment-modes/delete-payment-mode.modal';
+import PaymentModeWorkspace from "./payment-modes/payment-mode.workspace";
 
 const moduleName = '@ehospital/esm-billing-app';
 
@@ -76,6 +78,9 @@ export const paymentModesPanelLink = getSyncLifecycle(
   }),
   options,
 );
+
+export const paymentModeWorkspace = getSyncLifecycle(PaymentModeWorkspace, options);
+export const deletePaymentModeModal = getSyncLifecycle(DeletePaymentModeModal, options);
 
 export const importTranslation = require.context('../translations', false, /.json$/, 'lazy');
 

@@ -140,7 +140,7 @@
       "name": "payment-mode-workspace",
       "component": "paymentModeWorkspace",
       "title": "Payment Mode Workspace",
-      "type": "other-form"
+      "type": "sidebar"
     }
   ],
   "modals": [

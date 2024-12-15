@@ -84,7 +84,7 @@ const PaymentModeWorkspace: React.FC<PaymentModeWorkspaceProps> = ({
           isLowContrast: true,
         });
         closeWorkspaceWithSavedChanges();
-        handleMutation(`${window.spaBase}/openmrs/spa/billing/paymentMode?v=full`);
+        handleMutation(`${restBaseUrl}/billing/paymentMode?v=full`);
       }
     } catch (error) {
       const errorObject = error?.responseBody?.error;

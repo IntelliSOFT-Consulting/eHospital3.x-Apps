@@ -25,7 +25,7 @@ const DeletePaymentModeModal: React.FC<DeletePaymentModeModalProps> = ({ closeMo
         timeoutInMs: 5000,
         autoClose: true,
       });
-      handleMutation(`${window.spaBase}/billing/paymentMode?v=full`);
+      handleMutation(`${restBaseUrl}/billing/paymentMode?v=full`);
       closeModal();
     } catch (error) {
       showSnackbar({

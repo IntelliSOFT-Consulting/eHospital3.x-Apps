@@ -106,11 +106,15 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     <div>
       <CardHeader title="Payment Modes">
         <Button
-          onClick={() =>
-            launchWorkspace('payment-mode-workspace', { workspaceTitle: t('addPaymentMode', 'Add Payment Mode') })
-          }
+          onClick={() => {
+            console.log('Add Payment Mode button clicked');
+            launchWorkspace('payment-mode-workspace', { workspaceTitle: 'Add Payment Mode' });
+            console.log('launchWorkspace triggered with:', 'payment-mode-workspace', {
+              workspaceTitle: 'Add Payment Mode',
+            })
+          }}
           className={styles.addPaymentModeButton}
-          size={size}
+          size="md"
           kind="ghost">
           {t('addPaymentMode', 'Add Payment Mode')}
         </Button>

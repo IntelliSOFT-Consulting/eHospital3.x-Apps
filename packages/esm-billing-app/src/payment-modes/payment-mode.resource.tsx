@@ -16,7 +16,7 @@ import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
  *   - error: Any error that occurred during the fetch operation
  */
 export const usePaymentModes = () => {
-  const url = `${window.spaBase}/billing/paymentMode?v=full`;
+  const url = `${restBaseUrl}/billing/paymentMode?v=full`;
   const { data, error, isLoading } = useSWR<{ data: { results: Array<PaymentMode> } }>(url, openmrsFetch);
 
   return {
@@ -27,7 +27,7 @@ export const usePaymentModes = () => {
 };
 
 export const createPaymentMode = (paymentMode: Partial<PaymentMode>, uuid?: string) => {
-  const url = uuid ? `${window.spaBase}/billing/paymentMode/${uuid}` : `${window.spaBase}/billing/paymentMode`;
+  const url = uuid ? `${restBaseUrl}/billing/paymentMode/${uuid}` : `${restBaseUrl}/billing/paymentMode`;
 
   return openmrsFetch(url, {
     method: 'POST',
@@ -39,7 +39,7 @@ export const createPaymentMode = (paymentMode: Partial<PaymentMode>, uuid?: stri
 };
 
 export const deletePaymentMode = (uuid: string) => {
-  return openmrsFetch(`${window.spaBase}/billing/paymentMode/${uuid}`, {
+  return openmrsFetch(`${restBaseUrl}/billing/paymentMode/${uuid}`, {
     method: 'DELETE',
   });
 };
