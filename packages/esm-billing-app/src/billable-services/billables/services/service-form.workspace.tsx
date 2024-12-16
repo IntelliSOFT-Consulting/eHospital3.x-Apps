@@ -21,6 +21,8 @@ import { createBillableSerice, updateBillableService, useConceptsSearch,usePayme
 import { type ServiceConcept } from '../../../types';
 import styles from './service-form.scss'
 
+import LeftPanel from '../../../left-panel/left-panel.component';
+
 type PaymentMode = {
   paymentMode: string;
   price: string | number;
@@ -134,10 +136,10 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = 
     saveAction.then(
       (resp) => {
         showSnackbar({
-          title: t('billableService', 'Billable service'),
+          title: t('chargeService', 'Charge Service'),
           subtitle: editingService
-            ? t('updatedSuccessfully', 'Billable service updated successfully')
-            : t('createdSuccessfully', 'Billable service created successfully'),
+            ? t('updatedSuccessfully', 'Charge service updated successfully')
+            : t('createdSuccessfully', 'Charge service created successfully'),
           kind: 'success',
           timeoutInMs: 3000,
         });
@@ -172,9 +174,11 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = 
     <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
       <h4>
         {editingService
-          ? t('editBillableServices', 'Edit Billable Services')
-          : t('addBillableServices', 'Add Billable Services')}
+          ? t('editChargeService', 'Edit Charge Service')
+          : t('addChargeService', 'Add Charge Service')}
       </h4>
+
+      {!editingService && <LeftPanel />}
       <section className={styles.section}>
         <Layer>
           <TextInput
