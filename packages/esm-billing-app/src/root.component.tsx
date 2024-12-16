@@ -16,6 +16,7 @@ import { PaymentPoints } from './payment-points/payment-points.component';
 import { PaymentPoint } from './payment-points/payment-point/payment-point.component';
 
 import { PaymentHistory } from './billable-services/payment-history/payment-history.component';
+import PaymentModeHome from "./payment-modes/payment-mode-home.component";
 
 const RootComponent: React.FC = () => {
   const { t } = useTranslation();
@@ -47,8 +48,10 @@ const RootComponent: React.FC = () => {
           <Route path="/payment-point" element={<PaymentPoints />} />
           <Route path="/payment-points/:paymentPointUUID" element={<PaymentPoint />} />
 
+          <Route path="/payment-mode" element={<PaymentModeHome />} />
+
           <Route path='/payment-history' element={<PaymentHistory />} />
-          
+
           <Route path="/patient/:patientUuid/:billUuid" element={<Invoice />} />
         </Routes>
       </main>

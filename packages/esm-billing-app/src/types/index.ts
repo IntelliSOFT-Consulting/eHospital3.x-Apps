@@ -342,6 +342,18 @@ export interface PaymentPoint {
   location: Location;
 }
 
+export type PaymentMode = {
+  uuid?: string;
+  name: string;
+  description: string;
+  retired: boolean;
+  retiredReason?: string | null;
+  auditInfo?: AuditInfo;
+  attributeTypes?: Array<AttributeType>;
+  sortOrder?: number | null;
+  resourceVersion?: string;
+};
+
 export interface Timesheet {
   uuid: string;
   display: string;

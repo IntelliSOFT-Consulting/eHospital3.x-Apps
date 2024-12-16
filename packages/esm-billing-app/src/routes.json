@@ -42,6 +42,11 @@
       "slot": "billing-left-panel-slot"
     },
     {
+      "component": "paymentModesPanelLink",
+      "name": "payment-mode-panel-link",
+      "slot": "billing-left-panel-slot"
+    },
+    {
       "name": "billing-patient-summary",
       "component": "billingPatientSummary",
       "slot": "patient-chart-billing-dashboard-slot",
@@ -130,6 +135,12 @@
       "component": "billingFormWorkspace",
       "type": "form",
       "width": "extra-wide"
+    },
+    {
+      "name": "payment-mode-workspace",
+      "component": "paymentModeWorkspace",
+      "title": "Payment Mode Workspace",
+      "type": "sidebar"
     }
   ],
   "modals": [
@@ -148,6 +159,18 @@
     {
       "name": "clock-out-modal",
       "component": "clockOutModal"
+    },
+    {
+      "name": "delete-payment-mode-modal",
+      "component": "deletePaymentModeModal"
+    },
+    {
+      "name": "retry-claim-request-modal",
+      "component": "retryClaimRequestModal"
+    },
+    {
+      "name": "paid-bill-receipt-print-preview-modal",
+      "component": "paidBillReceiptPrintPreviewModal"
     }
   ]
 }
