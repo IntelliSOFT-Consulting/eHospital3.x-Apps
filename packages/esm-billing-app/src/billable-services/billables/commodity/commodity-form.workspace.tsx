@@ -15,6 +15,8 @@ import { formatBillableServicePayloadForSubmission, mapInputToPayloadSchema } fr
 import { createBillableSerice } from '../../billable-service.resource';
 import { handleMutate } from '../../utils';
 
+import LeftPanel from '../../../left-panel/left-panel.component';
+
 const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
   editingService,
   onClose
@@ -96,6 +98,8 @@ const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
   };
 
   return (
+    <>
+    <LeftPanel />
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit, handleError)} className={styles.form}>
         <div className={styles.formContainer}>
@@ -149,6 +153,7 @@ const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
         </ButtonSet>
       </form>
     </FormProvider>
+    </>
   );
 };
 
