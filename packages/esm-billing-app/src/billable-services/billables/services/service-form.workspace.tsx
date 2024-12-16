@@ -1,254 +1,376 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import {
-  ButtonSet,
   Button,
-  Stack,
-  TextInput,
   ComboBox,
-  Toggle,
-  InlineNotification,
+  Dropdown,
+  Form,
+  FormLabel,
   InlineLoading,
+  Layer,
+  Search,
+  TextInput,
+  Tile,
 } from '@carbon/react';
-import { Add } from '@carbon/react/icons';
-import { Controller, useFieldArray, useForm, FormProvider } from 'react-hook-form';
+import { navigate, showSnackbar, useDebounce, useLayoutType } from '@openmrs/esm-framework';
+import { Add, TrashCan, WarningFilled } from '@carbon/react/icons';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { createBillableSerice, updateBillableService, useConceptsSearch,usePaymentModes, useServiceTypes } from '../../billable-service.resource';
+import { type ServiceConcept } from '../../../types';
+import styles from './service-form.scss'
 
-import { useLayoutType, useDebounce, ResponsiveWrapper, showSnackbar, restBaseUrl } from '@openmrs/esm-framework';
+type PaymentMode = {
+  paymentMode: string;
+  price: string | number;
+};
 
-import { createBillableSerice, useConceptsSearch, useServiceTypes } from '../../billable-service.resource';
-import PriceField from './price.component';
-import { billableFormSchema, BillableFormSchema } from '../form-schemas';
+type PaymentModeFormValue = {
+  payment: Array<PaymentMode>;
+};
 
-import classNames from 'classnames';
-import styles from './service-form.scss';
-import { formatBillableServicePayloadForSubmission, mapInputToPayloadSchema } from '../form-helper';
-import ConceptSearch from './concept-search.component';
-import { handleMutate } from '../../utils';
+const servicePriceSchema = z.object({
+  paymentMode: z.string().refine((value) => !!value, 'Payment method is required'),
+  price: z.union([
+    z.number().refine((value) => !!value, 'Price is required'),
+    z.string().refine((value) => !!value, 'Price is required'),
+  ]),
+});
 
-const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = ({ onClose, editingService }) => {
+const paymentFormSchema = z.object({
+  payment: z.array(servicePriceSchema).min(1, 'At least one payment option is required'),
+});
+
+const DEFAULT_PAYMENT_OPTION = { paymentMode: '', price: 0 };
+
+const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = ({ editingService, onClose }) => {
   const { t } = useTranslation();
-  const isTablet = useLayoutType() === 'tablet';
-  const [conceptToLookup, setConceptToLookup] = useState('');
-  const debouncedConceptToLookup = useDebounce(conceptToLookup, 500);
-  const [selectedConcept, setSelectedConcept] = useState<any>(null);
-  const inEditMode = !!editingService;
 
-  const { isLoading: isLoadingServiceTypes, serviceTypes } = useServiceTypes();
-  const { isSearching, searchResults: concepts } = useConceptsSearch(debouncedConceptToLookup);
-  const formMethods = useForm<BillableFormSchema>({
-    resolver: zodResolver(billableFormSchema),
-    defaultValues: editingService
-      ? mapInputToPayloadSchema(editingService)
-      : { servicePrices: [], serviceStatus: 'ENABLED' },
-  });
+  const { paymentModes, isLoading: isLoadingPaymentModes } = usePaymentModes();
+  const { serviceTypes, isLoading: isLoadingServicesTypes } = useServiceTypes();
+  const [billableServicePayload, setBillableServicePayload] = useState(editingService || {});
 
   const {
-    setValue,
     control,
     handleSubmit,
-    formState: { errors, isDirty, defaultValues, isSubmitting },
-  } = formMethods;
+    formState: { errors, isValid },
+    setValue,
+  } = useForm<any>({
+    mode: 'all',
+    defaultValues: {
+      name: editingService?.name,
+      serviceShortName: editingService?.shortName,
+      serviceType: editingService?.serviceType,
+      conceptsSearch: editingService?.concept,
+      payment: editingService?.servicePrices || [DEFAULT_PAYMENT_OPTION],
+    },
+    resolver: zodResolver(paymentFormSchema),
+    shouldUnregister: !editingService,
+  });
+  const { fields, remove, append } = useFieldArray({ name: 'payment', control: control });
+
+  const handleAppendPaymentMode = useCallback(() => append(DEFAULT_PAYMENT_OPTION), [append]);
+  const handleRemovePaymentMode = useCallback((index) => remove(index), [remove]);
+
+  const isTablet = useLayoutType() === 'tablet';
+  const searchInputRef = useRef(null);
+  const handleSearchTermChange = (event: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(event.target.value);
+
+  const [selectedConcept, setSelectedConcept] = useState<ServiceConcept>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm);
+  const { searchResults, isSearching } = useConceptsSearch(debouncedSearchTerm);
+  const handleConceptChange = useCallback((selectedConcept: any) => {
+    setSelectedConcept(selectedConcept);
+  }, []);
+
+  const handleNavigateToServiceDashboard = () =>
+    navigate({
+      to: window.getOpenmrsSpaBase() + 'billing/charge-items',
+    });
 
   useEffect(() => {
-    if (editingService) {
-      setConceptToLookup(editingService.concept?.concept?.display);
-    }
-  }, [editingService]);
+    if (editingService && !isLoadingPaymentModes) {
+      setBillableServicePayload(editingService);
+      setValue('serviceName', editingService.name || '');
+      setValue('shortName', editingService.shortName || '');
+      setValue('serviceType', editingService.serviceType || '');
+      setValue(
+        'payment',
+        editingService.servicePrices.map((payment) => ({
+          paymentMode: payment.paymentMode?.uuid || '',
+          price: payment.price,
+        })),
+      );
+      setValue('conceptsSearch', editingService.concept);
 
-  const {
-    fields: servicePriceFields,
-    append: appendServicePrice,
-    remove: removeServicePrice,
-  } = useFieldArray({
-    control,
-    name: 'servicePrices',
-  });
-
-  const handleSelectConcept = (concept) => {
-    setSelectedConcept(concept);
-    setValue('concept', concept);
-    setConceptToLookup('');
-  };
-
-  const onSubmit = async (data: BillableFormSchema) => {
-    const formPayload = formatBillableServicePayloadForSubmission(data, editingService?.['uuid']);
-    try {
-      const response = await createBillableSerice(formPayload);
-      if (response.ok) {
-        showSnackbar({
-          title: inEditMode
-            ? t('serviceUpdatedSuccessfully', 'Service updated successfully')
-            : t('serviceCreated', 'Service created successfully'),
-          kind: 'success',
-          subtitle: inEditMode
-            ? t('serviceUpdatedSuccessfully', 'Service updated successfully')
-            : t('serviceCreatedSuccessfully', 'Service created successfully'),
-          isLowContrast: true,
-          timeoutInMs: 5000,
-        });
-        handleMutate(`${restBaseUrl}/billing/billableService?v`);
-        onClose();
+      if (editingService.concept) {
+        setSelectedConcept(editingService.concept);
       }
-    } catch (e) {
-      showSnackbar({
-        title: t('error', 'Error'),
-        kind: 'error',
-        subtitle: inEditMode
-          ? t('serviceUpdateFailed', 'Service failed to update')
-          : t('serviceCreationFailed', 'Service creation failed'),
-        isLowContrast: true,
-        timeoutInMs: 5000,
-      });
     }
+  }, [editingService, paymentModes, serviceTypes, setValue]);
+  const onSubmit = (data) => {
+    const payload = {
+      name: billableServicePayload.name.substring(0),
+      shortName: billableServicePayload.shortName.substring(0),
+      serviceType: billableServicePayload.serviceType.uuid,
+      servicePrices: data.payment.map((payment) => {
+        const mode = paymentModes.find((m) => m.uuid === payment.paymentMode);
+        return {
+          paymentMode: payment.paymentMode,
+          name: mode?.name || 'Unknown',
+          price: parseFloat(payment.price),
+        };
+      }),
+      serviceStatus: 'ENABLED',
+      concept: selectedConcept?.uuid,
+    };
+
+    const saveAction = editingService
+      ? updateBillableService(editingService.uuid, payload)
+      : createBillableSerice(payload);
+
+    saveAction.then(
+      (resp) => {
+        showSnackbar({
+          title: t('billableService', 'Billable service'),
+          subtitle: editingService
+            ? t('updatedSuccessfully', 'Billable service updated successfully')
+            : t('createdSuccessfully', 'Billable service created successfully'),
+          kind: 'success',
+          timeoutInMs: 3000,
+        });
+        onClose();
+        handleNavigateToServiceDashboard();
+      },
+      (error) => {
+        showSnackbar({ title: t('billPaymentError', 'Bill payment error'), kind: 'error', subtitle: error?.message });
+      },
+    );
   };
 
-  const renderServicePriceFields = useMemo(
-    () =>
-      servicePriceFields.map((field, index) => (
-        <PriceField
-          key={field.id}
-          field={field}
-          index={index}
-          control={control}
-          removeServicePrice={removeServicePrice}
-          errors={errors}
-        />
-      )),
-    [servicePriceFields, control, removeServicePrice, errors],
-  );
-
-  const handleError = (err) => {
-    console.error(JSON.stringify(err, null, 2));
-    showSnackbar({
-      title: t('serviceCreationFailed', 'Service creation failed'),
-      subtitle: t(
-        'serviceCreationFailedSubtitle',
-        'The service creation failed, view browser console for more details',
-      ),
-      kind: 'error',
-      isLowContrast: true,
-      timeoutInMs: 5000,
-    });
+  const getPaymentErrorMessage = () => {
+    const paymentError = errors.payment;
+    if (paymentError && typeof paymentError.message === 'string') {
+      return paymentError.message;
+    }
+    return null;
   };
+
+  if (isLoadingPaymentModes && isLoadingServicesTypes) {
+    return (
+      <InlineLoading
+        status="active"
+        iconDescription={t('loadingDescription', 'Loading')}
+        description={t('loading', 'Loading data...')}
+      />
+    );
+  }
 
   return (
-    <FormProvider {...formMethods}>
-      <form onSubmit={handleSubmit(onSubmit, handleError)} className={styles.form}>
-        <div className={styles.formContainer}>
-          <Stack className={styles.formStackControl} gap={7}>
-            <ResponsiveWrapper>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <TextInput
-                    {...field}
-                    type="text"
-                    labelText={t('serviceName', 'Service name')}
-                    invalid={!!errors.name}
-                    invalidText={errors?.name?.message}
-                  />
-                )}
-              />
-            </ResponsiveWrapper>
-            <ResponsiveWrapper>
-              <Controller
-                name="shortName"
-                control={control}
-                render={({ field }) => (
-                  <TextInput
-                    {...field}
-                    type="text"
-                    labelText={t('serviceShortName', 'Service short name')}
-                    invalid={!!errors.shortName}
-                    invalidText={errors?.shortName?.message}
-                  />
-                )}
-              />
-            </ResponsiveWrapper>
-
-            <ConceptSearch
-              selectedConcept={selectedConcept}
-              setConceptToLookup={setConceptToLookup}
-              conceptToLookup={conceptToLookup}
-              defaultValues={defaultValues}
-              errors={errors}
-              isSearching={isSearching}
-              concepts={concepts}
-              handleSelectConcept={handleSelectConcept}
-            />
-
-            <ResponsiveWrapper>
-              <Controller
-                name="serviceType"
-                control={control}
-                render={({ field }) => {
-                  return (
-                    <ComboBox
-                      onChange={({ selectedItem }) => field.onChange(selectedItem)}
-                      titleText={t('serviceType', 'Service type')}
-                      items={serviceTypes ?? []}
-                      itemToString={(item) => (item ? item.display : '')}
-                      placeholder={t('selectServiceType', 'Select service type')}
-                      disabled={isLoadingServiceTypes}
-                      initialSelectedItem={field.value}
-                      invalid={!!errors.serviceType}
-                      invalidText={errors?.serviceType?.message}
-                    />
-                  );
+    <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <h4>
+        {editingService
+          ? t('editBillableServices', 'Edit Billable Services')
+          : t('addBillableServices', 'Add Billable Services')}
+      </h4>
+      <section className={styles.section}>
+        <Layer>
+          <TextInput
+            id="serviceName"
+            type="text"
+            labelText={t('serviceName', 'Service Name')}
+            size="md"
+            value={billableServicePayload.name || ''}
+            onChange={(e) => {
+              const newName = e.target.value.substring(0);
+              setBillableServicePayload({
+                ...billableServicePayload,
+                name: newName,
+              });
+            }}
+            placeholder="Enter service name"
+          />
+        </Layer>
+      </section>
+      <section className={styles.section}>
+        <Layer>
+          <TextInput
+            id="serviceShortName"
+            type="text"
+            labelText={t('serviceShortName', 'Short Name')}
+            size="md"
+            value={billableServicePayload.shortName || ''}
+            onChange={(e) => {
+              const newShortName = e.target.value.substring(0);
+              setBillableServicePayload({
+                ...billableServicePayload,
+                shortName: newShortName,
+              });
+            }}
+            placeholder="Enter service short name"
+          />
+        </Layer>
+      </section>
+      <section>
+        <FormLabel className={styles.conceptLabel}>Associated Concept</FormLabel>
+        <Controller
+          name="search"
+          control={control}
+          render={({ field: { onChange, value, onBlur } }) => (
+            <ResponsiveWrapper isTablet={isTablet}>
+              <Search
+                ref={searchInputRef}
+                size="md"
+                id="conceptsSearch"
+                labelText={t('enterConcept', 'Associated concept')}
+                placeholder={t('searchConcepts', 'Search associated concept')}
+                className={errors?.search && styles.serviceError}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  onChange(e);
+                  handleSearchTermChange(e);
                 }}
+                renderIcon={errors?.search && <WarningFilled />}
+                onBlur={onBlur}
+                onClear={() => {
+                  setSearchTerm('');
+                  setSelectedConcept(null);
+                }}
+                value={(() => {
+                  if (selectedConcept) {
+                    return selectedConcept.display;
+                  }
+                  if (debouncedSearchTerm) {
+                    return value;
+                  }
+                })()}
               />
             </ResponsiveWrapper>
-            <ResponsiveWrapper>
+          )}
+        />
+
+        {(() => {
+          if (!debouncedSearchTerm || selectedConcept) return null;
+          if (isSearching)
+            return <InlineLoading className={styles.loader} description={t('searching', 'Searching') + '...'} />;
+          if (searchResults && searchResults.length) {
+            return (
+              <ul className={styles.conceptsList}>
+                {/*TODO: use uuid instead of index as the key*/}
+                {searchResults?.map((searchResult, index) => (
+                  <li
+                    role="menuitem"
+                    className={styles.service}
+                    key={index}
+                    onClick={() => handleConceptChange(searchResult)}>
+                    {searchResult.display}
+                  </li>
+                ))}
+              </ul>
+            );
+          }
+          return (
+            <Layer>
+              <Tile className={styles.emptyResults}>
+                <span>
+                  {t('noResultsFor', 'No results for')} <strong>"{debouncedSearchTerm}"</strong>
+                </span>
+              </Tile>
+            </Layer>
+          );
+        })()}
+      </section>
+      <section className={styles.section}>
+        <Layer>
+          <ComboBox
+            id="serviceType"
+            items={serviceTypes ?? []}
+            titleText={t('serviceType', 'Service Type')}
+            itemToString={(item) => item?.display || ''}
+            selectedItem={billableServicePayload.serviceType || null}
+            onChange={({ selectedItem }) => {
+              setBillableServicePayload({
+                ...billableServicePayload,
+                display: selectedItem?.display,
+                serviceType: selectedItem,
+              });
+            }}
+            placeholder="Select service type"
+            required
+          />
+        </Layer>
+      </section>
+
+      <section>
+        <div className={styles.container}>
+          {fields.map((field, index) => (
+            <div key={field.id} className={styles.paymentMethodContainer}>
               <Controller
                 control={control}
-                name="serviceStatus"
+                name={`payment.${index}.paymentMode`}
                 render={({ field }) => (
-                  <Toggle
-                    labelText={t('status', 'Status')}
-                    labelA="Off"
-                    labelB="On"
-                    defaultToggled={field.value === 'ENABLED'}
-                    id="serviceStatus"
-                    onToggle={(value) => (value ? field.onChange('ENABLED') : field.onChange('DISABLED'))}
-                  />
+                  <Layer>
+                    <Dropdown
+                      onChange={({ selectedItem }) => field.onChange(selectedItem.uuid)}
+                      titleText={t('paymentMode', 'Payment Mode')}
+                      label={t('selectPaymentMethod', 'Select payment method')}
+                      items={paymentModes ?? []}
+                      itemToString={(item) => (item ? item.name : '')}
+                      selectedItem={paymentModes.find((mode) => mode.uuid === field.value)}
+                      invalid={!!errors?.payment?.[index]?.paymentMode}
+                      invalidText={errors?.payment?.[index]?.paymentMode?.message}
+                    />
+                  </Layer>
                 )}
               />
-            </ResponsiveWrapper>
-            {renderServicePriceFields}
-            <Button size="sm" kind="tertiary" renderIcon={Add} onClick={() => appendServicePrice({})}>
-              {t('addPaymentMethod', 'Add payment method')}
-            </Button>
-            {!!errors.servicePrices && (
-              <InlineNotification
-                aria-label="closes notification"
-                kind="error"
-                lowContrast={true}
-                statusIconDescription="notification"
-                title={t('paymentMethodRequired', 'Payment method required')}
-                subTitle={t('atLeastOnePriceRequired', 'At least one price is required')}
+              <Controller
+                control={control}
+                name={`payment.${index}.price`}
+                render={({ field }) => (
+                  <Layer>
+                    <TextInput
+                      {...field}
+                      invalid={!!errors?.payment?.[index]?.price}
+                      invalidText={errors?.payment?.[index]?.price?.message}
+                      labelText={t('sellingPrice', 'Selling Price')}
+                      placeholder={t('sellingAmount', 'Enter selling price')}
+                    />
+                  </Layer>
+                )}
               />
-            )}
-          </Stack>
+              <div className={styles.removeButtonContainer}>
+                <TrashCan onClick={() => handleRemovePaymentMode(index)} className={styles.removeButton} size={20} />
+              </div>
+            </div>
+          ))}
+          <Button
+            size="md"
+            onClick={handleAppendPaymentMode}
+            className={styles.paymentButtons}
+            renderIcon={(props) => <Add size={24} {...props} />}
+            iconDescription="Add">
+            {t('addPaymentOptions', 'Add payment option')}
+          </Button>
+          {getPaymentErrorMessage() && <div className={styles.errorMessage}>{getPaymentErrorMessage()}</div>}
         </div>
-        <ButtonSet className={classNames({ [styles.tablet]: isTablet, [styles.desktop]: !isTablet })}>
-          <Button style={{ maxWidth: '50%' }} kind="secondary" onClick={onClose}>
-            {t('cancel', 'Cancel')}
-          </Button>
-          <Button disabled={isSubmitting || !isDirty} style={{ maxWidth: '50%' }} kind="primary" type="submit">
-            {isSubmitting ? (
-              <span style={{ display: 'flex', justifyItems: 'center' }}>
-                {t('submitting', 'Submitting...')} <InlineLoading status="active" iconDescription="Loading" />
-              </span>
-            ) : (
-              t('saveAndClose', 'Save & close')
-            )}
-          </Button>
-        </ButtonSet>
-      </form>
-    </FormProvider>
+      </section>
+
+      <section>
+        <Button kind="secondary" onClick={onClose}>
+          {t('cancel', 'Cancel')}
+        </Button>
+        <Button type="submit" disabled={!isValid || Object.keys(errors).length > 0}>
+          {t('save', 'Save')}
+        </Button>
+      </section>
+    </Form>
   );
 };
+
+function ResponsiveWrapper({ children, isTablet }: { children: React.ReactNode; isTablet: boolean }) {
+  return isTablet ? <Layer>{children} </Layer> : <>{children}</>;
+}
 
 export default AddServiceForm;
