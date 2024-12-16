@@ -21,3 +21,5 @@ export const colorsArray = [
     'high-contrast',
     'outline',
   ];
+
+export const PAYMENT_MODE_ATTRIBUTE_FORMATS = ['java.lang.String', 'java.lang.Integer', 'java.lang.Double'];
