@@ -7,7 +7,8 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
 } from '@carbon/react';
-import { isDesktop, showModal, useLayoutType, usePagination } from '@openmrs/esm-framework';
+import { Download } from '@carbon/react/icons';
+import { isDesktop, showModal, useLayoutType, usePagination , useConfig} from '@openmrs/esm-framework';
 import { usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -26,6 +27,9 @@ import { PaymentTotals } from './payment-totals';
 import { TableToolBarDateRangePicker } from './table-toolbar-date-range';
 import { TimesheetsFilter } from './timesheets-filter.component';
 
+import { exportToExcel } from '../../helpers/excelExport';
+import { convertToCurrency } from '../../helpers';
+
 export const PaymentHistoryViewer = () => {
   const [dateRange, setDateRange] = useState<Array<Date>>([dayjs().startOf('day').toDate(), new Date()]);
   const { paymentPointUUID } = useParams();
@@ -33,6 +37,8 @@ export const PaymentHistoryViewer = () => {
 
   const { isClockedInCurrentPaymentPoint } = useClockInStatus(paymentPointUUID);
   const { paymentPoints } = usePaymentPoints();
+
+  const {defaultCurrency} = useConfig()
 
   const paidBillsResponse = useBills('', isOnPaymentPointPage ? '' : PaymentStatus.PAID);
   const { bills } = paidBillsResponse;
@@ -61,19 +67,19 @@ export const PaymentHistoryViewer = () => {
     setDateRange(dates);
   };
 
-  const openClockInModal = () => {
-    const dispose = showModal('clock-in-modal', {
-      closeModal: () => dispose(),
-      paymentPoint: paymentPoints.find((paymentPoint) => paymentPoint.uuid === paymentPointUUID),
-    });
-  };
+  // const openClockInModal = () => {
+  //   const dispose = showModal('clock-in-modal', {
+  //     closeModal: () => dispose(),
+  //     paymentPoint: paymentPoints.find((paymentPoint) => paymentPoint.uuid === paymentPointUUID),
+  //   });
+  // };
 
-  const openClockOutModal = () => {
-    const dispose = showModal('clock-out-modal', {
-      closeModal: () => dispose(),
-      paymentPoint: paymentPoints.find((paymentPoint) => paymentPoint.uuid === paymentPointUUID),
-    });
-  };
+  // const openClockOutModal = () => {
+  //   const dispose = showModal('clock-out-modal', {
+  //     closeModal: () => dispose(),
+  //     paymentPoint: paymentPoints.find((paymentPoint) => paymentPoint.uuid === paymentPointUUID),
+  //   });
+  // };
 
   const resetFilters = () => {
     setAppliedFilters([]);
@@ -87,6 +93,44 @@ export const PaymentHistoryViewer = () => {
 
   const applyTimeSheetFilter = (sheet: Timesheet) => {
     setAppliedTimesheet(sheet);
+  };
+
+  const transformedRows = results.map((row) => {
+    return {
+      ...row,
+      totalAmount: convertToCurrency(row.payments.reduce((acc, payment) => acc + payment.amountTendered, 0), defaultCurrency),
+      referenceCodes: row.payments.map(({ attributes }) => attributes.map(({ value }) => value).join(' ')).join(', '),
+    };
+  });
+
+  const handleExport = () => {
+    const dataForExport = results.map((row) => {
+      return {
+        ...row,
+        totalAmount: convertToCurrency(row.payments.reduce((acc, payment) => acc + payment.amountTendered, 0), defaultCurrency),
+      };
+    });
+    const data = dataForExport.map((row: (typeof transformedRows)[0]) => {
+      return {
+        'Receipt Number': row.receiptNumber,
+        'Patient ID': row.identifier,
+        'Patient Name': row.patientName,
+        'Mode of Payment': row.payments
+          .map((payment: (typeof row.payments)[0]) => payment.instanceType.name)
+          .join(', '),
+        'Total Amount Due': row.lineItems.reduce((acc, item) => acc + item.price, 0),
+        'Date of Payment': dayjs(row.payments[0].dateCreated).format('DD-MM-YYYY'),
+        'Total Amount Paid': row.payments.reduce((acc, payment) => acc + payment.amountTendered, 0),
+        'Reason/Reference': row.payments
+          .map(({ attributes }) => attributes.map(({ value }) => value).join(' '))
+          .join(', '),
+      };
+    });
+
+    exportToExcel(data, {
+      fileName: `Transaction History - ${dayjs().format('DDD-MMM-YYYY:HH-mm-ss')}`,
+      sheetName: t('paymentHistory', 'Payment History'),
+    });
   };
 
   return (
@@ -115,7 +159,7 @@ export const PaymentHistoryViewer = () => {
                     dateRange={dateRange}
                   />
                   <TableToolBarDateRangePicker onChange={handleFilterByDateRange} currentValues={dateRange} />
-                  {isOnPaymentPointPage && !isClockedInCurrentPaymentPoint && (
+                  {/* {isOnPaymentPointPage && !isClockedInCurrentPaymentPoint && (
                     <Button className={styles.clockIn} onClick={openClockInModal}>
                       Clock In
                     </Button>
@@ -124,7 +168,10 @@ export const PaymentHistoryViewer = () => {
                     <Button className={styles.clockIn} onClick={openClockOutModal} kind="danger">
                       Clock Out
                     </Button>
-                  )}
+                  )} */}
+                  <Button className={styles.clockIn} size={responsiveSize} renderIcon={Download} iconDescription="Download" onClick={handleExport}>
+          {t('download', 'Download')}
+        </Button>
                 </TableToolbarContent>
               </TableToolbar>
             </div>
