@@ -105,7 +105,7 @@ export const billableServicesAppMenuItem = getSyncLifecycle(appMenu, options);
 
 export const createPaymentPoint = getSyncLifecycle(CreatePaymentPoint, options);
 
-export const drugOrder = getSyncLifecycle(DrugOrder, options);
+// export const drugOrder = getSyncLifecycle(DrugOrder, options);
 export const labOrder = getSyncLifecycle(LabOrder, options);
 export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
 export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);
