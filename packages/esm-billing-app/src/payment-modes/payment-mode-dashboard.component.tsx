@@ -55,6 +55,12 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     });
   };
 
+  const createPaymentModeModal = () => {
+    const dispose = showModal('create-payment-mode', {
+          closeModal: () => dispose(),
+        });
+  }
+
   if (isLoading) {
     return <DataTableSkeleton />;
   }
@@ -106,13 +112,7 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     <div>
       <CardHeader title="Payment Modes">
         <Button
-          onClick={() => {
-            console.log('Add Payment Mode button clicked');
-            launchWorkspace('payment-mode-workspace', { workspaceTitle: 'Add Payment Mode' });
-            console.log('launchWorkspace triggered with:', 'payment-mode-workspace', {
-              workspaceTitle: 'Add Payment Mode',
-            })
-          }}
+          onClick={() => {createPaymentModeModal()}}
           className={styles.addPaymentModeButton}
           size="md"
           kind="ghost">
