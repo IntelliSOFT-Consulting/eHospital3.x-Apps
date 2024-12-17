@@ -4,13 +4,7 @@ import PaymentModeWorkspace from './payment-mode.workspace';
 import userEvent from '@testing-library/user-event';
 import { createPaymentMode } from './payment-mode.resource';
 import { showSnackbar } from '@openmrs/esm-framework';
-
-const testProps = {
-  closeWorkspace: jest.fn(),
-  promptBeforeClosing: jest.fn(),
-  closeWorkspaceWithSavedChanges: jest.fn(),
-  setTitle: jest.fn(),
-};
+import CreatePaymentMode from './payment-mode.workspace';
 
 const mockCreatePaymentMode = jest.mocked(createPaymentMode);
 
@@ -26,7 +20,7 @@ describe('PaymentModeWorkspace', () => {
 
   test('should validate and submit correct form payload', async () => {
     const user = userEvent.setup();
-    render(<PaymentModeWorkspace {...testProps} />);
+    render(<CreatePaymentMode closeModal={''}/>);
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });
     const descriptionInput = screen.getByRole('textbox', { name: /Payment mode description/i });
     const submitButton = screen.getByRole('button', { name: /Save & Close/i });
@@ -61,7 +55,7 @@ describe('PaymentModeWorkspace', () => {
         },
       },
     });
-    render(<PaymentModeWorkspace {...testProps} />);
+    render(<CreatePaymentMode closeModal={''} />);
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });
     const descriptionInput = screen.getByRole('textbox', { name: /Payment mode description/i });
     const submitButton = screen.getByRole('button', { name: /Save & Close/i });
@@ -81,7 +75,7 @@ describe('PaymentModeWorkspace', () => {
 
   test('should submit payload with attributeTypes', async () => {
     const user = userEvent.setup();
-    render(<PaymentModeWorkspace {...testProps} />);
+    render(<CreatePaymentMode closeModal={''} />);
 
     // key in name, description and retired
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });

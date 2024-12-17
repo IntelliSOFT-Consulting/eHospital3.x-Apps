@@ -62,7 +62,7 @@ const CreatePaymentMode = ({ closeModal }) => {
           kind: 'success',
           isLowContrast: true,
         });
-        closeModal()
+        closeModal();
         handleMutation(`${restBaseUrl}/billing/paymentMode?v=full`);
       }
     } catch (error) {
