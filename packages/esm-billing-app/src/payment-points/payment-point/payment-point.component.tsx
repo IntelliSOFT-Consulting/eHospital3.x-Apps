@@ -3,6 +3,7 @@ import BillingHeader from '../../billing-header/billing-header.component';
 import { useParams } from 'react-router-dom';
 import { usePaymentPoints } from '../payment-points.resource';
 import { PaymentHistoryViewer } from '../../billable-services/payment-history/payment-history-viewer.component';
+import LeftPanel from '../../left-panel/left-panel.component';
 
 export const headers = [
   { header: 'Date', key: 'dateCreated' },
@@ -23,6 +24,7 @@ export const PaymentPoint = () => {
 
   return (
     <div>
+      <LeftPanel />
       <BillingHeader title={`Payment Points / ${paymentPoint.name}`} />
       <PaymentHistoryViewer />
     </div>
