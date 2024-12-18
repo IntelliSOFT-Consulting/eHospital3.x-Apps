@@ -55,6 +55,13 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     });
   };
 
+  const showEditPaymentModeModal = (paymentMode: PaymentMode) => {
+    const dispose = showModal('edit-payment-mode', {
+      closeModal: () => dispose(),
+      initialPaymentMode: paymentMode,
+    });
+  };
+
   const createPaymentModeModal = () => {
     const dispose = showModal('create-payment-mode', {
           closeModal: () => dispose(),
@@ -160,12 +167,7 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
                         <TableCell className="cds--table-column-menu">
                           <OverflowMenu size={size} iconDescription={t('actions', 'Actions')} flipped>
                             <OverflowMenuItem
-                              onClick={() =>
-                                launchWorkspace('payment-mode-workspace', {
-                                  workspaceTitle: t('editPaymentMode', 'Edit Payment Mode'),
-                                  initialPaymentMode: paymentModes[index],
-                                })
-                              }
+                              onClick={() => showEditPaymentModeModal(paymentModes[index]) }
                               itemText={t('edit', 'Edit')}
                             />
                             <OverflowMenuItem
