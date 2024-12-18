@@ -156,6 +156,10 @@
       "component": "clockOutModal"
     },
     {
+      "name": "create-payment-mode",
+      "component": "createPaymentMode"
+    },
+    {
       "name": "delete-payment-mode-modal",
       "component": "deletePaymentModeModal"
     },
@@ -166,10 +170,6 @@
     {
       "name": "paid-bill-receipt-print-preview-modal",
       "component": "paidBillReceiptPrintPreviewModal"
-    },
-    {
-      "name": "create-payment-mode",
-      "component": "createPaymentMode"
     }
   ]
 }

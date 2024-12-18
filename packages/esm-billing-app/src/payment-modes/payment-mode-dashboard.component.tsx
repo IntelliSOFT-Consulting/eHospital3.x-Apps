@@ -55,9 +55,11 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     });
   };
 
-  const createPaymentModeModal = () => {
+  const createPaymentModeModal = (paymentMode: PaymentMode, modalTitle: string) => {
     const dispose = showModal('create-payment-mode', {
           closeModal: () => dispose(),
+          initialPaymentMode: paymentMode,
+          modalTitle,
         });
   }
 
@@ -112,10 +114,9 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     <div>
       <CardHeader title="Payment Modes">
         <Button
-          onClick={() => {createPaymentModeModal()}}
-          className={styles.addPaymentModeButton}
-          size="md"
-          kind="ghost">
+          onClick={() => {createPaymentModeModal(paymentModes[''], t('createPaymentMode', 'Create Payment Mode'))}}
+          className={styles.createPaymentModeButton}
+          size="md">
           {t('addPaymentMode', 'Add Payment Mode')}
         </Button>
       </CardHeader>
@@ -160,12 +161,7 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
                         <TableCell className="cds--table-column-menu">
                           <OverflowMenu size={size} iconDescription={t('actions', 'Actions')} flipped>
                             <OverflowMenuItem
-                              onClick={() =>
-                                launchWorkspace('payment-mode-workspace', {
-                                  workspaceTitle: t('editPaymentMode', 'Edit Payment Mode'),
-                                  initialPaymentMode: paymentModes[index],
-                                })
-                              }
+                              onClick={() => createPaymentModeModal(paymentModes[index], t('editPaymentMode', 'Edit Payment Mode')) }
                               itemText={t('edit', 'Edit')}
                             />
                             <OverflowMenuItem
