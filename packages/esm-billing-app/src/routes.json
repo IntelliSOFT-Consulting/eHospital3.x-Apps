@@ -160,10 +160,6 @@
       "component": "createPaymentMode"
     },
     {
-      "name": "edit-payment-mode",
-      "component": "editPaymentMode"
-    },
-    {
       "name": "delete-payment-mode-modal",
       "component": "deletePaymentModeModal"
     },

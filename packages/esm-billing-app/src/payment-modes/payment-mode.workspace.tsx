@@ -12,14 +12,22 @@ import usePaymentModeFormSchema from './usePaymentModeFormSchema';
 import PaymentModeAttributeFields from './payment-attributes/payment-mode-attributes.component';
 import { Add } from '@carbon/react/icons';
 
-const CreatePaymentMode = ({ closeModal }) => {
+type CreatePaymentModeModalProps = {
+    closeModal: () => void;
+    initialPaymentMode?: PaymentMode;
+    modalTitle: string
+  };
+
+const CreatePaymentMode : React.FC<CreatePaymentModeModalProps> = ({ closeModal, initialPaymentMode = {} as PaymentMode, modalTitle }) => {
   const { t } = useTranslation();
   const { paymentModeFormSchema } = usePaymentModeFormSchema();
   type PaymentModeFormSchema = z.infer<typeof paymentModeFormSchema>;
+  const formDefaultValues = Object.keys(initialPaymentMode).length > 0 ? initialPaymentMode : {};
 
   const formMethods = useForm<PaymentModeFormSchema>({
     resolver: zodResolver(paymentModeFormSchema),
     mode: 'all',
+    defaultValues: formDefaultValues,
   });
 
   const { errors, isSubmitting } = formMethods.formState;
@@ -54,7 +62,7 @@ const CreatePaymentMode = ({ closeModal }) => {
     };
 
     try {
-      const response = await createPaymentMode(payload, '');
+      const response = await createPaymentMode(payload, initialPaymentMode?.uuid ?? '');
       if (response.ok) {
         showSnackbar({
           title: t('paymentModeCreated', 'Payment mode created successfully'),
@@ -96,7 +104,7 @@ const CreatePaymentMode = ({ closeModal }) => {
 
   return (
     <Form>
-      <ModalHeader closeModal={closeModal}>Create Payment Mode</ModalHeader>
+      <ModalHeader closeModal={closeModal}>{modalTitle}</ModalHeader>
       <ModalBody>
         <Controller
           name="name"
@@ -142,10 +150,10 @@ const CreatePaymentMode = ({ closeModal }) => {
           {isSubmitting ? (
             <>
               <Loading className={styles.button_spinner} withOverlay={false} small />
-              {t('creating', 'Creating')}
+              {t('submitting', 'Submitting...')}
             </>
           ) : (
-            t('create', 'Create')
+            t('saveAndClose', 'Save & close')
           )}
         </Button>
       </ModalFooter>

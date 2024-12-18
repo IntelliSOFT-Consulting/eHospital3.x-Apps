@@ -20,7 +20,8 @@ describe('PaymentModeWorkspace', () => {
 
   test('should validate and submit correct form payload', async () => {
     const user = userEvent.setup();
-    render(<CreatePaymentMode closeModal={''}/>);
+    const mockCloseModal = jest.fn();
+    render(<CreatePaymentMode closeModal={mockCloseModal} modalTitle='' />);
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });
     const descriptionInput = screen.getByRole('textbox', { name: /Payment mode description/i });
     const submitButton = screen.getByRole('button', { name: /Save & Close/i });
@@ -48,6 +49,7 @@ describe('PaymentModeWorkspace', () => {
 
   test('should show error message when submitting form fails', async () => {
     const user = userEvent.setup();
+    const mockCloseModal = jest.fn()
     mockCreatePaymentMode.mockRejectedValue({
       responseBody: {
         error: {
@@ -55,7 +57,7 @@ describe('PaymentModeWorkspace', () => {
         },
       },
     });
-    render(<CreatePaymentMode closeModal={''} />);
+    render(<CreatePaymentMode closeModal={mockCloseModal} modalTitle='' />);
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });
     const descriptionInput = screen.getByRole('textbox', { name: /Payment mode description/i });
     const submitButton = screen.getByRole('button', { name: /Save & Close/i });
@@ -75,7 +77,8 @@ describe('PaymentModeWorkspace', () => {
 
   test('should submit payload with attributeTypes', async () => {
     const user = userEvent.setup();
-    render(<CreatePaymentMode closeModal={''} />);
+    const mockCloseModal = jest.fn()
+    render(<CreatePaymentMode closeModal={mockCloseModal} modalTitle='' />);
 
     // key in name, description and retired
     const nameInput = screen.getByRole('textbox', { name: /Payment mode name/i });
