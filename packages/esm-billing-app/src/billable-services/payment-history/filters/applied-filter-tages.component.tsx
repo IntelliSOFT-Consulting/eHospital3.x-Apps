@@ -1,7 +1,7 @@
 import { Tag } from '@carbon/react';
 import React from 'react';
-import { colorsArray } from '../../constants';
-import { useServiceTypes } from '../billable-service.resource';
+import { colorsArray } from '../../../constants';
+import { useServiceTypes } from '../../billable-service.resource';
 import styles from './payment-history.scss';
 
 export const AppliedFilterTags = ({ appliedFilters }: { appliedFilters: Array<string> }) => {

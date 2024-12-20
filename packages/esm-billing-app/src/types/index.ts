@@ -67,6 +67,7 @@ export interface LineItem {
   priceUuid: string;
   lineItemOrder: number;
   resourceVersion: string;
+  serviceTypeUuid: string;
   paymentStatus: string;
 }
 
@@ -368,4 +369,12 @@ export interface Cashier {
   uuid: string;
   display: string;
   links: Link[];
+}
+
+export interface Filter {
+  paymentMethods?: Array<string>;
+  amountRange?: { min: number; max: number };
+  serviceTypes?: Array<string>;
+  cashiers?: Array<string>;
+  status?: string;
 }

@@ -6,24 +6,14 @@ import sortBy from 'lodash-es/sortBy';
 import { apiBasePath, omrsDateFormat } from './constants';
 import { useContext } from 'react';
 import SelectedDateContext from './hooks/selectedDateContext';
-import { PaymentMethod } from './types';
+import { PaymentMethod, PaymentStatus } from './types';
 import { BillingConfig } from './config-schema';
 import dayjs from 'dayjs';
 import { z } from 'zod';
 
-export const useBills = (patientUuid: string = '', billStatus: string = '') => {
-  const { selectedDate } = useContext(SelectedDateContext);
-  const endDate = dayjs().endOf('day').format(omrsDateFormat);
-  const url = `${apiBasePath}bill?q=&v=full`;
-
-  const patientUrl = `${apiBasePath}bill?patientUuid=${patientUuid}&v=full`;
-
-  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
-    isEmpty(patientUuid) ? url : patientUrl,
-    openmrsFetch,
-  );
-
-  const mapBillProperties = (bill: PatientInvoice): MappedBill => ({
+export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
+  // create base object
+  const mappedBill: MappedBill = {
     id: bill?.id,
     uuid: bill?.uuid,
     patientName: bill?.patient?.display.split('-')?.[1],
@@ -42,14 +32,36 @@ export const useBills = (patientUuid: string = '', billStatus: string = '') => {
     payments: bill?.payments,
     display: bill?.display,
     totalAmount: bill?.lineItems?.map((item) => item.price * item.quantity).reduce((prev, curr) => prev + curr, 0),
-  });
+  };
 
-  const sortedBills = sortBy(data?.data?.results ?? [], ['dateCreated']).reverse();
-  const filteredBills = billStatus === '' ? sortedBills : sortedBills?.filter((bill) => bill?.status === billStatus);
+  return mappedBill;
+};
+
+export const useBills = (
+  patientUuid: string = '',
+  billStatus: PaymentStatus.PENDING | '' | string = '',
+  startingDate: Date = dayjs().startOf('day').toDate(),
+  endDate: Date = dayjs().endOf('day').toDate(),
+) => {
+
+  const url = `${restBaseUrl}/billing/bill?status=${billStatus}&v=custom:(uuid,display,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDate}&createdOnOrBefore=${endDate}`;
+
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
+    patientUuid ? `${url}&patientUuid=${patientUuid}` : url,
+    openmrsFetch,
+    {
+      errorRetryCount: 2,
+    },
+  );
+
+  const sortBills = sortBy(data?.data?.results ?? [], ['dateCreated']).reverse();
+  const filteredBills = billStatus === '' ? sortBills : sortBills?.filter((bill) => bill?.status === billStatus);
   const mappedResults = filteredBills?.map((bill) => mapBillProperties(bill));
+  const filteredResults = mappedResults?.filter((res) => res.patientUuid === patientUuid);
+  const formattedBills = isEmpty(patientUuid) ? mappedResults : filteredResults || [];
 
   return {
-    bills: mappedResults,
+    bills: formattedBills,
     error,
     isLoading,
     isValidating,
