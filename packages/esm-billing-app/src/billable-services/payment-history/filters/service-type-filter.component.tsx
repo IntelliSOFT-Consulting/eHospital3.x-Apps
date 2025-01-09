@@ -1,7 +1,7 @@
 import { MultiSelect, SkeletonIcon } from '@carbon/react';
 import React from 'react';
 import styles from '../payment-history.scss';
-import { useServiceTypes } from '../../billable-service.resource';
+import { useBillsServiceTypes } from '../useBillServiceTypes';
 import { useTranslation } from 'react-i18next';
 import { usePaymentFilterContext } from '../usePaymentFilterContext';
 import { usePaymentTransactionHistory } from '../usePaymentTransactionHistory';
@@ -10,7 +10,7 @@ export const ServiceTypeFilter = () => {
   const { t } = useTranslation();
   const { filters, setFilters } = usePaymentFilterContext();
   const { bills: filteredBills } = usePaymentTransactionHistory(filters);
-  const { serviceTypes, isLoading } = useServiceTypes();
+  const { billsServiceTypes, isLoading } = useBillsServiceTypes(filteredBills);
 
   if (isLoading) {
     return <SkeletonIcon className={styles.skeletonIcon} />;
@@ -27,7 +27,7 @@ export const ServiceTypeFilter = () => {
       text: 'Select All',
       isSelectAll: true,
     },
-    ...serviceTypes.map((type) => ({
+    ...billsServiceTypes.map((type) => ({
       id: type.uuid,
       text: type.display,
     })),
@@ -35,7 +35,7 @@ export const ServiceTypeFilter = () => {
 
   const handleServiceTypeSelection = (selectedItems: Array<{ id: string; text: string }>) => {
     if (selectedItems.some((item) => item.id === 'select-all')) {
-      const allServiceTypes = serviceTypes.map((type) => type.uuid);
+      const allServiceTypes = billsServiceTypes.map((type) => type.uuid);
       setFilters({ ...filters, serviceTypes: allServiceTypes });
       return;
     }
@@ -44,7 +44,7 @@ export const ServiceTypeFilter = () => {
     setFilters({ ...filters, serviceTypes: selectedServiceTypes });
   };
 
-  if (serviceTypes.length === 0) {
+  if (billsServiceTypes.length === 0) {
     return null;
   }
 

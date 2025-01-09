@@ -19,11 +19,6 @@ export const CashierFilter: React.FC = () => {
   );
 
   const cashierSelectOptions: MultiSelectItem[] = [
-    {
-      id: 'select-all',
-      text: t('allCashiers', 'All Cashiers'),
-      isSelectAll: true,
-    },
     ...uniqueCashiers.map((cashier) => ({
       id: cashier.uuid,
       text: cashier.display,
