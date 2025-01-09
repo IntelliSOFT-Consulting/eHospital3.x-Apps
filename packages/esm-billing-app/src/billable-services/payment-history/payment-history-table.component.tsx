@@ -117,7 +117,7 @@ export const PaymentHistoryTable = ({
 
   return (
     <div>
-    <LeftPanel/>
+      <LeftPanel />
       <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <Search
           size="sm"

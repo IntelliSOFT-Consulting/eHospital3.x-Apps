@@ -1,5 +1,13 @@
 import useSWR from 'swr';
-import { formatDate, parseDate, openmrsFetch, useSession, useVisit, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import {
+  formatDate,
+  parseDate,
+  openmrsFetch,
+  useSession,
+  useVisit,
+  restBaseUrl,
+  useConfig,
+} from '@openmrs/esm-framework';
 import type { FacilityDetail, MappedBill, PatientInvoice } from './types';
 import isEmpty from 'lodash-es/isEmpty';
 import sortBy from 'lodash-es/sortBy';
@@ -39,12 +47,14 @@ export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
 
 export const useBills = (
   patientUuid: string = '',
-  billStatus: PaymentStatus.PENDING | '' | string = '',
+  billStatus: PaymentStatus.PAID | '' | string = '',
   startingDate: Date = dayjs().startOf('day').toDate(),
   endDate: Date = dayjs().endOf('day').toDate(),
 ) => {
+  const startingDateISO = startingDate.toISOString();
+  const endDateISO = endDate.toISOString();
 
-  const url = `${restBaseUrl}/billing/bill?status=${billStatus}&v=custom:(uuid,display,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDate}&createdOnOrBefore=${endDate}`;
+  const url = `${restBaseUrl}/billing/bill?status=${billStatus}&v=custom:(uuid,display,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
     patientUuid ? `${url}&patientUuid=${patientUuid}` : url,
@@ -55,9 +65,14 @@ export const useBills = (
   );
 
   const sortBills = sortBy(data?.data?.results ?? [], ['dateCreated']).reverse();
-  const filteredBills = billStatus === '' ? sortBills : sortBills?.filter((bill) => bill?.status === billStatus);
-  const mappedResults = filteredBills?.map((bill) => mapBillProperties(bill));
-  const filteredResults = mappedResults?.filter((res) => res.patientUuid === patientUuid);
+  const dateFilteredBills = sortBills.filter((bill) => {
+    const dateCreated = new Date(bill.dateCreated);
+    return dateCreated >= startingDate && dateCreated <= endDate;
+  });
+  const filteredByStatus =
+    billStatus === '' ? dateFilteredBills : dateFilteredBills.filter((bill) => bill?.status === billStatus);
+  const mappedResults = filteredByStatus.map((bill) => mapBillProperties(bill));
+  const filteredResults = mappedResults.filter((res) => res.patientUuid === patientUuid);
   const formattedBills = isEmpty(patientUuid) ? mappedResults : filteredResults || [];
 
   return {
@@ -184,8 +199,9 @@ export const usePaymentModes = (excludeWaiver: boolean = true) => {
   });
   const allowedPaymentModes =
     excludedPaymentMode?.length > 0
-      ? data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ?? []
-      : data?.data?.results ?? [];
+      ? (data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ??
+        [])
+      : (data?.data?.results ?? []);
   return {
     paymentModes: excludeWaiver ? allowedPaymentModes : data?.data?.results,
     isLoading,

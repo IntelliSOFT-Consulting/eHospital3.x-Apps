@@ -8,6 +8,7 @@ export const FilterDashboard = () => {
   return (
     <div className={styles.filterDashboard}>
       <div className={styles.filterContainer}>
+        <TableToolBarDateRangePicker />
         <Filter />
         <TimesheetsFilter />
       </div>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
 import { DatePicker, DatePickerInput } from '@carbon/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from '../payment-history.scss';
 import { usePaymentFilterContext } from '../usePaymentFilterContext';
@@ -8,23 +8,10 @@ export const TableToolBarDateRangePicker = () => {
   const { t } = useTranslation();
   const { dateRange, setDateRange } = usePaymentFilterContext();
 
-  // Local state to handle date selection
-  const [selectedDates, setSelectedDates] = useState<[Date | null, Date | null]>([null, null]);
-
-  useEffect(() => {
-    if (selectedDates[0] && selectedDates[1]) {
-      console.log('Setting date range:', selectedDates);
-      setDateRange(selectedDates as [Date, Date]);
+  const handleDateRangeChange = ([start, end]: Array<Date>) => {
+    if (start && end) {
+      setDateRange([start, end]);
     }
-  }, [selectedDates, setDateRange]);
-
-  const handleDateChange = (dates: (Date | null)[]) => {
-    console.log('Date change:', dates); // Debugging log
-    setSelectedDates(dates as [Date | null, Date | null]);
-  };
-
-  const handleDatePickerClose = () => {
-    console.log('DatePicker closed');
   };
 
   return (
@@ -32,10 +19,8 @@ export const TableToolBarDateRangePicker = () => {
       maxDate={new Date()}
       datePickerType="range"
       className={styles.dateRangePicker}
-      value={selectedDates}
-      onChange={handleDateChange}
-      onClose={handleDatePickerClose}
-    >
+      value={[...dateRange]}
+      onChange={handleDateRangeChange}>
       <DatePickerInput
         id="date-picker-input-id-start"
         placeholder="mm/dd/yyyy"
