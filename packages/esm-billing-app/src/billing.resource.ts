@@ -56,8 +56,6 @@ export const useBills = (
 
   const url = `${restBaseUrl}/billing/bill?status=${billStatus}&v=custom:(uuid,display,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
 
-  console.log(url);
-
   const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
     patientUuid ? `${url}&patientUuid=${patientUuid}` : url,
     openmrsFetch,
@@ -66,25 +64,15 @@ export const useBills = (
     },
   );
 
-  // Step 1: Sort bills by date
   const sortBills = sortBy(data?.data?.results ?? [], ['dateCreated']).reverse();
-
-  // Step 2: Filter bills by dateCreated explicitly (new filter)
   const dateFilteredBills = sortBills.filter((bill) => {
     const dateCreated = new Date(bill.dateCreated);
     return dateCreated >= startingDate && dateCreated <= endDate;
   });
-
-  // Step 3: Apply existing filters (status and patientUuid)
-  const filteredByStatus = billStatus === '' ? dateFilteredBills : dateFilteredBills.filter((bill) => bill?.status === billStatus);
-
-  // Step 4: Map bill properties (existing filter)
+  const filteredByStatus =
+    billStatus === '' ? dateFilteredBills : dateFilteredBills.filter((bill) => bill?.status === billStatus);
   const mappedResults = filteredByStatus.map((bill) => mapBillProperties(bill));
-
-  // Step 5: Further filter by patientUuid (existing filter)
   const filteredResults = mappedResults.filter((res) => res.patientUuid === patientUuid);
-
-  // Step 6: Final result
   const formattedBills = isEmpty(patientUuid) ? mappedResults : filteredResults || [];
 
   return {
@@ -95,7 +83,6 @@ export const useBills = (
     mutate,
   };
 };
-
 
 export const useBill = (billUuid: string) => {
   const url = `${apiBasePath}bill/${billUuid}`;
