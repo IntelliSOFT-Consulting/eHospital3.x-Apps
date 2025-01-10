@@ -92,6 +92,7 @@ const PaymentForm: React.FC<PaymentFormProps> = ({
                   invalidText={errors?.payment?.[index]?.amount?.message}
                   label={t('amount', 'Amount')}
                   placeholder={t('enterAmount', 'Enter amount')}
+                  allowEmpty
                 />
               )}
             />

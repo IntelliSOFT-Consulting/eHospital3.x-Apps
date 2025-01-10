@@ -81,5 +81,7 @@ export const updateBillableService = (uuid: string, payload: any) => {
     headers: {
       'Content-Type': 'application/json',
     },
+  }).then(() => {
+    window.location.reload();
   });
 };
