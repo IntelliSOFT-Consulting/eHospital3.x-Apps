@@ -1,0 +1,11 @@
+@import '../root.scss';
+
+button.logout {
+  color: $field-01 !important;
+  font-size: 1rem;
+  width: 16rem;
+
+  &:hover {
+    background-color: inherit;
+  }
+}
