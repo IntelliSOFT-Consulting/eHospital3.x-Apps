@@ -67,18 +67,6 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     return <DataTableSkeleton />;
   }
 
-  if (paymentModes.length === 0) {
-    return (
-      <EmptyState
-        displayText={t('noPaymentModes', 'No payment modes')}
-        headerTitle={t('paymentModes', 'Payment Modes')}
-        launchForm={() =>
-          launchWorkspace('payment-mode-workspace', { workspaceTitle: t('addPaymentMode', 'Add Payment Mode') })
-        }
-      />
-    );
-  }
-
   const headers = [
     {
       key: 'dateCreated',
@@ -111,84 +99,103 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
   }));
 
   return (
-    <div>
+    <div className={styles.container}>
       <CardHeader title="Payment Modes">
         <Button
-          onClick={() => {createPaymentModeModal(paymentModes[''], t('createPaymentMode', 'Create Payment Mode'))}}
+          onClick={() =>
+            createPaymentModeModal(paymentModes[''], t('createPaymentMode', 'Create Payment Mode'))
+          }
           className={styles.createPaymentModeButton}
           size="md">
           {t('addPaymentMode', 'Add Payment Mode')}
         </Button>
       </CardHeader>
-      <div className={styles.dataTable}>
-        <Search
-          size={size}
-          placeholder={t('searchPaymentMode', 'Search payment mode table')}
-          labelText={t('searchLabel', 'Search')}
-          closeButtonLabelText={t('clearSearch', 'Clear search input')}
-          id="search-1"
-          onChange={(event) => handleSearch(event.target.value)}
+      {paymentModes.length === 0 ? (
+        <EmptyState
+          displayText={t('noPaymentModes', 'No payment modes')}
+          headerTitle={t('', '')}
+          launchForm={() =>
+            launchWorkspace('payment-mode-workspace', {
+              workspaceTitle: t('addPaymentMode', 'Add Payment Mode'),
+            })
+          }
         />
-        <DataTable useZebraStyles size={size} rows={rows} headers={headers}>
-          {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getExpandedRowProps }) => (
-            <TableContainer>
-              <Table {...getTableProps()} aria-label="sample table">
-                <TableHead>
-                  <TableRow>
-                    <TableExpandHeader aria-label="expand row" />
-                    {headers.map((header, i) => (
-                      <TableHeader
-                        key={i}
-                        {...getHeaderProps({
-                          header,
-                        })}>
-                        {header.header}
-                      </TableHeader>
+      ) : (
+        <div className={styles.dataTable}>
+          <Search
+            size={size}
+            placeholder={t('searchPaymentMode', 'Search payment mode table')}
+            labelText={t('searchLabel', 'Search')}
+            closeButtonLabelText={t('clearSearch', 'Clear search input')}
+            id="search-1"
+            onChange={(event) => handleSearch(event.target.value)}
+          />
+          <DataTable useZebraStyles size={size} rows={rows} headers={headers}>
+            {({ rows, headers, getHeaderProps, getRowProps, getTableProps, getExpandedRowProps }) => (
+              <TableContainer>
+                <Table {...getTableProps()} aria-label="sample table">
+                  <TableHead>
+                    <TableRow>
+                      <TableExpandHeader aria-label="expand row" />
+                      {headers.map((header, i) => (
+                        <TableHeader
+                          key={i}
+                          {...getHeaderProps({
+                            header,
+                          })}>
+                          {header.header}
+                        </TableHeader>
+                      ))}
+                      <TableHeader aria-label="overflow actions" />
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => (
+                      <React.Fragment key={row.id}>
+                        <TableExpandRow
+                          {...getRowProps({
+                            row,
+                          })}>
+                          {row.cells.map((cell) => (
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                          ))}
+                          <TableCell className="cds--table-column-menu">
+                            <OverflowMenu size={size} iconDescription={t('actions', 'Actions')} flipped>
+                              <OverflowMenuItem
+                                onClick={() =>
+                                  createPaymentModeModal(
+                                    paymentModes[index],
+                                    t('editPaymentMode', 'Edit Payment Mode'),
+                                  )
+                                }
+                                itemText={t('edit', 'Edit')}
+                              />
+                              <OverflowMenuItem
+                                hasDivider
+                                isDelete
+                                onClick={() => showDeletePaymentModeModal(paymentModes[index])}
+                                itemText={t('delete', 'Delete')}
+                              />
+                            </OverflowMenu>
+                          </TableCell>
+                        </TableExpandRow>
+                        <TableExpandedRow
+                          colSpan={headers.length + 1}
+                          className="demo-expanded-td"
+                          {...getExpandedRowProps({
+                            row,
+                          })}>
+                          <PaymentModeAttributes {...paymentModes[index]} />
+                        </TableExpandedRow>
+                      </React.Fragment>
                     ))}
-                    <TableHeader aria-label="overflow actions" />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row, index) => (
-                    <React.Fragment key={row.id}>
-                      <TableExpandRow
-                        {...getRowProps({
-                          row,
-                        })}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                        <TableCell className="cds--table-column-menu">
-                          <OverflowMenu size={size} iconDescription={t('actions', 'Actions')} flipped>
-                            <OverflowMenuItem
-                              onClick={() => createPaymentModeModal(paymentModes[index], t('editPaymentMode', 'Edit Payment Mode')) }
-                              itemText={t('edit', 'Edit')}
-                            />
-                            <OverflowMenuItem
-                              hasDivider
-                              isDelete
-                              onClick={() => showDeletePaymentModeModal(paymentModes[index])}
-                              itemText={t('delete', 'Delete')}
-                            />
-                          </OverflowMenu>
-                        </TableCell>
-                      </TableExpandRow>
-                      <TableExpandedRow
-                        colSpan={headers.length + 1}
-                        className="demo-expanded-td"
-                        {...getExpandedRowProps({
-                          row,
-                        })}>
-                        <PaymentModeAttributes {...paymentModes[index]} />
-                      </TableExpandedRow>
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </DataTable>
-      </div>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </DataTable>
+        </div>
+      )}
     </div>
   );
 };
