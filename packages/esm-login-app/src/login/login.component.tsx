@@ -245,14 +245,14 @@ const Login: React.FC = () => {
             </form>
           </Tile>
           <div className={styles.footer}>
-          <div className="card">
-            <p className={styles.poweredByTxt}>{t('poweredBy', 'Powered by')}</p>
-            <div>
-            <img src={logo} alt="Powered By Logo" className={styles.poweredByLogo} />
+            <div className="card">
+              <p className={styles.poweredByTxt}>{t('poweredBy', 'Powered by')}</p>
+              <div>
+              <img src={logo} alt="Powered By Logo" className={styles.poweredByLogo} />
+              </div>
             </div>
-          </div>
-          <div className={styles.divider}></div>
-          <div className="card">
+            <div className={styles.divider}></div>
+            <div className="card">
             <p className={styles.poweredByTxt}>{t('distributionText', 'A distribution of')}</p>
             <div>
               <svg width="128" height="40" viewBox="0 0 128 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -438,7 +438,7 @@ const Login: React.FC = () => {
                 />
               </svg>
             </div>
-          </div>
+            </div>
           </div>
         </div>
         <Footer />
