@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": "^2.2.0"
+  },
+  "pages": [],
+  "extensions": [
+    {
+      "name": "ai-model",
+      "slot": "action-menu-patient-chart-items-slot",
+      "component": "aiModelLaunchButton",
+      "online": true,
+      "offline": false
+    }
+  ],
+  "workspaces": [
+    {
+      "name": "ai-model",
+      "title": "AI Model",
+      "component": "aiModelWorkspace",
+      "type": "ai-model",
+      "canHide": true,
+      "width":"wider"
+    }
+  ]
+}

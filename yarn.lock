@@ -2261,6 +2261,23 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ehospital/esm-ai-model-app@workspace:packages/esm-ai-model-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-ai-model-app@workspace:packages/esm-ai-model-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    "@openmrs/esm-patient-common-lib": ^8.x
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-patient-common-lib": 7.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+  languageName: unknown
+  linkType: soft
+
 "@ehospital/esm-billing-app@workspace:packages/esm-billing-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-billing-app@workspace:packages/esm-billing-app"
@@ -6323,7 +6340,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-patient-common-lib@npm:^8.2.0":
+"@openmrs/esm-patient-common-lib@npm:^8.2.0, @openmrs/esm-patient-common-lib@npm:^8.x":
   version: 8.2.0
   resolution: "@openmrs/esm-patient-common-lib@npm:8.2.0"
   dependencies:
