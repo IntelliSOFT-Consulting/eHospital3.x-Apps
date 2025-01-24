@@ -16,7 +16,7 @@
   "workspaces": [
     {
       "name": "ai-model",
-      "title": "AI Model",
+      "title": "eChat",
       "component": "aiModelWorkspace",
       "type": "ai-model",
       "canHide": true,
