@@ -60,5 +60,5 @@
     "@types/uuid": "^9.0.4",
     "webpack": "^5.88.2"
   },
-  "gitHead": "b6304f1acad784ecdf3f39838e50f62ece78f140"
+  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }
