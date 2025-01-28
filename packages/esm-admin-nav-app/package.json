@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-admin-nav-app",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Admin micro-frontend to navigate to all admin apps",
   "browser": "dist/ehospital-esm-admin-nav-app.js",
   "main": "src/index.ts",
@@ -38,11 +38,11 @@
   },
   "dependencies": {
     "@carbon/react": "^1.42.1",
-    "@openmrs/esm-patient-common-lib": "^8.0.0",
+    "@openmrs/esm-patient-common-lib": "next",
     "lodash-es": "^4.17.15"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "next",
     "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x"

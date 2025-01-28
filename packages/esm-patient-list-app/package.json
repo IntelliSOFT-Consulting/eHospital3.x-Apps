@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-patient-list-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MPL-2.0",
   "description": "Custom Patient list microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-list-app.js",
@@ -45,7 +45,7 @@
   },
   "peerDependencies": {
     "@carbon/react": "1.x",
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "*",
     "@openmrs/esm-patient-common-lib": "*",
     "dayjs": "1.x",
     "lodash-es": "4.x",
