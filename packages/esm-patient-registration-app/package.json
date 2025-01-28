@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-patient-registration-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Patient registration microfrontend for O3",
   "browser": "dist/sjthc-esm-patient-registration-app.js",
   "main": "src/index.ts",
@@ -45,7 +45,7 @@
     "yup": "^0.29.1"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "*",
     "react": "18.x",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
@@ -54,5 +54,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "12c269b30d0cbaf91537798bd9f2ca42d62213c4"
+  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }

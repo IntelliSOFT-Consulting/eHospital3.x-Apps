@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-billing-app",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/ehospital-esm-billing-app.js",
   "main": "src/index.ts",
@@ -55,8 +55,8 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
-    "@openmrs/esm-patient-common-lib": "7.x",
+    "@openmrs/esm-framework": "next",
+    "@openmrs/esm-patient-common-lib": "next",
     "react": "18.x",
     "react-dom": "18.x",
     "react-i18next": "11.x",
@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@openmrs/esm-framework": "next",
-    "@openmrs/esm-patient-common-lib": "^8.2.0",
+    "@openmrs/esm-patient-common-lib": "next",
     "@playwright/test": "^1.41.1",
     "@swc/cli": "^0.3.2",
     "@swc/core": "^1.3.106",
@@ -121,5 +121,5 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   },
   "packageManager": "yarn@4.1.1",
-  "gitHead": "afe26646a2d1b6c25cb7ff9c133e6add840c1131"
+  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }

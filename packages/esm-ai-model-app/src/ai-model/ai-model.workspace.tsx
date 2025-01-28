@@ -45,11 +45,11 @@ const AIModel: React.FC = () => {
 				</div>
 			</div>
 
-			<div className={styles.chat}>
+			{/* <div className={styles.chat}>
 				<p>Type any question or request to improve the summary if not accurate</p>
 
 				<CustomTextArea />
-			</div>
+			</div> */}
 		</div>
 	)
 }

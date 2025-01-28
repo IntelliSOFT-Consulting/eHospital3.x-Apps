@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-import-export-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Import and Export Micro-frontend for OpenMRS3",
   "browser": "dist/sjthc-esm-import-export-app.js",
   "main": "src/index.ts",
@@ -41,8 +41,8 @@
     "lodash-es": "^4.17.21"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
-    "@openmrs/esm-patient-common-lib": "7.x",
+    "@openmrs/esm-framework": "next",
+    "@openmrs/esm-patient-common-lib": "next",
     "react": "18.x",
     "react-dom": "18.x",
     "react-i18next": "11.x",
@@ -52,5 +52,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "5c98b15de606d8ed20e545aab6be67546a6dc3df"
+  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }

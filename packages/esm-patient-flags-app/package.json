@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-patient-flags-app",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-patient-flags-app.js",
   "main": "src/index.ts",
@@ -41,7 +41,7 @@
     "lodash-es": "^4.17.15"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
+    "@openmrs/esm-framework": "next",
     "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x"
@@ -49,5 +49,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "6d1ff3b609779a0c042281ed67c8cde0450bfe18"
+  "gitHead": "f6949e482a046de66c16a550ce8875fc3a27e7a4"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-login-app",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MPL-2.0",
   "description": "The login microfrontend for the OpenMRS SPA",
   "browser": "dist/ehospital-esm-login-app.js",
@@ -55,7 +55,7 @@
     "swr": "2.x"
   },
   "devDependencies": {
-    "@openmrs/esm-framework": "6.x",
+    "@openmrs/esm-framework": "next",
     "@openmrs/webpack-config": "6.x",
     "jest": "^29.7.0",
     "react": "^18.1.0",
@@ -66,5 +66,5 @@
     "swr": "^2.2.5",
     "webpack": "^5.88.0"
   },
-  "gitHead": "14bbf80758f656e1710e9d147c23b9cef18a5b94"
+  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }
