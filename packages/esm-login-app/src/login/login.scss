@@ -13,11 +13,30 @@
   }
 }
 
+@media screen and (max-width: 960px) {
+  .container {
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../assets/background.png');
+    background-size: 90%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #05586A;
+  }
+}
+
 .illustrations {
   width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-width: 960px) {
+    display: none;
+    width: 100%;
+  }
 }
 
 .formsWrapper {
