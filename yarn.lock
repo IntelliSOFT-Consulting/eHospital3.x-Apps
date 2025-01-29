@@ -2250,11 +2250,11 @@ __metadata:
   resolution: "@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
   dependencies:
     "@carbon/react": ^1.42.1
-    "@openmrs/esm-patient-common-lib": ^8.0.0
+    "@openmrs/esm-patient-common-lib": next
     lodash-es: ^4.17.15
     webpack: ^5.74.0
   peerDependencies:
-    "@openmrs/esm-framework": 5.x
+    "@openmrs/esm-framework": "*"
     react: ^18.1.0
     react-i18next: 11.x
     react-router-dom: 6.x
@@ -2266,12 +2266,12 @@ __metadata:
   resolution: "@ehospital/esm-ai-model-app@workspace:packages/esm-ai-model-app"
   dependencies:
     "@carbon/react": ^1.42.1
-    "@openmrs/esm-patient-common-lib": ^8.x
+    "@openmrs/esm-patient-common-lib": next
     lodash-es: ^4.17.15
     webpack: ^5.74.0
   peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": 7.x
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
     react: ^18.1.0
     react-i18next: 11.x
     react-router-dom: 6.x
@@ -2285,7 +2285,7 @@ __metadata:
     "@carbon/react": ^1.63.1
     "@hookform/resolvers": ^3.3.4
     "@openmrs/esm-framework": next
-    "@openmrs/esm-patient-common-lib": ^8.2.0
+    "@openmrs/esm-patient-common-lib": next
     "@playwright/test": ^1.41.1
     "@swc/cli": ^0.3.2
     "@swc/core": ^1.3.106
@@ -2344,8 +2344,8 @@ __metadata:
     xlsx: ^0.18.5
     zod: ^3.22.4
   peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": 7.x
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
     react: 18.x
     react-dom: 18.x
     react-i18next: 11.x
@@ -2362,8 +2362,8 @@ __metadata:
     lodash-es: ^4.17.21
     webpack: ^5.74.0
   peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    "@openmrs/esm-patient-common-lib": 7.x
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
     react: 18.x
     react-dom: 18.x
     react-i18next: 11.x
@@ -2400,6 +2400,23 @@ __metadata:
     react-router-dom: 6.x
     rxjs: 6.x
     swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@ehospital/esm-messages-app@workspace:packages/esm-messages-app":
+  version: 0.0.0-use.local
+  resolution: "@ehospital/esm-messages-app@workspace:packages/esm-messages-app"
+  dependencies:
+    "@carbon/react": ^1.42.1
+    "@openmrs/esm-patient-common-lib": next
+    lodash-es: ^4.17.15
+    webpack: ^5.74.0
+  peerDependencies:
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
   languageName: unknown
   linkType: soft
 
@@ -6143,36 +6160,6 @@ __metadata:
     "@openmrs/esm-state": 6.x
     rxjs: 6.x
   checksum: 1f01dab4a918113a6f7a3d4890856fbb39038973750d2622ceb6ad381afac3837dc78f5b1ef6d3d70a3c8ed7857f7520d644a3de83dfba46aa4225be0426aae2
-  languageName: node
-  linkType: hard
-
-"@openmrs/esm-patient-common-lib@npm:^8.0.0":
-  version: 8.1.0
-  resolution: "@openmrs/esm-patient-common-lib@npm:8.1.0"
-  dependencies:
-    "@carbon/react": ^1.12.0
-    lodash-es: ^4.17.21
-    uuid: ^8.3.2
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: 18.x
-    single-spa: 6.x
-  checksum: 66129dd882f2cce849fb62184c302b8f587ddd3fab0f533a7c7faafa5a9eea7b39c613bf159fc6c5bf706dadd574878cfecb6a5f9155273853a6daa399eb0141
-  languageName: node
-  linkType: hard
-
-"@openmrs/esm-patient-common-lib@npm:^8.2.0, @openmrs/esm-patient-common-lib@npm:^8.x":
-  version: 8.2.0
-  resolution: "@openmrs/esm-patient-common-lib@npm:8.2.0"
-  dependencies:
-    "@carbon/react": ^1.12.0
-    lodash-es: ^4.17.21
-    uuid: ^8.3.2
-  peerDependencies:
-    "@openmrs/esm-framework": 5.x
-    react: 18.x
-    single-spa: 6.x
-  checksum: 279475b12baf9d0bba810bf88e02349c42320f32fbbc4dc19551d96eef6174fdee89ee69f4be2012b779ed5490e2245fff202e975052c77f9b33328d4f74218e
   languageName: node
   linkType: hard
 
