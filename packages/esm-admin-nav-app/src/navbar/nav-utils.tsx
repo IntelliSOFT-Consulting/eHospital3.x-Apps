@@ -10,6 +10,7 @@ import {
   InventoryManagement,
   ImportExport,
   HospitalBed,
+  Chat,
 } from "@carbon/react/icons";
 const openmrsSpaBase = window["getOpenmrsSpaBase"]();
 
@@ -71,4 +72,10 @@ export const moduleLinks = [
     icon: <ImportExport size={24} />,
     requiresAdmin: true,
   },
+  {
+    label: "Messages",
+    url: `${openmrsSpaBase}messages`,
+    icon: <Chat size={24} />,
+    requiresAdmin: true,
+  }
 ];
