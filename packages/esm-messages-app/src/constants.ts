@@ -1,0 +1,1 @@
+export const omrsDateFormat = 'YYYY-MM-DDTHH:mm:ss.SSSZZ';

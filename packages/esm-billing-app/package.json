@@ -55,8 +55,8 @@
     "zod": "^3.22.4"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "next",
-    "@openmrs/esm-patient-common-lib": "next",
+    "@openmrs/esm-framework": "*",
+    "@openmrs/esm-patient-common-lib": "*",
     "react": "18.x",
     "react-dom": "18.x",
     "react-i18next": "11.x",

@@ -1,0 +1,43 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+.tableContainer {
+	padding: 0 spacing.$spacing-05;
+}
+
+.header {
+  @include type.type-style('body-compact-02');
+  color: $text-02;
+  height: spacing.$spacing-12;
+  min-height: 5rem;
+  margin-bottom: spacing.$spacing-02;
+  // margin-left: 6rem;
+  background-color: $ui-02;
+  border: 1px solid $ui-03;
+  border-left: 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-justified-items {
+	display: flex;
+	flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+	gap: spacing.$spacing-03;
+	margin-left: spacing.$spacing-05;
+}
+
+.title {
+  @include type.type-style("heading-05");
+  color: colors.$gray-100;
+  margin: spacing.$spacing-03 0;
+  // white-space: nowrap;
+  font-size: 1.5rem;
+}
+
+.filter {
+	margin: spacing.$spacing-05 0;
+}

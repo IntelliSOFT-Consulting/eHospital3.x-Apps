@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "webservices.rest": "^2.2.0"
+  },
+  "pages": [
+    {
+      "component": "root",
+      "route": "messages"
+    }
+  ],
+  "extensions": [
+    {
+      "component": "messagesDashboardOverviewLink",
+      "name": "messages-dashboard-link",
+      "slot": "messages-left-panel-slot",
+      "order": 0
+    },
+    {
+      "component": "root",
+      "name": "messages-dashboard-home"
+    }
+  ]
+}
