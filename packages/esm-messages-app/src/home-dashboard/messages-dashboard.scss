@@ -8,17 +8,10 @@
 }
 
 .header {
-  @include type.type-style('body-compact-02');
-  color: $text-02;
-  height: spacing.$spacing-12;
-  min-height: 5rem;
-  margin-bottom: spacing.$spacing-02;
-  // margin-left: 6rem;
-  background-color: $ui-02;
-  border: 1px solid $ui-03;
-  border-left: 0px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: spacing.$spacing-01;
 }
 
 .left-justified-items {

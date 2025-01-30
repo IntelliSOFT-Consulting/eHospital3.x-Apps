@@ -14,6 +14,7 @@ import {
   Button,
 } from "@carbon/react";
 import { Renew } from "@carbon/react/icons";
+import FullMessageComponent from "./full-message/full-message.component";
 
 export interface TableHeaderItem {
   key: string;
@@ -36,11 +37,6 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
   rows,
   onResend,
 }) => {
-  const handleRowClick = (rowId: string) => {
-    if (onResend) {
-      onResend(rowId);
-    }
-  };
 
   return (
     <DataTable rows={rows} headers={headers}>
@@ -55,24 +51,32 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
       }) => (
         <TableContainer {...getTableContainerProps()}>
           <Table {...getTableProps()}>
-            <TableHead>
-              <TableRow>
-                <TableExpandHeader />
-                {headers.map((header) => (
-                  <TableHeader
-                    key={header.key}
-                    {...getHeaderProps({ header })}
-                  >
+          <TableHead>
+            <TableRow>
+              <TableExpandHeader />
+              {headers
+                .filter((header) => header.key !== "fullMessage" && header.key !== "sentTimestamp" && header.key !== "patientUuid") // Hide the column
+                .map((header) => (
+                  <TableHeader key={header.key} {...getHeaderProps({ header })}>
                     {header.header}
                   </TableHeader>
                 ))}
-              </TableRow>
-            </TableHead>
+            </TableRow>
+          </TableHead>
 
             <TableBody>
               {rows.map((row) => {
                 const statusCell = row.cells.find(
                   (cell) => cell.info.header === "status"
+                );
+                const messageCell = row.cells.find(
+                  (cell) => cell.info.header === "fullMessage"
+                );
+                const timeStampCell = row.cells.find(
+                  (cell) => cell.info.header === "sentTimestamp"
+                );
+                const patientUuidCell = row.cells.find(
+                  (cell) => cell.info.header === "patientUuid"
                 );
 
                 const rowStatus = statusCell?.value;
@@ -81,13 +85,12 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                   <React.Fragment key={row.id}>
                     <TableExpandRow
                       {...getRowProps({ row })}
-                      onClick={() => handleRowClick(row.id)}
                     >
                       {row.cells.map((cell) => {
                         if (cell.info.header === "action") {
                           return (
                             <TableCell key={cell.id}>
-                              {rowStatus === "failed" && (
+                              {rowStatus === "FAILED" && (
                                 <Button
                                   kind="danger--tertiary"
                                   renderIcon = {Renew}
@@ -96,12 +99,24 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                                   iconDescription="Resend message"
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    onResend?.(row.id);
+                                    onResend?.(patientUuidCell?.value);
                                   }}
                                 />
                               )}
                             </TableCell>
                           );
+                        }
+
+                        if (cell.info.header === "fullMessage") {
+                          return null;
+                        }
+
+                        if (cell.info.header === "sentTimestamp") {
+                          return null;
+                        }
+
+                        if (cell.info.header === "patientUuid") {
+                          return null;
                         }
 
                         return <TableCell key={cell.id}>{cell.value}</TableCell>;
@@ -114,7 +129,7 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                         className="demo-expanded-td"
                         {...getExpandedRowProps({ row })}
                       >
-                        <p>Expanded data goes here...</p>
+                        <FullMessageComponent message={messageCell?.value} timestamp={timeStampCell?.value} />
                       </TableExpandedRow>
                     )}
                   </React.Fragment>
