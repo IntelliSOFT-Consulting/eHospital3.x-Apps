@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-messages-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
   "browser": "dist/ehospital-esm-patient-flags-app.js",
   "main": "src/index.ts",
@@ -51,5 +51,5 @@
     "@openmrs/esm-patient-common-lib": "next",
     "webpack": "^5.74.0"
   },
-  "gitHead": "3d368132d6a99376f98df60d22864ea33a614258"
+  "gitHead": "23a24d1f5ba30158b0aaa55216510d1839a69de0"
 }

@@ -15,6 +15,7 @@ export const useMessages = () => {
         if (response.data) {
           const formattedMessages = response.data.map((msg: any) => ({
             id: msg.id.toString(), 
+						name: msg.name,
 						patientUuid: msg.patientUuid,
             date: msg.scheduledDate,
             phoneNo: msg.phoneNumber,

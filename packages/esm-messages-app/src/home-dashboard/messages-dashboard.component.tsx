@@ -18,6 +18,7 @@ const MessagesDashboard: React.FC = () => {
 
   const headers: TableHeaderItem[] = [
     { key: "date", header: "Date" },
+    { key: "name", header: "Name" },
     { key: "phoneNo", header: "Phone No." },
     { key: "message", header: "Message" },
     { key: "status", header: "Status" },
@@ -31,6 +32,7 @@ const MessagesDashboard: React.FC = () => {
     return {
       id: msg.id,
       patientUuid: msg.patientUuid,
+      name: msg.name,
       date: msg.date,
       phoneNo: msg.phoneNo,
       message: msg.message,
