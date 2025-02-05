@@ -19,6 +19,7 @@ import ProcedureOrder from './billable-services/billable-item/test-order/procedu
 import PriceInfoOrder from './billable-services/billable-item/test-order/price-info-order.componet';
 
 import { BulkImportBillableServices } from './billable-services/bulk-import-billable-service.modal';
+import DeleteChargeItemModal from './billable-services/billables/delete-charge-item-modal';
 
 import { CreatePaymentPoint } from './payment-points/create-payment-point.component';
 import CreatePaymentMode from './payment-modes/payment-mode.workspace';
@@ -114,6 +115,7 @@ export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
 export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);
 
 export const bulkImportBillableServicesModal = getSyncLifecycle(BulkImportBillableServices, options);
+export const deleteChargeItemModal = getSyncLifecycle(DeleteChargeItemModal, options)
 export const clockInModal = getSyncLifecycle(ClockIn, options)
 export const clockOut = getSyncLifecycle(ClockOut, options)
 

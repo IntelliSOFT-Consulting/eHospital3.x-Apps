@@ -2569,7 +2569,7 @@ __metadata:
     zod: ^3.22.4
   peerDependencies:
     "@openmrs/esm-framework": "*"
-    "@openmrs/esm-patient-common-lib": ^8.x
+    "@openmrs/esm-patient-common-lib": "*"
     dayjs: 1.x
     react: 18.x
     react-i18next: 11.x

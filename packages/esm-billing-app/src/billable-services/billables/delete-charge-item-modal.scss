@@ -1,0 +1,14 @@
+@use '@carbon/type';
+@use '@carbon/layout';
+
+.modalHeaderLabel {
+  @include type.type-style('heading-compact-02');
+
+  & > div {
+    display: none;
+  }
+}
+
+.modalHeaderHeading {
+  @include type.type-style('heading-compact-01');
+}

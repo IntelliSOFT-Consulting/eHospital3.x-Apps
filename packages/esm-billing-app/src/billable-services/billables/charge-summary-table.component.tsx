@@ -104,6 +104,13 @@ const ChargeSummaryTable: React.FC = () => {
     });
   }, []);
 
+  const handleDeleteChargeItem = useCallback((service) => {
+    const dispose = showModal('delete-charge-item-modal', {
+      closeModal: () => dispose(),
+      selectedChargeItem: service,
+    });
+  }, []);
+
   const handleEditService = useCallback((service) => {
     setEditingService(service);
     setShowOverlay(true);
@@ -202,6 +209,11 @@ const ChargeSummaryTable: React.FC = () => {
                         <OverflowMenuItem
                           itemText={t('editChargeItem', 'Edit charge item')}
                           onClick={() => handleEditService(results[index])}
+                        />
+                        <OverflowMenuItem
+                          itemText={t('deleteChargeItem', 'Delete charge item')}
+                          onClick={() => handleDeleteChargeItem(results[index])}
+                          isDelete
                         />
                       </OverflowMenu>
                     </TableCell>
