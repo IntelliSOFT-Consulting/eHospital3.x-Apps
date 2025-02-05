@@ -85,3 +85,11 @@ export const updateBillableService = (uuid: string, payload: any) => {
     window.location.reload();
   });
 };
+
+export const deleteChargeItem = (uuid: string) => {
+  return openmrsFetch(`${apiBasePath}/billableService/${uuid}`, {
+    method: 'DELETE',
+  }).then(() => {
+    window.location.reload()
+  })
+}
