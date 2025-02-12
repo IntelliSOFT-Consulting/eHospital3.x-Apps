@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from './ai-model.scss'
 import { 
-	Button 
+	Button
 } from "@carbon/react";
-import { Save } from "@carbon/react/icons";
+import { SendAlt } from "@carbon/react/icons";
 import PrimaryButton from "../components/primary-button.component";
-import { TextArea } from "@carbon/react";
-import { SendAltFilled } from "@carbon/react/icons";
+import { useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
 import CustomTextArea from "../components/text-area.component";
+import GeneratedResponse from "../components/generated-response.component";
+import Feedback from "../components/feedback.component";
+
 
 const AIModel: React.FC = () => {
+	const [isEditMode, setEditMode] = useState(false);
+	const [isRegenerated, setRegenerated] = useState(false);
+	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model-generated');
+
+	const toggleEditMode = () => {
+		setEditMode(true);
+	}
+
+	const toggleRegenerate = () => {
+		setRegenerated(true)
+	}
+
   return (
 		<div className={styles.container}>
 			<div className={styles.body}>
@@ -32,24 +46,28 @@ const AIModel: React.FC = () => {
 				</div>
 
 				<Button
-					renderIcon={Save}
+					renderIcon={SendAlt}
 					kind="secondary"
+					size="sm"
 				>
-					Save
+					Generate Message
 				</Button>
+			</div>
+
+			<div className={styles.chat}>
+
+				{!isEditMode && <GeneratedResponse toggleEditMode={toggleEditMode} />}
+
+				{isEditMode && <CustomTextArea />}
 
 				<div className={styles.actions}>
-					<PrimaryButton>Send via SMS</PrimaryButton>
-					<PrimaryButton>Send via Email</PrimaryButton>
-					<PrimaryButton>Send via WhatsApp</PrimaryButton>
+					<PrimaryButton onClick={launchAiModelGeneratedWorkSpace}>Approve</PrimaryButton>
+					<PrimaryButton onClick={toggleRegenerate}>Regenerate</PrimaryButton>
 				</div>
 			</div>
 
-			{/* <div className={styles.chat}>
-				<p>Type any question or request to improve the summary if not accurate</p>
-
-				<CustomTextArea />
-			</div> */}
+			{isRegenerated && <Feedback title="Reason for Regeneration" />}
+			{isEditMode && <Feedback title="Reason for Edit" />}
 		</div>
 	)
 }
