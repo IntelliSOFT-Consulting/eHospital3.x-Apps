@@ -185,7 +185,6 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
                           {...getExpandedRowProps({
                             row,
                           })}>
-                          <PaymentModeAttributes {...paymentModes[index]} />
                         </TableExpandedRow>
                       </React.Fragment>
                     ))}
@@ -202,26 +201,26 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
 
 export default PaymentModeDashboard;
 
-const PaymentModeAttributes: React.FC<PaymentMode> = (paymentMode) => {
-  const { t } = useTranslation();
-  const { attributeTypes } = paymentMode;
+// const PaymentModeAttributes: React.FC<PaymentMode> = (paymentMode) => {
+//   const { t } = useTranslation();
+//   const { attributeTypes } = paymentMode;
 
-  return (
-    <div className={styles.attributeContainer}>
-      {attributeTypes.map((attributeType) =>
-        Object.entries(attributeType).map(([key, value]) => {
-          return <AttributeCard key={key} label={key} value={JSON.stringify(value)} />;
-        }),
-      )}
-    </div>
-  );
-};
+//   return (
+//     <div className={styles.attributeContainer}>
+//       {attributeTypes.map((attributeType) =>
+//         Object.entries(attributeType).map(([key, value]) => {
+//           return <AttributeCard key={key} label={key} value={JSON.stringify(value)} />;
+//         }),
+//       )}
+//     </div>
+//   );
+// };
 
-const AttributeCard: React.FC<{ label: string; value: string }> = ({ label, value }) => {
-  return (
-    <div className={styles.attributeCard}>
-      <div className={styles.attributeLabel}>{startCase(label).replace(/\s+/g, ' ')}</div>
-      <div className={styles.attributeValue}>{value.replace(/['"]/g, '')}</div>
-    </div>
-  );
-};
+// const AttributeCard: React.FC<{ label: string; value: string }> = ({ label, value }) => {
+//   return (
+//     <div className={styles.attributeCard}>
+//       <div className={styles.attributeLabel}>{startCase(label).replace(/\s+/g, ' ')}</div>
+//       <div className={styles.attributeValue}>{value.replace(/['"]/g, '')}</div>
+//     </div>
+//   );
+// };
