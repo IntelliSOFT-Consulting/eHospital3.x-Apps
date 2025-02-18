@@ -104,8 +104,8 @@ const CreatePaymentMode : React.FC<CreatePaymentModeModalProps> = ({ closeModal,
 
   return (
     <Form>
-      <ModalHeader closeModal={closeModal}>{modalTitle}</ModalHeader>
-      <ModalBody>
+      <h1 className={styles.modalTitle}>{modalTitle}</h1>
+      <ModalBody className={styles.modalBody}>
         <Controller
           name="name"
           control={formMethods.control}

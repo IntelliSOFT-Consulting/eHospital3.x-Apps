@@ -102,17 +102,10 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     <div className={styles.container}>
       {paymentModes.length === 0 ? (
         <div>
-          <CardHeader title="Payment Modes">
-            <Button
-              onClick={() => createPaymentModeModal(paymentModes[''], t('addPaymentMode', 'Add Payment Mode'))}
-              className={styles.createPaymentModeButton}
-              size="md">
-              {t('addPaymentMode', 'Add Payment Mode')}
-            </Button>
-          </CardHeader>
           <EmptyState 
-          displayText={t('PaymentModes', 'payment modes')} 
-          headerTitle={t('', '')} 
+            displayText={t('PaymentModes', 'payment modes')} 
+            headerTitle={t('', '')} 
+            launchForm={() => createPaymentModeModal(paymentModes[''], t('addPaymentMode', 'Add Payment Mode'))}
           />
         </div>
       ) : (
