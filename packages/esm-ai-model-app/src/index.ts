@@ -22,6 +22,7 @@ export const importTranslation = require.context(
 export const aiModelWorkspace = getAsyncLifecycle(() => import("./ai-model/ai-model.workspace"), options);
 
 export const aiModelLaunchButton = getSyncLifecycle(AiModelActionButton, options);
+export const aiModelGeneratedWorkspace = getAsyncLifecycle(() => import("./ai-model/ai-model-generated.workspace"), options);
 
 export function startupApp() {
   defineConfigSchema(moduleName, configSchema);

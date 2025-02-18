@@ -148,6 +148,10 @@
       "component": "bulkImportBillableServicesModal"
     },
     {
+      "name": "delete-charge-item-modal",
+      "component": "deleteChargeItemModal"
+    },
+    {
       "name": "clock-in-modal",
       "component": "clockInModal"
     },
