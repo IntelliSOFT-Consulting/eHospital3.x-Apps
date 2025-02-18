@@ -1,0 +1,26 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/colors';
+@use '@carbon/styles/scss/type';
+@import '~@openmrs/esm-styleguide/src/vars';
+
+.container {
+	padding: 0 spacing.$spacing-05;
+	height: 200px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid $ui-03;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.text {
+	@include type.type-style('body-compact-02');
+	font-weight: 600;
+	color: $text-02;
+}

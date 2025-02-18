@@ -2,6 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dropdown,
+  Button,
+  Tabs,
+  TabList,
+  Tab
 } from "@carbon/react";
 import styles from "./messages-dashboard.scss";
 import CustomDataTable, {
@@ -10,7 +14,7 @@ import CustomDataTable, {
 } from "../components/messages-table.component";
 import MessagesHeader from "../messages-header/messages-header.component";
 import { useMessages, sendPatientMessage, resendAllMessages } from "../hooks/useMessages";
-import { Button } from "@carbon/react";
+import EmptyState from "../components/empty-state/empty-state.component";
 
 const MessagesDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -78,6 +82,15 @@ const MessagesDashboard: React.FC = () => {
       <div className={styles.tableContainer}>
         <div className={styles.header}>
           <div>
+            <Tabs>
+              <TabList contained>
+                <Tab>Appointment Reminders</Tab>
+                <Tab>LLM Messages</Tab>
+              </TabList>
+            </Tabs>
+          </div>
+
+          <div>
             <Dropdown
               titleText="Filter by period: "
               initialSelectedItem={periodFilterItems[0]}
@@ -94,17 +107,26 @@ const MessagesDashboard: React.FC = () => {
               itemToString={(item) => (item ? item.text : "")}
               type="inline"
               className={styles.filter}
+              autoAlign={true}
             />
           </div>
 
-          <Button
-            onClick={onResendAll}
-          >
-            Resend All Texts
-          </Button>
+          {rows.length > 0 && (
+            <Button
+              onClick={onResendAll}
+            >
+              Resend All Texts
+            </Button>
+          )}
         </div>
 
-        <CustomDataTable headers={headers} rows={rows} onResend={onResend} />
+        {rows.length === 0 && (
+          <div>
+            <EmptyState />
+          </div>
+        )}
+
+        {rows.length > 0 && <CustomDataTable headers={headers} rows={rows} onResend={onResend} />}
       </div>
     </>
   );

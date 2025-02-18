@@ -12,6 +12,7 @@ import {
   TableCell,
   TableExpandedRow,
   Button,
+  Tag
 } from "@carbon/react";
 import { Renew } from "@carbon/react/icons";
 import FullMessageComponent from "./full-message/full-message.component";
@@ -37,6 +38,20 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
   rows,
   onResend,
 }) => {
+
+  function getTagType(status: string): string {
+    switch (status?.toLowerCase()) {
+      case "sent":
+        return "green";
+      case "failed":
+        return "red";
+      case "scheduled":
+        return "#ffbff00";
+      default:
+        return "gray";
+    }
+  }
+  
 
   return (
     <DataTable rows={rows} headers={headers}>
@@ -103,6 +118,14 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                                   }}
                                 />
                               )}
+                            </TableCell>
+                          );
+                        }
+
+                        if (cell.info.header === "status") {
+                          return (
+                            <TableCell key={cell.id}>
+                              <Tag type={getTagType(cell.value)}>{cell.value}</Tag>
                             </TableCell>
                           );
                         }
