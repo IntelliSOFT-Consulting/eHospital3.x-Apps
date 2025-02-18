@@ -12,12 +12,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import PriceField from '../services/price.component';
 import { billableFormSchema, BillableFormSchema } from '../form-schemas';
 import { formatBillableServicePayloadForSubmission, mapInputToPayloadSchema } from '../form-helper';
-import { createBillableSerice } from '../../billable-service.resource';
+import { createBillableService } from '../../billable-service.resource';
 import { handleMutate } from '../../utils';
 
 import LeftPanel from '../../../left-panel/left-panel.component';
 
-const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
+const CommodityForm: React.FC<{editingService?: any; onClose: () => void; mutate?: () => void}> = ({
   editingService,
   onClose
 }) => {
@@ -45,7 +45,7 @@ const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
   const onSubmit = async (formValues: BillableFormSchema) => {
     const payload = formatBillableServicePayloadForSubmission(formValues, editingService?.['uuid']);
     try {
-      const response = await createBillableSerice(payload);
+      const response = await createBillableService(payload);
       if (response.ok) {
         showSnackbar({
           title: t('commodityBillableCreated', 'Commodity price created successfully'),
@@ -99,7 +99,6 @@ const CommodityForm: React.FC<{editingService?: any; onClose: () => void}> = ({
 
   return (
     <>
-    <LeftPanel />
     <FormProvider {...formMethods}>
       <form onSubmit={handleSubmit(onSubmit, handleError)} className={styles.form}>
         <div className={styles.formContainer}>

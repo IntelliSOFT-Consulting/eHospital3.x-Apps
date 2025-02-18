@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { usePaymentModes } from '../billing.resource';
 import { MAX_ALLOWED_FILE_SIZE } from '../constants';
 import { ExcelFileRow } from '../types';
-import { createBillableSerice } from './billable-service.resource';
+import { createBillableService } from './billable-service.resource';
 import { useChargeSummaries } from './billables/charge-summary.resource';
 import { BillableServicePayload, getBulkUploadPayloadFromExcelFile } from './billables/form-helper';
 import styles from './clinical-charges.scss';
@@ -84,7 +84,7 @@ export const BulkImportBillableServices = ({ closeModal }) => {
 
         const promises = chunk.map(async (formPayload) => {
           try {
-            await createBillableSerice(formPayload);
+            await createBillableService(formPayload);
           } catch (error) {
             erroredPayloads.push(formPayload);
           }

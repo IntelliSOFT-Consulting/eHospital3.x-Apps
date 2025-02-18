@@ -10,6 +10,11 @@
   height: 100%;
 }
 
+.formBody {
+  flex: 1;
+  overflow-y: auto;
+}
+
 .section {
   margin: layout.$spacing-03;
 }
@@ -25,7 +30,7 @@
 }
 
 .container {
-  margin: layout.$spacing-05;
+  margin: layout.$spacing-03;
 }
 
 .paymentContainer {
@@ -99,7 +104,8 @@
 
 .conceptLabel {
   @include type.type-style('label-02');
-  margin: layout.$spacing-05;
+  margin: layout.$spacing-03;
+  font-size: 0.75rem;
 }
 
 .errorContainer {
@@ -135,3 +141,16 @@
   font-size: 0.875rem;
 }
 
+.associatedConcept {
+  margin: layout.$spacing-03;
+}
+
+.buttonContainer {
+  margin: layout.$spacing-03;
+}
+
+.paymentMethods {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$spacing-05;
+}

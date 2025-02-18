@@ -21,7 +21,7 @@ import {
   Modal,
 } from '@carbon/react';
 import { Add, CategoryAdd, Download, Upload, WatsonHealthScalpelSelect } from '@carbon/react/icons';
-import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate } from '@openmrs/esm-framework';
+import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate, showSnackbar } from '@openmrs/esm-framework';
 import { EmptyState, usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import React, { useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +30,7 @@ import styles from './charge-summary-table.scss';
 import { useChargeSummaries } from './charge-summary.resource';
 import { searchTableData, downloadExcelTemplateFile } from './form-helper';
 import AddServiceForm from './services/service-form.workspace';
+import CommodityForm from './commodity/commodity-form.workspace';
 
 const defaultPageSize = 10;
 
@@ -42,6 +43,8 @@ const ChargeSummaryTable: React.FC = () => {
 
   const [pageSize, setPageSize] = useState(defaultPageSize);
   const [searchString, setSearchString] = useState('');
+
+  const [panelType, setPanelType] = useState<'service' | 'commodity' | null>(null);
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [editingService, setEditingService] = useState(null);
@@ -111,14 +114,28 @@ const ChargeSummaryTable: React.FC = () => {
     });
   }, []);
 
+  const handleAddService = useCallback(() => {
+    setEditingService(null);
+    setPanelType('service');
+    setShowOverlay(true);
+  }, [])
+
+  const handleAddItem = useCallback(() => {
+    setEditingService(null);
+    setPanelType('commodity');
+    setShowOverlay(true);
+  }, [])
+
   const handleEditService = useCallback((service) => {
     setEditingService(service);
+    setPanelType('service');
     setShowOverlay(true);
   }, []);
 
-  const closeModal = useCallback(() => {
+  const closePanel = useCallback(() => {
     setShowOverlay(false);
     setEditingService(null);
+    setPanelType(null);
   }, []);
 
   if (isLoading) {
@@ -158,16 +175,12 @@ const ChargeSummaryTable: React.FC = () => {
                 <ComboButton tooltipAlignment="left" label={t('actions', 'Action')}>
                   <MenuItem
                     renderIcon={CategoryAdd}
-                    onClick={() => {
-                      navigate({ to: window.getOpenmrsSpaBase() + 'billing/charge-items/add-charge-service' });
-                    }}
+                    onClick={handleAddService}
                     label={t('addServiceChargeItem', 'Add charge service')}
                   />
                   <MenuItem
                     renderIcon={WatsonHealthScalpelSelect}
-                    onClick={() => {
-                      navigate({ to: window.getOpenmrsSpaBase() + 'billing/charge-items/add-charge-item' });
-                    }}
+                    onClick={handleAddItem}
                     label={t('addCommodityChargeItem', 'Add charge item')}
                   />
                   <MenuItem onClick={openBulkUploadModal} label={t('bulkUpload', 'Bulk Upload')} renderIcon={Upload} />
@@ -238,19 +251,38 @@ const ChargeSummaryTable: React.FC = () => {
         size="sm"
         totalItems={chargeSummaryItems.length}
       />
-      {showOverlay && (
-        <Modal
-          open={showOverlay}
-          modalHeading={t('chargeItems', 'Charge Items')}
-          primaryButtonText={null}
-          secondaryButtonText={t('cancel', 'Cancel')}
-          onRequestClose={closeModal}
-          onSecondarySubmit={closeModal}
-          size="lg"
-          passiveModal={true}>
-          <AddServiceForm editingService={editingService} onClose={closeModal} />
-        </Modal>
-      )}
+
+      <div
+        className={`
+          ${styles.sidePanel} 
+          ${showOverlay ? styles.open : ''}
+        `}
+      >
+        <div className={styles.panelHeader}>
+          <div>
+          <h3 className={styles.panelTitle}>
+              {editingService
+                ? t('editChargeItem', 'Edit charge item')
+                : panelType === 'service'
+                ? t('addService', 'Add Service')
+                : t('addCommodity', 'Add Commodity')}
+            </h3>
+          </div>
+          <button onClick={closePanel} className={styles.closeButton}>
+            &times;
+          </button>
+        </div>
+        {showOverlay && panelType && (
+          <div className={styles.panelContent}>
+            {panelType === 'service' && (
+              <AddServiceForm editingService={editingService} onClose={closePanel} mutate={mutate} />
+            )}
+            {panelType === 'commodity' && (
+              <CommodityForm editingService={editingService} onClose={closePanel} mutate={mutate} />
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 };
