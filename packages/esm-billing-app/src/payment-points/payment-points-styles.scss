@@ -11,6 +11,14 @@
   margin-left: auto;
 }
 
-.cashPoint {
-  margin: layout.$spacing-05 0;
+.modalTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: layout.$spacing-05;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$spacing-05;
 }

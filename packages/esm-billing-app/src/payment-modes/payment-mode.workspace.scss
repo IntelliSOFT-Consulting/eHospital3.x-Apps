@@ -31,3 +31,15 @@
 .formStackControl {
   row-gap: layout.$layout-01;
 }
+
+.modalTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: layout.$spacing-05;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$spacing-05;
+}

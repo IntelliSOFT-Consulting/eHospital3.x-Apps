@@ -55,8 +55,8 @@ export const CreatePaymentPoint = ({ closeModal }) => {
 
   return (
     <Form>
-      <ModalHeader closeModal={closeModal}>Create Payment Point</ModalHeader>
-      <ModalBody>
+      <h1 className={styles.modalTitle}>{t('createPaymentPoint', 'Create Payment Point')}</h1>
+      <ModalBody className={styles.modalBody}>
         <Controller
           control={control}
           name="cashPointName"
