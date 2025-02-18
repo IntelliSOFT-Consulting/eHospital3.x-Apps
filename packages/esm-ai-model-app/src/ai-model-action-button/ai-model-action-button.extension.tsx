@@ -1,8 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./ai-model-action-button.scss.scss";
 import { ActionMenuButton } from "@openmrs/esm-framework";
-import { t } from "i18next";
 import { Chat } from "@carbon/react/icons";
 import { useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
 

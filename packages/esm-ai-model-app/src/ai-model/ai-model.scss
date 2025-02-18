@@ -36,3 +36,28 @@
 	flex-direction: column;
 	gap: layout.$spacing-05;
 }
+
+.generated {
+	margin-bottom: layout.$spacing-05;
+	padding-right: layout.$spacing-05;
+	position: relative;
+}
+
+.editButton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+
+.title {
+	font-size: 1.5rem;
+	font-weight: 500;
+}
+
+.feedback {
+	display: flex;
+	flex-direction: column;
+	gap: layout.$spacing-05;
+	margin-bottom: layout.$spacing-05;
+}

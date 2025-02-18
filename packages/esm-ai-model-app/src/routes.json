@@ -16,11 +16,19 @@
   "workspaces": [
     {
       "name": "ai-model",
-      "title": "eChat",
+      "title": "iChat",
       "component": "aiModelWorkspace",
       "type": "ai-model",
       "canHide": true,
       "width":"wider"
+    },
+    {
+      "name": "ai-model-generated",
+      "title": "iChat",
+      "component": "aiModelGeneratedWorkspace",
+      "type": "ai-model",
+      "canHide": true,
+      "width": "wider"
     }
   ]
 }
