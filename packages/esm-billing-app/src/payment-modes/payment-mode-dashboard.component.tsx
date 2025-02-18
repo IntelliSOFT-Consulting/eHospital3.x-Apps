@@ -57,11 +57,11 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
 
   const createPaymentModeModal = (paymentMode: PaymentMode, modalTitle: string) => {
     const dispose = showModal('create-payment-mode', {
-          closeModal: () => dispose(),
-          initialPaymentMode: paymentMode,
-          modalTitle,
-        });
-  }
+      closeModal: () => dispose(),
+      initialPaymentMode: paymentMode,
+      modalTitle,
+    });
+  };
 
   if (isLoading) {
     return <DataTableSkeleton />;
@@ -100,28 +100,31 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
 
   return (
     <div className={styles.container}>
-      <CardHeader title="Payment Modes">
-        <Button
-          onClick={() =>
-            createPaymentModeModal(paymentModes[''], t('createPaymentMode', 'Create Payment Mode'))
-          }
-          className={styles.createPaymentModeButton}
-          size="md">
-          {t('addPaymentMode', 'Add Payment Mode')}
-        </Button>
-      </CardHeader>
       {paymentModes.length === 0 ? (
-        <EmptyState
-          displayText={t('noPaymentModes', 'No payment modes')}
-          headerTitle={t('', '')}
-          launchForm={() =>
-            launchWorkspace('payment-mode-workspace', {
-              workspaceTitle: t('addPaymentMode', 'Add Payment Mode'),
-            })
-          }
-        />
+        <div>
+          <CardHeader title="Payment Modes">
+            <Button
+              onClick={() => createPaymentModeModal(paymentModes[''], t('addPaymentMode', 'Add Payment Mode'))}
+              className={styles.createPaymentModeButton}
+              size="md">
+              {t('addPaymentMode', 'Add Payment Mode')}
+            </Button>
+          </CardHeader>
+          <EmptyState 
+          displayText={t('PaymentModes', 'payment modes')} 
+          headerTitle={t('', '')} 
+          />
+        </div>
       ) : (
         <div className={styles.dataTable}>
+          <CardHeader title="Payment Modes">
+            <Button
+              onClick={() => createPaymentModeModal(paymentModes[''], t('createPaymentMode', 'Create Payment Mode'))}
+              className={styles.createPaymentModeButton}
+              size="md">
+              {t('addPaymentMode', 'Add Payment Mode')}
+            </Button>
+          </CardHeader>
           <Search
             size={size}
             placeholder={t('searchPaymentMode', 'Search payment mode table')}
@@ -163,10 +166,7 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
                             <OverflowMenu size={size} iconDescription={t('actions', 'Actions')} flipped>
                               <OverflowMenuItem
                                 onClick={() =>
-                                  createPaymentModeModal(
-                                    paymentModes[index],
-                                    t('editPaymentMode', 'Edit Payment Mode'),
-                                  )
+                                  createPaymentModeModal(paymentModes[index], t('editPaymentMode', 'Edit Payment Mode'))
                                 }
                                 itemText={t('edit', 'Edit')}
                               />
@@ -184,8 +184,7 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
                           className="demo-expanded-td"
                           {...getExpandedRowProps({
                             row,
-                          })}>
-                        </TableExpandedRow>
+                          })}></TableExpandedRow>
                       </React.Fragment>
                     ))}
                   </TableBody>
