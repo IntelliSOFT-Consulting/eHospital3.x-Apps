@@ -21,8 +21,6 @@ import { createBillableSerice, updateBillableService, useConceptsSearch,usePayme
 import { type ServiceConcept } from '../../../types';
 import styles from './service-form.scss'
 
-import LeftPanel from '../../../left-panel/left-panel.component';
-
 type PaymentMode = {
   paymentMode: string;
   price: string | number;
@@ -46,7 +44,7 @@ const paymentFormSchema = z.object({
 
 const DEFAULT_PAYMENT_OPTION = { paymentMode: '', price: 0 };
 
-const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = ({ editingService, onClose }) => {
+const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; mutate: () => void }> = ({ editingService, onClose, mutate }) => {
   const { t } = useTranslation();
 
   const { paymentModes, isLoading: isLoadingPaymentModes } = usePaymentModes();
@@ -143,6 +141,8 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = 
           kind: 'success',
           timeoutInMs: 3000,
         });
+        mutate()
+
         onClose();
         handleNavigateToServiceDashboard();
       },
@@ -172,196 +172,193 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void }> = 
 
   return (
     <Form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <h4>
-        {editingService
-          ? t('editChargeService', 'Edit Charge Service')
-          : t('addChargeService', 'Add Charge Service')}
-      </h4>
+      <div className={styles.formBody}>
+        <section className={styles.section}>
+          <Layer>
+            <TextInput
+              id="serviceName"
+              type="text"
+              labelText={t('serviceName', 'Service Name')}
+              size="md"
+              value={billableServicePayload.name || ''}
+              onChange={(e) => {
+                const newName = e.target.value.substring(0);
+                setBillableServicePayload({
+                  ...billableServicePayload,
+                  name: newName,
+                });
+              }}
+              placeholder="Enter service name"
+            />
+          </Layer>
+        </section>
+        <section className={styles.section}>
+          <Layer>
+            <TextInput
+              id="serviceShortName"
+              type="text"
+              labelText={t('serviceShortName', 'Short Name')}
+              size="md"
+              value={billableServicePayload.shortName || ''}
+              onChange={(e) => {
+                const newShortName = e.target.value.substring(0);
+                setBillableServicePayload({
+                  ...billableServicePayload,
+                  shortName: newShortName,
+                });
+              }}
+              placeholder="Enter service short name"
+            />
+          </Layer>
+        </section>
+        <section>
+          <FormLabel className={styles.conceptLabel}>Associated Concept</FormLabel>
+          <div className={styles.associatedConcept}>
+            <Controller
+              name="search"
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ResponsiveWrapper isTablet={isTablet}>
+                  <Search
+                    ref={searchInputRef}
+                    size="md"
+                    id="conceptsSearch"
+                    labelText={t('enterConcept', 'Associated concept')}
+                    placeholder={t('searchConcepts', 'Search associated concept')}
+                    className={errors?.search && styles.serviceError}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      onChange(e);
+                      handleSearchTermChange(e);
+                    }}
+                    renderIcon={errors?.search && <WarningFilled />}
+                    onBlur={onBlur}
+                    onClear={() => {
+                      setSearchTerm('');
+                      setSelectedConcept(null);
+                    }}
+                    value={(() => {
+                      if (selectedConcept) {
+                        return selectedConcept.display;
+                      }
+                      if (debouncedSearchTerm) {
+                        return value;
+                      }
+                    })()}
+                  />
+                </ResponsiveWrapper>
+              )}
+            />
+          </div>
 
-      {!editingService && <LeftPanel />}
-      <section className={styles.section}>
-        <Layer>
-          <TextInput
-            id="serviceName"
-            type="text"
-            labelText={t('serviceName', 'Service Name')}
-            size="md"
-            value={billableServicePayload.name || ''}
-            onChange={(e) => {
-              const newName = e.target.value.substring(0);
-              setBillableServicePayload({
-                ...billableServicePayload,
-                name: newName,
-              });
-            }}
-            placeholder="Enter service name"
-          />
-        </Layer>
-      </section>
-      <section className={styles.section}>
-        <Layer>
-          <TextInput
-            id="serviceShortName"
-            type="text"
-            labelText={t('serviceShortName', 'Short Name')}
-            size="md"
-            value={billableServicePayload.shortName || ''}
-            onChange={(e) => {
-              const newShortName = e.target.value.substring(0);
-              setBillableServicePayload({
-                ...billableServicePayload,
-                shortName: newShortName,
-              });
-            }}
-            placeholder="Enter service short name"
-          />
-        </Layer>
-      </section>
-      <section>
-        <FormLabel className={styles.conceptLabel}>Associated Concept</FormLabel>
-        <Controller
-          name="search"
-          control={control}
-          render={({ field: { onChange, value, onBlur } }) => (
-            <ResponsiveWrapper isTablet={isTablet}>
-              <Search
-                ref={searchInputRef}
-                size="md"
-                id="conceptsSearch"
-                labelText={t('enterConcept', 'Associated concept')}
-                placeholder={t('searchConcepts', 'Search associated concept')}
-                className={errors?.search && styles.serviceError}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  onChange(e);
-                  handleSearchTermChange(e);
-                }}
-                renderIcon={errors?.search && <WarningFilled />}
-                onBlur={onBlur}
-                onClear={() => {
-                  setSearchTerm('');
-                  setSelectedConcept(null);
-                }}
-                value={(() => {
-                  if (selectedConcept) {
-                    return selectedConcept.display;
-                  }
-                  if (debouncedSearchTerm) {
-                    return value;
-                  }
-                })()}
-              />
-            </ResponsiveWrapper>
-          )}
-        />
-
-        {(() => {
-          if (!debouncedSearchTerm || selectedConcept) return null;
-          if (isSearching)
-            return <InlineLoading className={styles.loader} description={t('searching', 'Searching') + '...'} />;
-          if (searchResults && searchResults.length) {
+          {(() => {
+            if (!debouncedSearchTerm || selectedConcept) return null;
+            if (isSearching)
+              return <InlineLoading className={styles.loader} description={t('searching', 'Searching') + '...'} />;
+            if (searchResults && searchResults.length) {
+              return (
+                <ul className={styles.conceptsList}>
+                  {/*TODO: use uuid instead of index as the key*/}
+                  {searchResults?.map((searchResult, index) => (
+                    <li
+                      role="menuitem"
+                      className={styles.service}
+                      key={index}
+                      onClick={() => handleConceptChange(searchResult)}>
+                      {searchResult.display}
+                    </li>
+                  ))}
+                </ul>
+              );
+            }
             return (
-              <ul className={styles.conceptsList}>
-                {/*TODO: use uuid instead of index as the key*/}
-                {searchResults?.map((searchResult, index) => (
-                  <li
-                    role="menuitem"
-                    className={styles.service}
-                    key={index}
-                    onClick={() => handleConceptChange(searchResult)}>
-                    {searchResult.display}
-                  </li>
-                ))}
-              </ul>
+              <Layer>
+                <Tile className={styles.emptyResults}>
+                  <span>
+                    {t('noResultsFor', 'No results for')} <strong>"{debouncedSearchTerm}"</strong>
+                  </span>
+                </Tile>
+              </Layer>
             );
-          }
-          return (
-            <Layer>
-              <Tile className={styles.emptyResults}>
-                <span>
-                  {t('noResultsFor', 'No results for')} <strong>"{debouncedSearchTerm}"</strong>
-                </span>
-              </Tile>
-            </Layer>
-          );
-        })()}
-      </section>
-      <section className={styles.section}>
-        <Layer>
-          <ComboBox
-            id="serviceType"
-            items={serviceTypes ?? []}
-            titleText={t('serviceType', 'Service Type')}
-            itemToString={(item) => item?.display || ''}
-            selectedItem={billableServicePayload.serviceType || null}
-            onChange={({ selectedItem }) => {
-              setBillableServicePayload({
-                ...billableServicePayload,
-                display: selectedItem?.display,
-                serviceType: selectedItem,
-              });
-            }}
-            placeholder="Select service type"
-            required
-          />
-        </Layer>
-      </section>
+          })()}
+        </section>
+        <section className={styles.section}>
+          <Layer>
+            <ComboBox
+              id="serviceType"
+              items={serviceTypes ?? []}
+              titleText={t('serviceType', 'Service Type')}
+              itemToString={(item) => item?.display || ''}
+              selectedItem={billableServicePayload.serviceType || null}
+              onChange={({ selectedItem }) => {
+                setBillableServicePayload({
+                  ...billableServicePayload,
+                  display: selectedItem?.display,
+                  serviceType: selectedItem,
+                });
+              }}
+              placeholder="Select service type"
+              required
+            />
+          </Layer>
+        </section>
 
-      <section>
-        <div className={styles.container}>
-          {fields.map((field, index) => (
-            <div key={field.id} className={styles.paymentMethodContainer}>
-              <Controller
-                control={control}
-                name={`payment.${index}.paymentMode`}
-                render={({ field }) => (
-                  <Layer>
-                    <Dropdown
-                      onChange={({ selectedItem }) => field.onChange(selectedItem.uuid)}
-                      titleText={t('paymentMode', 'Payment Mode')}
-                      label={t('selectPaymentMethod', 'Select payment method')}
-                      items={paymentModes ?? []}
-                      itemToString={(item) => (item ? item.name : '')}
-                      selectedItem={paymentModes.find((mode) => mode.uuid === field.value)}
-                      invalid={!!errors?.payment?.[index]?.paymentMode}
-                      invalidText={errors?.payment?.[index]?.paymentMode?.message}
-                    />
-                  </Layer>
-                )}
-              />
-              <Controller
-                control={control}
-                name={`payment.${index}.price`}
-                render={({ field }) => (
-                  <Layer>
-                    <TextInput
-                      {...field}
-                      invalid={!!errors?.payment?.[index]?.price}
-                      invalidText={errors?.payment?.[index]?.price?.message}
-                      labelText={t('sellingPrice', 'Selling Price')}
-                      placeholder={t('sellingAmount', 'Enter selling price')}
-                    />
-                  </Layer>
-                )}
-              />
-              <div className={styles.removeButtonContainer}>
-                <TrashCan onClick={() => handleRemovePaymentMode(index)} className={styles.removeButton} size={20} />
+        <section>
+          <div className={styles.container}>
+            {fields.map((field, index) => (
+              <div key={field.id} className={styles.paymentMethodContainer}>
+                <Controller
+                  control={control}
+                  name={`payment.${index}.paymentMode`}
+                  render={({ field }) => (
+                    <Layer>
+                      <Dropdown
+                        onChange={({ selectedItem }) => field.onChange(selectedItem.uuid)}
+                        titleText={t('paymentMode', 'Payment Mode')}
+                        label={t('selectPaymentMethod', 'Select payment method')}
+                        items={paymentModes ?? []}
+                        itemToString={(item) => (item ? item.name : '')}
+                        selectedItem={paymentModes.find((mode) => mode.uuid === field.value)}
+                        invalid={!!errors?.payment?.[index]?.paymentMode}
+                        invalidText={errors?.payment?.[index]?.paymentMode?.message}
+                      />
+                    </Layer>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name={`payment.${index}.price`}
+                  render={({ field }) => (
+                    <Layer>
+                      <TextInput
+                        {...field}
+                        invalid={!!errors?.payment?.[index]?.price}
+                        invalidText={errors?.payment?.[index]?.price?.message}
+                        labelText={t('sellingPrice', 'Selling Price')}
+                        placeholder={t('sellingAmount', 'Enter selling price')}
+                      />
+                    </Layer>
+                  )}
+                />
+                <div className={styles.removeButtonContainer}>
+                  <TrashCan onClick={() => handleRemovePaymentMode(index)} className={styles.removeButton} size={20} />
+                </div>
               </div>
-            </div>
-          ))}
-          <Button
-            size="md"
-            onClick={handleAppendPaymentMode}
-            className={styles.paymentButtons}
-            renderIcon={(props) => <Add size={24} {...props} />}
-            iconDescription="Add">
-            {t('addPaymentOptions', 'Add payment option')}
-          </Button>
-          {getPaymentErrorMessage() && <div className={styles.errorMessage}>{getPaymentErrorMessage()}</div>}
-        </div>
-      </section>
+            ))}
+            <Button
+              size="md"
+              onClick={handleAppendPaymentMode}
+              className={styles.paymentButtons}
+              renderIcon={(props) => <Add size={24} {...props} />}
+              iconDescription="Add">
+              {t('addPaymentOptions', 'Add payment option')}
+            </Button>
+            {getPaymentErrorMessage() && <div className={styles.errorMessage}>{getPaymentErrorMessage()}</div>}
+          </div>
+        </section>
+      </div>
 
-      <section>
+      <section className={styles.buttonContainer}>
         <Button kind="secondary" onClick={onClose}>
           {t('cancel', 'Cancel')}
         </Button>

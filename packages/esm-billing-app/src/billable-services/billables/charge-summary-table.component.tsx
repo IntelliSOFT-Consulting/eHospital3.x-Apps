@@ -21,7 +21,7 @@ import {
   Modal,
 } from '@carbon/react';
 import { Add, CategoryAdd, Download, Upload, WatsonHealthScalpelSelect } from '@carbon/react/icons';
-import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate } from '@openmrs/esm-framework';
+import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate, showSnackbar } from '@openmrs/esm-framework';
 import { EmptyState, usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import React, { useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -116,7 +116,7 @@ const ChargeSummaryTable: React.FC = () => {
     setShowOverlay(true);
   }, []);
 
-  const closeModal = useCallback(() => {
+  const closePanel = useCallback(() => {
     setShowOverlay(false);
     setEditingService(null);
   }, []);
@@ -238,19 +238,31 @@ const ChargeSummaryTable: React.FC = () => {
         size="sm"
         totalItems={chargeSummaryItems.length}
       />
-      {showOverlay && (
-        <Modal
-          open={showOverlay}
-          modalHeading={t('chargeItems', 'Charge Items')}
-          primaryButtonText={null}
-          secondaryButtonText={t('cancel', 'Cancel')}
-          onRequestClose={closeModal}
-          onSecondarySubmit={closeModal}
-          size="lg"
-          passiveModal={true}>
-          <AddServiceForm editingService={editingService} onClose={closeModal} />
-        </Modal>
-      )}
+
+      <div
+        className={`
+          ${styles.sidePanel} 
+          ${showOverlay ? styles.open : ''}
+        `}
+      >
+        <div className={styles.panelHeader}>
+          <div>
+            <h3 className={styles.panelTitle}>{editingService ? t('editChargeItem', 'Edit charge item') : t('addService', 'Add Service')}</h3>
+          </div>
+          <button onClick={closePanel} className={styles.closeButton}>
+            &times;
+          </button>
+        </div>
+        {showOverlay && (
+          <div className={styles.panelContent}>
+            <AddServiceForm 
+              editingService={editingService} 
+              onClose={closePanel}
+              mutate={mutate}
+            />
+          </div>
+        )}
+      </div>
     </>
   );
 };
