@@ -47,7 +47,7 @@ export const usePaymentModes = () => {
   };
 };
 
-export const createBillableSerice = (payload: any) => {
+export const createBillableService = (payload: any) => {
   const url = `${apiBasePath}api/billable-service`;
   return openmrsFetch(url, {
     method: 'POST',

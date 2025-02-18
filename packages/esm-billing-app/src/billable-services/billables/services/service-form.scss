@@ -148,3 +148,9 @@
 .buttonContainer {
   margin: layout.$spacing-03;
 }
+
+.paymentMethods {
+  display: flex;
+  flex-direction: column;
+  gap: layout.$spacing-05;
+}

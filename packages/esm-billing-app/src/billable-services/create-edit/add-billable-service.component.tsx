@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-  createBillableSerice,
+  createBillableService,
   updateBillableService,
   useConceptsSearch,
   usePaymentModes,
@@ -136,7 +136,7 @@ const AddBillableService: React.FC<{ editingService?: any; onClose: () => void }
 
     const saveAction = editingService
       ? updateBillableService(editingService.uuid, payload)
-      : createBillableSerice(payload);
+      : createBillableService(payload);
 
     saveAction.then(
       (resp) => {

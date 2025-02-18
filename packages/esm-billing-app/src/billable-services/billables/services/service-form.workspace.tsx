@@ -17,7 +17,7 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createBillableSerice, updateBillableService, useConceptsSearch,usePaymentModes, useServiceTypes } from '../../billable-service.resource';
+import { createBillableService, updateBillableService, useConceptsSearch,usePaymentModes, useServiceTypes } from '../../billable-service.resource';
 import { type ServiceConcept } from '../../../types';
 import styles from './service-form.scss'
 
@@ -44,7 +44,7 @@ const paymentFormSchema = z.object({
 
 const DEFAULT_PAYMENT_OPTION = { paymentMode: '', price: 0 };
 
-const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; mutate: () => void }> = ({ editingService, onClose, mutate }) => {
+const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; mutate?: () => void }> = ({ editingService, onClose, mutate }) => {
   const { t } = useTranslation();
 
   const { paymentModes, isLoading: isLoadingPaymentModes } = usePaymentModes();
@@ -129,7 +129,7 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
 
     const saveAction = editingService
       ? updateBillableService(editingService.uuid, payload)
-      : createBillableSerice(payload);
+      : createBillableService(payload);
 
     saveAction.then(
       (resp) => {
