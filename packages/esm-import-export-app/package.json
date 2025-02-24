@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-import-export-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Import and Export Micro-frontend for OpenMRS3",
   "browser": "dist/sjthc-esm-import-export-app.js",
   "main": "src/index.ts",
@@ -52,5 +52,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
+  "gitHead": "e1d4df908831ecdc4e136f390091bd7976a302d9"
 }
