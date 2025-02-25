@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-procedure-app",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
   "browser": "dist/sjthc-esm-procedure-app.js",
@@ -113,5 +113,5 @@
     "webpack-cli": "^5.1.4"
   },
   "packageManager": "yarn@3.6.1",
-  "gitHead": "77a0f3566fb6864af7aee744718ade7fa9fd578c"
+  "gitHead": "a295786214cb32ca0d7cc2b789bdce8a3269e379"
 }
