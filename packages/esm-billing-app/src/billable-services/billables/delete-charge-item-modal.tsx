@@ -8,14 +8,16 @@ import styles from './delete-charge-item-modal.scss';
 type DeleteChargeItemModalProps = {
   closeModal: () => void;
   selectedChargeItem: any;
+  mutate: () => void;
 };
 
-const DeleteChargeItemModal: React.FC<DeleteChargeItemModalProps> = ({ selectedChargeItem, closeModal }) => {
+const DeleteChargeItemModal: React.FC<DeleteChargeItemModalProps> = ({ selectedChargeItem, closeModal, mutate }) => {
   const { t } = useTranslation();
 
   const handleDelete = async () => {
     try {
       await deleteChargeItem(selectedChargeItem.uuid);
+      mutate();
       showSnackbar({
         title: t('chargeItemDeleted', 'Charge Item deleted'),
         subtitle: t('chargeItemDeletedSubtitle', 'The charge item has been deleted'),

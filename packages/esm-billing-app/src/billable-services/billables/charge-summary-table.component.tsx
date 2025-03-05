@@ -111,8 +111,9 @@ const ChargeSummaryTable: React.FC = () => {
     const dispose = showModal('delete-charge-item-modal', {
       closeModal: () => dispose(),
       selectedChargeItem: service,
+      mutate
     });
-  }, []);
+  }, [mutate]);
 
   const handleAddService = useCallback(() => {
     setEditingService(null);
