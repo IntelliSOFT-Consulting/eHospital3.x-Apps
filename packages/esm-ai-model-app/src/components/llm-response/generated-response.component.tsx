@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tile } from '@carbon/react';
-import styles from '../ai-model/ai-model.scss'
+import styles from './generated-response.scss';
 import { Edit } from '@carbon/react/icons';
 
 interface GeneratedResponseProps {

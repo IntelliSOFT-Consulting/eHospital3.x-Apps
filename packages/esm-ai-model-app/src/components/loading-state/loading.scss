@@ -1,0 +1,14 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '~@openmrs/esm-styleguide/src/vars' as *;
+
+.loading {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 4rem;
+	gap: layout.$spacing-03;
+}

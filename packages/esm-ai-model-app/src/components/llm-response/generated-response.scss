@@ -1,0 +1,16 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '~@openmrs/esm-styleguide/src/vars' as *;
+
+.generated {
+	margin-bottom: layout.$spacing-05;
+	padding-right: layout.$spacing-05;
+	position: relative;
+}
+
+.editButton {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}

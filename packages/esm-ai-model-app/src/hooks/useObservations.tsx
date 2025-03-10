@@ -2,7 +2,7 @@ import { openmrsFetch } from '@openmrs/esm-framework';
 import React, { useEffect, useState } from 'react';
 
 interface Observation {
-  sex: string;
+  gender: string;
   age: number;
   weight: number;
   height: number;
@@ -22,7 +22,7 @@ interface LlmResponse {
 
 export const useObservations = (patientUuid?: string) => {
   const [data, setData] = useState<Observation[] | null>(null);
-	const [llmResponse, setLlmResponse] = useState<string | null>(null);
+	const [llmResponse, setLLMResponse] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const useObservations = (patientUuid?: string) => {
           const obs = response.data;
           const formatted = [
             {
-              sex: obs.sex,
+              gender: obs.gender,
               age: obs.age,
               weight: obs.weight,
               height: obs.height,
@@ -72,14 +72,14 @@ export const useObservations = (patientUuid?: string) => {
 
     try {
       setIsGenerating(true);
-      setLlmResponse(null);
+      setLLMResponse(null);
 
       const obs = data[0];
 
       const payload = {
         patient_data: {
           age: obs.age,
-          gender: obs.sex,
+          gender: obs.gender,
           blood_pressure: obs.bloodPressure,
           heart_rate: obs.heartRate,
           temperature: obs.temperature,
@@ -102,7 +102,7 @@ export const useObservations = (patientUuid?: string) => {
       }
 
       const responseBody: LlmResponse = await response.json();
-      setLlmResponse(responseBody.message);
+      setLLMResponse(responseBody.message);
     } catch (err) {
       console.error(err);
     } finally {

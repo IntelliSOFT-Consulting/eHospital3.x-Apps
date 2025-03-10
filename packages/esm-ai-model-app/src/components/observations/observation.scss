@@ -1,0 +1,9 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '~@openmrs/esm-styleguide/src/vars' as *;
+
+.observation {
+	display: flex;
+	flex-direction: column;
+	gap: layout.$spacing-05;
+}
