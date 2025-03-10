@@ -1,0 +1,8 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '~@openmrs/esm-styleguide/src/vars' as *;
+
+.actions {
+	display: flex;
+	justify-content: space-between;
+}
