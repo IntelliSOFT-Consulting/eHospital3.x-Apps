@@ -36,18 +36,10 @@ const Observation: React.FC<ObservationProps> = ({ obs }) => {
       <ObservationDetail label="Temperature" value={obs.temperature} />
       
       {obs.diagnosis && (
-        <div>
-          <p>Diagnosis:</p>
-          <ul>
-            {obs.diagnosis
-              .replace(/[\[\]]/g, '')
-              .split(',')
-              .map((diag, index) => (
-                <li key={index}>{diag.trim()}</li>
-              ))}
-          </ul>
-        </div>
-      )}
+        <p>
+            <strong>Diagnosis:</strong> {obs.diagnosis.replace(/[\[\]]/g, '').split(',').map(diag => diag.trim()).join(', ')}
+        </p>
+        )}
 
       {obs.medication?.length > 0 && (
         <ObservationDetail label="Medications" value={obs.medication.join(', ')} />
