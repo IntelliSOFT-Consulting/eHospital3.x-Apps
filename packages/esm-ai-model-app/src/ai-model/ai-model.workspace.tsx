@@ -4,7 +4,7 @@ import { Button} from "@carbon/react";
 import { SendAlt } from "@carbon/react/icons";
 import { getPatientUuidFromStore, useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
 import CustomTextArea from "../components/text-area.component";
-import GeneratedResponse from "../components/generated-response.component";
+import GeneratedResponse from "../components/llm-response/generated-response.component";
 import Feedback from "../components/feedback.component";
 import { useObservations } from "../hooks/useObservations";
 import Observation from "../components/observations/observation.component";
@@ -36,15 +36,15 @@ const AIModel: React.FC = () => {
 			  Generate Message
 			</Button>
 		  </div>
-  
-		  <div className={styles.chat}>
+		</div>
+
+		<div className={styles.chat}>
 			{!isEditMode && <GeneratedResponse toggleEditMode={toggleEditMode} />}
 			{isEditMode && <CustomTextArea />}
 			<Actions
 			  onApprove={launchAiModelGeneratedWorkSpace}
 			  onRegenerate={toggleRegenerate}
 			/>
-		  </div>
 		</div>
   
 		{isRegenerated && <Feedback title="Reason for Regeneration" />}
