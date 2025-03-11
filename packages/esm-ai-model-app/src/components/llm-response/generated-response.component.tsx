@@ -4,20 +4,21 @@ import styles from './generated-response.scss';
 import { Edit } from '@carbon/react/icons';
 
 interface GeneratedResponseProps {
-	toggleEditMode: () => void
+	toggleEditMode: () => void;
+	llmResponse: string | null;
 }
 
-const GeneratedResponse: React.FC<GeneratedResponseProps> = ({ toggleEditMode }) => {
+const GeneratedResponse: React.FC<GeneratedResponseProps> = ({ toggleEditMode, llmResponse }) => {
 	return (
 		<Tile>
 			<div className={styles.generated}>
-				This is the generated text from the LLM
+				<p>{llmResponse || "No generated text available."}</p>
 				<div className={styles.editButton} onClick={toggleEditMode}>
 					<Edit aria-label="Edit response" size={20} />
 				</div>
 			</div>
 		</Tile>
-	)
-}
+	);
+};
 
-export default GeneratedResponse
+export default GeneratedResponse;
