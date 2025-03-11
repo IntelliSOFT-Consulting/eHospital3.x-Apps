@@ -2,10 +2,14 @@ import React from 'react';
 import { Loading} from "@carbon/react";
 import styles from './loading.scss';
 
-const LoadingState: React.FC = () => (
+interface LoadingStateProps {
+  message?: string;
+}
+
+const LoadingState: React.FC<LoadingStateProps> = ({ message = "Loading observations..." }) => (
   <div className={styles.loading}>
     <Loading small withOverlay={false} />
-    <p>Loading observations...</p>
+    <p>{message}</p>
   </div>
 );
 
