@@ -12,7 +12,7 @@ interface Observation {
   temperature: number;
   diagnosis: string;
   tests: any[];
-  medication: any[];
+  medications: any[];
   condition: any[];
 }
 
@@ -50,7 +50,7 @@ export const useObservations = (patientUuid?: string) => {
               temperature: obs.temperature,
               diagnosis: obs.diagnosis,
               tests: obs.tests,
-              medication: obs.medication,
+              medications: obs.medications,
               condition: obs.condition,
             },
           ];
@@ -64,8 +64,8 @@ export const useObservations = (patientUuid?: string) => {
     fetchData();
   }, [patientUuid]);
 
-	const generateLlmMessage = async () => {
-		if (!data || data.length === 0) {
+  const generateLlmMessage = async () => {
+    if (!data || data.length === 0) {
       console.warn('No observation data available for LLM.');
       return;
     }
@@ -77,23 +77,29 @@ export const useObservations = (patientUuid?: string) => {
       const obs = data[0];
 
       const payload = {
-        patient_data: {
-          age: obs.age,
-          gender: obs.gender,
-          blood_pressure: obs.bloodPressure,
-          heart_rate: obs.heartRate,
-          temperature: obs.temperature,
-          diagnosis: obs.diagnosis,
-          tests: obs.tests,
-          medications: obs.medication,
-        },
+        age: obs.age,
+        gender: obs.gender,
+        weight: obs.weight,
+        height: obs.height,
+        heart_rate: obs.heartRate,
+        temperature: obs.temperature,
+        blood_pressure: obs.bloodPressure,
+        diagnosis: obs.diagnosis,
+        tests: obs.tests?.map(test => ({
+          name: test.name,
+          results: test.results?.map(result => ({
+            parameter: result.parameter,
+            value: result.value
+          }))
+        })),
+        medications: obs.medications,
       };
 
-      const response = await openmrsFetch('http://sjhc.intellisoftkenya.com:5000/generate_summary', {
+      const response = await fetch('http://sjhc.intellisoftkenya.com:5000/generate_summary', {
         method: 'POST',
         headers: { 
-					'Content-Type': 'application/json' 
-				},
+          'Content-Type': 'application/json' 
+        },
         body: JSON.stringify(payload),
       });
 
@@ -108,12 +114,12 @@ export const useObservations = (patientUuid?: string) => {
     } finally {
       setIsGenerating(false);
     }
-	}
+  };
 
   return {
-		data,
-		llmResponse,
-		isGenerating,
-		generateLlmMessage
-	}
+    data,
+    llmResponse,
+    isGenerating,
+    generateLlmMessage,
+  };
 };
