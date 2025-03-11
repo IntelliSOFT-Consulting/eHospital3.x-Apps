@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from './ai-model.scss'
 import { Button} from "@carbon/react";
-import { SendAlt } from "@carbon/react/icons";
+import { SendAlt, Close, Checkmark } from "@carbon/react/icons";
 import { getPatientUuidFromStore, useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
 import CustomTextArea from "../components/ui/text-area.component";
 import GeneratedResponse from "../components/llm-response/generated-response.component";
@@ -15,14 +15,37 @@ const AIModel: React.FC = () => {
 	const [isEditMode, setEditMode] = useState(false);
 	const [isRegenerated, setRegenerated] = useState(false);
 	const [editedText, setEditedText] = useState('');
+	const [savedText, setSavedText] = useState('');
+	const [showFeedback, setShowFeedback] = useState(false);
+	const [editReason, setEditReason] = useState(null);
+	const [regenerateReason, setRegeneratedReason] = useState(null);
 	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model-generated');
 	const patientUuid = getPatientUuidFromStore();
   
 	const { data: observations, generateLlmMessage, isGenerating, llmResponse } = useObservations(patientUuid);
-  
+
 	const toggleEditMode = () => {
 		setEditMode(true);
-		setEditedText(llmResponse || '');
+		setShowFeedback(false);
+		setEditedText(savedText || llmResponse || '');
+	};
+
+	const cancelEdit = () => {
+		setEditMode(false);
+		setShowFeedback(false);
+		setEditedText(savedText || llmResponse || '');
+		setRegenerated(false);
+		setEditReason(null);
+	};
+
+	const saveEdit = () => {
+		if (!editReason) {
+			setShowFeedback(true);
+			return;
+		}
+		setEditMode(false);
+		setSavedText(editedText);
+		setShowFeedback(false);
 	};
 
 	const toggleRegenerate = () => setRegenerated(true);
@@ -54,26 +77,42 @@ const AIModel: React.FC = () => {
 					{!isEditMode && (
 						<GeneratedResponse
 							toggleEditMode={toggleEditMode}
-							llmResponse={llmResponse}
+							llmResponse={savedText || llmResponse}
 						/>
 					)}
 
 					{isEditMode && (
-						<CustomTextArea
-							initialText={editedText}
-							onChange={setEditedText}
-						/>
+						<div className={styles.editContainer}>
+							<CustomTextArea
+								initialText={editedText}
+								onChange={setEditedText}
+							/>
+							<div className={styles.editActions}>
+								<Button kind="danger--ghost" size="sm" onClick={cancelEdit} renderIcon={Close}>
+									Cancel
+								</Button>
+
+								<Button kind="primary" size="sm" onClick={saveEdit} renderIcon={Checkmark}>
+									Save
+								</Button>
+							</div>
+						</div>
 					)}
 
-					<Actions
-						onApprove={launchAiModelGeneratedWorkSpace}
-						onRegenerate={toggleRegenerate}
-					/>
+					{!isEditMode && (
+						<Actions
+							onApprove={launchAiModelGeneratedWorkSpace}
+							onRegenerate={toggleRegenerate}
+						/>
+					)}
 				</div>
 			)}
-  
-			{isRegenerated && <Feedback title="Reason for Regeneration" />}
-			{isEditMode && <Feedback title="Reason for Edit" />}
+
+			{showFeedback && (
+				<Feedback title="Reason for Edit" onReasonSelect={setEditReason} />
+			)}
+
+			{isRegenerated && <Feedback title="Reason for Regeneration" onReasonSelect={setRegeneratedReason} />}
 		</div>
 	);
 };
