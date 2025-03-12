@@ -92,6 +92,7 @@ const AIModel: React.FC = () => {
 		  </div>
 		</div>
   
+		{llmResponse && (
 		<div className={styles.chat}>
 		  {!isEditMode && (
 			<GeneratedResponse
@@ -125,6 +126,8 @@ const AIModel: React.FC = () => {
 			/>
 		  )}
 		</div>
+
+		)}
   
 		{showFeedback && (
 		  <Feedback title="Reason for Edit" onReasonSelect={setEditReason} />
