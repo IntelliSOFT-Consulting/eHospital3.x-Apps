@@ -70,7 +70,7 @@ const AIModelResponse: React.FC = () => {
 						title="Message Not Sent"
 						subtitle="There was an error sending the message. Please try again."
 						caption=""
-						timeout={3000}
+						timeout={5000}
 					/>
 				)}
 			</div>
