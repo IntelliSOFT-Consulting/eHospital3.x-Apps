@@ -65,58 +65,69 @@ export const useObservations = (patientUuid?: string) => {
     fetchData();
   }, [patientUuid]);
 
-  const fetchLatestMessage = async () => {
+  const fetchLatestMessage = async (): Promise<string | null> => {
     try {
       const response = await openmrsFetch(
         `/ws/rest/v1/ehospital/messages/patient?patientUuid=${patientUuid}`
       );
-
+  
       if (!response.ok) {
         throw new Error("Failed to fetch latest message.");
       }
-
+  
       const messages = await response.json();
       if (messages.length > 0) {
-        setLatestMessage(messages[messages.length - 1].message);
+        const latest = messages[messages.length - 1].message;
+        setLatestMessage(latest);
+        return latest;
       }
+      return null;
     } catch (error) {
       console.error("Error fetching latest message:", error);
+      return null;
     }
   };
 
-  const saveMessage = async (message: string, isEdited: boolean, editReason: string, isRegenerated: boolean, regenerateReason: string, navigateToWorkspace: () => void) => {
-    setIsSaving(true);
-    const payload = {
-      message,
-      edited: isEdited ? "YES" : "NO",
-      reasonEdited: isEdited ? editReason : "",
-      regenerated: isRegenerated ? "YES" : "NO",
-      reasonRegenerated: isRegenerated ? regenerateReason : "",
-    };
+  const saveMessage = async (
+      message: string,
+      isEdited: boolean,
+      editReason: string,
+      isRegenerated: boolean,
+      regenerateReason: string,
+      navigateToWorkspace: () => void
+  ) => {
+      setIsSaving(true);
+      const payload = {
+          message,
+          edited: isEdited ? "YES" : "NO",
+          reasonEdited: isEdited ? editReason : "",
+          regenerated: isRegenerated ? "YES" : "NO",
+          reasonRegenerated: isRegenerated ? regenerateReason : "",
+      };
 
-    try {
-      const response = await openmrsFetch(
-        `/ws/rest/v1/ehospital/message/save?patientUuid=${patientUuid}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
+      try {
+          const response = await openmrsFetch(
+              `/ws/rest/v1/ehospital/message/save?patientUuid=${patientUuid}`,
+              {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+              }
+          );
 
-      if (!response.ok) {
-        throw new Error("Failed to save message.");
+          if (!response.ok) {
+              throw new Error("Failed to save message.");
+          }
+
+          navigateToWorkspace();
+          await fetchLatestMessage();
+      } catch (error) {
+          console.error("Error saving message:", error);
+      } finally {
+          setIsSaving(false);
       }
-
-      navigateToWorkspace();
-      await fetchLatestMessage();
-    } catch (error) {
-      console.error("Error saving message:", error);
-    } finally {
-      setIsSaving(false);
-    }
   };
-
+  
   const sendMessageViaSMS = async (message: string) => {
     setIsSending(true);
     try {
@@ -133,7 +144,6 @@ export const useObservations = (patientUuid?: string) => {
         throw new Error("Failed to send SMS.");
       }
 
-      alert("Message sent to Patient successfully!");
     } catch (error) {
       console.error("Error sending SMS:", error);
       alert("Failed to send SMS.");
