@@ -24,10 +24,33 @@ const AIModel: React.FC = () => {
 	const [showRegenerateModal, setShowRegenerateModal] = useState(false);
 	const [hasEdits, setHasEdits] = useState(false);
 	const [hasRegeneration, setHasRegeneration] = useState(false);
+	const [llmError, setLlmError] = useState<string | null>(null);
+	const [showToast, setShowToast] = useState(false);
 
 	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model-generated');
 	const patientUuid = getPatientUuidFromStore();
 	const { data: observations, generateLlmMessage, isGenerating, llmResponse, saveMessage, isSaving } = useObservations(patientUuid);
+
+	const hasRelevantData = observations?.some(obs => 
+		obs.diagnosis || (obs.medications && obs.medications.length > 0) || 
+		(obs.condition && obs.condition.length > 0) || 
+		(obs.tests && obs.tests.length > 0)
+	) ?? false;
+
+	const handleGenerateMessage = async () => {
+		setLlmError(null);
+		try {
+			await generateLlmMessage();
+		} catch (error: any) {
+			console.error("LLM message generation failed:", error);
+			setLlmError(error.message || "Failed to generate message. Please try again.");
+			setShowToast(true);
+
+			setTimeout(() => {
+				setShowToast(false);
+			}, 5000);
+		}
+	};
 
 	const toggleEditMode = () => {
 		setEditMode(true);
@@ -91,15 +114,20 @@ const AIModel: React.FC = () => {
 					{observations.map((obs, index) => (
 						<Observation key={index} obs={obs} />
 					))}
-					<Button
-						renderIcon={SendAlt}
-						kind="secondary"
-						size="sm"
-						onClick={generateLlmMessage}
-						disabled={isGenerating}
-					>
-						{isGenerating ? "Generating LLM response..." : "Generate Message"}
-					</Button>
+
+					{hasRelevantData && (
+						<Button
+							renderIcon={SendAlt}
+							kind="secondary"
+							size="sm"
+							onClick={handleGenerateMessage}
+							disabled={!!llmResponse || isGenerating}
+						>
+							{llmResponse ? "Message Generated" : isGenerating ? "Generating LLM response..." : "Generate Message"}
+						</Button>
+					)}
+
+					{llmError && <p className={styles.errorMessage}>{llmError}</p>}
 				</div>
 
 				{llmResponse && (
@@ -137,7 +165,6 @@ const AIModel: React.FC = () => {
 					</div>
 				)}
 
-				{/* 🔹 Display Reasons Below Chat */}
 				{(hasEdits || hasRegeneration) && (
 					<div>
 						{hasEdits && <p><strong>Edited:</strong> {editReason}</p>}
@@ -147,6 +174,13 @@ const AIModel: React.FC = () => {
 
 				{isSaving && <LoadingState message="Processing Message for SMS..." />}
 			</div>
+
+			{showToast && (
+				<div className={styles.toastError}>
+					<WarningAlt size={16} className={styles.warningIcon} />
+					<span>{llmError}</span>
+				</div>
+			)}
 
 			{/* Edit Reason Modal */}
 			<Modal
