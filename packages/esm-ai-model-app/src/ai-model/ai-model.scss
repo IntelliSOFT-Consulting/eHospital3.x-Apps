@@ -78,3 +78,79 @@
 	padding: 4rem;
 	gap: layout.$spacing-03;
 }
+
+.messageHeader {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.toastError {
+	color: #fff;
+	background-color: #e74c3c;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	text-align: center;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: center;
+	max-width: 400px;
+}
+
+.toastError::before {
+	content: "⚠️";
+	font-size: 16px;
+}
+
+.input {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	margin-bottom: 10px;
+}
+
+.modalActions {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+.regenerating {
+	color: #f39c12;
+	background-color: #fff3cd;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	text-align: center;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: center;
+	max-width: 400px;
+	border: 1px solid #f1c40f;
+}
+
+.toastError {
+	color: #fff;
+	background-color: #e74c3c;
+	padding: 10px;
+	border-radius: 5px;
+	margin-top: 10px;
+	text-align: center;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	justify-content: center;
+	max-width: 400px;
+}
+
+.warningIcon {
+	color: #f39c12;
+}
+
+
