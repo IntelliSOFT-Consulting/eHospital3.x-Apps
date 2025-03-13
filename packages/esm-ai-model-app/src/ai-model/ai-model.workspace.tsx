@@ -11,6 +11,7 @@ import Observation from "../components/observations/observation.component";
 import Actions from "../components/props/action.component";
 import LoadingState from "../components/loading-state/loading-state.component";
 
+const MAX_CHAR_LIMIT = 320;
 const AIModel: React.FC = () => {
 	const [isEditMode, setEditMode] = useState(false);
 	const [isRegenerated, setRegenerated] = useState(false);
@@ -39,13 +40,18 @@ const AIModel: React.FC = () => {
 	};
   
 	const saveEdit = () => {
-	  if (!editReason) {
-		setShowFeedback(true);
-		return;
-	  }
-	  setEditMode(false);
-	  setSavedText(editedText);
-	  setShowFeedback(false);
+		if (!editReason) {
+			setShowFeedback(true);
+			return;
+		}
+		
+		if (editedText.length > MAX_CHAR_LIMIT) {
+			return;
+		}
+		
+		setEditMode(false);
+		setSavedText(editedText);
+		setShowFeedback(false);
 	};
   
 	const toggleRegenerate = () => setRegenerated(true);

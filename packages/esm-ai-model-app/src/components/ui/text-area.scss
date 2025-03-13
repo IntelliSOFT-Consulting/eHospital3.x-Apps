@@ -1,0 +1,22 @@
+
+.container {
+    position: relative;
+}
+
+.errorMessage {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #da1e28;
+    font-size: 12px;
+}
+
+.warningIcon {
+    color: #da1e28;
+}
+
+.characterCount {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #6f6f6f;
+}
