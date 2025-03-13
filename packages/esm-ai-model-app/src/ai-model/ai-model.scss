@@ -81,26 +81,10 @@
 
 .messageHeader {
 	font-weight: bold;
-	font-size: 1.5rem;
-}
-
-.toastError {
-	color: #fff;
-	background-color: #e74c3c;
-	padding: 10px;
-	border-radius: 5px;
-	margin-top: 10px;
-	text-align: center;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	justify-content: center;
-	max-width: 400px;
+	font-size: 1rem;
 }
 
 .toastError::before {
-	content: "⚠️";
 	font-size: 16px;
 }
 
@@ -134,23 +118,36 @@
 	border: 1px solid #f1c40f;
 }
 
-.toastError {
-	color: #fff;
-	background-color: #e74c3c;
-	padding: 10px;
-	border-radius: 5px;
-	margin-top: 10px;
-	text-align: center;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	justify-content: center;
-	max-width: 400px;
-}
-
 .warningIcon {
 	color: #f39c12;
 }
 
+.toastError {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    animation: fadeInOut 5s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.errorMessage {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
 

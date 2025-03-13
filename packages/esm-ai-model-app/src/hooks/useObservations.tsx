@@ -153,55 +153,56 @@ export const useObservations = (patientUuid?: string) => {
   };
 
   const generateLlmMessage = async () => {
-    if (!data || data.length === 0) {
-      console.warn('No observation data available for LLM.');
-      return;
-    }
-
-    try {
-      setIsGenerating(true);
-      setLLMResponse(null);
-
-      const obs = data[0];
-
-      const payload = {
-        age: obs.age,
-        gender: obs.gender,
-        weight: obs.weight,
-        height: obs.height,
-        heart_rate: obs.heartRate,
-        temperature: obs.temperature,
-        blood_pressure: obs.bloodPressure,
-        diagnosis: obs.diagnosis,
-        tests: obs.tests?.map(test => ({
-          name: test.name,
-          results: test.results?.map(result => ({
-            parameter: result.parameter,
-            value: result.value
-          }))
-        })),
-        medications: obs.medications,
-      };
-
-      const response = await fetch('http://sjhc.intellisoftkenya.com:5000/generate_summary', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('LLM request failed.');
+      if (!data || data.length === 0) {
+        console.warn('No observation data available for LLM.');
+        throw new Error("No observation data available.");
       }
 
-      const responseBody: LlmResponse = await response.json();
-      setLLMResponse(responseBody.message);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsGenerating(false);
-    }
+      try {
+        setIsGenerating(true);
+        setLLMResponse(null);
+
+        const obs = data[0];
+
+        const payload = {
+          age: obs.age,
+          gender: obs.gender,
+          weight: obs.weight,
+          height: obs.height,
+          heart_rate: obs.heartRate,
+          temperature: obs.temperature,
+          blood_pressure: obs.bloodPressure,
+          diagnosis: obs.diagnosis,
+          tests: obs.tests?.map(test => ({
+            name: test.name,
+            results: test.results?.map(result => ({
+              parameter: result.parameter,
+              value: result.value
+            }))
+          })),
+          medications: obs.medications,
+        };
+
+        const response = await fetch('https://sjhc.intellisoftkenya.com/generate_summary', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json' 
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error(`LLM request failed with status: ${response.status}`);
+        }
+
+        const responseBody: LlmResponse = await response.json();
+        setLLMResponse(responseBody.message);
+      } catch (err) {
+        console.error("Error fetching LLM response:", err);
+        throw new Error("Failed to generate LLM message. Please try again.");
+      } finally {
+        setIsGenerating(false);
+      }
   };
 
   return {

@@ -8,6 +8,7 @@ const AIModelResponse: React.FC = () => {
 	const patientUuid = getPatientUuidFromStore();
 	const { sendMessageViaSMS, isSending, fetchLatestMessage, latestMessage } = useObservations(patientUuid);
 	const [message, setMessage] = useState<string | null>(null);
+	const [status, setStatus] = useState<"idle" | "sent" | "failed">("idle");
 	const [toast, setToast] = useState<{ type: "success" | "error"; show: boolean }>({ type: "success", show: false });
 
 	useEffect(() => {
@@ -21,8 +22,10 @@ const AIModelResponse: React.FC = () => {
 	const handleSendSMS = async () => {
 		try {
 			await sendMessageViaSMS(message);
+			setStatus("sent");
 			setToast({ type: "success", show: true });
 		} catch (error) {
+			setStatus("failed");
 			setToast({ type: "error", show: true });
 		}
 
@@ -45,12 +48,18 @@ const AIModelResponse: React.FC = () => {
 
 				<div className={styles.actions}>
 					<Button
-						kind="primary"
+						kind={status === "failed" ? "danger" : "primary"}
 						size="sm"
 						onClick={handleSendSMS}
-						disabled={isSending || !message}
+						disabled={status === "sent" || isSending}
 					>
-						{isSending ? "Sending SMS..." : "Send via SMS"}
+						{status === "sent"
+							? "Message Sent"
+							: status === "failed"
+							? "Retry"
+							: isSending
+							? "Sending SMS..."
+							: "Send via SMS"}
 					</Button>
 				</div>
 
