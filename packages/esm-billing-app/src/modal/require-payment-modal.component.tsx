@@ -19,7 +19,7 @@ import { navigate, useConfig } from '@openmrs/esm-framework';
 import { ComposedModal } from '@carbon/react';
 import { Heading } from '@carbon/react';
 import { BillingConfig } from '../config-schema';
-import { getPatientUuidFromUrl } from '@openmrs/esm-patient-common-lib';
+import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
 
 type RequirePaymentModalProps = {
   closeModal: () => void;
@@ -29,7 +29,7 @@ type RequirePaymentModalProps = {
 const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const { t } = useTranslation();
   const { defaultCurrency } = useConfig();
-  const patientUuid = getPatientUuidFromUrl(); 
+  const patientUuid = getPatientUuidFromStore(); 
   const { bills, isLoading, error } = useBills(patientUuid);
   const [showModal, setShowModal] = useState({ loadingModal: true, billingModal: false });
   const { enforceBillPayment } = useConfig<BillingConfig>();
