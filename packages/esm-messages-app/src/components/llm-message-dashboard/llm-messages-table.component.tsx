@@ -1,9 +1,9 @@
 import React from "react";
-import { useLLMMessages } from "../../hooks/useLLMMessage";
+import { useLLMMessages, resendMessage } from "../../hooks/useLLMMessage";
 import CustomDataTable, {
   TableHeaderItem,
   TableRowItem,
-} from "../messages-table.component";
+} from "../messages-datatable/messages-table.component";
 import EmptyState from "../empty-state/empty-state.component";
 
 const LlmDataTable = () => {
@@ -16,11 +16,14 @@ const LlmDataTable = () => {
     { key: "status", header: "Status" },
     { key: "timeSent", header: "Time Sent" },
     { key: "action", header: "Action" },
+    { key: "fullMessage", header: "Full Message" },
+    { key: "patientUuid", header: "Patient Uuid" },
   ];
 
   const rows: TableRowItem[] = messages.map((msg) => {
     return {
       id: `${msg.id} - ${msg.date}`,
+      patientUuid: msg.id,
       date: msg.date,
       patientName: msg.name,
       message: msg.statusMessage,
@@ -30,9 +33,17 @@ const LlmDataTable = () => {
     };
   });
 
+  const onResend = async (patientUuid) => {
+    try {
+      await resendMessage(patientUuid);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
   return (
     <>
-      <CustomDataTable headers={headers} rows={rows} />
+      <CustomDataTable headers={headers} rows={rows} onResend={onResend} />
       <div>
         {rows.length === 0 && (
           <div>

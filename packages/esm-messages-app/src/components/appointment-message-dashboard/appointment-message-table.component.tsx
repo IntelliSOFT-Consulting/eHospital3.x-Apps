@@ -7,7 +7,7 @@ import {
 import CustomDataTable, {
   TableHeaderItem,
   TableRowItem,
-} from "../messages-table.component";
+} from "../messages-datatable/messages-table.component";
 import { Button } from "@carbon/react";
 import EmptyState from "../empty-state/empty-state.component";
 

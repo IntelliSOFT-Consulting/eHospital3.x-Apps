@@ -25,7 +25,6 @@ export const useLLMMessages = () => {
             name: msg.patientName,
             date: msg.createdAt,
             fullMessage: msg.message,
-            message: truncateMessage(msg.message, 3),
             status: msg.status,
             statusMessage: msg.successOrErrorMessage,
             timeSent: msg.sentAt,
@@ -40,4 +39,20 @@ export const useLLMMessages = () => {
     fetchAllMessages();
   }, []);
   return llmMessages;
+};
+
+export const resendMessage = async (patientUuid: string) => {
+  const url = `/ws/rest/v1/ehospital/message/send?patientUuid=${patientUuid}`;
+
+  try {
+    const response = await openmrsFetch(url, {
+      method: "POST",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to resend message. Status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error("Error sending message:", error);
+  }
 };
