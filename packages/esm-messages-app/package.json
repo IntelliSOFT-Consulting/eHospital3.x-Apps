@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@openmrs/esm-patient-common-lib": "next",
+    "dayjs": "^1.11.10",
     "webpack": "^5.74.0"
   },
   "gitHead": "0a67d6c2a13faaf565d45d9d71a182a39b5047fd"
