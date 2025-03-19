@@ -1,18 +1,10 @@
+@use '@carbon/layout';
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/colors';
 @use '@carbon/styles/scss/type';
 @import '~@openmrs/esm-styleguide/src/vars';
 
-.tableContainer {
-	padding: 0 spacing.$spacing-05;
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: spacing.$spacing-01;
-}
 
 .left-justified-items {
 	display: flex;
@@ -33,4 +25,9 @@
 
 .filter {
 	margin: spacing.$spacing-05 0;
+}
+
+.messagesDashboard {
+  margin-inline: layout.$spacing-05;
+  margin-block: layout.$spacing-05;
 }
