@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { useLLMMessages, resendMessage } from "../../hooks/useLLMMessage";
 import CustomDataTable, {
   TableHeaderItem,
   TableRowItem,
 } from "../messages-datatable/messages-table.component";
 import EmptyState from "../empty-state/empty-state.component";
+import { Search } from "@carbon/react";
+import { useTranslation } from "react-i18next";
+import { useDebounce } from "@openmrs/esm-framework";
 
 const LlmDataTable = () => {
+  const size = "md";
+  const { t } = useTranslation();
   const messages = useLLMMessages();
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const headers: TableHeaderItem[] = [
     { key: "date", header: "Date" },
@@ -33,6 +41,20 @@ const LlmDataTable = () => {
     };
   });
 
+  const filterdRows = useMemo(() => {
+    return (
+      rows.filter((row) =>
+        row.patientName
+          .toLowerCase()
+          .includes(debouncedSearchTerm.toLowerCase())
+      ) ?? []
+    );
+  }, [rows, debouncedSearchTerm]);
+
+  const handleSearch = (searchTerm: string) => {
+    setSearchTerm(searchTerm);
+  };
+
   const onResend = async (patientUuid) => {
     try {
       await resendMessage(patientUuid);
@@ -43,7 +65,19 @@ const LlmDataTable = () => {
 
   return (
     <>
-      <CustomDataTable headers={headers} rows={rows} onResend={onResend} />
+      <Search
+        size={size}
+        placeholder={t("searchMessages", "Search messages")}
+        labelText={t("searchLabel", "Search")}
+        closeButtonLabelText={t("clearSearch", "Clear search input")}
+        id="search-1"
+        onChange={(event) => handleSearch(event.target.value)}
+      />
+      <CustomDataTable
+        headers={headers}
+        rows={filterdRows}
+        onResend={onResend}
+      />
       <div>
         {rows.length === 0 && (
           <div>
