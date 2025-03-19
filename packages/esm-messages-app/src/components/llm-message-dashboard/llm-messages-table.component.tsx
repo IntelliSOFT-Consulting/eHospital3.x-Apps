@@ -8,14 +8,21 @@ import EmptyState from "../empty-state/empty-state.component";
 import { Search } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "@openmrs/esm-framework";
+import { DateRangePicker } from "../filters/date-range-filter";
 
 const LlmDataTable = () => {
   const size = "md";
   const { t } = useTranslation();
-  const messages = useLLMMessages();
   const [searchTerm, setSearchTerm] = useState("");
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const [dateRange, setDateRange] = useState<[Date, Date]>([
+    new Date(),
+    new Date(),
+  ]);
+
+  const messages = useLLMMessages(dateRange[0], dateRange[1]);
 
   const headers: TableHeaderItem[] = [
     { key: "date", header: "Date" },
@@ -65,14 +72,17 @@ const LlmDataTable = () => {
 
   return (
     <>
-      <Search
-        size={size}
-        placeholder={t("searchMessages", "Search messages")}
-        labelText={t("searchLabel", "Search")}
-        closeButtonLabelText={t("clearSearch", "Clear search input")}
-        id="search-1"
-        onChange={(event) => handleSearch(event.target.value)}
-      />
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <Search
+          size={size}
+          placeholder={t("searchMessages", "Search messages")}
+          labelText={t("searchLabel", "Search")}
+          closeButtonLabelText={t("clearSearch", "Clear search input")}
+          id="search-1"
+          onChange={(event) => handleSearch(event.target.value)}
+        />
+        <DateRangePicker onDateChange={setDateRange} />
+      </div>
       <CustomDataTable
         headers={headers}
         rows={filterdRows}

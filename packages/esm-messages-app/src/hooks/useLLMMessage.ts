@@ -1,22 +1,22 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
 import React, { useState, useEffect } from "react";
-import { truncateMessage } from "../helpers/truncate-message";
 import dayjs from "dayjs";
 
-export const useLLMMessages = () => {
+export const useLLMMessages = (startDate?: Date, endDate?: Date) => {
   const [llmMessages, setLLMMessage] = useState([]);
 
   useEffect(() => {
-    const fetchAllMessages = async (
-      startDate: Date = dayjs().startOf("day").toDate(),
-      endDate: Date = dayjs().endOf("day").toDate()
-    ) => {
+    const fetchAllMessages = async () => {
       try {
-        const startDateISO = startDate.toISOString();
-        const endDateISO = endDate.toISOString();
+        const startDateISO = (
+          startDate ?? dayjs().startOf("day").toDate()
+        ).toISOString();
+        const endDateISO = (
+          endDate ?? dayjs().endOf("day").toDate()
+        ).toISOString();
 
         const response = await openmrsFetch(
-          `/ws/rest/v1/ehospital/messages/all?startDate=2025-03-10&endDate=2025-03-14`
+          `/ws/rest/v1/ehospital/messages/all?startDate=${startDateISO}&endDate=${endDateISO}`
         );
 
         if (response.data) {
@@ -37,7 +37,7 @@ export const useLLMMessages = () => {
       }
     };
     fetchAllMessages();
-  }, []);
+  }, [startDate, endDate]);
   return llmMessages;
 };
 
