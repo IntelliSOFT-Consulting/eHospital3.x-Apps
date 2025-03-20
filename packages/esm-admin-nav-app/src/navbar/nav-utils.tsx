@@ -11,6 +11,7 @@ import {
   ImportExport,
   HospitalBed,
   Chat,
+  Microscope,
 } from "@carbon/react/icons";
 const openmrsSpaBase = window["getOpenmrsSpaBase"]();
 
@@ -77,5 +78,11 @@ export const moduleLinks = [
     url: `${openmrsSpaBase}messages`,
     icon: <Chat size={24} />,
     requiresAdmin: true,
-  }
+  },
+  {
+    label: "OCL",
+    url: `${openmrsSpaBase}ocl`,
+    icon: <Microscope size={24} />,
+    requiresAdmin: true,
+  },
 ];
