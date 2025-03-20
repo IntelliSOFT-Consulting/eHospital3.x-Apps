@@ -19,9 +19,18 @@ import {
   TableToolbarContent,
   TableToolbarSearch,
   Modal,
+  MenuButton,
 } from '@carbon/react';
 import { Add, CategoryAdd, Download, Upload, WatsonHealthScalpelSelect } from '@carbon/react/icons';
-import { ErrorState, showModal, useLayoutType, usePagination, useConfig, navigate, showSnackbar } from '@openmrs/esm-framework';
+import {
+  ErrorState,
+  showModal,
+  useLayoutType,
+  usePagination,
+  useConfig,
+  navigate,
+  showSnackbar,
+} from '@openmrs/esm-framework';
 import { EmptyState, usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import React, { useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -107,25 +116,28 @@ const ChargeSummaryTable: React.FC = () => {
     });
   }, []);
 
-  const handleDeleteChargeItem = useCallback((service) => {
-    const dispose = showModal('delete-charge-item-modal', {
-      closeModal: () => dispose(),
-      selectedChargeItem: service,
-      mutate
-    });
-  }, [mutate]);
+  const handleDeleteChargeItem = useCallback(
+    (service) => {
+      const dispose = showModal('delete-charge-item-modal', {
+        closeModal: () => dispose(),
+        selectedChargeItem: service,
+        mutate,
+      });
+    },
+    [mutate],
+  );
 
   const handleAddService = useCallback(() => {
     setEditingService(null);
     setPanelType('service');
     setShowOverlay(true);
-  }, [])
+  }, []);
 
   const handleAddItem = useCallback(() => {
     setEditingService(null);
     setPanelType('commodity');
     setShowOverlay(true);
-  }, [])
+  }, []);
 
   const handleEditService = useCallback((service) => {
     setEditingService(service);
@@ -173,7 +185,7 @@ const ChargeSummaryTable: React.FC = () => {
                 {isValidating && (
                   <InlineLoading status="active" iconDescription="Loading" description="Loading data..." />
                 )}
-                <ComboButton tooltipAlignment="left" label={t('actions', 'Action')}>
+                <MenuButton tooltipAlignment="left" label={t('actions', 'Action')}>
                   <MenuItem
                     renderIcon={CategoryAdd}
                     onClick={handleAddService}
@@ -190,7 +202,7 @@ const ChargeSummaryTable: React.FC = () => {
                     label={t('downloadTemplate', 'Download template')}
                     renderIcon={Download}
                   />
-                </ComboButton>
+                </MenuButton>
               </TableToolbarContent>
             </TableToolbar>
             <Table {...getTableProps()} aria-label={t('chargeItem', 'Charge items table')}>
@@ -257,16 +269,15 @@ const ChargeSummaryTable: React.FC = () => {
         className={`
           ${styles.sidePanel} 
           ${showOverlay ? styles.open : ''}
-        `}
-      >
+        `}>
         <div className={styles.panelHeader}>
           <div>
-          <h3 className={styles.panelTitle}>
+            <h3 className={styles.panelTitle}>
               {editingService
                 ? t('editChargeItem', 'Edit charge item')
                 : panelType === 'service'
-                ? t('addService', 'Add Service')
-                : t('addCommodity', 'Add Commodity')}
+                  ? t('addService', 'Add Service')
+                  : t('addCommodity', 'Add Commodity')}
             </h3>
           </div>
           <button onClick={closePanel} className={styles.closeButton}>
