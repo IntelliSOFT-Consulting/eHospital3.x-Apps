@@ -5,16 +5,23 @@ import CustomDataTable, {
   TableRowItem,
 } from "../messages-datatable/messages-table.component";
 import EmptyState from "../empty-state/empty-state.component";
-import { Search } from "@carbon/react";
+import { Search, Pagination } from "@carbon/react";
 import { useTranslation } from "react-i18next";
-import { useDebounce } from "@openmrs/esm-framework";
+import {
+  useDebounce,
+  usePagination,
+  useLayoutType,
+} from "@openmrs/esm-framework";
 import { DateRangePicker } from "../filters/date-range-filter";
+import { usePaginationInfo } from "@openmrs/esm-patient-common-lib";
+import { useMessageFilterContext } from "../filters/useFilterContext";
 
 const LlmDataTable = () => {
-  const size = "md";
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [pageSize, setPageSize] = useState(5);
+  const responsiveSize = useLayoutType() !== "tablet" ? "sm" : "md";
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const [dateRange, setDateRange] = useState<[Date, Date]>([
@@ -48,19 +55,28 @@ const LlmDataTable = () => {
     };
   });
 
+  const { currentPage, goTo, results } = usePagination(rows, pageSize);
+
   const filterdRows = useMemo(() => {
     return (
-      rows.filter((row) =>
+      results.filter((row) =>
         row.patientName
           .toLowerCase()
           .includes(debouncedSearchTerm.toLowerCase())
       ) ?? []
     );
-  }, [rows, debouncedSearchTerm]);
+  }, [results, debouncedSearchTerm]);
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm);
   };
+
+  const { pageSizes } = usePaginationInfo(
+    pageSize,
+    rows.length,
+    currentPage,
+    results.length
+  );
 
   const onResend = async (patientUuid) => {
     try {
@@ -72,9 +88,9 @@ const LlmDataTable = () => {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
         <Search
-          size={size}
+          size={responsiveSize}
           placeholder={t("searchMessages", "Search messages")}
           labelText={t("searchLabel", "Search")}
           closeButtonLabelText={t("clearSearch", "Clear search input")}
@@ -88,8 +104,25 @@ const LlmDataTable = () => {
         rows={filterdRows}
         onResend={onResend}
       />
+      {pageSizes.length > 1 && (
+        <Pagination
+          forwardText={"Next page"}
+          backwardText={"Previous page"}
+          page={currentPage ?? 1}
+          pageSize={pageSize ?? 5}
+          pageSizes={pageSizes}
+          totalItems={rows.length ?? 0}
+          size={responsiveSize}
+          onChange={({ page: newPage, pageSize }) => {
+            if (newPage !== currentPage) {
+              goTo(newPage);
+            }
+            setPageSize(pageSize);
+          }}
+        />
+      )}
       <div>
-        {rows.length === 0 && (
+        {results.length === 0 && (
           <div>
             <EmptyState />
           </div>
