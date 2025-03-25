@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { useLLMMessages, resendMessage } from "../../hooks/useLLMMessage";
+import { resendMessage } from "../../hooks/useLLMMessage";
 import CustomDataTable, {
   TableHeaderItem,
   TableRowItem,
@@ -12,24 +12,17 @@ import {
   usePagination,
   useLayoutType,
 } from "@openmrs/esm-framework";
-import { DateRangePicker } from "../filters/date-range-filter";
 import { usePaginationInfo } from "@openmrs/esm-patient-common-lib";
-import { useMessageFilterContext } from "../filters/useFilterContext";
+import { useDateFilterContext } from "../filters/useFilterContext";
 
 const LlmDataTable = () => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
-
   const [pageSize, setPageSize] = useState(5);
   const responsiveSize = useLayoutType() !== "tablet" ? "sm" : "md";
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const [dateRange, setDateRange] = useState<[Date, Date]>([
-    new Date(),
-    new Date(),
-  ]);
-
-  const messages = useLLMMessages(dateRange[0], dateRange[1]);
+  const { messages } = useDateFilterContext();
 
   const headers: TableHeaderItem[] = [
     { key: "date", header: "Date" },
@@ -42,22 +35,20 @@ const LlmDataTable = () => {
     { key: "patientUuid", header: "Patient Uuid" },
   ];
 
-  const rows: TableRowItem[] = messages.map((msg) => {
-    return {
-      id: `${msg.id} - ${msg.date}`,
-      patientUuid: msg.id,
-      date: msg.date,
-      patientName: msg.name,
-      message: msg.statusMessage,
-      fullMessage: msg.fullMessage,
-      status: msg.status,
-      timeSent: msg.timeSent,
-    };
-  });
+  const rows: TableRowItem[] = messages.map((msg) => ({
+    id: `${msg.id} - ${msg.date}`,
+    patientUuid: msg.id,
+    date: msg.date,
+    patientName: msg.name,
+    message: msg.statusMessage,
+    fullMessage: msg.fullMessage,
+    status: msg.status,
+    timeSent: msg.timeSent,
+  }));
 
   const { currentPage, goTo, results } = usePagination(rows, pageSize);
 
-  const filterdRows = useMemo(() => {
+  const filteredRows = useMemo(() => {
     return (
       results.filter((row) =>
         row.patientName
@@ -78,7 +69,7 @@ const LlmDataTable = () => {
     results.length
   );
 
-  const onResend = async (patientUuid) => {
+  const onResend = async (patientUuid: string) => {
     try {
       await resendMessage(patientUuid);
     } catch (error) {
@@ -88,7 +79,7 @@ const LlmDataTable = () => {
 
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row", gap: "1rem" }}>
+      <div>
         <Search
           size={responsiveSize}
           placeholder={t("searchMessages", "Search messages")}
@@ -97,11 +88,10 @@ const LlmDataTable = () => {
           id="search-1"
           onChange={(event) => handleSearch(event.target.value)}
         />
-        <DateRangePicker onDateChange={setDateRange} />
       </div>
       <CustomDataTable
         headers={headers}
-        rows={filterdRows}
+        rows={filteredRows}
         onResend={onResend}
       />
       {pageSizes.length > 1 && (
@@ -121,13 +111,7 @@ const LlmDataTable = () => {
           }}
         />
       )}
-      <div>
-        {results.length === 0 && (
-          <div>
-            <EmptyState />
-          </div>
-        )}
-      </div>
+      {results.length === 0 && <EmptyState />}
     </>
   );
 };

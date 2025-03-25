@@ -1,11 +1,12 @@
-import React, { createContext, ReactNode, useState, useContext } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 import dayjs from "dayjs";
 import { useLLMMessages } from "../../hooks/useLLMMessage";
 
-interface MessageFilterContextType {
+interface DateFilterContextType {
   dateRange: [Date, Date];
   setDateRange: (dates: [Date, Date]) => void;
-
+  appliedDateRange: [Date, Date];
+  applyDateFilter: () => void;
   messages: any[];
 }
 
@@ -14,46 +15,51 @@ const defaultDateRange: [Date, Date] = [
   dayjs().endOf("day").toDate(),
 ];
 
-export const MessageFilterContext = createContext<MessageFilterContextType>({
-  dateRange: defaultDateRange,
-  setDateRange: () => {}, // No-op function to avoid errors
+const DateFilterContext = createContext<DateFilterContextType | undefined>(
+  undefined
+);
 
-  messages: [],
-});
-
-interface MessageFilterProviderProps {
+interface DateFilterProviderProps {
   children: ReactNode;
 }
 
-export const MessageFilterProvider = ({
-  children,
-}: MessageFilterProviderProps) => {
+export const DateFilterProvider = ({ children }: DateFilterProviderProps) => {
   const [dateRange, setDateRange] = useState<[Date, Date]>(defaultDateRange);
+  const [appliedDateRange, setAppliedDateRange] =
+    useState<[Date, Date]>(defaultDateRange);
 
-  const messageResponse = useLLMMessages(dateRange[0], dateRange[1]);
-  const { messages } = messageResponse;
+  const messagesResponse = useLLMMessages(
+    appliedDateRange[0],
+    appliedDateRange[1]
+  );
+
+  const { messages } = messagesResponse;
+
+  const applyDateFilter = () => {
+    setAppliedDateRange(dateRange);
+  };
 
   const value = {
     dateRange,
     setDateRange,
+    applyDateFilter,
+    appliedDateRange,
     messages,
   };
 
   return (
-    <MessageFilterContext.Provider value={value}>
+    <DateFilterContext.Provider value={value}>
       {children}
-    </MessageFilterContext.Provider>
+    </DateFilterContext.Provider>
   );
 };
 
-export const useMessageFilterContext = () => {
-  const context = useContext(MessageFilterContext);
-
-  if (context === undefined) {
+export const useDateFilterContext = () => {
+  const context = useContext(DateFilterContext);
+  if (!context) {
     throw new Error(
-      "useMessageFilterContext must be used within a MessageFilterProvider"
+      "useDateFilterContext must be used within a DateFilterProvider"
     );
   }
-
   return context;
 };
