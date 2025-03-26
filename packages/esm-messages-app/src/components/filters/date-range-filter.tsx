@@ -1,4 +1,4 @@
-import { DatePicker, DatePickerInput, Button } from "@carbon/react";
+import { DatePicker, DatePickerInput } from "@carbon/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDateFilterContext } from "./useFilterContext";
@@ -6,7 +6,7 @@ import styles from "./date-range-filter.scss";
 
 export const DateRangePicker: React.FC = () => {
   const { t } = useTranslation();
-  const { dateRange, setDateRange, applyDateFilter } = useDateFilterContext();
+  const { dateRange, setDateRange } = useDateFilterContext();
 
   const handleDateRangeChange = ([start, end]: Array<Date>) => {
     if (start && end) {
@@ -34,7 +34,6 @@ export const DateRangePicker: React.FC = () => {
           labelText={t("endDate", "End date")}
         />
       </DatePicker>
-      <Button onClick={applyDateFilter}>Submit</Button>
     </div>
   );
 };

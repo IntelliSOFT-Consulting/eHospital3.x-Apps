@@ -5,8 +5,6 @@ import { useLLMMessages } from "../../hooks/useLLMMessage";
 interface DateFilterContextType {
   dateRange: [Date, Date];
   setDateRange: (dates: [Date, Date]) => void;
-  appliedDateRange: [Date, Date];
-  applyDateFilter: () => void;
   messages: any[];
 }
 
@@ -25,25 +23,14 @@ interface DateFilterProviderProps {
 
 export const DateFilterProvider = ({ children }: DateFilterProviderProps) => {
   const [dateRange, setDateRange] = useState<[Date, Date]>(defaultDateRange);
-  const [appliedDateRange, setAppliedDateRange] =
-    useState<[Date, Date]>(defaultDateRange);
 
-  const messagesResponse = useLLMMessages(
-    appliedDateRange[0],
-    appliedDateRange[1]
-  );
+  const messagesResponse = useLLMMessages(dateRange[0], dateRange[1]);
 
   const { messages } = messagesResponse;
-
-  const applyDateFilter = () => {
-    setAppliedDateRange(dateRange);
-  };
 
   const value = {
     dateRange,
     setDateRange,
-    applyDateFilter,
-    appliedDateRange,
     messages,
   };
 
