@@ -5,7 +5,7 @@ import CustomDataTable, {
   TableRowItem,
 } from "../messages-datatable/messages-table.component";
 import EmptyState from "../empty-state/empty-state.component";
-import { Search, Pagination } from "@carbon/react";
+import { Search, Pagination, DataTableSkeleton } from "@carbon/react";
 import { useTranslation } from "react-i18next";
 import {
   useDebounce,
@@ -22,7 +22,7 @@ const LlmDataTable = () => {
   const responsiveSize = useLayoutType() !== "tablet" ? "sm" : "md";
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { messages } = useDateFilterContext();
+  const { messages, isLoading, mutate } = useDateFilterContext();
 
   const headers: TableHeaderItem[] = [
     { key: "date", header: "Date" },
@@ -72,10 +72,22 @@ const LlmDataTable = () => {
   const onResend = async (patientUuid: string) => {
     try {
       await resendMessage(patientUuid);
+      await mutate();
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
+
+  if (isLoading) {
+    return (
+      <DataTableSkeleton
+        headers={headers}
+        aria-label="sample table"
+        showHeader={false}
+        showToolbar={false}
+      />
+    );
+  }
 
   return (
     <>
