@@ -1,0 +1,15 @@
+@use '@carbon/layout';
+
+
+.parent{
+    display: flex;
+    flex-direction: row;
+    gap: layout.$spacing-05;
+    background: white;
+    align-items: end;
+    justify-content: flex-end;
+  }
+
+  .dateRangePicker {
+    flex-grow: unset;
+  }

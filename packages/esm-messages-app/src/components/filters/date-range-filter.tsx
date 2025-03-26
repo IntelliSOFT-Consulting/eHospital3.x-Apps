@@ -1,44 +1,39 @@
 import { DatePicker, DatePickerInput } from "@carbon/react";
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { useDateFilterContext } from "./useFilterContext";
+import styles from "./date-range-filter.scss";
 
-export const DateRangePicker = ({
-  onDateChange,
-}: {
-  onDateChange: (dates: [Date, Date]) => void;
-}) => {
+export const DateRangePicker: React.FC = () => {
   const { t } = useTranslation();
-  const [dateRange, setDateRange] = useState<[Date, Date]>([
-    new Date(),
-    new Date(),
-  ]);
+  const { dateRange, setDateRange } = useDateFilterContext();
 
-  const handleDateRangeChange = (selectedDates: Date[]) => {
-    if (selectedDates.length === 2) {
-      setDateRange([selectedDates[0], selectedDates[1]]);
-      onDateChange([selectedDates[0], selectedDates[1]]);
+  const handleDateRangeChange = ([start, end]: Array<Date>) => {
+    if (start && end) {
+      setDateRange([start, end]);
     }
   };
 
   return (
-    <DatePicker
-      maxDate={new Date()}
-      datePickerType="range"
-      value={[...dateRange]}
-      onChange={handleDateRangeChange}
-    >
-      <DatePickerInput
-        id="date-picker-input-id-start"
-        placeholder="mm/dd/yyyy"
-        labelText={t("startDate", "Start date")}
-        size="md"
-      />
-      <DatePickerInput
-        id="date-picker-input-id-finish"
-        placeholder="mm/dd/yyyy"
-        labelText={t("endDate", "End date")}
-        size="md"
-      />
-    </DatePicker>
+    <div className={styles.parent}>
+      <DatePicker
+        maxDate={new Date()}
+        datePickerType="range"
+        value={[...dateRange]}
+        onChange={handleDateRangeChange}
+        className={styles.dateRangePicker}
+      >
+        <DatePickerInput
+          id="date-picker-input-id-start"
+          placeholder="mm/dd/yyyy"
+          labelText={t("startDate", "Start date")}
+        />
+        <DatePickerInput
+          id="date-picker-input-id-finish"
+          placeholder="mm/dd/yyyy"
+          labelText={t("endDate", "End date")}
+        />
+      </DatePicker>
+    </div>
   );
 };

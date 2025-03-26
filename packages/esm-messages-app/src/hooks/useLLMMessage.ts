@@ -38,7 +38,7 @@ export const useLLMMessages = (startDate?: Date, endDate?: Date) => {
     };
     fetchAllMessages();
   }, [startDate, endDate]);
-  return llmMessages;
+  return { messages: llmMessages };
 };
 
 export const resendMessage = async (patientUuid: string) => {
