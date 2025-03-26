@@ -1,44 +1,62 @@
 import { openmrsFetch } from "@openmrs/esm-framework";
-import React, { useState, useEffect } from "react";
+import useSWR from "swr";
 import dayjs from "dayjs";
 
-export const useLLMMessages = (startDate?: Date, endDate?: Date) => {
-  const [llmMessages, setLLMMessage] = useState([]);
+interface LLMMessage {
+  patientUuid: string;
+  patientName: string;
+  createdAt: string;
+  message: string;
+  status: string;
+  successOrErrorMessage: string;
+  sentAt: string;
+}
 
-  useEffect(() => {
-    const fetchAllMessages = async () => {
-      try {
-        const startDateISO = (
-          startDate ?? dayjs().startOf("day").toDate()
-        ).toISOString();
-        const endDateISO = (
-          endDate ?? dayjs().endOf("day").toDate()
-        ).toISOString();
+interface FormattedMessage {
+  id: string;
+  name: string;
+  date: string;
+  fullMessage: string;
+  status: string;
+  statusMessage: string;
+  timeSent: string;
+}
 
-        const response = await openmrsFetch(
-          `/ws/rest/v1/ehospital/messages/all?startDate=${startDateISO}&endDate=${endDateISO}`
-        );
+export const useLLMMessages = (
+  startDate: Date = dayjs().startOf("day").toDate(),
+  endDate: Date = dayjs().endOf("day").toDate()
+) => {
+  const startDateISO = dayjs(startDate).toISOString();
+  const endDateISO = dayjs(endDate).toISOString();
 
-        if (response.data) {
-          const formattedMessages = response.data.map((msg: any) => ({
-            id: msg.patientUuid,
-            name: msg.patientName,
-            date: msg.createdAt,
-            fullMessage: msg.message,
-            status: msg.status,
-            statusMessage: msg.successOrErrorMessage,
-            timeSent: msg.sentAt,
-          }));
+  const url = `/ws/rest/v1/ehospital/messages/all?startDate=${startDateISO}&endDate=${endDateISO}`;
 
-          setLLMMessage(formattedMessages);
-        }
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-    fetchAllMessages();
-  }, [startDate, endDate]);
-  return { messages: llmMessages };
+  // const url = `/ws/rest/v1/ehospital/messages/all?startDate=2025-03-10&endDate=2025-03-14`;
+
+  const { data, error, isLoading, mutate } = useSWR<{ data: LLMMessage[] }>(
+    url,
+    openmrsFetch,
+    { errorRetryCount: 2 }
+  );
+
+  const formattedMessages = (data?.data ?? []).map(
+    (msg): FormattedMessage => ({
+      id: msg.patientUuid,
+      name: msg.patientName,
+      date: msg.createdAt,
+      fullMessage: msg.message,
+      status: msg.status,
+      statusMessage: msg.successOrErrorMessage,
+      timeSent: msg.sentAt,
+    })
+  );
+
+  return {
+    messages: formattedMessages,
+    error,
+    isLoading,
+    mutate,
+  };
 };
 
 export const resendMessage = async (patientUuid: string) => {
