@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-admin-nav-app",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Admin micro-frontend to navigate to all admin apps",
   "browser": "dist/ehospital-esm-admin-nav-app.js",
   "main": "src/index.ts",
@@ -50,5 +50,5 @@
   "devDependencies": {
     "webpack": "^5.74.0"
   },
-  "gitHead": "bce90ea1645304c7b99308beaae50886e7201125"
+  "gitHead": "c3ba23e320ccf71676198426737776b7bc4b2ee2"
 }
