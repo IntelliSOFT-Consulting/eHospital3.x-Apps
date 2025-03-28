@@ -7,11 +7,12 @@ import {
   Renew,
   User,
   Report,
-  InventoryManagement,
   ImportExport,
   HospitalBed,
   Chat,
   Microscope,
+  FolderAdd,
+  DocumentTasks,
 } from "@carbon/react/icons";
 const openmrsSpaBase = window["getOpenmrsSpaBase"]();
 
@@ -38,9 +39,19 @@ export const moduleLinks = [
     icon: <DocumentAdd size={24} />,
   },
   {
+    label: "Fast Data Entry ",
+    url: `${openmrsSpaBase}forms`,
+    icon: <FolderAdd size={24} />,
+  },
+  {
     label: "Legacy Admin ",
     url: `/openmrs/index.htm`,
     icon: <User size={24} />,
+  },
+  {
+    label: "Form Render ",
+    url: `${openmrsSpaBase}form-render-test`,
+    icon: <DocumentTasks size={24} />,
   },
   {
     label: "Manage Stocks ",
