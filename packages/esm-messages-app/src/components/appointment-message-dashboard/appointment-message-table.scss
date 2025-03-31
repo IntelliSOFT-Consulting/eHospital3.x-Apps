@@ -1,0 +1,13 @@
+@use '@carbon/layout';
+
+
+.messageContainer {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+  
+
+.resendMessagesButton {
+    margin-right: layout.$spacing-05;
+  }
