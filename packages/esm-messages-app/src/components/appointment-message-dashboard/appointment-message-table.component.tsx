@@ -35,6 +35,7 @@ const AppointmentMessage = () => {
     { key: "scheduledDate", header: "Scheduled Date" },
     { key: "action", header: "Action" },
     { key: "fullMessage", header: "Full Message" },
+    { key: "timeSent", header: "Time Sent" },
     { key: "patientUuid", header: "Patient Uuid" },
   ];
 
@@ -48,6 +49,7 @@ const AppointmentMessage = () => {
       fullMessage: msg.fullMessage,
       status: msg.status,
       scheduledDate: msg.scheduledDate,
+      timeSent: msg.timeSent,
     };
   });
 

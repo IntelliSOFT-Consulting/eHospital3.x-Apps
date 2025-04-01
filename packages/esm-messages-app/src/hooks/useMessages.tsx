@@ -5,7 +5,6 @@ import { truncateMessage } from "../helpers/truncate-message";
 interface LLMMessage {
   id: string;
   patientUuid: string;
-  patientName: string;
   sentTimestamp: string;
   message: string;
   status: string;
@@ -15,10 +14,10 @@ interface LLMMessage {
 
 interface FormattedMessage {
   id: string;
-  name: string;
   patientUuid: string;
   phoneNo: string;
   date: string;
+  timeSent: string;
   message: string;
   fullMessage: string;
   status: string;
@@ -27,7 +26,6 @@ interface FormattedMessage {
 
 export const useMessages = () => {
   const url = `/ws/rest/v1/ehospital/scheduled-messages`;
-  // const url = `/ws/rest/v1/ehospital/messages/all?startDate=2025-03-10&endDate=2025-03-14`;
 
   const { data, error, isLoading, mutate } = useSWR<{ data: LLMMessage[] }>(
     url,
@@ -39,12 +37,12 @@ export const useMessages = () => {
     (msg): FormattedMessage => ({
       id: msg.id,
       patientUuid: msg.patientUuid,
-      name: msg.patientName,
       fullMessage: msg.message,
       message: truncateMessage(msg.message, 3),
       status: msg.status,
       scheduledDate: msg.scheduledDate,
-      date: msg.sentTimestamp,
+      date: msg.sentTimestamp.split(" ")[0],
+      timeSent: msg.sentTimestamp,
       phoneNo: msg.phoneNumber,
     })
   );
