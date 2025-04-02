@@ -74,7 +74,8 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                     .filter(
                       (header) =>
                         header.key !== "fullMessage" &&
-                        header.key !== "patientUuid"
+                        header.key !== "patientUuid" &&
+                        header.key !== "timeSent"
                     )
                     .map((header) => (
                       <TableHeader
