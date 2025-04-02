@@ -140,7 +140,7 @@ const ChargeSummaryTable: React.FC = () => {
   }, []);
 
   const handleEditService = useCallback((service) => {
-    setEditingService(service);
+    setEditingService({...service});
     setPanelType('service');
     setShowOverlay(true);
   }, []);
