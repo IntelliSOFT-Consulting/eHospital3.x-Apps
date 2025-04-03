@@ -17,9 +17,15 @@ import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createBillableService, updateBillableService, useConceptsSearch,usePaymentModes, useServiceTypes } from '../../billable-service.resource';
+import {
+  createBillableService,
+  updateBillableService,
+  useConceptsSearch,
+  usePaymentModes,
+  useServiceTypes,
+} from '../../billable-service.resource';
 import { type ServiceConcept } from '../../../types';
-import styles from './service-form.scss'
+import styles from './service-form.scss';
 
 type PaymentMode = {
   paymentMode: string;
@@ -44,7 +50,11 @@ const paymentFormSchema = z.object({
 
 const DEFAULT_PAYMENT_OPTION = { paymentMode: '', price: 0 };
 
-const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; mutate?: () => void }> = ({ editingService, onClose, mutate }) => {
+const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; mutate?: () => void }> = ({
+  editingService,
+  onClose,
+  mutate,
+}) => {
   const { t } = useTranslation();
 
   const { paymentModes, isLoading: isLoadingPaymentModes } = usePaymentModes();
@@ -103,13 +113,14 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
           price: payment.price,
         })),
       );
-      setValue('conceptsSearch', editingService.concept);
+      setValue('conceptsSearch', editingService?.concept);
 
       if (editingService.concept) {
         setSelectedConcept(editingService.concept);
       }
     }
   }, [editingService, paymentModes, serviceTypes, setValue]);
+
   const onSubmit = (data) => {
     const payload = {
       name: billableServicePayload.name.substring(0),
@@ -124,11 +135,11 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
         };
       }),
       serviceStatus: 'ENABLED',
-      concept: selectedConcept?.uuid,
+      concept: selectedConcept?.concept.uuid,
     };
 
     const saveAction = editingService
-      ? updateBillableService(editingService.uuid, payload)
+      ? updateBillableService(editingService?.uuid, payload)
       : createBillableService(payload);
 
     saveAction.then(
@@ -141,7 +152,7 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
           kind: 'success',
           timeoutInMs: 3000,
         });
-        mutate()
+        mutate();
 
         onClose();
         handleNavigateToServiceDashboard();
