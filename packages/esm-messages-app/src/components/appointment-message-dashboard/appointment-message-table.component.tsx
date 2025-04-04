@@ -57,11 +57,7 @@ const AppointmentMessage = () => {
 
   const filteredRows = useMemo(() => {
     return (
-      results.filter((row) =>
-        row.patientName
-          .toLowerCase()
-          .includes(debouncedSearchTerm.toLowerCase())
-      ) ?? []
+      results.filter((row) => row.phoneNo.includes(debouncedSearchTerm)) ?? []
     );
   }, [results, debouncedSearchTerm]);
 
@@ -105,17 +101,13 @@ const AppointmentMessage = () => {
           id="search-1"
           onChange={(event) => handleSearch(event.target.value)}
         />
-        {filteredRows.length > 0 && (
+        {results.length > 0 && (
           <Button className={styles.resendMessagesButton} onClick={onResendAll}>
             Resend All Texts
           </Button>
         )}
       </div>
-      <CustomDataTable
-        headers={headers}
-        rows={filteredRows}
-        onResend={onResend}
-      />
+      <CustomDataTable headers={headers} rows={results} onResend={onResend} />
       {pageSizes.length > 1 && (
         <Pagination
           forwardText={"Next page"}
