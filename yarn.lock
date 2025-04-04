@@ -2582,7 +2582,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-messages-app@workspace:packages/esm-messages-app"
   dependencies:
-    "@carbon/react": ^1.42.1
+    "@carbon/react": ^1.63.1
     "@openmrs/esm-patient-common-lib": next
     dayjs: ^1.11.10
     lodash-es: ^4.17.15

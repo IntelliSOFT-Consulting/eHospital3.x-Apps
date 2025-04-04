@@ -43,7 +43,7 @@ export const useLLMMessages = (
     (msg): FormattedMessage => ({
       id: msg.patientUuid,
       name: msg.patientName,
-      date: msg.createdAt,
+      date: msg.createdAt.split(" ")[0],
       fullMessage: msg.message,
       status: msg.status,
       statusMessage: msg.successOrErrorMessage,
@@ -51,8 +51,13 @@ export const useLLMMessages = (
     })
   );
 
+  const dateFilteredBills = formattedMessages.filter((bill) => {
+    const dateCreated = new Date(bill.date);
+    return dateCreated >= startDate && dateCreated <= endDate;
+  });
+
   return {
-    messages: formattedMessages,
+    messages: dateFilteredBills,
     error,
     isLoading,
     mutate,
