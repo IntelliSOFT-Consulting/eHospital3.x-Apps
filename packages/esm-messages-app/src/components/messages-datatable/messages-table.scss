@@ -28,3 +28,20 @@
   color: colors.$white;
   background-color: colors.$red-50;
 }
+
+.modalBody{
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.importBody{
+  display: flex;
+  flex-direction: column;
+  padding-left: 2rem;
+  margin-bottom: -3rem;
+}
+
+.infoBody{
+  text-align: center;
+}

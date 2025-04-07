@@ -46,7 +46,7 @@ export const useMessages = () => {
   );
 
   return {
-    messages: formattedMessages,
+    message: formattedMessages,
     error,
     isLoading,
     mutate,
