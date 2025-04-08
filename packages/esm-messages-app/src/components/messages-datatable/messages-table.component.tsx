@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   DataTable,
   Table,
@@ -17,6 +17,7 @@ import {
 import { Renew, Warning } from "@carbon/react/icons";
 import FullMessageComponent from "../full-message/full-message.component";
 import styles from "./messages-table.scss";
+import InfoModalComponent from "./modals/info-modal.component";
 
 export interface TableHeaderItem {
   key: string;
@@ -54,8 +55,16 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
     }
   };
 
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState<boolean>(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
+  const handleOpenInfoModal = (rowId: string) => {
+    setSelectedRowId(rowId);
+    setIsInfoModalOpen(true);
+  };
+
   return (
-    <>
+    <div>
       <DataTable rows={rows} headers={headers}>
         {({
           rows,
@@ -133,6 +142,9 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
                                       iconDescription="More Info"
                                       kind="danger"
                                       style={{ marginLeft: "2rem" }}
+                                      onClick={() => {
+                                        handleOpenInfoModal(row.id);
+                                      }}
                                     />
                                   </>
                                 )}
@@ -188,7 +200,14 @@ const CustomDataTable: FC<CustomDataTableProps> = ({
           </TableContainer>
         )}
       </DataTable>
-    </>
+      {selectedRowId && (
+        <InfoModalComponent
+          isOpen={isInfoModalOpen}
+          setOpen={setIsInfoModalOpen}
+          rowId={selectedRowId}
+        />
+      )}
+    </div>
   );
 };
 

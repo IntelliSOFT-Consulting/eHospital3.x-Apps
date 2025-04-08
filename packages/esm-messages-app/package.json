@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-messages-app",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
   "browser": "dist/ehospital-esm-patient-flags-app.js",
   "main": "src/index.ts",
@@ -37,7 +37,7 @@
     "url": "https://github.com/palladiumkenya/kenyaemr-esm-core/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.42.1",
+    "@carbon/react": "^1.63.1",
     "lodash-es": "^4.17.15"
   },
   "peerDependencies": {
@@ -52,5 +52,5 @@
     "dayjs": "^1.11.10",
     "webpack": "^5.74.0"
   },
-  "gitHead": "8879030abac263961600cd15071fa9c76567a6fa"
+  "gitHead": "56cbe9927bf1f9f26c523db5d86597e5b6e12a25"
 }

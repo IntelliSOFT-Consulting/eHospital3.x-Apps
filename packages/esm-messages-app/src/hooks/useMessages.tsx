@@ -2,7 +2,7 @@ import { openmrsFetch } from "@openmrs/esm-framework";
 import useSWR from "swr";
 import { truncateMessage } from "../helpers/truncate-message";
 
-interface LLMMessage {
+interface ScheduledMessage {
   id: string;
   patientUuid: string;
   sentTimestamp: string;
@@ -27,11 +27,9 @@ interface FormattedMessage {
 export const useMessages = () => {
   const url = `/ws/rest/v1/ehospital/scheduled-messages`;
 
-  const { data, error, isLoading, mutate } = useSWR<{ data: LLMMessage[] }>(
-    url,
-    openmrsFetch,
-    { errorRetryCount: 2 }
-  );
+  const { data, error, isLoading, mutate } = useSWR<{
+    data: ScheduledMessage[];
+  }>(url, openmrsFetch, { errorRetryCount: 2 });
 
   const formattedMessages = (data?.data ?? []).map(
     (msg): FormattedMessage => ({
@@ -48,7 +46,7 @@ export const useMessages = () => {
   );
 
   return {
-    messages: formattedMessages,
+    message: formattedMessages,
     error,
     isLoading,
     mutate,

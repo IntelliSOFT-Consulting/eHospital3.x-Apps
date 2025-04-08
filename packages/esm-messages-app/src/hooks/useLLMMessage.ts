@@ -31,8 +31,6 @@ export const useLLMMessages = (
 
   const url = `/ws/rest/v1/ehospital/messages/all?startDate=${startDateISO}&endDate=${endDateISO}`;
 
-  // const url = `/ws/rest/v1/ehospital/messages/all?startDate=2025-03-10&endDate=2025-03-14`;
-
   const { data, error, isLoading, mutate } = useSWR<{ data: LLMMessage[] }>(
     url,
     openmrsFetch,
@@ -51,8 +49,13 @@ export const useLLMMessages = (
     })
   );
 
+  const dateFilteredBills = formattedMessages.filter((message) => {
+    const dateCreated = new Date(message.date);
+    return dateCreated >= startDate && dateCreated <= endDate;
+  });
+
   return {
-    messages: formattedMessages,
+    messages: dateFilteredBills,
     error,
     isLoading,
     mutate,

@@ -20,7 +20,7 @@ import styles from "./appointment-message-table.scss";
 import { usePaginationInfo } from "@openmrs/esm-patient-common-lib";
 
 const AppointmentMessage = () => {
-  const { messages, mutate } = useMessages();
+  const { message, mutate } = useMessages();
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [pageSize, setPageSize] = useState(5);
@@ -39,7 +39,7 @@ const AppointmentMessage = () => {
     { key: "patientUuid", header: "Patient Uuid" },
   ];
 
-  const rows: TableRowItem[] = messages.map((msg) => {
+  const rows: TableRowItem[] = message.map((msg) => {
     return {
       id: msg.id,
       patientUuid: `${msg.patientUuid} - ${msg.date}`,
@@ -57,11 +57,7 @@ const AppointmentMessage = () => {
 
   const filteredRows = useMemo(() => {
     return (
-      results.filter((row) =>
-        row.patientName
-          .toLowerCase()
-          .includes(debouncedSearchTerm.toLowerCase())
-      ) ?? []
+      results.filter((row) => row.phoneNo.includes(debouncedSearchTerm)) ?? []
     );
   }, [results, debouncedSearchTerm]);
 
@@ -105,17 +101,13 @@ const AppointmentMessage = () => {
           id="search-1"
           onChange={(event) => handleSearch(event.target.value)}
         />
-        {filteredRows.length > 0 && (
+        {results.length > 0 && (
           <Button className={styles.resendMessagesButton} onClick={onResendAll}>
             Resend All Texts
           </Button>
         )}
       </div>
-      <CustomDataTable
-        headers={headers}
-        rows={filteredRows}
-        onResend={onResend}
-      />
+      <CustomDataTable headers={headers} rows={results} onResend={onResend} />
       {pageSizes.length > 1 && (
         <Pagination
           forwardText={"Next page"}
