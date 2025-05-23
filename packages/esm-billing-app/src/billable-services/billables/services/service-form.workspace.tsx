@@ -152,7 +152,7 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
           kind: 'success',
           timeoutInMs: 3000,
         });
-        mutate();
+        mutate?.();
 
         onClose();
         handleNavigateToServiceDashboard();
