@@ -12,13 +12,13 @@
     "serve": "webpack serve --mode=development",
     "debug": "npm run serve",
     "build": "webpack --mode production",
-    "analyze": "webpack --mode=production --env analyze=true",
-    "lint": "eslint src --ext tsx",
+    "analyze": "webpack --mode=production --env.analyze=true",
+    "lint": "cross-env eslint src --ext ts,tsx",
     "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test-watch": "cross-env TZ=UTC jest --watch --config jest.config.js",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
     "coverage": "yarn test --coverage",
     "typescript": "tsc",
-    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*modal.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js"
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
@@ -37,27 +37,21 @@
     "url": "https://github.com/openmrs/openmrs-esm-patient-management/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.71.0",
-    "@hookform/resolvers": "^3.9.1",
-    "classnames": "^2.3.2",
-    "formik": "^2.2.9",
+    "@carbon/react": "~1.37.0",
+    "@hookform/resolvers": "^3.3.4",
+    "dayjs": "1.x",
     "lodash-es": "^4.17.15",
-    "react-hook-form": "^7.54.0",
-    "xlsx": "^0.18.5",
-    "yup": "^0.32.11",
-    "zod": "^3.24.1"
+    "react-hook-form": "^7.49.3",
+    "zod": "^3.22.4"
   },
   "peerDependencies": {
     "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "*",
-    "react": "18.x",
-    "react-dom": "18.x",
+    "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
   "devDependencies": {
-    "@openmrs/esm-patient-common-lib": "next",
     "webpack": "^5.74.0"
   },
   "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"

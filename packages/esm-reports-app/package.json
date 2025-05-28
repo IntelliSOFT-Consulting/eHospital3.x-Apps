@@ -9,55 +9,50 @@
   "scripts": {
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",
-    "debug": "npm run serve",
     "build": "webpack --mode production",
-    "analyze": "webpack --mode=production --env analyze=true",
-    "lint": "eslint src --ext tsx",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test-watch": "cross-env TZ=UTC jest --watch --config jest.config.js",
-    "coverage": "yarn test --coverage",
+    "analyze": "webpack --mode=production --env.analyze=true",
+    "lint": "eslint src --ext js,jsx,ts,tsx",
     "typescript": "tsc",
-    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*modal.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js"
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
+    "extract-translations": "i18next 'src/**/*.component.tsx' --config ../../tools/i18next-parser.config.js"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
   ],
   "keywords": [
-    "openmrs"
+    "openmrs",
+    "microfrontends",
+    "reports"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openmrs/openmrs-esm-admin-tools.git"
+  },
+  "homepage": "https://github.com/openmrs/openmrs-esm-admin-tools#readme",
   "publishConfig": {
     "access": "public"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-esm-patient-management.git"
-  },
   "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-patient-management/issues"
+    "url": "https://github.com/openmrs/openmrs-esm-admin-tools/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.71.0",
-    "@hookform/resolvers": "^3.9.1",
-    "classnames": "^2.3.2",
-    "formik": "^2.2.9",
-    "lodash-es": "^4.17.15",
-    "react-hook-form": "^7.54.0",
-    "xlsx": "^0.18.5",
-    "yup": "^0.32.11",
-    "zod": "^3.24.1"
+    "@carbon/react": "^1.33.1",
+    "@datasert/cronjs-matcher": "^1.2.0",
+    "@datasert/cronjs-parser": "^1.2.0",
+    "cronstrue": "^2.41.0",
+    "dayjs": "^1.8.36",
+    "lodash-es": "^4.17.21",
+    "react-image-annotate": "^1.8.0"
   },
   "peerDependencies": {
     "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "*",
+    "dayjs": "1.x",
     "react": "18.x",
-    "react-dom": "18.x",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
-    "swr": "2.x"
+    "rxjs": "6.x"
   },
-  "devDependencies": {
-    "@openmrs/esm-patient-common-lib": "next",
-    "webpack": "^5.74.0"
-  },
+  "packageManager": "yarn@3.6.1",
   "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }
