@@ -9,50 +9,40 @@
   "scripts": {
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",
+    "debug": "npm run serve",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env.analyze=true",
-    "lint": "eslint src --ext js,jsx,ts,tsx",
+    "lint": "eslint src --ext ts,tsx",
     "typescript": "tsc",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
-    "extract-translations": "i18next 'src/**/*.component.tsx' --config ../../tools/i18next-parser.config.js"
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js",
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js",
+    "coverage": "yarn test --coverage"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
   ],
   "keywords": [
-    "openmrs",
-    "microfrontends",
-    "reports"
+    "openmrs"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-esm-admin-tools.git"
-  },
-  "homepage": "https://github.com/openmrs/openmrs-esm-admin-tools#readme",
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps#readme"
+  },
   "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-admin-tools/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
-  "dependencies": {
-    "@carbon/react": "^1.33.1",
-    "@datasert/cronjs-matcher": "^1.2.0",
-    "@datasert/cronjs-parser": "^1.2.0",
-    "cronstrue": "^2.41.0",
-    "dayjs": "^1.8.36",
-    "lodash-es": "^4.17.21",
-    "react-image-annotate": "^1.8.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "@openmrs/esm-framework": "*",
-    "dayjs": "1.x",
-    "react": "18.x",
+    "@carbon/react": "1.x",
+    "@openmrs/esm-framework": "6.x",
+    "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
-    "rxjs": "6.x"
+    "swr": "2.x"
   },
-  "packageManager": "yarn@3.6.1",
   "gitHead": "784dcb688faafdd325af974d79cebd5bf38f4c49"
 }

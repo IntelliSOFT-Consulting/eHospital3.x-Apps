@@ -31,25 +31,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/tree/main/packages/esm-ai-model-app"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps#readme"
   },
   "bugs": {
     "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.42.1",
-    "lodash-es": "^4.17.15"
+    "lodash-es": "^4.17.15",
+    "react-to-print": "^2.14.13"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "*",
+    "@carbon/react": "1.x",
+    "@openmrs/esm-framework": "6.x",
     "react": "^18.1.0",
     "react-i18next": "11.x",
-    "react-router-dom": "6.x"
-  },
-  "devDependencies": {
-    "@openmrs/esm-patient-common-lib": "next",
-    "webpack": "^5.74.0"
+    "react-router-dom": "6.x",
+    "swr": "2.x"
   },
   "gitHead": "7749bde6f0e6f5a860af61482c6fac270c84ec6d"
 }

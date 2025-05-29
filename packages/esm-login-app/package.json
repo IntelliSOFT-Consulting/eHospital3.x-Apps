@@ -10,61 +10,39 @@
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",
     "debug": "npm run serve",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
-    "build": "webpack --mode=production",
-    "build:development": "webpack --mode=development",
-    "analyze": "webpack --mode=production --env analyze=true",
-    "typescript": "tsc",
+    "build": "webpack --mode production",
+    "analyze": "webpack --mode=production --env.analyze=true",
     "lint": "eslint src --ext ts,tsx",
-    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*.modal.tsx' 'src/**/*.resource.ts' --config='../../../tools/i18next-parser.config.js'"
+    "typescript": "tsc",
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js",
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js",
+    "coverage": "yarn test --coverage"
   },
-  "keywords": [
-    "openmrs",
-    "microfrontends"
-  ],
   "browserslist": [
     "extends browserslist-config-openmrs"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-esm-core.git"
-  },
-  "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-core/issues"
-  },
-  "homepage": "https://github.com/openmrs/openmrs-esm-core#readme",
+  "keywords": [
+    "openmrs"
+  ],
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {
-    "@carbon/react": "~1.37.0",
-    "@hookform/resolvers": "^3.6.0",
-    "lodash-es": "^4.17.21",
-    "react-hook-form": "^7.52.2",
-    "zod": "^3.23.8"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps#readme"
   },
+  "bugs": {
+    "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
+  },
+  "dependencies": {},
   "peerDependencies": {
     "@carbon/react": "1.x",
-    "@openmrs/esm-framework": "*",
-    "react": "18.x",
-    "react-dom": "18.x",
+    "@openmrs/esm-framework": "6.x",
+    "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
-    "rxjs": "6.x",
     "swr": "2.x"
-  },
-  "devDependencies": {
-    "@openmrs/esm-framework": "next",
-    "@openmrs/webpack-config": "6.x",
-    "jest": "^29.7.0",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0",
-    "react-i18next": "^11.18.6",
-    "react-router-dom": "^6.3.0",
-    "rxjs": "^6.5.3",
-    "swr": "^2.2.5",
-    "webpack": "^5.88.0"
   },
   "gitHead": "9b64b8c531a547c729ffdc59347f38e5643db2b0"
 }

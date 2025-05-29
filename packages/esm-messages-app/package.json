@@ -31,26 +31,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/palladiumkenya/kenyaemr-esm-core#readme"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps#readme"
   },
   "bugs": {
-    "url": "https://github.com/palladiumkenya/kenyaemr-esm-core/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
-  "dependencies": {
-    "@carbon/react": "^1.63.1",
-    "lodash-es": "^4.17.15"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "*",
+    "@carbon/react": "1.x",
+    "@openmrs/esm-framework": "6.x",
     "react": "^18.1.0",
     "react-i18next": "11.x",
-    "react-router-dom": "6.x"
-  },
-  "devDependencies": {
-    "@openmrs/esm-patient-common-lib": "next",
-    "dayjs": "^1.11.10",
-    "webpack": "^5.74.0"
+    "react-router-dom": "6.x",
+    "swr": "2.x"
   },
   "gitHead": "56cbe9927bf1f9f26c523db5d86597e5b6e12a25"
 }
