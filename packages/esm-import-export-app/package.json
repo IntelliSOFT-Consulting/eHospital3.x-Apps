@@ -13,12 +13,12 @@
     "debug": "npm run serve",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env.analyze=true",
-    "lint": "cross-env eslint src --ext ts,tsx",
-    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests --color",
-    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js --color",
-    "coverage": "yarn test --coverage",
+    "lint": "eslint src --ext ts,tsx",
     "typescript": "tsc",
-    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/**/*.extension.tsx' 'src/**/*.workspace.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js"
+    "extract-translations": "i18next 'src/**/*.component.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js",
+    "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
+    "test:watch": "cross-env TZ=UTC jest --watch --config jest.config.js",
+    "coverage": "yarn test --coverage"
   },
   "browserslist": [
     "extends browserslist-config-openmrs"
@@ -31,26 +31,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openmrs/openmrs-esm-patient-management.git"
+    "url": "git+https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps#readme"
   },
   "bugs": {
-    "url": "https://github.com/openmrs/openmrs-esm-patient-management/issues"
+    "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
-  "dependencies": {
-    "@carbon/react": "^1.48.1",
-    "lodash-es": "^4.17.21"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "@openmrs/esm-framework": "*",
-    "@openmrs/esm-patient-common-lib": "*",
-    "react": "18.x",
-    "react-dom": "18.x",
+    "@carbon/react": "1.x",
+    "@openmrs/esm-framework": "6.x",
+    "react": "^18.1.0",
     "react-i18next": "11.x",
-    "rxjs": "6.x",
+    "react-router-dom": "6.x",
     "swr": "2.x"
-  },
-  "devDependencies": {
-    "webpack": "^5.74.0"
   },
   "gitHead": "e1d4df908831ecdc4e136f390091bd7976a302d9"
 }
