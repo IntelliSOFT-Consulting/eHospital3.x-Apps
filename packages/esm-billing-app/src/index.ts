@@ -13,7 +13,7 @@ import VisitAttributeTags from './invoice/payments/visit-tags/visit-attribute.co
 import ServiceMetrics from './billable-services/dashboard/service-metrics.component';
 import appMenu from './billable-services/billable-services-menu-item/item.component';
 
-// import DrugOrder from './billable-services/billable-item/drug-order/drug-order.component';
+import DrugOrder from './billable-services/billable-item/drug-order/drug-order.component';
 import LabOrder from './billable-services/billable-item/test-order/lab-order.component';
 import ProcedureOrder from './billable-services/billable-item/test-order/procedure-order.component';
 import PriceInfoOrder from './billable-services/billable-item/test-order/price-info-order.componet';
@@ -109,7 +109,7 @@ export const billableServicesAppMenuItem = getSyncLifecycle(appMenu, options);
 export const createPaymentPoint = getSyncLifecycle(CreatePaymentPoint, options);
 export const createPaymentMode = getSyncLifecycle(CreatePaymentMode, options)
 
-// export const drugOrder = getSyncLifecycle(DrugOrder, options);
+export const drugOrder = getSyncLifecycle(DrugOrder, options);
 export const labOrder = getSyncLifecycle(LabOrder, options);
 export const procedureOrder = getSyncLifecycle(ProcedureOrder, options);
 export const priceInfoOrder = getSyncLifecycle(PriceInfoOrder, options);

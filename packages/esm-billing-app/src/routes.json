@@ -121,6 +121,22 @@
       "component": "editBillLineItemDialog",
       "online": true,
       "offline": true
+    },
+    {
+      "name": "drug-order-billable-item",
+      "component": "drugOrder",
+      "slot": "medication-info-slot"
+    },
+    {
+      "name": "order-action-button",
+      "component": "orderActionButton",
+      "slots": [
+        "prescription-action-button-slot",
+        "imaging-orders-action",
+        "procedure-orders-action",
+        "tests-ordered-actions-slot"
+      ],
+      "order": 0
     }
   ],
   "workspaces": [
