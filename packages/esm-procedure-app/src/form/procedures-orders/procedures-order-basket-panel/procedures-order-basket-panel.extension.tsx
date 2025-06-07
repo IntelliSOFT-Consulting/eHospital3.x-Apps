@@ -1,27 +1,20 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import classNames from "classnames";
-import { useTranslation } from "react-i18next";
-import { Button, Tile } from "@carbon/react";
-import { Add, ChevronDown, ChevronUp } from "@carbon/react/icons";
-import { useLayoutType, closeWorkspace } from "@openmrs/esm-framework";
-import {
-  launchPatientWorkspace,
-  type OrderBasketItem,
-  useOrderBasket,
-} from "@openmrs/esm-patient-common-lib";
-import { ProceduresOrderBasketItemTile } from "./procedures-order-basket-item-tile.component";
-import { prepProceduresOrderPostData } from "../api";
-import LabIcon from "./procedures-icon.component";
-import styles from "./procedures-order-basket-panel.scss";
-import { type ProcedureOrderBasketItem } from "../../../types";
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
+import { Button, Tile } from '@carbon/react';
+import { Add, ChevronDown, ChevronUp } from '@carbon/react/icons';
+import { useLayoutType, closeWorkspace } from '@openmrs/esm-framework';
+import { launchPatientWorkspace, type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { ProceduresOrderBasketItemTile } from './procedures-order-basket-item-tile.component';
+import { prepProceduresOrderPostData } from '../api';
+import LabIcon from './procedures-icon.component';
+import styles from './procedures-order-basket-panel.scss';
+import { type ProcedureOrderBasketItem } from '../../../types';
 
 export default function ProceduresOrderBasketPanelExtension() {
   const { t } = useTranslation();
-  const isTablet = useLayoutType() === "tablet";
-  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
-    "procedures",
-    prepProceduresOrderPostData
-  );
+  const isTablet = useLayoutType() === 'tablet';
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>('procedures', prepProceduresOrderPostData);
   const [isExpanded, setIsExpanded] = useState(orders.length > 0);
   const {
     incompleteOrderBasketItems,
@@ -39,13 +32,13 @@ export default function ProceduresOrderBasketPanelExtension() {
     orders.forEach((order) => {
       if (order?.isOrderIncomplete) {
         incompleteOrderBasketItems.push(order);
-      } else if (order.action === "NEW") {
+      } else if (order.action === 'NEW') {
         newOrderBasketItems.push(order);
-      } else if (order.action === "RENEW") {
+      } else if (order.action === 'RENEW') {
         renewedOrderBasketItems.push(order);
-      } else if (order.action === "REVISE") {
+      } else if (order.action === 'REVISE') {
         revisedOrderBasketItems.push(order);
-      } else if (order.action === "DISCONTINUE") {
+      } else if (order.action === 'DISCONTINUE') {
         discontinuedOrderBasketItems.push(order);
       }
     });
@@ -60,19 +53,18 @@ export default function ProceduresOrderBasketPanelExtension() {
   }, [orders]);
 
   const openNewProceduresForm = useCallback(() => {
-    closeWorkspace("order-basket", {
+    closeWorkspace('order-basket', {
       ignoreChanges: true,
       onWorkspaceClose: () => {
-        launchPatientWorkspace("add-procedures-order");
+        launchPatientWorkspace('add-procedures-order');
       },
     });
   }, []);
 
   const openEditProceduresForm = useCallback((order: OrderBasketItem) => {
-    closeWorkspace("order-basket", {
+    closeWorkspace('order-basket', {
       ignoreChanges: true,
-      onWorkspaceClose: () =>
-        launchPatientWorkspace("add-procedures-order", { order }),
+      onWorkspaceClose: () => launchPatientWorkspace('add-procedures-order', { order }),
     });
   }, []);
 
@@ -82,7 +74,7 @@ export default function ProceduresOrderBasketPanelExtension() {
       newOrders.splice(orders.indexOf(order), 1);
       setOrders(newOrders);
     },
-    [orders, setOrders]
+    [orders, setOrders],
   );
 
   useEffect(() => {
@@ -93,15 +85,11 @@ export default function ProceduresOrderBasketPanelExtension() {
     <Tile
       className={classNames(isTablet ? styles.tabletTile : styles.desktopTile, {
         [styles.collapsedTile]: !isExpanded,
-      })}
-    >
+      })}>
       <div className={styles.container}>
         <div className={styles.iconAndLabel}>
           <LabIcon isTablet={isTablet} />
-          <h4 className={styles.heading}>{`${t(
-            "proceduresOrders",
-            "Procedures orders"
-          )} (${orders.length})`}</h4>
+          <h4 className={styles.heading}>{`${t('proceduresOrders', 'Procedures orders')} (${orders.length})`}</h4>
         </div>
         <div className={styles.buttonContainer}>
           <Button
@@ -109,26 +97,20 @@ export default function ProceduresOrderBasketPanelExtension() {
             renderIcon={(props) => <Add size={16} {...props} />}
             iconDescription="Add procedures order"
             onClick={openNewProceduresForm}
-            size={isTablet ? "md" : "sm"}
-          >
-            {t("add", "Add")}
+            size={isTablet ? 'md' : 'sm'}>
+            {t('add', 'Add')}
           </Button>
           <Button
             className={styles.chevron}
             hasIconOnly
             kind="ghost"
             renderIcon={(props) =>
-              isExpanded ? (
-                <ChevronUp size={16} {...props} />
-              ) : (
-                <ChevronDown size={16} {...props} />
-              )
+              isExpanded ? <ChevronUp size={16} {...props} /> : <ChevronDown size={16} {...props} />
             }
             iconDescription="View"
             disabled={orders.length === 0}
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            {t("add", "Add")}
+            onClick={() => setIsExpanded(!isExpanded)}>
+            {t('add', 'Add')}
           </Button>
         </div>
       </div>

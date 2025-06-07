@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import "~@openmrs/esm-styleguide/src/vars";
+@import '~@openmrs/esm-styleguide/src/vars';
 @import '../../root.scss';
 
 @media screen {
@@ -40,41 +40,41 @@
   }
 
   .headingText {
-    font-size: "10px";
-    font-weight: "bold";
-    margin: "5px"
+    font-size: '10px';
+    font-weight: 'bold';
+    margin: '5px';
   }
 
   .header {
-    display: "flex";
-    justify-content: "space-around";
-    flex-direction: "row";
-    align-items: "center";
-    margin: " 10px";
+    display: 'flex';
+    justify-content: 'space-around';
+    flex-direction: 'row';
+    align-items: 'center';
+    margin: ' 10px';
   }
 
   .facilityContainer {
-    display: "flex";
-    flex-direction: "row";
-    justify-content: "space-between";
+    display: 'flex';
+    flex-direction: 'row';
+    justify-content: 'space-between';
   }
 
   .patientContainer {
-    display: "flex";
-    flex-direction: "column";
+    display: 'flex';
+    flex-direction: 'column';
   }
 
   .headerSection {
-    display: "flex";
-    flex-direction: "column";
-    justify-content: "center";
-    align-items: "center";
+    display: 'flex';
+    flex-direction: 'column';
+    justify-content: 'center';
+    align-items: 'center';
   }
 
   .footerSection {
-    margin: "10px";
-    display: "flex";
-    width: "500px";
-    flex-direction: "row";
+    margin: '10px';
+    display: 'flex';
+    width: '500px';
+    flex-direction: 'row';
   }
 }

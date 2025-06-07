@@ -1,32 +1,20 @@
-import React from "react";
-import {
-  Button,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Tile,
-} from "@carbon/react";
-import { useTranslation } from "react-i18next";
-import styles from "../procedure-instructions/instructions.scss";
-import { Result } from "../../types";
+import React from 'react';
+import { Button, ModalBody, ModalFooter, ModalHeader, Tile } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
+import styles from '../procedure-instructions/instructions.scss';
+import { type Result } from '../../types';
 
 interface ProcedureRejectReasonModalProps {
   order: Result;
   closeModal: () => void;
 }
 
-const ProcedureRejectReasonModal: React.FC<ProcedureRejectReasonModalProps> = ({
-  order,
-  closeModal,
-}) => {
+const ProcedureRejectReasonModal: React.FC<ProcedureRejectReasonModalProps> = ({ order, closeModal }) => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <ModalHeader
-        closeModal={closeModal}
-        title={t("reasonNotDone", "Reason Not Done")}
-      />
+      <ModalHeader closeModal={closeModal} title={t('reasonNotDone', 'Reason Not Done')} />
       <ModalBody>
         <div className={styles.modalBody}>
           <section className={styles.section}>
@@ -42,7 +30,7 @@ const ProcedureRejectReasonModal: React.FC<ProcedureRejectReasonModalProps> = ({
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={closeModal}>
-          {t("cancel", "Cancel")}
+          {t('cancel', 'Cancel')}
         </Button>
       </ModalFooter>
     </div>

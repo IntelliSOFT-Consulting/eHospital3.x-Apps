@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import "~@openmrs/esm-styleguide/src/vars";
+@import '~@openmrs/esm-styleguide/src/vars';
 
 title {
   width: 6.938rem;
@@ -73,7 +73,7 @@ title {
     padding-top: 0 !important;
   }
 
-  tbody>tr>:nth-child(2) {
+  tbody > tr > :nth-child(2) {
     white-space: nowrap;
   }
 
@@ -206,7 +206,6 @@ title {
   margin-bottom: 0.5rem;
 }
 
- .single-line-display {
-    white-space: nowrap;
-  }
-
+.single-line-display {
+  white-space: nowrap;
+}

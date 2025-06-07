@@ -1764,6 +1764,7 @@ __metadata:
     react-image-annotate: ^1.8.0
     react-is: ^18.3.1
     react-router-dom: ^6.14.1
+    react-to-print: ^2.14.13
     rxjs: ^6.6.7
     single-spa: ^6.0.1
     styled-components: ^5
@@ -1798,9 +1799,6 @@ __metadata:
 "@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1830,9 +1828,6 @@ __metadata:
 "@ehospital/esm-billing-app@workspace:packages/esm-billing-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-billing-app@workspace:packages/esm-billing-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1846,9 +1841,6 @@ __metadata:
 "@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1862,9 +1854,6 @@ __metadata:
 "@ehospital/esm-login-app@workspace:packages/esm-login-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-login-app@workspace:packages/esm-login-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1878,9 +1867,6 @@ __metadata:
 "@ehospital/esm-messages-app@workspace:packages/esm-messages-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-messages-app@workspace:packages/esm-messages-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1894,9 +1880,6 @@ __metadata:
 "@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1910,9 +1893,6 @@ __metadata:
 "@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1926,9 +1906,6 @@ __metadata:
 "@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1942,9 +1919,6 @@ __metadata:
 "@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1958,11 +1932,8 @@ __metadata:
 "@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
-    "@carbon/react": 1.x
+    "@carbon/react": ^1.x
     "@openmrs/esm-framework": 6.x
     react: ^18.1.0
     react-i18next: 11.x
@@ -1974,9 +1945,6 @@ __metadata:
 "@ehospital/esm-reports-app@workspace:packages/esm-reports-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-reports-app@workspace:packages/esm-reports-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -1990,9 +1958,6 @@ __metadata:
 "@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app":
   version: 0.0.0-use.local
   resolution: "@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x

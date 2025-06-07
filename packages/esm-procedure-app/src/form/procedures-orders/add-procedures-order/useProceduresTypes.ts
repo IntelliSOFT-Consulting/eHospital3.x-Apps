@@ -1,15 +1,9 @@
-import { useEffect, useMemo } from "react";
-import useSWRImmutable from "swr/immutable";
-import fuzzy from "fuzzy";
-import {
-  type FetchResponse,
-  openmrsFetch,
-  useConfig,
-  restBaseUrl,
-  reportError,
-} from "@openmrs/esm-framework";
-import { type ConfigObject } from "../../../config-schema";
-import { type Concept } from "../api";
+import { useEffect, useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import fuzzy from 'fuzzy';
+import { type FetchResponse, openmrsFetch, useConfig, restBaseUrl, reportError } from '@openmrs/esm-framework';
+import { type ConfigObject } from '../../../config-schema';
+import { type Concept } from '../api';
 
 type ConceptResult = FetchResponse<Concept>;
 type ConceptResults = FetchResponse<{ setMembers: Array<Concept> }>;
@@ -29,9 +23,7 @@ function openmrsFetchMultiple(urls: Array<string>) {
   // SWR has an RFC for `useSWRList`:
   // https://github.com/vercel/swr/discussions/1988
   // If that ever is implemented we should switch to using that.
-  return Promise.all(
-    urls.map((url) => openmrsFetch<{ results: Array<Concept> }>(url))
-  );
+  return Promise.all(urls.map((url) => openmrsFetch<{ results: Array<Concept> }>(url)));
 }
 
 function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
@@ -46,11 +38,13 @@ function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
       shouldRetryOnError(err) {
         return err instanceof Response;
       },
-    }
+    },
   );
 
   const results = useMemo(() => {
-    if (isLoading || error) return null;
+    if (isLoading || error) {
+      return null;
+    }
     return labOrderableConcepts
       ? (data as Array<ConceptResult>)?.flatMap((d) => d.data.setMembers)
       : (data as ConceptResults)?.data.setMembers ?? ([] as Concept[]);
@@ -63,13 +57,13 @@ function useProceduresConceptsSWR(labOrderableConcepts?: Array<string>) {
   };
 }
 
-export function useProceduresTypes(searchTerm = ""): UseProceduresType {
+export function useProceduresTypes(searchTerm = ''): UseProceduresType {
   const {
     orders: { labOrderableConcepts },
   } = useConfig<ConfigObject>();
 
   const { data, isLoading, error } = useProceduresConceptsSWR(
-    labOrderableConcepts.length ? labOrderableConcepts : null
+    labOrderableConcepts.length ? labOrderableConcepts : null,
   );
 
   useEffect(() => {
@@ -87,9 +81,7 @@ export function useProceduresTypes(searchTerm = ""): UseProceduresType {
 
   const filteredTestTypes = useMemo(() => {
     return searchTerm && !isLoading && !error
-      ? fuzzy
-          .filter(searchTerm, testConcepts, { extract: (c) => c.label })
-          .map((result) => result.original)
+      ? fuzzy.filter(searchTerm, testConcepts, { extract: (c) => c.label }).map((result) => result.original)
       : testConcepts;
   }, [testConcepts, searchTerm]);
 

@@ -1,10 +1,5 @@
-import {
-  FetchResponse,
-  openmrsFetch,
-  restBaseUrl,
-  useConfig,
-} from "@openmrs/esm-framework";
-import useSWRImmutable from "swr/immutable";
+import { type FetchResponse, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import useSWRImmutable from 'swr/immutable';
 
 export interface QueueRoomsResponse {
   uuid: string;
@@ -89,10 +84,7 @@ export function useReferralLocations() {
   const config = useConfig();
   const { laboratoryReferalDestinationUuid } = config;
   const apiUrl = `${restBaseUrl}/concept/${laboratoryReferalDestinationUuid}`;
-  const { data, isLoading } = useSWRImmutable<FetchResponse>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, isLoading } = useSWRImmutable<FetchResponse>(apiUrl, openmrsFetch);
 
   return {
     referrals: data ? data?.data?.answers : [],
@@ -104,9 +96,9 @@ export function useReferralLocations() {
 export async function updateOrder(uuid: string, body: any) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/order/${uuid}/fulfillerdetails`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: body,

@@ -1,10 +1,10 @@
-import React from "react";
-import ReferredProcedures from "../referred-procedures/referred-procedures.component";
+import React from 'react';
+import ReferredProcedures from '../referred-procedures/referred-procedures.component';
 
 const ReferredComponent = () => {
   return (
     <div>
-      <ReferredProcedures fulfillerStatus={"EXCEPTION"} />
+      <ReferredProcedures fulfillerStatus={'EXCEPTION'} />
     </div>
   );
 };

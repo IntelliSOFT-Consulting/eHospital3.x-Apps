@@ -1,8 +1,8 @@
-import React from "react";
-import styles from "./print-results-summary.scss";
-import { GroupMember } from "../patient-procedure-order-results.resource";
-import { useGetConceptById } from "./results-summary.resource";
-import { InlineLoading } from "@carbon/react";
+import React from 'react';
+import styles from './print-results-summary.scss';
+import { type GroupMember } from '../patient-procedure-order-results.resource';
+import { useGetConceptById } from './results-summary.resource';
+import { InlineLoading } from '@carbon/react';
 
 interface PrintResultsTableProps {
   groupedResults: any[];
@@ -16,39 +16,40 @@ interface ValueUnitsProps {
   conceptUuid: string;
 }
 
-const PrintResultsTable: React.FC<PrintResultsTableProps> = ({
-  groupedResults,
-}) => {
+const PrintResultsTable: React.FC<PrintResultsTableProps> = ({ groupedResults }) => {
   const RowTest: React.FC<ResultsRowProps> = ({ groupMembers }) => {
     // get Units
     const ValueUnits: React.FC<ValueUnitsProps> = ({ conceptUuid }) => {
       const { concept, isLoading, isError } = useGetConceptById(conceptUuid);
 
-      if (isLoading) return <InlineLoading status="active" />;
-      if (isError) return <span>Error</span>;
+      if (isLoading) {
+        return <InlineLoading status="active" />;
+      }
+      if (isError) {
+        return <span>Error</span>;
+      }
 
-      return (
-        <span style={{ marginLeft: "10px" }}>{concept?.units ?? "N/A"}</span>
-      );
+      return <span style={{ marginLeft: '10px' }}>{concept?.units ?? 'N/A'}</span>;
     };
 
     // get Reference Range
     const ReferenceRange: React.FC<ValueUnitsProps> = ({ conceptUuid }) => {
       const { concept, isLoading, isError } = useGetConceptById(conceptUuid);
 
-      if (isLoading) return <InlineLoading status="active" />;
-      if (isError) return <span>Error</span>;
+      if (isLoading) {
+        return <InlineLoading status="active" />;
+      }
+      if (isError) {
+        return <span>Error</span>;
+      }
 
-      const lowNormal =
-        concept?.lowNormal !== undefined ? concept.lowNormal : "--";
-      const hiNormal =
-        concept?.hiNormal !== undefined ? concept.hiNormal : "--";
+      const lowNormal = concept?.lowNormal !== undefined ? concept.lowNormal : '--';
+      const hiNormal = concept?.hiNormal !== undefined ? concept.hiNormal : '--';
 
       return (
         <>
-          {concept?.hiNormal === undefined ||
-          concept?.lowNormal === undefined ? (
-            "N/A"
+          {concept?.hiNormal === undefined || concept?.lowNormal === undefined ? (
+            'N/A'
           ) : (
             <div>
               <span>{lowNormal}</span> : <span>{hiNormal}</span>
@@ -63,11 +64,7 @@ const PrintResultsTable: React.FC<PrintResultsTableProps> = ({
         {groupMembers?.map((element, index) => (
           <tr key={index}>
             <td>{element?.concept.display}</td>
-            <td>
-              {typeof element.value === "object"
-                ? element.value.display
-                : element.value}
-            </td>
+            <td>{typeof element.value === 'object' ? element.value.display : element.value}</td>
             <td>
               <ReferenceRange conceptUuid={element.concept.uuid} />
             </td>
@@ -97,17 +94,16 @@ const PrintResultsTable: React.FC<PrintResultsTableProps> = ({
             const { uuid, groupMembers } = groupedResults[test];
             const isGrouped = uuid && groupMembers?.length > 0;
             return (
-              <tr key={test} style={{ margin: "10px" }}>
+              <tr key={test} style={{ margin: '10px' }}>
                 <span
                   style={{
-                    margin: "10px",
-                    fontSize: "8px",
-                    fontWeight: "bold",
-                  }}
-                >
+                    margin: '10px',
+                    fontSize: '8px',
+                    fontWeight: 'bold',
+                  }}>
                   {test}
                 </span>
-                <table style={{ margin: "10px" }}>
+                <table style={{ margin: '10px' }}>
                   {isGrouped && <RowTest groupMembers={groupMembers} />}
                   {!isGrouped && (
                     <tr>
@@ -118,13 +114,13 @@ const PrintResultsTable: React.FC<PrintResultsTableProps> = ({
                         <span>{groupedResults[test]?.value?.display}</span>
                       </td>
                       <td>
-                        <span>{"N/A"}</span>
+                        <span>{'N/A'}</span>
                       </td>
                       <td>
-                        <span>{"N/A"}</span>
+                        <span>{'N/A'}</span>
                       </td>
                     </tr>
-                  )}{" "}
+                  )}{' '}
                 </table>
               </tr>
             );

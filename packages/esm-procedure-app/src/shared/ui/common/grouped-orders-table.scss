@@ -1,0 +1,30 @@
+@use '@carbon/layout';
+@use '@carbon/colors';
+
+.dataTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+
+  & > section {
+    position: relative;
+    margin-bottom: layout.$spacing-01;
+  }
+}
+
+.widgetCard {
+  background-color: colors.$white;
+  border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+  margin-top: layout.$spacing-05;
+}
+
+.elementContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: layout.$spacing-03;
+}

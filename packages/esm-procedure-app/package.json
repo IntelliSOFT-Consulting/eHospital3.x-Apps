@@ -1,9 +1,9 @@
 {
   "name": "@ehospital/esm-procedure-app",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
-  "browser": "dist/sjthc-esm-procedure-app.js",
+  "browser": "dist/ehospital-esm-procedure-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
@@ -12,7 +12,7 @@
     "debug": "npm run serve",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env.analyze=true",
-    "lint": "eslint src --ext ts,tsx",
+    "lint": "eslint src --ext ts,tsx --ignore-pattern '**/*.test.ts' --ignore-pattern '**/*.test.tsx' --ignore-pattern '**/__tests__/**'",
     "typescript": "tsc",
     "extract-translations": "i18next 'src/**/*.component.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js",
     "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
@@ -35,9 +35,8 @@
   "bugs": {
     "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
-  "dependencies": {},
   "peerDependencies": {
-    "@carbon/react": "1.x",
+    "@carbon/react": "^1.x",
     "@openmrs/esm-framework": "6.x",
     "react": "^18.1.0",
     "react-i18next": "11.x",

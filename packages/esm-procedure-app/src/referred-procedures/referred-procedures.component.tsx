@@ -1,13 +1,15 @@
-import React from "react";
-import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import GroupedOrdersTable from "../common/groupedOrdersTable.component";
-import { DataTableSkeleton } from "@carbon/react";
+import React from 'react';
+import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
+import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
+import { DataTableSkeleton } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
 interface WorklistProps {
   fulfillerStatus: string;
 }
 
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
-  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
+  const { t } = useTranslation();
+  const { workListEntries, isLoading } = useOrdersWorklist('', fulfillerStatus);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
@@ -22,15 +24,9 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             showActions={true}
             showStatus={true}
             showOrderType={true}
-            showStatusFilter={false}
-            showDateFilter={true}
-            actions={[
-              { actionName: "postProcedureResultForm", displayPosition: 1 },
-              {
-                actionName: "reject-procedure-order-dialog",
-                displayPosition: 2,
-              },
-            ]}
+            showStartButton={false}
+            title={t('referredProcedures', 'Referred Procedures')}
+            actions={[{ actionName: 'postProcedureResultForm' }, { actionName: 'reject-procedure-order-dialog' }]}
           />
         </div>
       </>

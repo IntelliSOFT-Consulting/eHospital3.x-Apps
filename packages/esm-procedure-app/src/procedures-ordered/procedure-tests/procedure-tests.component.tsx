@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   DataTable,
@@ -10,11 +10,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@carbon/react";
-import { ErrorState } from "@openmrs/esm-framework";
-import styles from "../procedure-queue.scss";
-import PickProcedureRequestActionMenu from "../_pick-procedure-request-menu.component";
-import { Encounter } from "../../types";
+} from '@carbon/react';
+import { ErrorState } from '@openmrs/esm-framework';
+import styles from '../procedure-queue.scss';
+import PickProcedureRequestActionMenu from '../_pick-procedure-request-menu.component';
+import { type Encounter } from '../../types';
 
 interface ProceduresProps {
   encounter: Encounter;
@@ -24,14 +24,14 @@ interface ProceduresProps {
 const ProceduresTests: React.FC<ProceduresProps> = ({ encounter, queueId }) => {
   const { t } = useTranslation();
   const columns = [
-    { id: 1, header: t("order", "Order"), key: "order", align: "left" },
+    { id: 1, header: t('order', 'Order'), key: 'order', align: 'left' },
     {
       id: 2,
-      header: t("orderType", "OrderType"),
-      key: "orderType",
-      align: "center",
+      header: t('orderType', 'OrderType'),
+      key: 'orderType',
+      align: 'center',
     },
-    { id: 3, header: t("actions", "Actions"), key: "actions", align: "center" },
+    { id: 3, header: t('actions', 'Actions'), key: 'actions', align: 'center' },
   ];
 
   const tableRows = useMemo(() => {
@@ -40,19 +40,12 @@ const ProceduresTests: React.FC<ProceduresProps> = ({ encounter, queueId }) => {
       id: item?.uuid,
       order: item?.display,
       orderType: item?.type,
-      actions: (
-        <PickProcedureRequestActionMenu closeModal={() => true} order={item} />
-      ),
+      actions: <PickProcedureRequestActionMenu closeModal={() => true} order={item} />,
     }));
   }, [encounter]);
 
   if (!encounter) {
-    return (
-      <ErrorState
-        error={"Error Loading encounter"}
-        headerTitle={"Tests Error"}
-      />
-    );
+    return <ErrorState error={'Error Loading encounter'} headerTitle={'Tests Error'} />;
   }
 
   return (
@@ -63,9 +56,7 @@ const ProceduresTests: React.FC<ProceduresProps> = ({ encounter, queueId }) => {
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>
-                    {header.header}
-                  </TableHeader>
+                  <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
                 ))}
               </TableRow>
             </TableHead>
@@ -75,9 +66,7 @@ const ProceduresTests: React.FC<ProceduresProps> = ({ encounter, queueId }) => {
                   <React.Fragment key={row.id}>
                     <TableRow {...getRowProps({ row })} key={row.id}>
                       {row.cells.map((cell) => (
-                        <TableCell key={cell.id}>
-                          {cell.value?.content ?? cell.value}
-                        </TableCell>
+                        <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
                       ))}
                     </TableRow>
                   </React.Fragment>

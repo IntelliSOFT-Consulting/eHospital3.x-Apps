@@ -1,13 +1,8 @@
-import useSWR, { mutate } from "swr";
-import {
-  ConfigObject,
-  openmrsFetch,
-  restBaseUrl,
-  useConfig,
-} from "@openmrs/esm-framework";
-import { useCallback } from "react";
-import { ProcedureConceptClass_UUID } from "../constants";
-import { Result } from "../types";
+import useSWR, { mutate } from 'swr';
+import { type ConfigObject, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { useCallback } from 'react';
+import { ProcedureConceptClass_UUID } from '../constants';
+import { type Result } from '../types';
 
 export function useMetrics() {
   const metrics = {
@@ -16,10 +11,7 @@ export function useMetrics() {
     transferred: 1,
     completed: 6,
   };
-  const { data, error } = useSWR<{ data: { results: any } }, Error>(
-    `${restBaseUrl}/queue?`,
-    openmrsFetch
-  );
+  const { data, error } = useSWR<{ data: { results: any } }, Error>(`${restBaseUrl}/queue?`, openmrsFetch);
 
   return {
     metrics: metrics,
@@ -34,49 +26,46 @@ export function useProcedureOrderStats(fulfillerStatus: string) {
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
   const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
-  const { data, error, isLoading } = useSWR<
-    { data: { results: Array<Result> } },
-    Error
-  >(apiUrl, openmrsFetch);
+  const { data, error, isLoading } = useSWR<{ data: { results: Array<Result> } }, Error>(apiUrl, openmrsFetch);
 
   const mutateOrders = useCallback(() => {
     mutate(apiUrl);
   }, [apiUrl]);
 
   const procedureOrders = data?.data?.results?.filter((order) => {
-    if (fulfillerStatus === "") {
+    if (fulfillerStatus === '') {
       return (
         order.fulfillerStatus === null &&
         order.dateStopped === null &&
-        order.action === "NEW" &&
+        order.action === 'NEW' &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
-    } else if (fulfillerStatus === "IN_PROGRESS") {
+    } else if (fulfillerStatus === 'IN_PROGRESS') {
       return (
-        order.fulfillerStatus === "IN_PROGRESS" &&
+        order.fulfillerStatus === 'IN_PROGRESS' &&
         order.dateStopped === null &&
-        order.action !== "DISCONTINUE" &&
+        order.action !== 'DISCONTINUE' &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
-    } else if (fulfillerStatus === "COMPLETED") {
+    } else if (fulfillerStatus === 'COMPLETED') {
       return (
-        order.fulfillerStatus === "COMPLETED" &&
+        order.fulfillerStatus === 'COMPLETED' &&
         order.dateStopped === null &&
-        order.action !== "DISCONTINUE" &&
+        order.action !== 'DISCONTINUE' &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
-    } else if (fulfillerStatus === "EXCEPTION") {
+    } else if (fulfillerStatus === 'EXCEPTION') {
       return (
-        order.fulfillerStatus === "EXCEPTION" &&
+        order.fulfillerStatus === 'EXCEPTION' &&
         order.dateStopped === null &&
-        order.action !== "DISCONTINUE" &&
+        order.action !== 'DISCONTINUE' &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
-    } else if (fulfillerStatus === "DECLINED") {
+    } else if (fulfillerStatus === 'DECLINED') {
       return (
-        order.fulfillerStatus === "DECLINED" &&
+        order.fulfillerStatus === 'DECLINED' &&
         order.dateStopped === null &&
-        order.action !== "DISCONTINUE" &&
+        order.action !== 'DISCONTINUE' &&
         order.concept.conceptClass.uuid === ProcedureConceptClass_UUID
       );
     }

@@ -3,8 +3,6 @@
 @use '@carbon/colors';
 @import '@openmrs/esm-styleguide/src/vars';
 
-
-
 .orderForm {
   flex-grow: 1;
   display: flex;
@@ -23,7 +21,7 @@
     margin: 0 calc(spacing.$spacing-03 * -1) !important;
   }
 
-  :global(.cds--number--nosteppers.cds--number input[type=number]) {
+  :global(.cds--number--nosteppers.cds--number input[type='number']) {
     padding-right: spacing.$spacing-05;
   }
 

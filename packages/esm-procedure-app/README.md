@@ -1,19 +1,7 @@
-![Node.js CI](https://github.com/openmrs/openmrs-esm-template-app/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/palladiumkenya/kenyaemr-esm-3.x/workflows/Node.js%20CI/badge.svg)
 
-# OpenMRS ESM Procedures app
+# KenyaEMR ESM Procedure Orders App
 
-This repository has dashboard for medical procedure
+This is a frontend module that provides procedure orders functionality. Currently, we support:
 
-# Instructions
-
-1. Install dependency
-
-```sh
-yarn or yarn install
-```
-
-2. Start dev server
-
-```sh
-yarn start
-```
+- Procedure orders
