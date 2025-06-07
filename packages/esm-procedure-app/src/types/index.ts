@@ -1,15 +1,15 @@
-import { OpenmrsResource } from "@openmrs/esm-framework";
-import { OrderBasketItem } from "@openmrs/esm-patient-common-lib";
-import { Link } from "./patient-queue";
+import { type OrderUrgency, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
+import { type Link } from './patient-queue';
+import { type OpenmrsResource } from '@openmrs/esm-framework';
 
 export enum SearchTypes {
-  BASIC = "basic",
-  ADVANCED = "advanced",
-  SEARCH_RESULTS = "search_results",
-  SCHEDULED_VISITS = "scheduled-visits",
-  VISIT_FORM = "visit_form",
-  QUEUE_SERVICE_FORM = "queue_service_form",
-  QUEUE_ROOM_FORM = "queue_room_form",
+  BASIC = 'basic',
+  ADVANCED = 'advanced',
+  SEARCH_RESULTS = 'search_results',
+  SCHEDULED_VISITS = 'scheduled-visits',
+  VISIT_FORM = 'visit_form',
+  QUEUE_SERVICE_FORM = 'queue_service_form',
+  QUEUE_ROOM_FORM = 'queue_room_form',
 }
 
 export interface Patient {
@@ -74,9 +74,7 @@ export interface Order {
   dateStopped?: Date | null;
   dose: number;
   dosingInstructions: string | null;
-  dosingType?:
-    | "org.openmrs.FreeTextDosingInstructions"
-    | "org.openmrs.SimpleDosingInstructions";
+  dosingType?: 'org.openmrs.FreeTextDosingInstructions' | 'org.openmrs.SimpleDosingInstructions';
   doseUnits: {
     uuid: string;
     display: string;
@@ -231,14 +229,14 @@ export interface ObsMetaInfo {
 }
 
 export type OBSERVATION_INTERPRETATION =
-  | "NORMAL"
-  | "HIGH"
-  | "CRITICALLY_HIGH"
-  | "OFF_SCALE_HIGH"
-  | "LOW"
-  | "CRITICALLY_LOW"
-  | "OFF_SCALE_LOW"
-  | "--";
+  | 'NORMAL'
+  | 'HIGH'
+  | 'CRITICALLY_HIGH'
+  | 'OFF_SCALE_HIGH'
+  | 'LOW'
+  | 'CRITICALLY_LOW'
+  | 'OFF_SCALE_LOW'
+  | '--';
 export interface PatientProgram {
   uuid: string;
   display: string;
@@ -358,7 +356,7 @@ export interface Resource {
   id: string;
   name: string;
   resourceType: string;
-  status: "active" | "inactive";
+  status: 'active' | 'inactive';
   meta?: {
     tag?: Array<{
       code: string;
@@ -422,12 +420,12 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
     conceptUuid: string;
   };
   labReferenceNumber?: string;
-  urgency?: string;
+  urgency?: OrderUrgency;
   instructions?: string;
   previousOrder?: string;
-  otherBodySite?: string;
   orderReason?: string;
-  scheduledDate?: string | Date;
+  orderReasonNonCoded?: string;
+  scheduledDate?: Date;
   commentsToFulfiller?: string;
   laterality?: string;
   numberOfRepeats?: string;
@@ -450,7 +448,7 @@ export interface CommonProceduresValueCoded extends CommonProceduresProps {
   valueCoded: string;
 }
 
-export * from "./patient-queue";
+export * from './patient-queue';
 
 export type CodedCondition = {
   concept: {
@@ -467,6 +465,10 @@ export type CodedCondition = {
 export type CodedProvider = {
   uuid: string;
   display: string;
+};
+export type DateFilterContext = {
+  dateRange: Array<Date>;
+  setDateRange: React.Dispatch<React.SetStateAction<Array<Date>>>;
 };
 
 export type ProcedurePayload = {
@@ -497,13 +499,13 @@ export type ProcedurePayload = {
 };
 
 export type OrderStatusFilterType =
-  | "All"
-  | "EXCEPTION"
-  | "RECEIVED"
-  | "COMPLETED"
-  | "IN_PROGRESS"
-  | "ON_HOLD"
-  | "DECLINED";
+  | 'All'
+  | 'EXCEPTION'
+  | 'RECEIVED'
+  | 'COMPLETED'
+  | 'IN_PROGRESS'
+  | 'ON_HOLD'
+  | 'DECLINED';
 
 export interface WorklistProps {
   fulfillerStatus: string;

@@ -53,13 +53,13 @@
     "react-hook-form": "^7.45.1",
     "react-image-annotate": "^1.8.0",
     "react-is": "^18.3.1",
+    "react-to-print": "^2.14.13",
     "single-spa": "^6.0.1",
     "styled-components": "^5",
     "ts-dotenv": "^0.9.1",
     "uuid": "^8.3.2",
     "xlsx": "^0.18.5",
-    "zod": "^3.21.4",
-    "react-to-print": "^2.14.13"
+    "zod": "^3.21.4"
   },
   "peerDependencies": {
     "@carbon/react": "1.x",

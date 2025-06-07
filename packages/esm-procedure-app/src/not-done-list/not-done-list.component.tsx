@@ -1,9 +1,9 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
-import Overlay from "../components/overlay/overlay.component";
-import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import GroupedOrdersTable from "../common/groupedOrdersTable.component";
-import { DataTableSkeleton } from "@carbon/react";
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import Overlay from '../components/overlay/overlay.component';
+import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
+import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
+import { DataTableSkeleton } from '@carbon/react';
 interface WorklistProps {
   fulfillerStatus: string;
 }
@@ -11,7 +11,7 @@ interface WorklistProps {
 const NotDoneList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  const { workListEntries, isLoading } = useOrdersWorklist("", fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorklist('', fulfillerStatus);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
@@ -26,12 +26,11 @@ const NotDoneList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             showActions={false}
             showStatus={true}
             showOrderType={true}
-            showStatusFilter={false}
-            showDateFilter={true}
+            showStartButton={false}
+            title={t('notDoneList', 'Not Done List')}
             actions={[
               {
-                actionName: "procedure-reject-reason-modal",
-                displayPosition: 1,
+                actionName: 'procedure-reject-reason-modal',
               },
             ]}
           />

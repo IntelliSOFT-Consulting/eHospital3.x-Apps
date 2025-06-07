@@ -1,18 +1,12 @@
-import React from "react";
-import styles from "./procedure-summary-tiles.scss";
-import {
-  AssignedExtension,
-  useConnectedExtensions,
-  Extension,
-} from "@openmrs/esm-framework";
-import { ComponentContext } from "@openmrs/esm-framework/src/internal";
+import React from 'react';
+import styles from './procedure-summary-tiles.scss';
+import { type AssignedExtension, useConnectedExtensions, Extension } from '@openmrs/esm-framework';
+import { ComponentContext } from '@openmrs/esm-framework/src/internal';
 
 const ProcedureSummaryTiles: React.FC = () => {
-  const ProcedureTileSlot = "procedure-tiles-slot";
+  const ProcedureTileSlot = 'procedure-tiles-slot';
 
-  const tilesExtensions = useConnectedExtensions(
-    ProcedureTileSlot
-  ) as AssignedExtension[];
+  const tilesExtensions = useConnectedExtensions(ProcedureTileSlot) as AssignedExtension[];
 
   return (
     <div className={styles.cardContainer}>
@@ -30,8 +24,7 @@ const ProcedureSummaryTiles: React.FC = () => {
                   extensionSlotName: ProcedureTileSlot,
                   extensionSlotModuleName: extension.moduleName,
                 },
-              }}
-            >
+              }}>
               <Extension />
             </ComponentContext.Provider>
           );

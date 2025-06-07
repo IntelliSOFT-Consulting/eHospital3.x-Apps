@@ -1,65 +1,45 @@
-import useSWR, { mutate } from "swr";
-import {
-  type FetchResponse,
-  openmrsFetch,
-  useConfig,
-  restBaseUrl,
-  showSnackbar,
-} from "@openmrs/esm-framework";
-import { type ConfigObject } from "../../config-schema";
-import { useCallback, useMemo } from "react";
-import type {
-  OrderPost,
-  PatientOrderFetchResponse,
-} from "@openmrs/esm-patient-common-lib";
-import useSWRImmutable from "swr/immutable";
-import { type ProcedureOrderBasketItem } from "../../types";
+import useSWR, { mutate } from 'swr';
+import { type FetchResponse, openmrsFetch, useConfig, restBaseUrl, showSnackbar } from '@openmrs/esm-framework';
+import { type ConfigObject } from '../../config-schema';
+import { useCallback, useMemo } from 'react';
+import type { OrderPost, PatientOrderFetchResponse } from '@openmrs/esm-patient-common-lib';
+import useSWRImmutable from 'swr/immutable';
+import { type ProcedureOrderBasketItem } from '../../types';
 
 export interface ProcedureOrderPost extends OrderPost {
-  scheduledDate?: Date | string;
-  commentToFulfilleON_SCHEDULED_DATEr?: string;
+  scheduledDate?: string;
+  commentToFulfiller?: string;
   specimenSource?: string;
   specimenType?: string;
   numberOfRepeats?: string;
 }
-export const careSettingUuid = "6f0c9a92-6f24-11e3-af88-005056821db0";
+export const careSettingUuid = '6f0c9a92-6f24-11e3-af88-005056821db0';
 /**
  * SWR-based data fetcher for patient orders.
  *
  * @param patientUuid The UUID of the patient whose orders should be fetched.
  * @param status Allows fetching either all orders or only active orders.
  */
-export function usePatientLabOrders(
-  patientUuid: string,
-  status: "ACTIVE" | "any"
-) {
-  const { labOrderTypeUuid: labOrderTypeUUID } = (useConfig() as ConfigObject)
-    .orders;
+export function usePatientLabOrders(patientUuid: string, status: 'ACTIVE' | 'any') {
+  const { labOrderTypeUuid: labOrderTypeUUID } = (useConfig() as ConfigObject).orders;
   const ordersUrl = `${restBaseUrl}/order?patient=${patientUuid}&careSetting=${careSettingUuid}&status=${status}&orderType=${labOrderTypeUUID}`;
 
-  const { data, error, isLoading, isValidating } = useSWR<
-    FetchResponse<PatientOrderFetchResponse>,
-    Error
-  >(patientUuid ? ordersUrl : null, openmrsFetch);
+  const { data, error, isLoading, isValidating } = useSWR<FetchResponse<PatientOrderFetchResponse>, Error>(
+    patientUuid ? ordersUrl : null,
+    openmrsFetch,
+  );
 
   const mutateOrders = useCallback(
-    () =>
-      mutate(
-        (key) =>
-          typeof key === "string" &&
-          key.startsWith(`${restBaseUrl}/order?patient=${patientUuid}`)
-      ),
-    [patientUuid]
+    () => mutate((key) => typeof key === 'string' && key.startsWith(`${restBaseUrl}/order?patient=${patientUuid}`)),
+    [patientUuid],
   );
 
   const labOrders = useMemo(
     () =>
       data?.data?.results
-        ? data.data.results?.sort((order1, order2) =>
-            order2.dateActivated > order1.dateActivated ? 1 : -1
-          )
+        ? data.data.results?.sort((order1, order2) => (order2.dateActivated > order1.dateActivated ? 1 : -1))
         : null,
-    [data]
+    [data],
   );
 
   return {
@@ -74,10 +54,10 @@ export function usePatientLabOrders(
 export function useOrderReasons(conceptUuids: Array<string>) {
   const shouldFetch = conceptUuids && conceptUuids.length > 0;
   const url = shouldFetch ? getConceptReferenceUrls(conceptUuids) : null;
-  const { data, error, isLoading } = useSWRImmutable<
-    FetchResponse<ConceptResponse>,
-    Error
-  >(shouldFetch ? `${restBaseUrl}/${url[0]}` : null, openmrsFetch);
+  const { data, error, isLoading } = useSWRImmutable<FetchResponse<ConceptResponse>, Error>(
+    shouldFetch ? `${restBaseUrl}/${url[0]}` : null,
+    openmrsFetch,
+  );
 
   const ob = data?.data;
   const orderReasons = ob
@@ -91,7 +71,7 @@ export function useOrderReasons(conceptUuids: Array<string>) {
     showSnackbar({
       title: error.name,
       subtitle: error.message,
-      kind: "error",
+      kind: 'error',
     });
   }
 
@@ -101,13 +81,13 @@ export function useOrderReasons(conceptUuids: Array<string>) {
 export function prepProceduresOrderPostData(
   order: ProcedureOrderBasketItem,
   patientUuid: string,
-  encounterUuid: string
+  encounterUuid: string,
 ): ProcedureOrderPost {
   let payload = {};
-  if (order.action === "NEW" || order.action === "RENEW") {
+  if (order.action === 'NEW' || order.action === 'RENEW') {
     payload = {
-      action: "NEW",
-      type: "procedureorder",
+      action: 'NEW',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: careSettingUuid,
       orderer: order.orderer,
@@ -119,17 +99,17 @@ export function prepProceduresOrderPostData(
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       bodySite: order.bodySite,
-      otherBodySite: order.otherBodySite
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
-  } else if (order.action === "REVISE") {
+  } else if (order.action === 'REVISE') {
     payload = {
-      action: "REVISE",
-      type: "procedureorder",
+      action: 'REVISE',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: order.careSetting,
       orderer: order.orderer,
@@ -143,16 +123,17 @@ export function prepProceduresOrderPostData(
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       previousOrder: order.previousOrder,
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
-  } else if (order.action === "DISCONTINUE") {
+  } else if (order.action === 'DISCONTINUE') {
     payload = {
-      action: "DISCONTINUE",
-      type: "procedureorder",
+      action: 'DISCONTINUE',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: order.careSetting,
       orderer: order.orderer,
@@ -165,10 +146,11 @@ export function prepProceduresOrderPostData(
       numberOfRepeats: order.numberOfRepeats,
       commentToFulfiller: order.commentsToFulfiller,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       previousOrder: order.previousOrder,
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
   } else {
@@ -182,18 +164,13 @@ export function getConceptReferenceUrls(conceptUuids: Array<string>) {
     accumulator.push(conceptUuids.slice(i, i + chunkSize));
   }
 
-  return accumulator.map(
-    (partition) =>
-      `conceptreferences?references=${partition.join(
-        ","
-      )}&v=custom:(uuid,display)`
-  );
+  return accumulator.map((partition) => `conceptreferences?references=${partition.join(',')}&v=custom:(uuid,display)`);
 }
 
 export type PostDataPrepLabOrderFunction = (
   order: ProcedureOrderBasketItem,
   patientUuid: string,
-  encounterUuid: string
+  encounterUuid: string,
 ) => OrderPost;
 
 export interface ConceptAnswers {

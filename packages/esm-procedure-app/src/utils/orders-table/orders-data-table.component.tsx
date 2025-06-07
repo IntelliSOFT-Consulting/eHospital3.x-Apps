@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo } from 'react';
 import {
   DataTable,
   Pagination,
@@ -17,9 +17,9 @@ import {
   Dropdown,
   DatePicker,
   DatePickerInput,
-} from "@carbon/react";
-import styles from "./orders-data-table.scss";
-import { useTranslation } from "react-i18next";
+} from '@carbon/react';
+import styles from './orders-data-table.scss';
+import { useTranslation } from 'react-i18next';
 
 interface OrdersDataTableProps {
   tabTitle: string;
@@ -47,18 +47,18 @@ const OrdersDataTable: React.FC<OrdersDataTableProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState("");
+  const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState('');
 
   return (
     <DataTable rows={rows} headers={columns} useZebraStyles>
       {({ rows, headers, getHeaderProps, getTableProps, getRowProps }) => (
         <TableContainer className={styles.tableContainer}>
-          <TableToolbar style={{ position: "static" }}>
+          <TableToolbar style={{ position: 'static' }}>
             <TableToolbarContent>
-              <Layer style={{ margin: "5px" }}>
+              <Layer style={{ margin: '5px' }}>
                 <DatePicker dateFormat="Y-m-d" datePickerType="single">
                   <DatePickerInput
-                    labelText={""}
+                    labelText={''}
                     id="activatedOnOrAfterDate"
                     placeholder="YYYY-MM-DD"
                     onChange={(event) => {
@@ -69,12 +69,8 @@ const OrdersDataTable: React.FC<OrdersDataTableProps> = ({
                   />
                 </DatePicker>
               </Layer>
-              <Layer style={{ margin: "5px" }}>
-                <TableToolbarSearch
-                  persistent
-                  placeholder={t("searchThisList", "Search this list")}
-                  size="sm"
-                />
+              <Layer style={{ margin: '5px' }}>
+                <TableToolbarSearch persistent placeholder={t('searchThisList', 'Search this list')} size="sm" />
               </Layer>
             </TableToolbarContent>
           </TableToolbar>
@@ -82,9 +78,7 @@ const OrdersDataTable: React.FC<OrdersDataTableProps> = ({
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>
-                    {header.header?.content ?? header.header}
-                  </TableHeader>
+                  <TableHeader {...getHeaderProps({ header })}>{header.header?.content ?? header.header}</TableHeader>
                 ))}
               </TableRow>
             </TableHead>
@@ -93,9 +87,7 @@ const OrdersDataTable: React.FC<OrdersDataTableProps> = ({
                 <React.Fragment key={row.id}>
                   <TableRow {...getRowProps({ row })} key={row.id}>
                     {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>
-                        {cell.value?.content ?? cell.value}
-                      </TableCell>
+                      <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
                     ))}
                   </TableRow>
                 </React.Fragment>
@@ -106,9 +98,7 @@ const OrdersDataTable: React.FC<OrdersDataTableProps> = ({
             <div className={styles.tileContainer}>
               <Tile className={styles.tile}>
                 <div className={styles.tileContent}>
-                  <p className={styles.content}>
-                    {t("noOrdersList", `No ${tabTitle} orders to display`)}
-                  </p>
+                  <p className={styles.content}>{t('noOrdersList', `No ${tabTitle} orders to display`)}</p>
                 </div>
               </Tile>
             </div>

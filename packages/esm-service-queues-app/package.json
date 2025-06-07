@@ -36,7 +36,6 @@
   "bugs": {
     "url": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/issues"
   },
-  "dependencies": {},
   "peerDependencies": {
     "@carbon/react": "1.x",
     "@openmrs/esm-framework": "6.x",

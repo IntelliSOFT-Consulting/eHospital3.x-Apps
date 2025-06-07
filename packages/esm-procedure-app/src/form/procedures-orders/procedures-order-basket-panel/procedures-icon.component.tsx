@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface ProcedureIconProps {
   isTablet: boolean;
@@ -7,22 +7,9 @@ interface ProcedureIconProps {
 export default function ProcedureIcon({ isTablet }: ProcedureIconProps) {
   const size = isTablet ? 40 : 24;
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clip-path="url(#clip0_319_602)">
-        <mask
-          id="mask0_319_602"
-          maskUnits="userSpaceOnUse"
-          x="0"
-          y="0"
-          width="24"
-          height="24"
-        >
+        <mask id="mask0_319_602" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
           <path d="M24 0H0V24H24V0Z" fill="white" />
         </mask>
         <g mask="url(#mask0_319_602)">
@@ -44,12 +31,7 @@ export default function ProcedureIcon({ isTablet }: ProcedureIconProps) {
           <rect width="24" height="24" fill="white" />
         </clipPath>
         <clipPath id="clip1_319_602">
-          <rect
-            width="14"
-            height="14"
-            fill="white"
-            transform="translate(5 5)"
-          />
+          <rect width="14" height="14" fill="white" transform="translate(5 5)" />
         </clipPath>
       </defs>
     </svg>

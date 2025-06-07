@@ -1,7 +1,7 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
 @use '@carbon/styles/scss/colors';
-@import "~@openmrs/esm-styleguide/src/vars";
+@import '~@openmrs/esm-styleguide/src/vars';
 @import '../../root.scss';
 
 .section {
@@ -66,58 +66,62 @@
   }
 }
 
-
 td {
   white-space: nowrap;
 }
 
-.criticallyLow, .criticallyHigh, .low, .high {
+.criticallyLow,
+.criticallyHigh,
+.low,
+.high {
   td:nth-child(2) {
-    @include type.type-style("heading-compact-01");
+    @include type.type-style('heading-compact-01');
   }
 }
 
-.criticallyLow, .criticallyHigh {
+.criticallyLow,
+.criticallyHigh {
   border: 2px solid colors.$red-60 !important;
 }
 
-.low, .high {
+.low,
+.high {
   border: 1.5px solid colors.$black-100 !important;
 }
 
 .criticallyLow {
   td:nth-child(2)::after {
-    content: " ↓↓";
+    content: ' ↓↓';
   }
 }
 
 .criticallyHigh {
   td:nth-child(2)::after {
-    content: " ↑↑";
+    content: ' ↑↑';
   }
 }
 
 .low {
   td:nth-child(2)::after {
-    content: " ↓";
+    content: ' ↓';
   }
 }
 
 .high {
   td:nth-child(2)::after {
-    content: " ↑";
+    content: ' ↑';
   }
 }
 
 .off-scale-low {
   td:nth-child(2)::after {
-    content: " ↓↓↓";
+    content: ' ↓↓↓';
   }
 }
 
 .off-scale-high {
   td:nth-child(2)::after {
-    content: " ↑↑↑";
+    content: ' ↑↑↑';
   }
 }
 
@@ -131,22 +135,22 @@ td {
 }
 
 .criticallyLow::after {
-  content: " ↓↓";
+  content: ' ↓↓';
 }
 
 .criticallyHigh::after {
-  content: " ↑↑";
+  content: ' ↑↑';
 }
 
 .low::after {
-  content: " ↓";
+  content: ' ↓';
 }
 
 .high::after {
-  content: " ↑";
+  content: ' ↑';
 }
 
-.cds--data-table--zebra tbody tr[data-parent-row]:nth-child(4n+1) td {
+.cds--data-table--zebra tbody tr[data-parent-row]:nth-child(4n + 1) td {
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
   border-top: 1px solid #e0e0e0;

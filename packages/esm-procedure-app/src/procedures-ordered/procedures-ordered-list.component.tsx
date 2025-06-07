@@ -1,14 +1,15 @@
-import React from "react";
-import { useOrdersWorklist } from "../hooks/useOrdersWorklist";
-import GroupedOrdersTable from "../common/groupedOrdersTable.component";
-import { DataTableSkeleton } from "@carbon/react";
-
+import React from 'react';
+import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
+import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
+import { DataTableSkeleton } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
 interface ProcedurePatientListProps {
   fulfillerStatus: string;
 }
 
 const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
-  const { workListEntries, isLoading } = useOrdersWorklist("", "");
+  const { t } = useTranslation();
+  const { workListEntries, isLoading } = useOrdersWorklist('', '');
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
@@ -21,14 +22,13 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
         showActions={true}
         showStatus={true}
         showOrderType={true}
-        showStatusFilter={true}
-        showDateFilter={false}
+        showStartButton={false}
+        title={t('proceduresOrdered', 'Procedures Ordered')}
         actions={[
           {
-            actionName: "add-procedure-to-worklist-dialog",
-            displayPosition: 1,
+            actionName: 'add-procedure-to-worklist-dialog',
           },
-          { actionName: "reject-procedure-order-dialog", displayPosition: 2 },
+          { actionName: 'reject-procedure-order-dialog' },
         ]}
       />
     );

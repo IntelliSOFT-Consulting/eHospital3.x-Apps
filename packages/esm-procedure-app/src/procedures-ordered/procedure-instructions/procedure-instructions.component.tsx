@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Button,
   ModalBody,
@@ -9,42 +9,34 @@ import {
   TableBody,
   TableCell,
   Tile,
-} from "@carbon/react";
-import { useTranslation } from "react-i18next";
-import styles from "./instructions.scss";
-import { formatDate, parseDate } from "@openmrs/esm-framework";
-import { Result } from "../../types";
+} from '@carbon/react';
+import { useTranslation } from 'react-i18next';
+import styles from './instructions.scss';
+import { formatDate, parseDate } from '@openmrs/esm-framework';
+import { type Result } from '../../types';
 
 interface ProcedureInstructionsModalProps {
   order: Result;
   closeModal: () => void;
 }
 
-const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
-  order,
-  closeModal,
-}) => {
+const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({ order, closeModal }) => {
   const { t } = useTranslation();
 
   const tableData = [
-    { key: "Ordered Procedure", value: order.display },
-    { key: "Order Urgency", value: order.urgency },
+    { key: 'Ordered Procedure', value: order.display },
+    { key: 'Order Urgency', value: order.urgency },
     {
-      key: "Schedule date",
-      value: order.scheduledDate
-        ? formatDate(parseDate(order.scheduledDate))
-        : new Date().toLocaleDateString(),
+      key: 'Schedule date',
+      value: order.scheduledDate ? formatDate(parseDate(order.scheduledDate)) : new Date().toLocaleDateString(),
     },
-    { key: "Number of repeats", value: order.numberOfRepeats },
-    { key: "Frequency", value: order.frequency?.display },
+    { key: 'Number of repeats', value: order.numberOfRepeats },
+    { key: 'Frequency', value: order.frequency?.display },
   ];
 
   return (
     <div>
-      <ModalHeader
-        closeModal={closeModal}
-        title={t("procedureInstructions", "Procedure Order Instructions")}
-      />
+      <ModalHeader closeModal={closeModal} title={t('procedureInstructions', 'Procedure Order Instructions')} />
       <ModalBody>
         <div className={styles.modalBody}>
           <section className={styles.section}>
@@ -76,7 +68,7 @@ const ProcedureInstructionsModal: React.FC<ProcedureInstructionsModalProps> = ({
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={closeModal}>
-          {t("cancel", "Cancel")}
+          {t('cancel', 'Cancel')}
         </Button>
       </ModalFooter>
     </div>

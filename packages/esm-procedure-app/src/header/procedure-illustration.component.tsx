@@ -1,16 +1,10 @@
-import React from "react";
+import React from 'react';
 // import { WatsonHealthScalpelSelect } from "@carbon/react/icons";
 // import styles from "./procedure-header.scss";
 
 const ProcedureIllustration: React.FC = () => {
   return (
-    <svg
-      width="72"
-      height="72"
-      viewBox="0 0 72 72"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g clip-path="url(#clip0_37_2293)">
         <path
           fill-rule="evenodd"
@@ -22,10 +16,7 @@ const ProcedureIllustration: React.FC = () => {
           d="M26.3475 61.0225C25.7221 61.651 24.9784 62.1494 24.1592 62.4889C23.3401 62.8283 22.4618 63.002 21.5751 63H11.6357L24.4771 50.1588L30.8446 56.5263L26.3475 61.0225Z"
           fill="#BCDDDB"
         />
-        <path
-          d="M27.6588 46.9771L32.3523 42.2838L38.7183 48.6499L34.0254 53.3439L27.6588 46.9771Z"
-          fill="#BCDDDB"
-        />
+        <path d="M27.6588 46.9771L32.3523 42.2838L38.7183 48.6499L34.0254 53.3439L27.6588 46.9771Z" fill="#BCDDDB" />
         <path
           d="M61.6809 25.6817L51.7899 35.5748L41.8989 45.468L35.5329 39.1023L55.3174 19.3183C56.1744 18.4997 57.314 18.0429 58.4991 18.0429C59.6843 18.0429 60.8238 18.4997 61.6809 19.3183C62.0988 19.736 62.4303 20.2321 62.6565 20.778C62.8827 21.3239 62.9991 21.9091 62.9991 22.5C62.9991 23.0909 62.8827 23.6761 62.6565 24.222C62.4303 24.7679 62.0988 25.2639 61.6809 25.6817Z"
           fill="#BCDDDB"

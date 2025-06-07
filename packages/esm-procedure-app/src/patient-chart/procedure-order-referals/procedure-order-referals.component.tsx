@@ -1,19 +1,7 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useTranslation } from "react-i18next";
-import styles from "./procedure-order-referals.scss";
-import {
-  formatDate,
-  parseDate,
-  ErrorState,
-  showModal,
-  useConfig,
-} from "@openmrs/esm-framework";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import styles from './procedure-order-referals.scss';
+import { formatDate, parseDate, ErrorState, showModal, useConfig } from '@openmrs/esm-framework';
 
 import {
   DataTable,
@@ -38,32 +26,17 @@ import {
   Button,
   IconButton,
   InlineLoading,
-} from "@carbon/react";
+} from '@carbon/react';
 
-import {
-  Printer,
-  MailAll,
-  Add,
-  Checkmark,
-  SendAlt,
-  NotSent,
-  Edit,
-} from "@carbon/react/icons";
-import TestsResults from "../results-summary/test-results-table.component";
-import { useReactToPrint } from "react-to-print";
-import PrintResultsSummary from "../results-summary/print-results-summary.component";
-import { useGetPatientByUuid } from "../../utils/functions";
-import {
-  ResourceRepresentation,
-  Result,
-  getOrderColor,
-} from "../patient-procedure-order-results.resource";
-import { useLaboratoryOrderResultsPages } from "../patient-procedure-order-results-table.resource";
-import {
-  CardHeader,
-  launchPatientWorkspace,
-} from "@openmrs/esm-patient-common-lib";
-import { mutate } from "swr";
+import { Printer, MailAll, Add, Checkmark, SendAlt, NotSent, Edit } from '@carbon/react/icons';
+import TestsResults from '../results-summary/test-results-table.component';
+import { useReactToPrint } from 'react-to-print';
+import PrintResultsSummary from '../results-summary/print-results-summary.component';
+import { useGetPatientByUuid } from '../../utils/functions';
+import { ResourceRepresentation, type Result, getOrderColor } from '../patient-procedure-order-results.resource';
+import { useLaboratoryOrderResultsPages } from '../patient-procedure-order-results-table.resource';
+import { CardHeader, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { mutate } from 'swr';
 
 interface LaboratoryOrderReferalResultsProps {
   patientUuid: string;
@@ -78,18 +51,12 @@ interface PrintProps {
   encounter: Result;
 }
 
-const LaboratoryOrderReferalResults: React.FC<
-  LaboratoryOrderReferalResultsProps
-> = ({ patientUuid }) => {
+const LaboratoryOrderReferalResults: React.FC<LaboratoryOrderReferalResultsProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
 
-  const { enableSendingLabTestsByEmail, laboratoryEncounterTypeUuid } =
-    useConfig();
+  const { enableSendingLabTestsByEmail, laboratoryEncounterTypeUuid } = useConfig();
 
-  const displayText = t(
-    "referralLaboratoryTestsDisplayTextTitle",
-    "Laboratory Referral Tests"
-  );
+  const displayText = t('referralLaboratoryTestsDisplayTextTitle', 'Laboratory Referral Tests');
 
   const {
     items,
@@ -111,9 +78,7 @@ const LaboratoryOrderReferalResults: React.FC<
 
   const sortedLabRequests = useMemo(() => {
     return [...items]
-      ?.filter(
-        (item) => item?.encounterType?.uuid === laboratoryEncounterTypeUuid
-      )
+      ?.filter((item) => item?.encounterType?.uuid === laboratoryEncounterTypeUuid)
       ?.sort((a, b) => {
         const dateA = new Date(a.encounterDatetime);
         const dateB = new Date(b.encounterDatetime);
@@ -121,7 +86,7 @@ const LaboratoryOrderReferalResults: React.FC<
       });
   }, [items, laboratoryEncounterTypeUuid]);
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [laboratoryOrders, setLaboratoryOrders] = useState(sortedLabRequests);
   const [initialTests, setInitialTests] = useState(sortedLabRequests);
 
@@ -135,9 +100,7 @@ const LaboratoryOrderReferalResults: React.FC<
       setLaboratoryOrders(initialTests);
     } else {
       const filteredItems = initialTests.filter((item) =>
-        item?.orders?.some((order) =>
-          order?.concept?.display.toLowerCase().includes(searchTerm)
-        )
+        item?.orders?.some((order) => order?.concept?.display.toLowerCase().includes(searchTerm)),
       );
       setLaboratoryOrders(filteredItems);
     }
@@ -149,7 +112,7 @@ const LaboratoryOrderReferalResults: React.FC<
 
   const EmailButtonAction: React.FC = () => {
     const launchSendEmailModal = useCallback(() => {
-      const dispose = showModal("send-email-dialog", {
+      const dispose = showModal('send-email-dialog', {
         closeModal: () => dispose(),
       });
     }, []);
@@ -164,13 +127,10 @@ const LaboratoryOrderReferalResults: React.FC<
     );
   };
 
-  const EditReferralAction: React.FC<EditReferralActionProps> = ({
-    formUuid,
-    encounterUuid,
-  }) => {
+  const EditReferralAction: React.FC<EditReferralActionProps> = ({ formUuid, encounterUuid }) => {
     const launchForm = () => {
-      launchPatientWorkspace("patient-laboratory-referral-workspace", {
-        workspaceTitle: "Edit Referral Form",
+      launchPatientWorkspace('patient-laboratory-referral-workspace', {
+        workspaceTitle: 'Edit Referral Form',
         mutateForm: () => {
           mutate((key) => true, undefined, {
             revalidate: true,
@@ -183,14 +143,7 @@ const LaboratoryOrderReferalResults: React.FC<
       });
     };
 
-    return (
-      <Button
-        kind="ghost"
-        size="sm"
-        onClick={launchForm}
-        renderIcon={(props) => <Edit size={16} {...props} />}
-      />
-    );
+    return <Button kind="ghost" size="sm" onClick={launchForm} renderIcon={(props) => <Edit size={16} {...props} />} />;
   };
 
   const LaunchLabRequestForm: React.FC = () => {
@@ -231,17 +184,9 @@ const LaboratoryOrderReferalResults: React.FC<
     return (
       <div>
         <div ref={contentToPrintRef}>
-          <PrintResultsSummary
-            encounterResponse={encounter}
-            patient={patient}
-          />
+          <PrintResultsSummary encounterResponse={encounter} patient={patient} />
         </div>
-        <Button
-          kind="ghost"
-          size="sm"
-          onClick={handlePrint}
-          renderIcon={(props) => <Printer size={16} {...props} />}
-        />
+        <Button kind="ghost" size="sm" onClick={handlePrint} renderIcon={(props) => <Printer size={16} {...props} />} />
       </div>
     );
   };
@@ -250,16 +195,16 @@ const LaboratoryOrderReferalResults: React.FC<
     () => [
       {
         id: 0,
-        header: t("orderDate", "Test Date"),
-        key: "orderDate",
+        header: t('orderDate', 'Test Date'),
+        key: 'orderDate',
       },
-      { id: 1, header: t("tests", "Tests"), key: "orders" },
-      { id: 2, header: t("location", "Location"), key: "location" },
-      { id: 3, header: t("status", "Status"), key: "status" },
-      { id: 4, header: t("referral", "Referral"), key: "referral" },
-      { id: 5, header: t("actions", "Action"), key: "actions" },
+      { id: 1, header: t('tests', 'Tests'), key: 'orders' },
+      { id: 2, header: t('location', 'Location'), key: 'location' },
+      { id: 3, header: t('status', 'Status'), key: 'status' },
+      { id: 4, header: t('referral', 'Referral'), key: 'referral' },
+      { id: 5, header: t('actions', 'Action'), key: 'actions' },
     ],
-    [t]
+    [t],
   );
 
   const tableRows = useMemo(() => {
@@ -267,41 +212,32 @@ const LaboratoryOrderReferalResults: React.FC<
       ...entry,
       id: entry?.uuid,
       orderDate: formatDate(parseDate(entry.encounterDatetime), {
-        mode: "standard",
+        mode: 'standard',
         time: true,
       }),
       orders: (
         <>
           {entry?.orders
-            ?.filter(
-              (order) => order?.type === "testorder" && order?.action === "NEW"
-            )
+            ?.filter((order) => order?.type === 'testorder' && order?.action === 'NEW')
             .map((order) => (
               <Tag
                 style={{
-                  background: `${getOrderColor(
-                    order?.dateActivated,
-                    order?.dateStopped
-                  )}`,
-                  color: "white",
+                  background: `${getOrderColor(order?.dateActivated, order?.dateStopped)}`,
+                  color: 'white',
                 }}
                 role="tooltip"
-                key={order?.uuid}
-              >
+                key={order?.uuid}>
                 {order?.display}
               </Tag>
             ))}
         </>
       ),
       location: entry?.location?.display,
-      status: "--",
-      referral: "--",
+      status: '--',
+      referral: '--',
       actions: (
-        <div style={{ display: "flex" }}>
-          <EditReferralAction
-            formUuid={entry[index]?.form?.uuid}
-            encounterUuid={entry[index]?.uuid}
-          />
+        <div style={{ display: 'flex' }}>
+          <EditReferralAction formUuid={entry[index]?.form?.uuid} encounterUuid={entry[index]?.uuid} />
           <PrintButtonAction encounter={entry} />
           {enableSendingLabTestsByEmail && <EmailButtonAction />}
         </div>
@@ -314,7 +250,7 @@ const LaboratoryOrderReferalResults: React.FC<
   }
 
   if (isError) {
-    return <ErrorState error={isError} headerTitle={"Error"} />;
+    return <ErrorState error={isError} headerTitle={'Error'} />;
   }
 
   if (items?.length >= 0) {
@@ -329,71 +265,55 @@ const LaboratoryOrderReferalResults: React.FC<
             ) : null}
           </CardHeader>
         </div>
-        <DataTable
-          rows={tableRows}
-          headers={tableReferralHeaders}
-          useZebraStyles
-        >
-          {({
-            rows,
-            headers,
-            getHeaderProps,
-            getTableProps,
-            getRowProps,
-            onInputChange,
-          }) => (
+        <DataTable rows={tableRows} headers={tableReferralHeaders} useZebraStyles>
+          {({ rows, headers, getHeaderProps, getTableProps, getRowProps, onInputChange }) => (
             <TableContainer className={styles.tableContainer}>
               <TableToolbar
                 style={{
-                  position: "static",
-                  height: "3rem",
-                  overflow: "visible",
-                  backgroundColor: "color",
-                }}
-              >
+                  position: 'static',
+                  height: '3rem',
+                  overflow: 'visible',
+                  backgroundColor: 'color',
+                }}>
                 <TableToolbarContent>
                   <div
                     style={{
-                      fontSize: "10px",
-                      margin: "5px",
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                    }}
-                  >
+                      fontSize: '10px',
+                      margin: '5px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}>
                     Key:
                     <Tag
                       size="sm"
                       style={{
-                        background: "#6F6F6F",
-                        color: "white",
+                        background: '#6F6F6F',
+                        color: 'white',
                       }}
                       title="Result Requested"
-                      renderIcon={() => <SendAlt />}
-                    >
-                      {"Requested"}
+                      renderIcon={() => <SendAlt />}>
+                      {'Requested'}
                     </Tag>
                     <Tag
                       size="sm"
                       style={{
-                        background: "green",
-                        color: "white",
+                        background: 'green',
+                        color: 'white',
                       }}
                       title="Result Complete"
-                      renderIcon={() => <Checkmark />}
-                    >
-                      {"Completed"}
+                      renderIcon={() => <Checkmark />}>
+                      {'Completed'}
                     </Tag>
                     <Tag
                       size="sm"
                       style={{
-                        background: "red",
-                        color: "white",
+                        background: 'red',
+                        color: 'white',
                       }}
                       title="Result Rejected"
-                      renderIcon={() => <NotSent />}
-                    >
-                      {"Rejected"}
+                      renderIcon={() => <NotSent />}>
+                      {'Rejected'}
                     </Tag>
                   </div>
                   <Layer>
@@ -401,23 +321,18 @@ const LaboratoryOrderReferalResults: React.FC<
                       expanded={true}
                       value={searchTerm}
                       onChange={handleChange}
-                      placeholder={t("searchThisList", "Search this list")}
+                      placeholder={t('searchThisList', 'Search this list')}
                       size="sm"
                     />
                   </Layer>
                 </TableToolbarContent>
               </TableToolbar>
-              <Table
-                {...getTableProps()}
-                className={styles.activePatientsTable}
-              >
+              <Table {...getTableProps()} className={styles.activePatientsTable}>
                 <TableHead>
                   <TableRow>
                     <TableExpandHeader />
                     {headers.map((header) => (
-                      <TableHeader {...getHeaderProps({ header })}>
-                        {header.header}
-                      </TableHeader>
+                      <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
                     ))}
                   </TableRow>
                 </TableHead>
@@ -427,28 +342,17 @@ const LaboratoryOrderReferalResults: React.FC<
                       <React.Fragment key={row.id}>
                         <TableExpandRow {...getRowProps({ row })}>
                           {row.cells.map((cell) => (
-                            <TableCell key={cell.id}>
-                              {cell.value?.content ?? cell.value}
-                            </TableCell>
+                            <TableCell key={cell.id}>{cell.value?.content ?? cell.value}</TableCell>
                           ))}
                         </TableExpandRow>
                         {row.isExpanded ? (
-                          <TableExpandedRow
-                            className={styles.expandedActiveVisitRow}
-                            colSpan={headers.length + 2}
-                          >
-                            {sortedLabRequests[index]?.obs !== null &&
-                              sortedLabRequests[index]?.obs.length > 0 && (
-                                <TestsResults
-                                  obs={sortedLabRequests[index]?.obs}
-                                />
-                              )}{" "}
+                          <TableExpandedRow className={styles.expandedActiveVisitRow} colSpan={headers.length + 2}>
+                            {sortedLabRequests[index]?.obs !== null && sortedLabRequests[index]?.obs.length > 0 && (
+                              <TestsResults obs={sortedLabRequests[index]?.obs} />
+                            )}{' '}
                           </TableExpandedRow>
                         ) : (
-                          <TableExpandedRow
-                            className={styles.hiddenRow}
-                            colSpan={headers.length + 2}
-                          />
+                          <TableExpandedRow className={styles.hiddenRow} colSpan={headers.length + 2} />
                         )}
                       </React.Fragment>
                     );
@@ -459,12 +363,7 @@ const LaboratoryOrderReferalResults: React.FC<
                 <div className={styles.tileContainer}>
                   <Tile className={styles.tile}>
                     <div className={styles.tileContent}>
-                      <p className={styles.content}>
-                        {t(
-                          "noTestOrdersToDisplay",
-                          "No test orders to display"
-                        )}
-                      </p>
+                      <p className={styles.content}>{t('noTestOrdersToDisplay', 'No test orders to display')}</p>
                     </div>
                   </Tile>
                 </div>

@@ -1,12 +1,7 @@
-import {
-  FetchResponse,
-  openmrsFetch,
-  restBaseUrl,
-  useConfig,
-} from "@openmrs/esm-framework";
-import { useMemo } from "react";
-import useSWR from "swr";
-import useSWRImmutable from "swr/immutable";
+import { type FetchResponse, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { useMemo } from 'react';
+import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 
 export interface QueueRoomsResponse {
   uuid: string;
@@ -91,10 +86,7 @@ export function useReferralLocations() {
   const config = useConfig();
   const { laboratoryReferalDestinationUuid } = config;
   const apiUrl = `${restBaseUrl}/concept/${laboratoryReferalDestinationUuid}`;
-  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(apiUrl, openmrsFetch);
 
   return {
     referrals: data ? data?.data?.answers : [],
@@ -108,10 +100,7 @@ export function useSpecimenTypes() {
   const { laboratorySpecimenTypeConcept } = config;
 
   const apiUrl = `${restBaseUrl}/concept/${laboratorySpecimenTypeConcept}`;
-  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, error, isLoading } = useSWRImmutable<FetchResponse>(apiUrl, openmrsFetch);
 
   let specimenTypes = [];
   if (data) {
@@ -132,9 +121,9 @@ export function useSpecimenTypes() {
 export async function GenerateSpecimenId(uuid: string) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/generatesampleId?uuid=${uuid}`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
   });
@@ -144,9 +133,9 @@ export async function GenerateSpecimenId(uuid: string) {
 export async function UpdateOrder(uuid: string, body: any) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/order/${uuid}/fulfillerdetails`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: body,
@@ -157,7 +146,7 @@ export async function GetOrderByUuid(uuid: string) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/order/${uuid}`, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
   });

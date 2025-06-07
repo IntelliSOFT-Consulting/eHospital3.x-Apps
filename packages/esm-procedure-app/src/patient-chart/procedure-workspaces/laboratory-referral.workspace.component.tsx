@@ -1,11 +1,6 @@
-import React from "react";
-
-import { DefaultPatientWorkspaceProps } from "@openmrs/esm-patient-common-lib";
-
-export const LaboratoryWorkspace: React.FC<DefaultPatientWorkspaceProps> = ({
-  closeWorkspace,
-  promptBeforeClosing,
-}) => {
+import React from 'react';
+import { type DefaultWorkspaceProps } from '@openmrs/esm-framework';
+export const LaboratoryWorkspace: React.FC<DefaultWorkspaceProps> = ({ closeWorkspace, promptBeforeClosing }) => {
   return (
     <>
       <span>Coming Soon...</span>

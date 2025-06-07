@@ -1,14 +1,9 @@
-import { openmrsFetch, restBaseUrl } from "@openmrs/esm-framework";
-import { ObsMetaInfo } from "@openmrs/esm-patient-common-lib";
+import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import { type ObsMetaInfo } from '@openmrs/esm-patient-common-lib';
 
-import useSWR from "swr";
+import useSWR from 'swr';
 
-export type ObservationInterpretation =
-  | "critically_low"
-  | "critically_high"
-  | "high"
-  | "low"
-  | "normal";
+export type ObservationInterpretation = 'critically_low' | 'critically_high' | 'high' | 'low' | 'normal';
 
 export interface ConceptResponse {
   uuid: string;
@@ -137,35 +132,29 @@ export interface ChangedBy {
   links: Link[];
 }
 
-export function assessValue(
-  value: number,
-  range: ObsMetaInfo
-): ObservationInterpretation {
+export function assessValue(value: number, range: ObsMetaInfo): ObservationInterpretation {
   if (range?.hiCritical && value >= range.hiCritical) {
-    return "critically_high";
+    return 'critically_high';
   }
 
   if (range?.hiNormal && value > range.hiNormal) {
-    return "high";
+    return 'high';
   }
 
   if (range?.lowCritical && value <= range.lowCritical) {
-    return "critically_low";
+    return 'critically_low';
   }
 
   if (range?.lowNormal && value < range.lowNormal) {
-    return "low";
+    return 'low';
   }
 
-  return "normal";
+  return 'normal';
 }
 
 export function useGetConceptById(conceptUuid: string) {
   const apiUrl = `${restBaseUrl}/concept/${conceptUuid}?v=full`;
-  const { data, error, isLoading } = useSWR<{ data: ConceptResponse }, Error>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, error, isLoading } = useSWR<{ data: ConceptResponse }, Error>(apiUrl, openmrsFetch);
   return {
     concept: data?.data,
     isLoading,
@@ -178,7 +167,7 @@ export async function GetPatientByUuid(uuid: string) {
 
   return openmrsFetch(`${restBaseUrl}/patient/${uuid}`, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
   });
