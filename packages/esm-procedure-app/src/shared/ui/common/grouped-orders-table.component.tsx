@@ -24,12 +24,15 @@ import styles from './grouped-orders-table.scss';
 import { type GroupedOrdersTableProps } from './grouped-procedure-types';
 import ListOrderDetails from './list-order-details.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
+import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
+import { Button } from '@carbon/react';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
   const { t } = useTranslation();
   const [currentPageSize] = useState<number>(10);
   const [searchString, setSearchString] = useState<string>('');
+  const patientUuid = getPatientUuidFromStore(); 
 
   function groupOrdersById(orders) {
     if (orders && orders.length > 0) {
@@ -65,8 +68,17 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           : patient?.orders[0]?.patient?.person?.gender === 'F'
           ? t('female', 'Female')
           : patient?.orders[0]?.patient?.person?.gender,
+      patientUuid: patient?.orders[0]?.patient?.person?.uuid,
       orders: patient.orders,
       totalOrders: patient.orders?.length,
+      paymentStatus: (
+        <Button
+          href={`/openmrs/spa/patient/${patient.orders[0].patient?.person?.uuid}/chart`}
+          className={styles.viewChartButton}
+          rel="noopener noreferrer">
+          {t('checkPayment', 'Check Payment Status')}
+        </Button>
+      ),
       fulfillerStatus: patient.orders[0].fulfillerStatus,
       action:
         patient.orders[0].fulfillerStatus === 'COMPLETED' ? (
@@ -81,6 +93,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
       { key: 'patientAge', header: t('age', 'Age') },
       { key: 'patientGender', header: t('sex', 'Sex') },
       { key: 'totalOrders', header: t('totalOrders', 'Total Orders') },
+      { key: 'paymentStatus', header: t('paymentStatus', 'Payment Status') },
     ];
 
     const showActionColumn = workListEntries.some((order) => order.fulfillerStatus === 'COMPLETED');
