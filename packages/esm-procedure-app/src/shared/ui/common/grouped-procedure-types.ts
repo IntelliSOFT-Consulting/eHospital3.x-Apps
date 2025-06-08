@@ -31,6 +31,7 @@ export interface GroupedOrdersTableProps {
   showOrderType: boolean;
   actions: Array<OrderAction>;
   title: string;
+  bills: any[];
 }
 
 export interface ListOrdersDetailsProps {
