@@ -8,6 +8,7 @@ import { type Result } from '../../../../types';
 import { launchOverlay } from '../../../../components/overlay/hook';
 import PostProcedureForm from '../../../../form/post-procedures/post-procedure-form.component';
 import styles from './action-button.scss';
+import ActionButtonBase from './action-button-base';
 
 type ActionButtonProps = {
   action: {
@@ -26,9 +27,24 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
       order,
     });
   };
+
+  const showDialog = (actionName: string) => () => {
+    const dispose = showModal(actionName, {
+      closeModal: () => dispose(),
+      order,
+    });
+  };
+
   switch (action.actionName) {
     case 'add-procedure-to-worklist-dialog':
-      return <OrderActionExtension order={order as unknown as Order} />;
+      return (
+        <ActionButtonBase
+          actionName={action.actionName}
+          onClick={showDialog(action.actionName)}
+          kind="primary"
+          className={styles.actionButtons}
+        />
+      );
 
     case 'postProcedureResultForm':
       return (
@@ -39,25 +55,12 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
 
     case 'reject-procedure-order-dialog':
       return (
-        <Button
-          kind={action.actionName === 'reject-procedure-order-dialog' ? 'danger' : 'tertiary'}
-          onClick={() => {
-            const dispose = showModal(action.actionName, {
-              closeModal: () => dispose(),
-              order: order,
-            });
-          }}
-          size="md"
-          className={styles.actionButtons}>
-          {t(
-            action.actionName.replace(/-/g, ''),
-            action.actionName
-              .split('-')
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' ')
-              .replace('Modal', ''),
-          )}
-        </Button>
+        <ActionButtonBase
+          actionName={action.actionName}
+          onClick={showDialog(action.actionName)}
+          kind="danger"
+          className={styles.actionButtons}
+        />
       );
 
     default:
