@@ -30,7 +30,7 @@ import { useBills } from '../../../hooks/useBilling';
 import PaymentStatusModal from './modal/payment-modal.component';
 import dayjs from 'dayjs';
 
-const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props, openmrsSpaBase) => {
+const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
   const { t } = useTranslation();
   const [currentPageSize] = useState<number>(10);
