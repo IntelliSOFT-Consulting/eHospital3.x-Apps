@@ -1,0 +1,83 @@
+@use '@carbon/colors';
+@use '@carbon/layout';
+@use '@carbon/type';
+
+.unpaidProcedureRow {
+  margin-bottom: 2rem; 
+}
+
+.orderHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 40%;
+  padding: 0;
+  margin-bottom: layout.$spacing-01;
+}
+
+.orderNumber {
+  font-size: type.type-scale(2);
+}
+
+.orderDate {
+  text-align: right;
+  font-size: type.type-scale(2);
+}
+
+.orderName {
+  font-weight: bold;
+  font-size: type.type-scale(2);
+}
+
+.paymentTable {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 12px 16px;
+    text-align: left;
+  }
+
+  thead th {
+    background-color: #f4f4f4;
+    border-bottom: 2px solid #dcdcdc;
+    font-weight: 600;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #e0e0e0; 
+  }
+
+  tbody tr:last-child {
+    border-bottom: none; 
+  }
+}
+
+.dataTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+
+  & > section {
+    position: relative;
+    margin-bottom: layout.$spacing-01;
+  }
+}
+
+.widgetCard {
+  background-color: colors.$white;
+  border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+  margin-top: layout.$spacing-05;
+}
+
+.elementContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: layout.$spacing-03;
+}
+

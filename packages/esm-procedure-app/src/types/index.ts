@@ -659,3 +659,96 @@ export interface SpecimenSource {
   display: string;
   links: Link[];
 }
+
+export interface MappedBill {
+  uuid: string;
+  id: number;
+  patientUuid: string;
+  patientName: string;
+  cashPointUuid: string;
+  cashPointName: string;
+  cashier: Provider;
+  receiptNumber: string;
+  status: string;
+  identifier: string;
+  dateCreated: string;
+  dateCreatedUnformatted: string;
+  lineItems: Array<LineItem>;
+  billingService: string;
+  payments: Array<Payment>;
+  totalAmount?: number;
+  tenderedAmount?: number;
+  display?: string;
+}
+
+interface CashPoint {
+  uuid: string;
+  name: string;
+  description: string;
+  retired: boolean;
+  location: Location;
+}
+
+export interface LineItem {
+  uuid: string;
+  display: string;
+  voided: boolean;
+  voidReason: string | null;
+  item: string;
+  billableService: string;
+  quantity: number;
+  price: number;
+  priceName: string;
+  priceUuid: string;
+  lineItemOrder: number;
+  resourceVersion: string;
+  serviceTypeUuid: string;
+  paymentStatus: string;
+}
+
+interface PaymentInstanceType {
+  uuid: string;
+  name: string;
+  description: string;
+  retired: boolean;
+}
+
+export interface Payment {
+  uuid: string;
+  instanceType: PaymentInstanceType;
+  attributes: Attribute[];
+  amount: number;
+  amountTendered: number;
+  dateCreated: number;
+  voided: boolean;
+  resourceVersion: string;
+}
+export interface PatientInvoice {
+  uuid: string;
+  display: string;
+  voided: boolean;
+  voidReason: string | null;
+  adjustedBy: any[];
+  billAdjusted: any;
+  cashPoint: CashPoint;
+  cashier: Provider;
+  dateCreated: string;
+  lineItems: LineItem[];
+  patient: Patient;
+  payments: Payment[];
+  receiptNumber: string;
+  status: string;
+  adjustmentReason: any;
+  id: number;
+  resourceVersion: string;
+}
+
+export enum PaymentStatus {
+  POSTED = 'POSTED',
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CREDITED = 'CREDITED',
+  CANCELLED = 'CANCELLED',
+  ADJUSTED = 'ADJUSTED',
+  EXEMPTED = 'EXEMPTED',
+}
