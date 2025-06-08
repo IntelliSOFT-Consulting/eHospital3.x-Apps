@@ -26,6 +26,9 @@ import ListOrderDetails from './list-order-details.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
 import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
 import { Button } from '@carbon/react';
+import { useBills } from '../../../hooks/useBilling';
+import PaymentStatusModal from './modal/payment-modal.component';
+import dayjs from 'dayjs';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
@@ -33,6 +36,17 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const [currentPageSize] = useState<number>(10);
   const [searchString, setSearchString] = useState<string>('');
   const patientUuid = getPatientUuidFromStore(); 
+  const [selectedOrders, setSelectedOrders] = useState([]);
+  const [selectedPatientUuid, setSelectedPatientUuid] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const { bills } = useBills(selectedPatientUuid, '', dayjs().subtract(1, 'year').toDate(), dayjs().toDate());
+
+  const handleCheckPayment = (orders: any[], patientUuid: string) => {
+    setSelectedOrders(orders);
+    setSelectedPatientUuid(patientUuid);
+    setModalOpen(true);
+  };
 
   function groupOrdersById(orders) {
     if (orders && orders.length > 0) {
@@ -73,9 +87,10 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
       totalOrders: patient.orders?.length,
       paymentStatus: (
         <Button
-          href={`/openmrs/spa/patient/${patient.orders[0].patient?.person?.uuid}/chart`}
+        onClick={() => handleCheckPayment(patient.orders, patient.patientId)}
           className={styles.viewChartButton}
-          rel="noopener noreferrer">
+          kind="ghost"
+          size="sm">
           {t('checkPayment', 'Check Payment Status')}
         </Button>
       ),
@@ -182,6 +197,10 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           </TableContainer>
         )}
       </DataTable>
+      <PaymentStatusModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        orders={selectedOrders}   />
     </>
   );
 };

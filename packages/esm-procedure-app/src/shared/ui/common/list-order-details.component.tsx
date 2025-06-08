@@ -11,7 +11,7 @@ import {
   TextArea,
 } from '@carbon/react';
 import { Printer } from '@carbon/react/icons';
-import { formatDate, parseDate, showModal } from '@openmrs/esm-framework';
+import { formatDate, parseDate, showModal, navigate } from '@openmrs/esm-framework';
 import capitalize from 'lodash-es/capitalize';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,10 +19,15 @@ import ActionButton from './action-button/action-button.component';
 import { type ListOrdersDetailsProps } from './grouped-procedure-types';
 import usePatientDiagnosis from './list-order-details.resource';
 import styles from './list-order-details.scss';
+import { useBills } from '../../../hooks/useBilling';
+import OrderActions from './action-button/order-action';
 
 const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, showActions, actions }) => {
   const orders = groupedOrders?.orders;
+  const patientUuid = orders?.[0]?.patient?.uuid;
   const { t } = useTranslation();
+  const openmrsSpaBase = window['getOpenmrsSpaBase']();
+  const { bills } = useBills(patientUuid, 'PENDING');
   const orderRows = useMemo(() => {
     return orders
       ?.filter((item) => item.action === 'NEW')
@@ -151,14 +156,14 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
           {showActions && (
             <div className={styles.buttonSection}>
               <div className={styles.actionBtns}>
-                {actions.map((action) => (
-                  <ActionButton
-                    key={action.actionName}
-                    order={orders.find((order) => order.uuid === row.id)}
-                    patientUuid={row.patient.uuid}
-                    action={action}
-                  />
-                ))}
+                <OrderActions
+                  row={row}
+                  orders={orders}
+                  actions={actions}
+                  openmrsSpaBase={openmrsSpaBase}
+                  t={t}
+                  bills={bills}
+                />
               </div>
             </div>
           )}
