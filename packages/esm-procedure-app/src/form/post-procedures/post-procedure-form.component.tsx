@@ -33,7 +33,6 @@ import { type CodedProvider, type CodedCondition, ProcedurePayload, type Result 
 import dayjs from 'dayjs';
 import { closeOverlay } from '../../components/overlay/hook';
 import { type ConfigObject, StringPath } from '../../config-schema';
-import { updateOrder } from '../../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource';
 import { mutate } from 'swr';
 
 const validationSchema = z.object({
@@ -104,14 +103,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
   const [showItems, setShowItems] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const handleParticipantSelect = useCallback((item: CodedProvider) => {
-    setSelectedProvider(item);
-  }, []);
-
-  const handleSelect = useCallback((item: CodedCondition) => {
-    setSelectedCondition(item);
-  }, []);
-
   const {
     procedureComplicationGroupingConceptUuid,
     procedureComplicationConceptUuid,
@@ -124,7 +115,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
     formState: { errors, isSubmitting, isDirty },
     handleSubmit,
   } = useForm<PostProcedureFormSchema>({
-    defaultValues: {},
+    defaultValues: {
+      startDatetime: new Date(),
+      endDatetime: new Date(),
+      outcome: '',
+      procedureReport: '',
+    },
     resolver: zodResolver(validationSchema),
   });
 
@@ -140,7 +136,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
     if (!data.startDatetime || !data.endDatetime) {
-      // Handle the error case when dates are invalid or missing
       showSnackbar({
         title: t('error', 'Error'),
         subtitle: t('invalidDates', 'Invalid or missing dates'),
@@ -241,7 +236,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
                 onChange={(event) => {
                   field.onChange(event[0]);
                 }}
-                value={field.value}>
+                value={field.value}> 
                 <DatePickerInput
                   placeholder="mm/dd/yyyy"
                   labelText={t('startDatetime', 'Start Datetime')}
@@ -324,140 +319,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
             )}
           />
         </Layer>
-        <Layer>
-          <FormLabel className={styles.formLabel}>{t('participants', 'Participants')}</FormLabel>
-          <div>
-            {selectedParticipants?.map((item) => (
-              <>
-                <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <span style={{ marginRight: '8px' }}>{item.display}</span>
-                  <svg
-                    focusable="false"
-                    fill="currentColor"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 32 32"
-                    aria-hidden="true"
-                    onClick={() => setSelectedParticipants((prevItems) => prevItems.filter((i) => i !== item))}>
-                    <path d={StringPath}></path>
-                  </svg>
-                </Tag>
-              </>
-            ))}
-          </div>
-          <div>
-            <Search
-              autoFocus
-              size="md"
-              id="participantsSearch"
-              placeholder={t('participants', 'Participants')}
-              labelText={t('enterParticipant', 'Enter Participant')}
-              onChange={handleParticipantSearchInputChange}
-              onClear={() => setProviderSearchTerm('')}
-            />
-            {providerSearchResults?.length === 0 ? (
-              <div className={styles.filterEmptyState}>
-                <Layer level={0}>
-                  <Tile className={styles.filterEmptyStateTile}>
-                    <span className={styles.filterEmptyStateContent}>
-                      <strong>{debouncedProviderSearchTerm}</strong>
-                    </span>
-                  </Tile>
-                </Layer>
-              </div>
-            ) : (
-              showParticipants && (
-                <ul className={styles.participantsList}>
-                  {providerSearchResults.map((item) => (
-                    <li
-                      key={item?.uuid}
-                      role="menuitem"
-                      tabIndex={0}
-                      className={styles.participantService}
-                      onClick={() => {
-                        handleParticipantSelect(item);
-                        setSelectedParticipants((prevItems) => [...prevItems, item]);
-                        setShowParticipants(false);
-                      }}>
-                      {item.display}
-                    </li>
-                  ))}
-                </ul>
-              )
-            )}
-            {isProviderSearching && <InlineLoading description="Loading participants..." />}
-          </div>
-        </Layer>
-        <Layer>
-          <FormLabel className={styles.formLabel}>{t('complications', 'Complications')}</FormLabel>
-          <div>
-            {selectedItems?.map((item) => (
-              <>
-                <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
-                  <span style={{ marginRight: '8px' }}>{item.display}</span>
-                  <svg
-                    focusable="false"
-                    fill="currentColor"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 32 32"
-                    aria-hidden="true"
-                    onClick={() => setSelectedItems((prevItems) => prevItems.filter((i) => i !== item))}>
-                    <path d={StringPath}></path>
-                  </svg>
-                </Tag>
-              </>
-            ))}
-          </div>
-          <div>
-            <Search
-              autoFocus
-              size="md"
-              id="conditionsSearch"
-              placeholder={t('complications', 'complications')}
-              labelText={t('enterCondition', 'Enter condition')}
-              onChange={handleSearchInputChange}
-              onClear={() => setSearchTerm('')}
-            />
-            {searchResults?.length === 0 ? (
-              <div className={styles.filterEmptyState}>
-                <Layer level={0}>
-                  <Tile className={styles.filterEmptyStateTile}>
-                    <span className={styles.filterEmptyStateContent}>
-                      <strong>{debouncedSearchTerm}</strong>
-                    </span>
-                  </Tile>
-                </Layer>
-              </div>
-            ) : (
-              showItems && (
-                <ul className={styles.complicationsList}>
-                  {searchResults.map((item) => (
-                    <li
-                      key={item?.concept?.uuid}
-                      role="menuitem"
-                      tabIndex={0}
-                      className={styles.complicationService}
-                      onClick={() => {
-                        handleSelect(item);
-                        setSelectedItems((prevItems) => [...prevItems, item]);
-                        setShowItems(false);
-                      }}>
-                      {item.display}
-                    </li>
-                  ))}
-                </ul>
-              )
-            )}
-            {isSearching && <InlineLoading description="Loading complications..." />}
-          </div>
-        </Layer>
       </Stack>
       <ButtonSet className={styles.buttonSetContainer}>
         <Button onClick={closeWorkspace} size="md" kind="secondary">
           {t('discard', 'Discard')}
         </Button>
-        <Button type="submit" size="md" kind="primary">
+        <Button type="submit" size="md" kind="primary" disabled={isSubmitting}>
           {t('saveAndClose', 'Save & Close')}
         </Button>
       </ButtonSet>
