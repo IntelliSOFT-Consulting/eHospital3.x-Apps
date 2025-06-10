@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -20,46 +20,67 @@ import { ComposedModal } from '@carbon/react';
 import { Heading } from '@carbon/react';
 import { BillingConfig } from '../config-schema';
 import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
+import dayjs from 'dayjs';
 
 type RequirePaymentModalProps = {
-  closeModal: () => void;
-  patientUuid: string;
+  closeModal?: () => void;
 };
 
 const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const { t } = useTranslation();
   const { defaultCurrency } = useConfig();
-  const patientUuid = getPatientUuidFromStore(); 
-  const { bills, isLoading, error } = useBills(patientUuid);
+  const patientUuid = getPatientUuidFromStore();
+
+  const startDate = useMemo(() => dayjs().subtract(1, 'year').toDate(), []);
+  const today = useMemo(() => dayjs().toDate(), []);
+
+  const { bills, isLoading, error } = useBills(
+    patientUuid,
+    '',
+    startDate,
+    today,
+  );
+
   const [showModal, setShowModal] = useState({ loadingModal: true, billingModal: false });
   const { enforceBillPayment } = useConfig<BillingConfig>();
   const openmrsSpaBase = window['getOpenmrsSpaBase']();
 
-  const unpaidBills = bills.filter((bill) => bill.status !== 'PAID');
+  // Filter bills to only include unpaid ones and non-exempted line items
+  // Note: `bills` from `useBills` already apply `mapBillProperties` which simplifies things.
+  // The `bill.status !== 'PAID'` check should be enough for filtering
+  const unpaidBills = useMemo(() => {
+    return bills.filter((bill) => bill.status !== 'PAID');
+  }, [bills]);
+
   const unpaidBillUuid = unpaidBills.length > 0 ? unpaidBills[0].uuid : null;
 
   const closeButtonText = enforceBillPayment
     ? t('navigateBack', 'Proceed to Payment')
     : t('proceedToCare', 'Proceed to care');
 
-    const handleProceedToPay = () => {
+  const handleProceedToPay = () => {
+    if (unpaidBillUuid) {
       navigate({ to: `${openmrsSpaBase}billing/patient/${patientUuid}/${unpaidBillUuid}` });
-    };
+    } else {
+      navigate({ to: `${openmrsSpaBase}/home` });
+    }
+  };
 
-    const lineItems = bills
-    .filter((bill) => bill.status !== 'PAID')
-    .flatMap((bill) => bill.lineItems)
-    .filter((lineItem) => lineItem.paymentStatus !== 'EXEMPTED' && !lineItem.voided);
+  const lineItems = useMemo(() => {
+    return unpaidBills
+      .flatMap((bill) => bill.lineItems)
+      .filter((lineItem) => lineItem.paymentStatus !== 'EXEMPTED' && !lineItem.voided);
+  }, [unpaidBills]);
 
-    useEffect(() => {
-      if (!isLoading) {
-        if (lineItems.length > 0) {
-          setShowModal({ loadingModal: false, billingModal: true });
-        } else {
-          setShowModal({ loadingModal: false, billingModal: false });
-        }
+  useEffect(() => {
+    if (!isLoading) {
+      if (lineItems.length > 0) {
+        setShowModal({ loadingModal: false, billingModal: true });
+      } else {
+        setShowModal({ loadingModal: false, billingModal: false });
       }
-    }, [isLoading, lineItems]);
+    }
+  }, [isLoading, lineItems]);
 
   return (
     <ComposedModal preventCloseOnClickOutside open={showModal.billingModal}>
@@ -88,9 +109,9 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
               </StructuredListRow>
             </StructuredListHead>
             <StructuredListBody>
-              {lineItems.map((lineItem) => {
+              {lineItems.map((lineItem, index) => {
                 return (
-                  <StructuredListRow>
+                  <StructuredListRow key={lineItem.uuid || index}>
                     <StructuredListCell>{(lineItem.billableService)}</StructuredListCell>
                     <StructuredListCell>{lineItem.quantity}</StructuredListCell>
                     <StructuredListCell>{convertToCurrency(lineItem.price, defaultCurrency)}</StructuredListCell>
@@ -114,7 +135,7 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
         <Button kind="secondary" onClick={() => navigate({ to: `\${openmrsSpaBase}/home` })}>
           {t('cancel', 'Cancel')}
         </Button>
-        <Button kind="danger" onClick={handleProceedToPay}>
+        <Button kind="danger" onClick={handleProceedToPay} disabled={!unpaidBillUuid && enforceBillPayment}>
           {closeButtonText}
         </Button>
       </ModalFooter>

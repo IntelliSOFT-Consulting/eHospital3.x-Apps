@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Button,
@@ -31,6 +31,7 @@ import InvoiceTable from '../invoice/invoice-table.component';
 import styles from './bill-history.scss';
 import { Add } from '@carbon/react/icons';
 import { convertToCurrency } from '../helpers';
+import dayjs from 'dayjs';
 
 interface BillHistoryProps {
   patientUuid: string;
@@ -38,12 +39,17 @@ interface BillHistoryProps {
 
 const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { bills, isLoading, error } = useBills(patientUuid);
+
+  const startDate = useMemo(() => dayjs().subtract(1, 'year').toDate(), []);
+  const today = useMemo(() => dayjs().toDate(), []);
+
+  const { bills, isLoading, error } = useBills(patientUuid, '', startDate, today);
+
   const layout = useLayoutType();
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
   const { paginated, goTo, results, currentPage } = usePagination(bills);
   const { pageSize, defaultCurrency } = useConfig();
-  const [currentPageSize, setCurrentPageSize] = React.useState(pageSize);
+  const [currentPageSize, setCurrentPageSize] = useState(pageSize);
   const { pageSizes } = usePaginationInfo(pageSize, bills?.length, currentPage, results?.length);
 
   const headerData = [
@@ -69,18 +75,22 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
     }
   ];
 
-  const setBilledItems = (bill) =>
-    bill?.lineItems?.reduce((acc, item) => acc + (acc ? ' & ' : '') + (item?.billableService || item?.item || ''), '');
+  const setBilledItems = useCallback((bill) =>
+    bill?.lineItems?.reduce((acc, item) => acc + (acc ? ' & ' : '') + (item?.billableService || item?.item || ''), ''),
+    []
+  );
 
-  const rowData = results?.map((bill) => ({
-    id: bill.uuid,
-    uuid: bill.uuid,
-    billTotal: convertToCurrency(bill?.totalAmount, defaultCurrency),
-    visitTime: bill.dateCreated,
-    identifier: bill.identifier,
-    billedItems: setBilledItems(bill),
-    status: bill.status
-  }));
+  const rowData = useMemo(() => {
+    return results?.map((bill) => ({
+      id: bill.uuid,
+      uuid: bill.uuid,
+      billTotal: convertToCurrency(bill?.totalAmount, defaultCurrency),
+      visitTime: bill.dateCreated,
+      identifier: bill.identifier,
+      billedItems: setBilledItems(bill),
+      status: bill.status
+    }));
+  }, [results, defaultCurrency, setBilledItems, convertToCurrency]);
 
   if (isLoading) {
     return (
@@ -134,7 +144,7 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
             getHeaderProps,
             getRowProps,
           }) => (
-            <TableContainer {...getTableContainerProps}>
+            <TableContainer {...getTableContainerProps()}>
               <Table className={styles.table} {...getTableProps()} aria-label="Bill list">
                 <TableHead>
                   <TableRow>
@@ -166,11 +176,11 @@ const BillHistory: React.FC<BillHistoryProps> = ({ patientUuid }) => {
                         {row.isExpanded ? (
                           <TableExpandedRow className={styles.expandedRow} colSpan={headers.length + 1}>
                             <div className={styles.container} key={i}>
-                              <InvoiceTable bill={currentBill} isSelectable={false} />
+                              {currentBill && <InvoiceTable bill={currentBill} isSelectable={false} />}
                             </div>
                           </TableExpandedRow>
                         ) : (
-                          <TableExpandedRow className={styles.hiddenRow} colSpan={headers.length + 2} />
+                          <TableExpandedRow className={styles.hiddenRow} colSpan={headers.length + 1} />
                         )}
                       </React.Fragment>
                     );
