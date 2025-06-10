@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-procedure-app",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
   "browser": "dist/ehospital-esm-procedure-app.js",
