@@ -13,7 +13,7 @@ interface ObservationProps {
     heartRate?: number;
     temperature?: number;
     diagnosis?: string;
-    medication?: string[];
+    medications?: string[];
     tests?: { name: string; results?: { parameter: string; value: string }[] }[];
     condition?: string[];
   };
@@ -41,8 +41,8 @@ const Observation: React.FC<ObservationProps> = ({ obs }) => {
         </p>
         )}
 
-      {obs.medication?.length > 0 && (
-        <ObservationDetail label="Medications" value={obs.medication.join(', ')} />
+      {obs.medications?.length > 0 && (
+        <ObservationDetail label="Medications" value={obs.medications.join(', ')} />
       )}
 
       {obs.tests?.length > 0 && (
