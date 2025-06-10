@@ -15,7 +15,7 @@ import {
 import { usePagination } from '@openmrs/esm-framework';
 import { CardHeader } from '@openmrs/esm-patient-common-lib';
 import upperCase from 'lodash-es/upperCase';
-import { default as React, useMemo, useState } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '../../../empty-state/empty-state-component';
 import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults';
@@ -24,50 +24,42 @@ import styles from './grouped-orders-table.scss';
 import { type GroupedOrdersTableProps } from './grouped-procedure-types';
 import ListOrderDetails from './list-order-details.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
-import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
 import { Button } from '@carbon/react';
-import { useBills } from '../../../hooks/useBilling';
 import PaymentStatusModal from './modal/payment-modal.component';
-import dayjs from 'dayjs';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
   const { t } = useTranslation();
   const [currentPageSize] = useState<number>(10);
   const [searchString, setSearchString] = useState<string>('');
-  const patientUuid = getPatientUuidFromStore(); 
-  const [selectedOrders, setSelectedOrders] = useState([]);
-  const [selectedPatientUuid, setSelectedPatientUuid] = useState('');
+  const [selectedOrdersForModal, setSelectedOrdersForModal] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const { bills } = useBills(selectedPatientUuid, '', dayjs().subtract(1, 'year').toDate(), dayjs().toDate());
-
-  const handleCheckPayment = (orders: any[], patientUuid: string) => {
-    setSelectedOrders(orders);
-    setSelectedPatientUuid(patientUuid);
+  const handleCheckPayment = useCallback((orders: any[]) => {
+    setSelectedOrdersForModal(orders);
     setModalOpen(true);
-  };
+  }, []);
+
+  const groupedOrdersByPatient = useMemo(() => groupOrdersById(workListEntries), [workListEntries]);
 
   function groupOrdersById(orders) {
     if (orders && orders.length > 0) {
-      const groupedOrders = orders.reduce((acc, item) => {
+      const grouped = orders.reduce((acc, item) => {
         if (!acc[item.patient.uuid]) {
           acc[item.patient.uuid] = [];
         }
         acc[item.patient.uuid].push(item);
         return acc;
       }, {});
-
-      // Convert the result to an array of objects with patientId and orders
-      return Object.keys(groupedOrders).map((patientId) => ({
+      return Object.keys(grouped).map((patientId) => ({
         patientId: patientId,
-        orders: groupedOrders[patientId],
+        orders: grouped[patientId],
       }));
     } else {
       return [];
     }
   }
-  const groupedOrdersByPatient = groupOrdersById(workListEntries);
+
   const searchResults = useSearchGroupedResults(groupedOrdersByPatient, searchString);
   const { goTo, results: paginatedResults, currentPage } = usePagination(searchResults, currentPageSize);
 
@@ -87,7 +79,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
       totalOrders: patient.orders?.length,
       paymentStatus: (
         <Button
-        onClick={() => handleCheckPayment(patient.orders, patient.patientId)}
+          onClick={() => handleCheckPayment(patient.orders)}
           className={styles.viewChartButton}
           kind="ghost"
           size="sm">
@@ -100,7 +92,8 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           <TransitionLatestQueueEntryButton patientUuid={patient.patientId} />
         ) : null,
     }));
-  }, [paginatedResults, t]);
+  }, [paginatedResults, t, handleCheckPayment]);
+
 
   const tableColumns = useMemo(() => {
     const baseColumns = [
@@ -197,10 +190,12 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           </TableContainer>
         )}
       </DataTable>
+
       <PaymentStatusModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        orders={selectedOrders}   />
+        orders={selectedOrdersForModal}
+      />
     </>
   );
 };
