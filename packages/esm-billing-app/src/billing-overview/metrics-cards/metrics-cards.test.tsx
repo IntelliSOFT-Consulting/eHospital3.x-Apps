@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { billsSummary } from '../../__mocks__/bills.mock';
-import { useBills } from '../billing.resource';
+import { billsSummary } from '../../../__mocks__/bills.mock';
+import { useBills } from '../../billing.resource';
 import MetricsCards from './metrics-cards.component';
 import { useConfig } from '@openmrs/esm-framework';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import { useBills } from '../billing.resource';
+import { useBills } from '../../billing.resource';
 import BillsTable from './bills-table.component';
 
 jest.mock('react-i18next', () => ({

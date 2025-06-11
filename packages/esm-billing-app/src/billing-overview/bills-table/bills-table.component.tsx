@@ -27,20 +27,22 @@ import {
   ConfigurableLink,
 } from '@openmrs/esm-framework';
 import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
-import { useBills } from '../billing.resource';
+import { useBills } from '../../billing.resource';
 import styles from './bills-table.scss';
+import { BillsDateRangePicker } from '../bills-date-range';
 
-const BillsTable = () => {
+const BillsTable = ({ dates, onDateChange }) => {
   const { t } = useTranslation();
   const id = useId();
   const config = useConfig();
   const layout = useLayoutType();
   const responsiveSize = isDesktop(layout) ? 'sm' : 'lg';
-  const [billPaymentStatus, setBillPaymentStatus] = useState('PENDING');
+  const [billPaymentStatus, setBillPaymentStatus] = useState('');
   const pageSizes = config?.bills?.pageSizes ?? [10, 20, 30, 40, 50];
   const [pageSize, setPageSize] = useState(config?.bills?.pageSize ?? 10);
-  const { bills, isLoading, isValidating, error } = useBills('', '');
   const [searchString, setSearchString] = useState('');
+
+  const { bills, isLoading, isValidating, error } = useBills('', '', dates[0], dates[1]);
 
   const headerData = [
     {
@@ -65,8 +67,8 @@ const BillsTable = () => {
     },
     {
       header: t('billStatus', 'Status'),
-      key: 'status'
-    }
+      key: 'status',
+    },
   ];
 
   const searchResults = useMemo(() => {
@@ -117,7 +119,7 @@ const BillsTable = () => {
       department: '--',
       billedItems: setBilledItems(bill),
       billingPrice: bill.totalAmount,
-      status: bill.status
+      status: bill.status,
     };
   });
 
@@ -171,7 +173,7 @@ const BillsTable = () => {
           className={styles.filterDropdown}
           direction="bottom"
           id={`filter-${id}`}
-          initialSelectedItem={filterItems[1]}
+          initialSelectedItem={filterItems[0]}
           items={filterItems}
           itemToString={(item) => (item ? item.text : '')}
           label=""
@@ -180,6 +182,9 @@ const BillsTable = () => {
           titleText={t('filterBy', 'Filter by') + ':'}
           type="inline"
         />
+        <div>
+          <BillsDateRangePicker dates={dates} onChange={onDateChange} />
+        </div>
       </div>
 
       {bills?.length > 0 ? (

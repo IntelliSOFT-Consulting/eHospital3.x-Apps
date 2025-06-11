@@ -19,7 +19,7 @@ import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
 import { type MappedBill } from '../../types';
 import { convertToCurrency } from '../../helpers';
 import PatientBillsSelections from './bill-selection.component';
-import styles from '../../bills-table/bills-table.scss';
+import styles from '../../billing-overview/bills-table/bills-table.scss';
 import { useConfig } from '@openmrs/esm-framework';
 
 type PatientBillsProps = {

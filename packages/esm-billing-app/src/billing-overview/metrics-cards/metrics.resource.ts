@@ -1,5 +1,5 @@
-import { calculateTotalAmount, convertToCurrency } from '../helpers';
-import { type MappedBill } from '../types';
+import { calculateTotalAmount, convertToCurrency } from '../../helpers';
+import { type MappedBill } from '../../types';
 
 /**
  * A custom hook for calculating bill metrics.

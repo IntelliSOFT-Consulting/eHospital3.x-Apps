@@ -8,16 +8,15 @@ import {
   restBaseUrl,
   useConfig,
 } from '@openmrs/esm-framework';
-import type { FacilityDetail, MappedBill, PatientInvoice } from './types';
+import type { FacilityDetail, MappedBill, PatientInvoice, PaymentMethod, PaymentStatus } from './types';
 import isEmpty from 'lodash-es/isEmpty';
 import sortBy from 'lodash-es/sortBy';
 import { apiBasePath, omrsDateFormat } from './constants';
 import { useContext } from 'react';
 import SelectedDateContext from './hooks/selectedDateContext';
-import { PaymentMethod, PaymentStatus } from './types';
-import { BillingConfig } from './config-schema';
 import dayjs from 'dayjs';
 import { z } from 'zod';
+import type { BillingConfig } from './config-schema';
 
 export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
   // create base object
@@ -46,7 +45,7 @@ export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
 };
 
 export const useBills = (
-  patientUuid: string = '',
+  patientUuid: string,
   billStatus: PaymentStatus.PAID | '' | string = '',
   startingDate: Date = dayjs().startOf('day').toDate(),
   endDate: Date = dayjs().endOf('day').toDate(),
@@ -191,7 +190,7 @@ export const updateBillItems = (payload) => {
   });
 };
 
-export const usePaymentModes = (excludeWaiver: boolean = true) => {
+export const usePaymentModes = (excludeWaiver: boolean) => {
   const { excludedPaymentMode } = useConfig<BillingConfig>();
   const url = `${restBaseUrl}/billing/paymentMode?v=full`;
   const { data, isLoading, error, mutate } = useSWR<{ data: { results: Array<PaymentMethod> } }>(url, openmrsFetch, {
@@ -199,9 +198,8 @@ export const usePaymentModes = (excludeWaiver: boolean = true) => {
   });
   const allowedPaymentModes =
     excludedPaymentMode?.length > 0
-      ? (data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ??
-        [])
-      : (data?.data?.results ?? []);
+      ? data?.data?.results.filter((mode) => !excludedPaymentMode.some((excluded) => excluded.uuid === mode.uuid)) ?? []
+      : data?.data?.results ?? [];
   return {
     paymentModes: excludeWaiver ? allowedPaymentModes : data?.data?.results,
     isLoading,
