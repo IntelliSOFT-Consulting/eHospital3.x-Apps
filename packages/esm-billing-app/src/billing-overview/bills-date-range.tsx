@@ -11,11 +11,9 @@ interface BillsDateRangePickerProps {
 export const BillsDateRangePicker: React.FC<BillsDateRangePickerProps> = ({ dates, onChange }) => {
   const { t } = useTranslation();
 
-  const handleDateChange = (range: Array<Date>) => {
-    if (range.length === 2 && range[0] && range[1]) {
-      const selectedStart = dayjs(range[0]).startOf('day').toDate();
-      const selectedEnd = dayjs(range[1]).endOf('day').toDate();
-      onChange([selectedStart, selectedEnd]);
+  const handleDateChange = (range: Date[]) => {
+    if (range?.[0] && range?.[1]) {
+      onChange([dayjs(range[0]).startOf('day').toDate(), dayjs(range[1]).endOf('day').toDate()]);
     }
   };
 
@@ -23,17 +21,17 @@ export const BillsDateRangePicker: React.FC<BillsDateRangePickerProps> = ({ date
     <DatePicker
       maxDate={new Date()}
       datePickerType="range"
-      value={dates.map((date) => dayjs(date).format('MM/DD/YYYY'))}
+      value={dates.map((date) => dayjs(date).format('DD/MM/YYYY'))}
       onChange={handleDateChange}>
       <DatePickerInput
         id="date-picker-input-id-start"
-        placeholder="mm/dd/yyyy"
+        placeholder="dd/mm/yyyy"
         labelText={t('startDate', 'Start date')}
         size="md"
       />
       <DatePickerInput
         id="date-picker-input-id-finish"
-        placeholder="mm/dd/yyyy"
+        placeholder="dd/mm/yyyy"
         labelText={t('endDate', 'End date')}
         size="md"
       />
