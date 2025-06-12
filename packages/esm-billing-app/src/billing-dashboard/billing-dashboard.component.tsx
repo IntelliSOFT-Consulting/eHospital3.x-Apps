@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import BillingHeader from '../billing-header/billing-header.component';
-import MetricsCards from '../metrics-cards/metrics-cards.component';
-import BillsTable from '../bills-table/bills-table.component';
-import styles from './billing-dashboard.scss';
+import BillingOverviewDashboard from '../billing-overview/billing-overview-dashboard';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { omrsDateFormat } from '../constants';
@@ -24,14 +22,11 @@ export function BillingDashboard() {
 
   return (
     <>
-    <LeftPanel />
-    <SelectedDateContext.Provider value={{ selectedDate, setSelectedDate }}>
-      <BillingHeader title={t('home', 'Home')} />
-      <MetricsCards />
-      <section className={styles.billsTableContainer}>
-        <BillsTable />
-      </section>
-    </SelectedDateContext.Provider>
+      <LeftPanel />
+      <SelectedDateContext.Provider value={{ selectedDate, setSelectedDate }}>
+        <BillingHeader title={t('home', 'Home')} />
+        <BillingOverviewDashboard />
+      </SelectedDateContext.Provider>
     </>
   );
 }

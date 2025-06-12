@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './card.scss';
 import { useConfig } from '@openmrs/esm-framework';
-import { convertToCurrency } from '../helpers';
+import { convertToCurrency } from '../../helpers';
 
 export default function Card({ count, title }) {
   const { defaultCurrency } = useConfig();

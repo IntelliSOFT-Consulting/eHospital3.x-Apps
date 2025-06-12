@@ -26,6 +26,8 @@
 
 .filterContainer {
   flex: 1;
+  display: flex;
+  flex-direction: row;
 
   :global(.cds--dropdown__wrapper--inline) {
     gap: 0;

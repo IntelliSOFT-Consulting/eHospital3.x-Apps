@@ -22,6 +22,11 @@ export interface MappedBill {
   display?: string;
 }
 
+export type DateFilterContext = {
+  dateRange: Array<Date>;
+  setDateRange: React.Dispatch<React.SetStateAction<Array<Date>>>;
+};
+
 interface LocationLink {
   rel: string;
   uri: string;

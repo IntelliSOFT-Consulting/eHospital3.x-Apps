@@ -2,14 +2,15 @@ import React, { useMemo } from 'react';
 import { InlineLoading } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { ErrorState } from '@openmrs/esm-patient-common-lib';
-import { useBills } from '../billing.resource';
+import { useBills } from '../../billing.resource';
 import { useBillMetrics } from './metrics.resource';
 import Card from './card.component';
 import styles from './metrics-cards.scss';
+import dayjs from 'dayjs';
 
-export default function MetricsCards() {
+export default function MetricsCards({ startDate, endDate }) {
   const { t } = useTranslation();
-  const { bills, isLoading, error } = useBills('');
+  const { bills, isLoading, error } = useBills('', '', startDate, endDate);
   const { cumulativeBills, pendingBills, paidBills } = useBillMetrics(bills);
 
   const cards = useMemo(
