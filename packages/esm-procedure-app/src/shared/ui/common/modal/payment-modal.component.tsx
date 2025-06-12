@@ -68,13 +68,17 @@ const PaymentStatusModal = ({ open, onClose, orders }) => {
                         item?.paymentStatus === 'PENDING'
                     )
                 );
+                const matchingItem = matchingBill?.lineItems?.find(
+                  item => item?.billableService?.toLowerCase() === concept?.toLowerCase()
+                );
+                const paymentStatus = matchingItem?.paymentStatus;
 
                 return {
                     id: order.uuid || `${idx}`,
                     orderNumber: order?.orderNumber || '--',
                     orderDate: order?.dateActivated ? formatDate(parseDate(order.dateActivated)) : '--',
                     testOrdered: concept || '--',
-                    paymentStatus: matchingBill ? t('pending', 'Pending') : t('paid', 'Paid'),
+                    paymentStatus: paymentStatus,
                     matchingBill,
                     patientUuid: patientId,
                 };
