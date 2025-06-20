@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-billing-app",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/ehospital-esm-billing-app.js",
   "main": "src/index.ts",
@@ -44,5 +44,5 @@
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
-  "gitHead": "6f9f7823322dda3b3bffe6fd83db9ec92d61868f"
+  "gitHead": "b413abacd5688a564321b51aaa37232d5a114c54"
 }
