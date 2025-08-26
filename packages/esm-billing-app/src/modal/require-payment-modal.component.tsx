@@ -69,7 +69,7 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const lineItems = useMemo(() => {
     return unpaidBills
       .flatMap((bill) => bill.lineItems)
-      .filter((lineItem) => lineItem.paymentStatus !== 'EXEMPTED' && !lineItem.voided);
+      .filter((lineItem) => (lineItem.paymentStatus !== 'EXEMPTED' && lineItem.paymentStatus !== 'PAID') && !lineItem.voided);
   }, [unpaidBills]);
 
   useEffect(() => {

@@ -67,6 +67,7 @@ const BillingForm: React.FC<BillingFormProps> = ({ closeWorkspace }) => {
         timeoutInMs: 3000,
       });
       closeWorkspace();
+      window.location.reload();
     } catch (e) {
       showSnackbar({ title: 'Bill processing error', kind: 'error', subtitle: e });
     }
