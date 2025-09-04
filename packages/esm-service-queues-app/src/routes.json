@@ -80,6 +80,11 @@
       "slot": "add-queue-entry-slot"
     },
     {
+      "name": "visit-attributes-form",
+      "component": "visitAttributesForm",
+      "slot": "add-queue-entry-slot"
+    },
+    {
       "name": "transition-queue-entry-modal",
       "component": "transitionQueueEntryModal"
     },
