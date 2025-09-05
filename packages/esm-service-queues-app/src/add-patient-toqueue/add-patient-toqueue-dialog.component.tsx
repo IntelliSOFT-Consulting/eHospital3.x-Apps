@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Button,
   Form,
@@ -11,41 +11,68 @@ import {
   SelectItem,
   RadioButtonGroup,
   RadioButton,
-} from '@carbon/react';
-import { showSnackbar, useConfig } from '@openmrs/esm-framework';
-import { addQueueEntry } from '../active-visits/active-visits-table.resource';
-import styles from './add-patient-toqueue-dialog.scss';
-import { type ActiveVisit, useMissingQueueEntries } from '../visits-missing-inqueue/visits-missing-inqueue.resource';
-import { useQueueLocations } from '../patient-search/hooks/useQueueLocations';
-import { useQueues } from '../hooks/useQueues';
-import { useMutateQueueEntries } from '../hooks/useMutateQueueEntries';
-import { type ConfigObject } from '../config-schema';
-import { RadioButtonSkeleton } from '@carbon/react';
-import { SelectSkeleton } from '@carbon/react';
+  RadioButtonSkeleton,
+  SelectSkeleton,
+} from "@carbon/react";
+import { showSnackbar, useConfig, useSession } from "@openmrs/esm-framework";
+import {
+  addQueueEntry,
+  saveVisitEncounterObs,
+} from "../active-visits/active-visits-table.resource";
+import styles from "./add-patient-toqueue-dialog.scss";
+import { type ActiveVisit } from "../visits-missing-inqueue/visits-missing-inqueue.resource";
+import { useQueueLocations } from "../patient-search/hooks/useQueueLocations";
+import { useQueues } from "../hooks/useQueues";
+import { useMutateQueueEntries } from "../hooks/useMutateQueueEntries";
+import { type ConfigObject } from "../config-schema";
+import VisitAttributesForm from "../visit-attributes/visit-attributes-form.component";
 
 interface AddVisitToQueueDialogProps {
   visitDetails: ActiveVisit;
   closeModal: () => void;
+  setExtraVisitInfo: (state) => void;
 }
 
-const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, closeModal }) => {
+const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
+  visitDetails,
+  closeModal,
+}) => {
   const { t } = useTranslation();
 
+  const [attributes, setAttributes] = useState([]);
+  const [paymentMethod, setPaymentMethod] = useState<any>();
+
+  const [consent, setConsent] = useState("no");
+  const currentUserSession = useSession();
+  const providerUuid = currentUserSession?.currentProvider?.uuid;
+
   const visitUuid = visitDetails?.visitUuid;
-  const [queueUuid, setQueueUuid] = useState('');
+  const [queueUuid, setQueueUuid] = useState("");
   const patientUuid = visitDetails?.patientUuid;
   const patientName = visitDetails?.name;
   const patientAge = visitDetails?.age;
   const patientSex = visitDetails?.gender;
-  const [selectedQueueLocation, setSelectedQueueLocation] = useState('');
-  const { queues, isLoading: isLoadingQueues } = useQueues(selectedQueueLocation);
-  const { queueLocations, isLoading: isLoadingQueueLocations } = useQueueLocations();
+  const [selectedQueueLocation, setSelectedQueueLocation] = useState("");
+  const { queues, isLoading: isLoadingQueues } = useQueues(
+    selectedQueueLocation
+  );
+  const { queueLocations, isLoading: isLoadingQueueLocations } =
+    useQueueLocations();
   const [isMissingPriority, setIsMissingPriority] = useState(false);
   const [isMissingService, setIsMissingService] = useState(false);
   const config = useConfig<ConfigObject>();
   const { mutateQueueEntries } = useMutateQueueEntries();
-  const [priority, setPriority] = useState(config.concepts.defaultPriorityConceptUuid);
-  const priorities = queues.find((q) => q.uuid === queueUuid)?.allowedPriorities ?? [];
+  const [priority, setPriority] = useState(
+    config.concepts.defaultPriorityConceptUuid
+  );
+
+  const priorities =
+    queues.find((q) => q.uuid === queueUuid)?.allowedPriorities ?? [];
+
+  const consentAnswer =
+    consent === "no"
+      ? config.defaultConsentAnswerConceptUuid.no
+      : config.defaultConsentAnswerConceptUuid.yes;
 
   const addVisitToQueue = useCallback(() => {
     if (!queueUuid) {
@@ -59,7 +86,9 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
       return;
     }
     setIsMissingPriority(false);
-    const emergencyPriorityConceptUuid = config.concepts.emergencyPriorityConceptUuid;
+
+    const emergencyPriorityConceptUuid =
+      config.concepts.emergencyPriorityConceptUuid;
     const sortWeight = priority === emergencyPriorityConceptUuid ? 1.0 : 0.0;
     const status = config.concepts.defaultStatusConceptUuid;
     const visitQueueNumberAttributeUuid = config.visitQueueNumberAttributeUuid;
@@ -72,29 +101,45 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
       status,
       sortWeight,
       selectedQueueLocation,
-      visitQueueNumberAttributeUuid,
-    ).then(
-      ({ status }) => {
-        if (status === 201) {
-          showSnackbar({
-            isLowContrast: true,
-            title: t('addEntry', 'Add entry'),
-            kind: 'success',
-            subtitle: t('queueEntryAddedSuccessfully', 'Queue Entry Added Successfully'),
-          });
-          closeModal();
-          mutateQueueEntries();
+      visitQueueNumberAttributeUuid
+    )
+      .then(async (response) => {
+        console.log(response);
+
+        try {
+          const actualVisitUuid = response.data.visit?.uuid || visitUuid;
+          await saveVisitEncounterObs(
+            patientUuid,
+            selectedQueueLocation,
+            config.llmMessageConceptEncounterTypeUuid,
+            config.defaultLlmConsentConceptUuid,
+            consentAnswer,
+            actualVisitUuid,
+            providerUuid
+          );
+        } catch (e) {
+          console.error("Failed to save encounter", e);
         }
-      },
-      (error) => {
         showSnackbar({
-          title: t('queueEntryAddFailed', 'Error adding queue entry status'),
-          kind: 'error',
+          isLowContrast: true,
+          title: t("addEntry", "Add entry"),
+          kind: "success",
+          subtitle: t(
+            "queueEntryAddedSuccessfully",
+            "Queue Entry Added Successfully"
+          ),
+        });
+        closeModal();
+        mutateQueueEntries();
+      })
+      .catch((error) => {
+        showSnackbar({
+          title: t("queueEntryAddFailed", "Error adding queue entry status"),
+          kind: "error",
           isLowContrast: false,
           subtitle: error?.message,
         });
-      },
-    );
+      });
   }, [
     queueUuid,
     priority,
@@ -111,12 +156,16 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
 
   return (
     <div>
-      <ModalHeader closeModal={closeModal} title={t('addVisitToQueue', 'Add Visit To Queue?')} />
+      <ModalHeader
+        closeModal={closeModal}
+        title={t("addVisitToQueue", "Add Visit To Queue?")}
+      />
       <ModalBody>
         <Form onSubmit={addVisitToQueue}>
           <div className={styles.modalBody}>
             <h5>
-              {patientName} &nbsp; · &nbsp;{patientSex} &nbsp; · &nbsp;{patientAge}&nbsp;{t('years', 'Years')}
+              {patientName} &nbsp; · &nbsp;{patientSex} &nbsp; · &nbsp;
+              {patientAge}&nbsp;{t("years", "Years")}
             </h5>
           </div>
           <section>
@@ -124,17 +173,27 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
               <SelectSkeleton />
             ) : (
               <Select
-                labelText={t('selectQueueLocation', 'Select a queue location')}
+                labelText={t("selectQueueLocation", "Select a queue location")}
                 id="location"
                 invalidText="Required"
                 value={selectedQueueLocation}
-                onChange={(event) => setSelectedQueueLocation(event.target.value)}>
+                onChange={(event) =>
+                  setSelectedQueueLocation(event.target.value)
+                }
+              >
                 {!selectedQueueLocation ? (
-                  <SelectItem text={t('selectQueueLocation', 'Select a queue location')} value="" />
+                  <SelectItem
+                    text={t("selectQueueLocation", "Select a queue location")}
+                    value=""
+                  />
                 ) : null}
                 {queueLocations?.length > 0 &&
                   queueLocations.map((location) => (
-                    <SelectItem key={location.id} text={location.name} value={location.id}>
+                    <SelectItem
+                      key={location.id}
+                      text={location.name}
+                      value={location.id}
+                    >
                       {location.name}
                     </SelectItem>
                   ))}
@@ -143,20 +202,32 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
           </section>
 
           <section className={styles.section}>
-            <div className={styles.sectionTitle}>{t('queueService', 'Queue service')}</div>
+            <div className={styles.sectionTitle}>
+              {t("queueService", "Queue service")}
+            </div>
             {isLoadingQueues ? (
               <SelectSkeleton />
             ) : (
               <Select
-                labelText={t('selectService', 'Select a service')}
+                labelText={t("selectService", "Select a service")}
                 id="service"
                 invalidText="Required"
                 value={queueUuid}
-                onChange={(event) => setQueueUuid(event.target.value)}>
-                {!queueUuid ? <SelectItem text={t('chooseService', 'Select a service')} value="" /> : null}
+                onChange={(event) => setQueueUuid(event.target.value)}
+              >
+                {!queueUuid ? (
+                  <SelectItem
+                    text={t("chooseService", "Select a service")}
+                    value=""
+                  />
+                ) : null}
                 {queues?.length > 0 &&
                   queues.map((service) => (
-                    <SelectItem key={service.uuid} text={service.display} value={service.uuid}>
+                    <SelectItem
+                      key={service.uuid}
+                      text={service.display}
+                      value={service.uuid}
+                    >
                       {service.display}
                     </SelectItem>
                   ))}
@@ -166,16 +237,18 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
           {isMissingService && (
             <section>
               <InlineNotification
-                style={{ margin: '0', minWidth: '100%' }}
+                style={{ margin: "0", minWidth: "100%" }}
                 kind="error"
                 lowContrast={true}
-                title={t('pleaseSelectService', 'Please select a service')}
+                title={t("pleaseSelectService", "Please select a service")}
               />
             </section>
           )}
 
           <section className={styles.section}>
-            <div className={styles.sectionTitle}>{t('queueStatus', 'Queue status')}</div>
+            <div className={styles.sectionTitle}>
+              {t("queueStatus", "Queue status")}
+            </div>
             {isLoadingQueues ? (
               <RadioButtonGroup>
                 <RadioButtonSkeleton />
@@ -185,10 +258,13 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
             ) : !priorities?.length ? (
               <InlineNotification
                 className={styles.inlineNotification}
-                kind={'error'}
+                kind={"error"}
                 lowContrast
-                subtitle={t('configurePriorities', 'Please configure priorities to continue.')}
-                title={t('noPriorityFound', 'No priority found')}
+                subtitle={t(
+                  "configurePriorities",
+                  "Please configure priorities to continue."
+                )}
+                title={t("noPriorityFound", "No priority found")}
               />
             ) : (
               <RadioButtonGroup
@@ -197,29 +273,42 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({ visitDetails, c
                 defaultSelected={priority}
                 onChange={(uuid) => {
                   setPriority(uuid);
-                }}>
+                }}
+              >
                 {priorities?.length > 0 &&
-                  priorities.map(({ uuid, display }) => <RadioButton key={uuid} labelText={display} value={uuid} />)}
+                  priorities.map(({ uuid, display }) => (
+                    <RadioButton key={uuid} labelText={display} value={uuid} />
+                  ))}
               </RadioButtonGroup>
             )}
           </section>
           {isMissingPriority && (
             <section>
               <InlineNotification
-                style={{ margin: '0', minWidth: '100%' }}
+                style={{ margin: "0", minWidth: "100%" }}
                 kind="error"
                 lowContrast={true}
-                title={t('missingPriority', 'Please select a priority')}
+                title={t("missingPriority", "Please select a priority")}
               />
             </section>
           )}
+
+          <section className={styles.section}>
+            <VisitAttributesForm
+              setAttributes={setAttributes}
+              setPaymentMethod={setPaymentMethod}
+              paymentMethod={paymentMethod}
+              consent={consent}
+              setConsent={setConsent}
+            />
+          </section>
         </Form>
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={closeModal}>
-          {t('cancel', 'Cancel')}
+          {t("cancel", "Cancel")}
         </Button>
-        <Button onClick={addVisitToQueue}>{t('save', 'Save')}</Button>
+        <Button onClick={addVisitToQueue}>{t("save", "Save")}</Button>
       </ModalFooter>
     </div>
   );
