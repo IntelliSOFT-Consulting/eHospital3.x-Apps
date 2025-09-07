@@ -183,7 +183,7 @@ export const useObservations = (patientUuid?: string) => {
           medications: obs.medications,
         };
 
-        const apiUrl = `${window.location.protocol}//${window.location.hostname}:5000/generate_summary`;
+        const apiUrl = `http://${window.location.hostname}:5000/generate_summary`;
 
         const response = await fetch(apiUrl, {
           method: 'POST',
