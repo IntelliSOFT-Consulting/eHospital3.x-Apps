@@ -1,9 +1,21 @@
-import { formatDate, openmrsFetch, parseDate, restBaseUrl, type Visit } from '@openmrs/esm-framework';
-import dayjs from 'dayjs';
-import isToday from 'dayjs/plugin/isToday';
-import isEmpty from 'lodash-es/isEmpty';
-import useSWR from 'swr';
-import { type Concept, type Identifer, type MappedServiceQueueEntry, type Queue, type QueueEntry } from '../types';
+import {
+  formatDate,
+  openmrsFetch,
+  parseDate,
+  restBaseUrl,
+  type Visit,
+} from "@openmrs/esm-framework";
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+import isEmpty from "lodash-es/isEmpty";
+import useSWR from "swr";
+import {
+  type Concept,
+  type Identifer,
+  type MappedServiceQueueEntry,
+  type Queue,
+  type QueueEntry,
+} from "../types";
 
 dayjs.extend(isToday);
 
@@ -61,7 +73,8 @@ interface Encounter {
   voided: boolean;
 }
 
-interface MappedEncounter extends Omit<Encounter, 'encounterType' | 'provider'> {
+interface MappedEncounter
+  extends Omit<Encounter, "encounterType" | "provider"> {
   encounterType: string;
   provider: string;
 }
@@ -78,16 +91,18 @@ const mapEncounterProperties = (encounter: Encounter): MappedEncounter => ({
 
 export const mapVisitQueueEntryProperties = (
   queueEntry: QueueEntry,
-  visitQueueNumberAttributeUuid: string,
+  visitQueueNumberAttributeUuid: string
 ): MappedVisitQueueEntry => ({
   id: queueEntry.uuid,
   encounters: queueEntry.visit?.encounters?.map(mapEncounterProperties),
   name: queueEntry.display,
   patientUuid: queueEntry.patient.uuid,
-  patientAge: queueEntry.patient.person?.age + '',
+  patientAge: queueEntry.patient.person?.age + "",
   patientDob: queueEntry?.patient?.person?.birthdate
-    ? formatDate(parseDate(queueEntry.patient.person.birthdate), { time: false })
-    : '--',
+    ? formatDate(parseDate(queueEntry.patient.person.birthdate), {
+        time: false,
+      })
+    : "--",
   queue: queueEntry.queue,
   priority: queueEntry.priority,
   priorityComment: queueEntry.priorityComment,
@@ -101,8 +116,9 @@ export const mapVisitQueueEntryProperties = (
   queueUuid: queueEntry.queue.uuid,
   queueEntryUuid: queueEntry.uuid,
   sortWeight: queueEntry.sortWeight,
-  visitQueueNumber: queueEntry.visit?.attributes?.find((e) => e?.attributeType?.uuid === visitQueueNumberAttributeUuid)
-    ?.value,
+  visitQueueNumber: queueEntry.visit?.attributes?.find(
+    (e) => e?.attributeType?.uuid === visitQueueNumberAttributeUuid
+  )?.value,
   identifiers: queueEntry.patient?.identifiers as Identifer[],
   queueComingFrom: queueEntry?.queueComingFrom?.name,
 });
@@ -116,17 +132,21 @@ export async function updateQueueEntry(
   priority: string,
   status: string,
   endedAt: Date,
-  sortWeight: number,
+  sortWeight: number
 ) {
   const abortController = new AbortController();
-  const queueServiceUuid = isEmpty(newQueueUuid) ? previousQueueUuid : newQueueUuid;
+  const queueServiceUuid = isEmpty(newQueueUuid)
+    ? previousQueueUuid
+    : newQueueUuid;
 
-  await Promise.all([endPatientStatus(previousQueueUuid, queueEntryUuid, endedAt)]);
+  await Promise.all([
+    endPatientStatus(previousQueueUuid, queueEntryUuid, endedAt),
+  ]);
 
   return openmrsFetch(`${restBaseUrl}/visit-queue-entry`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     signal: abortController.signal,
     body: {
@@ -152,41 +172,60 @@ export async function updateQueueEntry(
   });
 }
 
-export async function endPatientStatus(previousQueueUuid: string, queueEntryUuid: string, endedAt: Date) {
+export async function endPatientStatus(
+  previousQueueUuid: string,
+  queueEntryUuid: string,
+  endedAt: Date
+) {
   const abortController = new AbortController();
-  await openmrsFetch(`${restBaseUrl}/queue/${previousQueueUuid}/entry/${queueEntryUuid}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    signal: abortController.signal,
-    body: {
-      endedAt: endedAt,
-    },
-  });
+  await openmrsFetch(
+    `${restBaseUrl}/queue/${previousQueueUuid}/entry/${queueEntryUuid}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      signal: abortController.signal,
+      body: {
+        endedAt: endedAt,
+      },
+    }
+  );
 }
 
 export function useServiceQueueEntries(service: string, locationUuid: string) {
   const apiUrl = `${restBaseUrl}/visit-queue-entry?status=waiting&service=${service}&location=${locationUuid}&v=full`;
-  const { data, error, isLoading, isValidating } = useSWR<{ data: { results: Array<VisitQueueEntry> } }, Error>(
-    service && locationUuid ? apiUrl : null,
-    openmrsFetch,
-  );
+  const { data, error, isLoading, isValidating } = useSWR<
+    { data: { results: Array<VisitQueueEntry> } },
+    Error
+  >(service && locationUuid ? apiUrl : null, openmrsFetch);
 
-  const mapServiceQueueEntryProperties = (visitQueueEntry: VisitQueueEntry): MappedServiceQueueEntry => ({
+  const mapServiceQueueEntryProperties = (
+    visitQueueEntry: VisitQueueEntry
+  ): MappedServiceQueueEntry => ({
     id: visitQueueEntry.queueEntry.uuid,
     name: visitQueueEntry.queueEntry.display,
-    age: visitQueueEntry.queueEntry.patient ? visitQueueEntry?.queueEntry?.patient?.person?.age + '' : '--',
+    age: visitQueueEntry.queueEntry.patient
+      ? visitQueueEntry?.queueEntry?.patient?.person?.age + ""
+      : "--",
     returnDate: visitQueueEntry.queueEntry.startedAt,
     visitType: visitQueueEntry.visit?.visitType?.display,
-    gender: visitQueueEntry.queueEntry.patient ? visitQueueEntry?.queueEntry?.patient?.person?.gender : '--',
-    patientUuid: visitQueueEntry.queueEntry ? visitQueueEntry?.queueEntry.uuid : '--',
+    gender: visitQueueEntry.queueEntry.patient
+      ? visitQueueEntry?.queueEntry?.patient?.person?.gender
+      : "--",
+    patientUuid: visitQueueEntry.queueEntry
+      ? visitQueueEntry?.queueEntry.uuid
+      : "--",
   });
 
-  const mappedServiceQueueEntries = data?.data?.results?.map(mapServiceQueueEntryProperties);
+  const mappedServiceQueueEntries = data?.data?.results?.map(
+    mapServiceQueueEntryProperties
+  );
 
   return {
-    serviceQueueEntries: mappedServiceQueueEntries ? mappedServiceQueueEntries : [],
+    serviceQueueEntries: mappedServiceQueueEntries
+      ? mappedServiceQueueEntries
+      : [],
     isLoading,
     isError: error,
     isValidating,
@@ -201,19 +240,26 @@ export async function addQueueEntry(
   status: string,
   sortWeight: number,
   locationUuid: string,
-  visitQueueNumberAttributeUuid: string,
+  visitQueueNumberAttributeUuid: string
 ) {
   const abortController = new AbortController();
 
-  await Promise.all([generateVisitQueueNumber(locationUuid, visitUuid, queueUuid, visitQueueNumberAttributeUuid)]);
+  await Promise.all([
+    generateVisitQueueNumber(
+      locationUuid,
+      visitUuid,
+      queueUuid,
+      visitQueueNumberAttributeUuid
+    ),
+  ]);
 
   return openmrsFetch(`${restBaseUrl}/visit-queue-entry`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     signal: abortController.signal,
-    body: {
+    body: JSON.stringify({
       visit: { uuid: visitUuid },
       queueEntry: {
         status: {
@@ -231,7 +277,7 @@ export async function addQueueEntry(
         startedAt: new Date(),
         sortWeight: sortWeight,
       },
-    },
+    }),
   });
 }
 
@@ -239,29 +285,33 @@ export async function generateVisitQueueNumber(
   location: string,
   visitUuid: string,
   queueUuid: string,
-  visitQueueNumberAttributeUuid: string,
+  visitQueueNumberAttributeUuid: string
 ) {
   const abortController = new AbortController();
 
   await openmrsFetch(
     `${restBaseUrl}/queue-entry-number?location=${location}&queue=${queueUuid}&visit=${visitUuid}&visitAttributeType=${visitQueueNumberAttributeUuid}`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       signal: abortController.signal,
-    },
+    }
   );
 }
 
-export function serveQueueEntry(servicePointName: string, ticketNumber: string, status: string) {
+export function serveQueueEntry(
+  servicePointName: string,
+  ticketNumber: string,
+  status: string
+) {
   const abortController = new AbortController();
 
   return openmrsFetch(`${restBaseUrl}/queueutil/assignticket`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     signal: abortController.signal,
     body: {
@@ -269,5 +319,37 @@ export function serveQueueEntry(servicePointName: string, ticketNumber: string, 
       ticketNumber,
       status,
     },
+  });
+}
+
+export async function saveVisitEncounterObs(
+  patientUuid: string,
+  locationUuid: string,
+  encounterTypeUuid: string,
+  conceptUuid: string,
+  value: string,
+  visitUuid?: string
+) {
+  const abortController = new AbortController();
+
+  return openmrsFetch(`${restBaseUrl}/encounter`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    signal: abortController.signal,
+    body: JSON.stringify({
+      encounterDatetime: new Date().toISOString(),
+      patient: { uuid: patientUuid },
+      location: { uuid: locationUuid },
+      encounterType: { uuid: encounterTypeUuid },
+      obs: [
+        {
+          concept: { uuid: conceptUuid },
+          value,
+        },
+      ],
+      visit: { uuid: visitUuid },
+    }),
   });
 }

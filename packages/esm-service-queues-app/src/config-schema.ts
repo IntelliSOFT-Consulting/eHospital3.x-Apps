@@ -1,8 +1,10 @@
-import { Type, validators } from '@openmrs/esm-framework';
-import vitalsConfigSchema, { type VitalsConfigObject } from './current-visit/visit-details/vitals-config-schema';
+import { Type, validators } from "@openmrs/esm-framework";
+import vitalsConfigSchema, {
+  type VitalsConfigObject,
+} from "./current-visit/visit-details/vitals-config-schema";
 import biometricsConfigSchema, {
   type BiometricsConfigObject,
-} from './current-visit/visit-details/biometrics-config-schema';
+} from "./current-visit/visit-details/biometrics-config-schema";
 
 // Not all of the columnDefinitions are used below, but they are defined anyway
 // for demonstration purpose. Implementors can copy this JSON as a starting point
@@ -91,110 +93,128 @@ export const configSchema = {
   concepts: {
     defaultPriorityConceptUuid: {
       _type: Type.ConceptUuid,
-      _description: 'The UUID of the default priority for the queues eg Not urgent.',
-      _default: 'f4620bfa-3625-4883-bd3f-84c2cce14470',
+      _description:
+        "The UUID of the default priority for the queues eg Not urgent.",
+      _default: "f4620bfa-3625-4883-bd3f-84c2cce14470",
     },
     emergencyPriorityConceptUuid: {
       _type: Type.ConceptUuid,
-      _description: 'The UUID of the priority with the highest sort weight for the queues eg Emergency.',
-      _default: '04f6f7e0-e3cb-4e13-a133-4479f759574e',
+      _description:
+        "The UUID of the priority with the highest sort weight for the queues eg Emergency.",
+      _default: "04f6f7e0-e3cb-4e13-a133-4479f759574e",
     },
     defaultStatusConceptUuid: {
       _type: Type.ConceptUuid,
-      _description: 'The UUID of the default status for the queues eg Waiting.',
-      _default: '51ae5e4d-b72b-4912-bf31-a17efb690aeb',
+      _description: "The UUID of the default status for the queues eg Waiting.",
+      _default: "51ae5e4d-b72b-4912-bf31-a17efb690aeb",
     },
     defaultTransitionStatus: {
       _type: Type.ConceptUuid,
-      _description: 'The UUID of the default status for attending a service in the queues eg In Service.',
-      _default: 'ca7494ae-437f-4fd0-8aae-b88b9a2ba47d',
+      _description:
+        "The UUID of the default status for attending a service in the queues eg In Service.",
+      _default: "ca7494ae-437f-4fd0-8aae-b88b9a2ba47d",
     },
     systolicBloodPressureUuid: {
       _type: Type.ConceptUuid,
-      _default: '5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5085AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     diastolicBloodPressureUuid: {
       _type: Type.ConceptUuid,
-      _default: '5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5086AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     pulseUuid: {
       _type: Type.ConceptUuid,
-      _default: '5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5087AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     temperatureUuid: {
       _type: Type.ConceptUuid,
-      _default: '5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5088AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     oxygenSaturationUuid: {
       _type: Type.ConceptUuid,
-      _default: '5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5092AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     heightUuid: {
       _type: Type.ConceptUuid,
-      _default: '5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5090AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     weightUuid: {
       _type: Type.ConceptUuid,
-      _default: '5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5089AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     respiratoryRateUuid: {
       _type: Type.ConceptUuid,
-      _default: '5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+      _default: "5242AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     },
     historicalObsConceptUuid: {
       _type: Type.Array,
-      _description: 'The Uuids of the obs that are displayed on the previous visit modal',
-      _default: ['161643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'],
+      _description:
+        "The Uuids of the obs that are displayed on the previous visit modal",
+      _default: ["161643AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"],
     },
   },
   contactAttributeType: {
     _type: Type.UUID,
     _description:
-      'The Uuids of person attribute-type that captures contact information `e.g Next of kin contact details`',
+      "The Uuids of person attribute-type that captures contact information `e.g Next of kin contact details`",
     _default: [],
   },
   visitQueueNumberAttributeUuid: {
     _type: Type.UUID,
-    _description: 'The UUID of the visit attribute that contains the visit queue number.',
-    _default: '',
+    _description:
+      "The UUID of the visit attribute that contains the visit queue number.",
+    _default: "",
   },
   vitals: vitalsConfigSchema,
   biometrics: biometricsConfigSchema,
   appointmentStatuses: {
     _type: Type.Array,
-    _description: 'Configurable appointment status (status of appointments)',
-    _default: ['Requested', 'Scheduled', 'CheckedIn', 'Completed', 'Cancelled', 'Missed'],
+    _description: "Configurable appointment status (status of appointments)",
+    _default: [
+      "Requested",
+      "Scheduled",
+      "CheckedIn",
+      "Completed",
+      "Cancelled",
+      "Missed",
+    ],
   },
   defaultIdentifierTypes: {
     _type: Type.Array,
     _element: {
       _type: Type.String,
     },
-    _description: 'The identifier types to be display on all patient search result page',
-    _default: ['05ee9cf4-7242-4a17-b4d4-00f707265c8a', 'f85081e2-b4be-4e48-b3a4-7994b69bb101'],
+    _description:
+      "The identifier types to be display on all patient search result page",
+    _default: [
+      "05ee9cf4-7242-4a17-b4d4-00f707265c8a",
+      "f85081e2-b4be-4e48-b3a4-7994b69bb101",
+    ],
   },
   showRecommendedVisitTypeTab: {
     _type: Type.Boolean,
-    _description: 'Whether start visit form should display recommended visit type tab. Requires `visitTypeResourceUrl`',
+    _description:
+      "Whether start visit form should display recommended visit type tab. Requires `visitTypeResourceUrl`",
     _default: false,
   },
   visitTypeResourceUrl: {
     _type: Type.String,
-    _description: 'The `visitTypeResourceUrl`',
+    _description: "The `visitTypeResourceUrl`",
     _default: null,
   },
   customPatientChartUrl: {
     _type: Type.String,
-    _default: '${openmrsSpaBase}/patient/${patientUuid}/chart',
+    _default: "${openmrsSpaBase}/patient/${patientUuid}/chart",
     _description: `Template URL that will be used when clicking on the patient name in the queues table.
       Available arguments: patientUuid, openmrsSpaBase, openBase
       (openmrsSpaBase and openBase are available to any <ConfigurableLink>)`,
-    _validators: [validators.isUrlWithTemplateParameters(['patientUuid'])],
+    _validators: [validators.isUrlWithTemplateParameters(["patientUuid"])],
   },
   defaultFacilityUrl: {
     _type: Type.String,
-    _default: '',
-    _description: 'Custom URL to load default facility if it is not in the session',
+    _default: "",
+    _description:
+      "Custom URL to load default facility if it is not in the session",
   },
   tablesConfig: {
     _type: Type.Object,
@@ -207,6 +227,56 @@ export const configSchema = {
       for full schema definition and example.
     `,
     _default: defaultTablesConfig,
+  },
+  // Consent Configuration
+  defaultLlmConsentConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The UUID of the default LLM Consent for AI",
+    _default: "b71c3f8e-68c2-4285-bb94-95b9f86ff51a",
+  },
+  defaultConsentAnswerConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description: "The UUID of the default Consent Answers for AI",
+    _default: {
+      yes: "1065AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      no: "1066AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    },
+  },
+  llmMessageConceptEncounterTypeUuid: {
+    _type: Type.ConceptUuid,
+    _description:
+      "The UUID of the Encounter Type to store LLM Messages in the encounter",
+    _default: "2080f13b-ee1a-4d57-a1b5-2da4f39df226",
+  },
+  // Billing Configuration
+  patientCategory: {
+    _type: Type.Object,
+    _description: "Patient Category Custom UUIDs",
+    _default: {
+      paymentDetails: "fbc0702d-b4c9-4968-be63-af8ad3ad6239",
+      paymentMethods: "8553afa0-bdb9-4d3c-8a98-05fa9350aa85",
+      policyNumber: "3a988e33-a6c0-4b76-b924-01abb998944b",
+      insuranceScheme: "aac48226-d143-4274-80e0-264db4e368ee",
+      patientCategory: "3b9dfac8-9e4d-11ee-8c90-0242ac120002",
+      formPayloadPending: "919b51c9-8e2e-468f-8354-181bf3e55786",
+    },
+  },
+  catergoryConcepts: {
+    _type: Type.Object,
+    _description: "Patient Category Concept UUIDs",
+    _default: {
+      payingDetails: "44b34972-6630-4e5a-a9f6-a6eb0f109650",
+      nonPayingDetails: "f3fb2d88-cccd-422c-8766-be101ba7bd2e",
+      insuranceDetails: "beac329b-f1dc-4a33-9e7c-d95821a137a6",
+    },
+  },
+  nonPayingPatientCategories: {
+    _type: Type.Object,
+    _description: "Concept UUIDs for non-paying patient categories",
+    _default: {
+      childUnder5: "1528AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      student: "159465AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    },
   },
 };
 
@@ -236,6 +306,15 @@ export interface ConfigObject {
   customPatientChartUrl: string;
   visitTypeResourceUrl: string;
   tablesConfig: TablesConfig;
+  defaultLlmConsentConceptUuid: string;
+  defaultConsentAnswerConceptUuid: {
+    yes: string;
+    no: string;
+  };
+  llmMessageConceptEncounterTypeUuid: string;
+  patientCategory: Object;
+  categoryConcepts: Object;
+  nonPayingPatientCategories: Object;
 }
 
 interface TablesConfig {
@@ -255,19 +334,22 @@ export type ColumnDefinition = {
   header?: string; // optional custom i18n translation key for the column's header; overrides the default one
   headerModule?: string; // optional custom i18n translation module for the column's header. Must be used with the header option
 } & (
-  | { columnType: 'patient-name-column' }
-  | { columnType: 'patient-identifier-column'; config: PatientIdentifierColumnConfig }
-  | { columnType: 'visit-attribute-queue-number-column' }
-  | { columnType: 'patient-age-column' }
-  | { columnType: 'priority-column'; config?: PriorityColumnConfig }
-  | { columnType: 'status-column'; config?: StatusColumnConfig }
-  | { columnType: 'queue-coming-from-column' }
-  | { columnType: 'current-queue-column' }
-  | { columnType: 'wait-time-column' }
-  | { columnType: 'visit-start-time-column' }
-  | { columnType: 'actions-column' }
-  | { columnType: 'extension-column'; config?: object } // column that contains the extension slot queue-table-extension-column-slot
-);
+  | { columnType: "patient-name-column" }
+  | {
+      columnType: "patient-identifier-column";
+      config: PatientIdentifierColumnConfig;
+    }
+  | { columnType: "visit-attribute-queue-number-column" }
+  | { columnType: "patient-age-column" }
+  | { columnType: "priority-column"; config?: PriorityColumnConfig }
+  | { columnType: "status-column"; config?: StatusColumnConfig }
+  | { columnType: "queue-coming-from-column" }
+  | { columnType: "current-queue-column" }
+  | { columnType: "wait-time-column" }
+  | { columnType: "visit-start-time-column" }
+  | { columnType: "actions-column" }
+  | { columnType: "extension-column"; config?: object }
+); // column that contains the extension slot queue-table-extension-column-slot
 
 export interface VisitAttributeQueueNumberColumnConfig {
   visitQueueNumberAttributeUuid: string;
@@ -279,7 +361,7 @@ export interface PatientIdentifierColumnConfig {
 export interface PriorityConfig {
   conceptUuid: string;
   tagType: string;
-  tagClassName: 'priorityTag' | 'tag' | null;
+  tagClassName: "priorityTag" | "tag" | null;
 }
 
 export interface PriorityColumnConfig {
@@ -288,7 +370,7 @@ export interface PriorityColumnConfig {
 
 export interface StatusConfig {
   conceptUuid: string;
-  iconComponent: 'Group' | 'InProgress' | null;
+  iconComponent: "Group" | "InProgress" | null;
 }
 
 export interface StatusColumnConfig {
