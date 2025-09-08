@@ -13,6 +13,8 @@ import {
   Microscope,
   FolderAdd,
   DocumentTasks,
+  ChartColumn,
+  ChartCustom,
 } from "@carbon/react/icons";
 const openmrsSpaBase = window["getOpenmrsSpaBase"]();
 
@@ -94,6 +96,12 @@ export const moduleLinks = [
     label: "OCL",
     url: `${openmrsSpaBase}ocl`,
     icon: <Microscope size={24} />,
+    requiresAdmin: true,
+  },
+  {
+    label: "Reports",
+    url: `${openmrsSpaBase}reports`,
+    icon: <ChartCustom size={24} />,
     requiresAdmin: true,
   },
 ];
