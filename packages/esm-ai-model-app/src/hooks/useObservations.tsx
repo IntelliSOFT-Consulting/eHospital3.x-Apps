@@ -183,7 +183,7 @@ export const useObservations = (patientUuid?: string) => {
           medications: obs.medications,
         };
 
-        const apiUrl = `http://sjhc.intellisoftkenya.com:5000/generate_summary`;
+        const apiUrl = `https://sjhc.intellisoftkenya.com/generate_summary`;
 
         const response = await fetch(apiUrl, {
           method: 'POST',

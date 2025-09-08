@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-ai-model-app",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
   "browser": "dist/ehospital-esm-ai-model-app.js",
   "main": "src/index.ts",
@@ -48,5 +48,5 @@
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
-  "gitHead": "b6eb42df7c4bafcda1bbae9fdf26ae98e101a4e8"
+  "gitHead": "359e12d1ea851edcc1fec62f3dbfcc33a17c47a2"
 }
