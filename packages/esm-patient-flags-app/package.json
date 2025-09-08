@@ -2,11 +2,11 @@
   "name": "@ehospital/esm-patient-flags-app",
   "version": "1.0.2",
   "description": "Patient flags microfrontend for the OpenMRS SPA",
-  "browser": "dist/sjthc-esm-patient-flags-app.js",
+  "browser": "dist/ehospital-esm-patient-flags-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
-  "homepage": "https://github.com/palladiumkenya/kenyaemr-esm-core#readme",
+  "homepage": "https://github.com/IntelliSOFT-Consulting/eHospital3.x-Apps/tree/main/packages/esm-patient-flags-app",
   "scripts": {
     "start": "openmrs develop",
     "serve": "webpack serve --mode=development",
