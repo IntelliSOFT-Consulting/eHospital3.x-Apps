@@ -14,22 +14,14 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
 
   const pickTagClassname = (flag: string) => {
     switch (flag) {
-      case "ACTIVE":
+      case "LLM_CONSENT_YES":
         return "greenTag";
-      case "ELIGIBLE":
+      case "PATIENT_TYPE_SHA":
         return "greenTag";
-      case "IIT":
+      case "PATIENT_TYPE_STANDARD":
         return "mustardTag";
-      case "DIED":
+      case "LLM_CONSENT_NO":
         return "redTag";
-      case "MISSED_APPOINTMENT":
-        return "redTag";
-      case "NOT_ELIGIBLE":
-        return "redTag";
-      case "TRANSFERRED_OUT":
-        return "mustardTag";
-      case "DUE_FOR_VL":
-        return "greenTag";
       default:
         return "tag";
     }

@@ -16,7 +16,7 @@ interface PatientFlagsReturnType {
 export const usePatientFlags = (
   patientUuid: string
 ): PatientFlagsReturnType => {
-  const patientFlagsUrl = `/ws/rest/v1/ssemr/flags?patientUuid=${patientUuid}`;
+  const patientFlagsUrl = `/ws/rest/v1/ehospital/patient/flags?patientUuid=${patientUuid}`;
   const { data, mutate, error, isLoading } = useSWR<{
     data: { results: Array<string> };
   }>(patientFlagsUrl, openmrsFetch);
