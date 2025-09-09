@@ -1712,6 +1712,7 @@ __metadata:
     "@carbon/charts-react": ^1.5.2
     "@carbon/react": 1.x
     "@hookform/resolvers": ^3.1.1
+    "@openmrs/esm-config": ^8.0.0
     "@openmrs/esm-emr-api": next
     "@openmrs/esm-error-handling": next
     "@openmrs/esm-extensions": next
@@ -1722,6 +1723,7 @@ __metadata:
     "@openmrs/esm-state": next
     "@openmrs/esm-styleguide": next
     "@openmrs/esm-translations": next
+    "@openmrs/esm-utils": ^8.0.0
     "@playwright/test": ^1.30.0
     "@swc/cli": ^0.1.62
     "@swc/core": ^1.3.68
@@ -4962,6 +4964,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openmrs/esm-config@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@openmrs/esm-config@npm:8.0.0"
+  dependencies:
+    ramda: ^0.30.1
+  peerDependencies:
+    "@openmrs/esm-globals": 6.x
+    "@openmrs/esm-state": 6.x
+    "@openmrs/esm-utils": 6.x
+    single-spa: 6.x
+  checksum: 25c5f3ee4c37ea341953889797007fec4742fb250b6830006a0f9b93caac28453ded0061a86d9f3134e415b5988bd87401f13a05272faf44e52bf4b1c65d94a0
+  languageName: node
+  linkType: hard
+
 "@openmrs/esm-context@npm:6.3.1-pre.3250":
   version: 6.3.1-pre.3250
   resolution: "@openmrs/esm-context@npm:6.3.1-pre.3250"
@@ -5536,6 +5552,24 @@ __metadata:
     i18next: 21.x
     rxjs: 6.x
   checksum: 0c3e3ed1e9deaefb400608cc1b55ccb9b61837132072d31d6aae89baec11ecdaf6085dcb5f5ccbdf9ad4a6f27f1459969cfe8350da0c51a98777a1cffe32d482
+  languageName: node
+  linkType: hard
+
+"@openmrs/esm-utils@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@openmrs/esm-utils@npm:8.0.0"
+  dependencies:
+    "@formatjs/intl-durationformat": ^0.7.3
+    "@internationalized/date": ^3.8.0
+    any-date-parser: ^2.0.3
+    lodash-es: ^4.17.21
+    semver: 7.3.2
+  peerDependencies:
+    "@openmrs/esm-globals": 6.x
+    dayjs: 1.x
+    i18next: 21.x
+    rxjs: 6.x
+  checksum: 2032c274e35ff0afa8e1eaf90920a995b6504f97525e980d97d7882b9c172c40a79fc61e7532edd8dc93b1d691237adedfb21e0316148e2b7174184306076ad7
   languageName: node
   linkType: hard
 
