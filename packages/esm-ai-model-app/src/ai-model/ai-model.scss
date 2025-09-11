@@ -151,3 +151,37 @@
     margin-top: 10px;
 }
 
+.consentDeniedContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem; 
+  margin: 2rem auto;
+  max-width: 550px;
+  background-color: #fefbe9;
+  border-left: 4px solid #f1c21b; 
+  border-radius: 4px;
+  color: #525252; 
+
+  svg {
+    color: #f1c21b; 
+    margin-bottom: 1rem; 
+  }
+
+  h2 {
+    font-size: 1.25rem; 
+    font-weight: 600; 
+    color: #161616; 
+    margin-top: 0;
+    margin-bottom: 0.5rem; 
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
