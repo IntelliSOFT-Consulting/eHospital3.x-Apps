@@ -38,7 +38,7 @@ const PatientFlags: React.FC<PatientFlagsProps> = ({ patientUuid }) => {
           className={styles[pickTagClassname(patientFlag)]}
           key={patientFlag}
         >
-          {patientFlag?.replaceAll("_", " ")}
+          {patientFlag?.replace(/_/g, " ")}
         </Tag>
       ))}
     </div>
