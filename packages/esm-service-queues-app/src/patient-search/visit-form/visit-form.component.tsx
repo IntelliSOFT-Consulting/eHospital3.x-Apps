@@ -108,8 +108,8 @@ const VisitForm: React.FC<VisitFormProps> = ({
 
   const patientTypeAnswers =
     patientType === "standardPatient"
-      ? config.defaultPatientTypeAnswersConceptUuid.shaPatient
-      : config.defaultPatientTypeAnswersConceptUuid.standardPatient;
+      ? config.defaultPatientTypeAnswersConceptUuid.standardPatient
+      : config.defaultPatientTypeAnswersConceptUuid.shaPatient;
 
   useEffect(() => {
     if (locations?.length && sessionUser) {

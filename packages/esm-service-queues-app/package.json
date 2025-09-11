@@ -1,6 +1,6 @@
 {
   "name": "@ehospital/esm-service-queues-app",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Outpatient front-end module for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-service-queues-app.js",
   "main": "src/index.ts",
@@ -44,5 +44,5 @@
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
-  "gitHead": "c9d54e1cb876e8f9df4101846914c17672185ba2"
+  "gitHead": "cea06aefd7036e133a07b8510df6df517cd5824f"
 }
