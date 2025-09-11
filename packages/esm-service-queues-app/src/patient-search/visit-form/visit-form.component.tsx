@@ -98,14 +98,18 @@ const VisitForm: React.FC<VisitFormProps> = ({
   const [selectedLocation, setSelectedLocation] = useState("");
   const [visitType, setVisitType] = useState("");
 
-  const [consent, setConsent] = useState("no");
-  const currentUserSession = useSession();
-  const providerUuid = currentUserSession?.currentProvider?.uuid;
+  const [consent, setConsent] = useState();
+  const [patientType, setPateintType] = useState();
 
   const consentAnswer =
     consent === "no"
       ? config.defaultConsentAnswerConceptUuid.no
       : config.defaultConsentAnswerConceptUuid.yes;
+
+  const patientTypeAnswers =
+    patientType === "standardPatient"
+      ? config.defaultPatientTypeAnswersConceptUuid.shaPatient
+      : config.defaultPatientTypeAnswersConceptUuid.standardPatient;
 
   useEffect(() => {
     if (locations?.length && sessionUser) {
@@ -175,14 +179,35 @@ const VisitForm: React.FC<VisitFormProps> = ({
                 if (status === 201) {
                   try {
                     const actualVisitUuid = data.visit?.uuid;
-                    await saveVisitEncounterObs(
-                      patientUuid,
-                      queueLocation,
-                      config.llmMessageConceptEncounterTypeUuid,
-                      config.defaultLlmConsentConceptUuid,
-                      consentAnswer,
-                      actualVisitUuid
-                    );
+
+                    const encounterConfig = [
+                      {
+                        encounterType:
+                          config.llmMessageConceptEncounterTypeUuid,
+                        concept: config.defaultLlmConsentConceptUuid,
+                        value: consentAnswer,
+                      },
+                      {
+                        encounterType: config.patientTypeEncounterTypeUuid,
+                        concept: config.defaultPatientTypeConceptUuid,
+                        value: patientTypeAnswers,
+                      },
+                    ];
+                    for (const {
+                      encounterType,
+                      concept,
+                      value,
+                    } of encounterConfig)
+                      if (value) {
+                        await saveVisitEncounterObs(
+                          patientUuid,
+                          queueLocation,
+                          encounterType,
+                          concept,
+                          value,
+                          actualVisitUuid
+                        );
+                      }
                   } catch (e) {
                     console.error("Failed to save encounter", e);
                   }

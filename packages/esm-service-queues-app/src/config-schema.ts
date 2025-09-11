@@ -248,6 +248,28 @@ export const configSchema = {
       "The UUID of the Encounter Type to store LLM Messages in the encounter",
     _default: "2080f13b-ee1a-4d57-a1b5-2da4f39df226",
   },
+  // SHA Configuration
+  defaultPatientTypeConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description:
+      "The UUID of the default Patient type, to choose whether the patient is a standard or a sha patient",
+    _default: "d32ea3a0-017c-473f-99f4-fde9aa9ec6ce",
+  },
+  defaultPatientTypeAnswersConceptUuid: {
+    _type: Type.ConceptUuid,
+    _description:
+      "The UUID of the default Answers for the question on patient type",
+    _default: {
+      shaPatient: "d76fa0fc-798b-4259-9870-7cb93f1da762",
+      standardPatient: "35f39cbf-d65b-4c09-9387-01ba47ed0977",
+    },
+  },
+  patientTypeEncounterTypeUuid: {
+    _type: Type.ConceptUuid,
+    _description:
+      "The UUID of the Encounter Type to store Patient Type in encounters",
+    _default: "3771100f-6763-4d90-ae49-a16892cbd6dc",
+  },
   // Billing Configuration
   patientCategory: {
     _type: Type.Object,
@@ -306,15 +328,38 @@ export interface ConfigObject {
   customPatientChartUrl: string;
   visitTypeResourceUrl: string;
   tablesConfig: TablesConfig;
+  // consent
   defaultLlmConsentConceptUuid: string;
   defaultConsentAnswerConceptUuid: {
     yes: string;
     no: string;
   };
   llmMessageConceptEncounterTypeUuid: string;
-  patientCategory: Object;
-  categoryConcepts: Object;
-  nonPayingPatientCategories: Object;
+  // PATIENT Type
+  defaultPatientTypeConceptUuid: string;
+  defaultPatientTypeAnswersConceptUuid: {
+    shaPatient: string;
+    standardPatient: string;
+  };
+  patientTypeEncounterTypeUuid: string;
+
+  patientCategory: {
+    paymentDetails: string;
+    paymentMethods: string;
+    policyNumber: string;
+    insuranceScheme: string;
+    patientCategory: string;
+    formPayloadPending: string;
+  };
+  catergoryConcepts: {
+    payingDetails: string;
+    nonPayingDetails: string;
+    insuranceDetails: string;
+  };
+  nonPayingPatientCategories: {
+    childUnder5: string;
+    student: string;
+  };
 }
 
 interface TablesConfig {

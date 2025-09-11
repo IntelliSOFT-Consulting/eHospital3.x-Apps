@@ -42,9 +42,8 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
   const [attributes, setAttributes] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState<any>();
 
-  const [consent, setConsent] = useState("no");
-  const currentUserSession = useSession();
-  const providerUuid = currentUserSession?.currentProvider?.uuid;
+  const [consent, setConsent] = useState();
+  const [patientType, setPatientType] = useState();
 
   const visitUuid = visitDetails?.visitUuid;
   const [queueUuid, setQueueUuid] = useState("");
@@ -73,6 +72,11 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
     consent === "no"
       ? config.defaultConsentAnswerConceptUuid.no
       : config.defaultConsentAnswerConceptUuid.yes;
+
+  const patientTypeAnswers =
+    patientType === "standardPatient"
+      ? config.defaultPatientTypeAnswersConceptUuid.shaPatient
+      : config.defaultPatientTypeAnswersConceptUuid.standardPatient;
 
   const addVisitToQueue = useCallback(() => {
     if (!queueUuid) {
@@ -104,8 +108,6 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
       visitQueueNumberAttributeUuid
     )
       .then(async (response) => {
-        console.log(response);
-
         try {
           const actualVisitUuid = response.data.visit?.uuid || visitUuid;
           await saveVisitEncounterObs(
@@ -114,8 +116,7 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
             config.llmMessageConceptEncounterTypeUuid,
             config.defaultLlmConsentConceptUuid,
             consentAnswer,
-            actualVisitUuid,
-            providerUuid
+            actualVisitUuid
           );
         } catch (e) {
           console.error("Failed to save encounter", e);
@@ -295,11 +296,10 @@ const AddVisitToQueue: React.FC<AddVisitToQueueDialogProps> = ({
 
           <section className={styles.section}>
             <VisitAttributesForm
-              setAttributes={setAttributes}
-              setPaymentMethod={setPaymentMethod}
-              paymentMethod={paymentMethod}
               consent={consent}
               setConsent={setConsent}
+              patientType={patientType}
+              setPatientType={setPatientType}
             />
           </section>
         </Form>
