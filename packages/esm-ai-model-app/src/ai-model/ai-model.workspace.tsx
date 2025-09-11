@@ -6,13 +6,22 @@ import { getPatientUuidFromStore, useLaunchWorkspaceRequiringVisit } from "@open
 import CustomTextArea from "../components/ui/text-area.component";
 import GeneratedResponse from "../components/llm-response/generated-response.component";
 import Feedback from "../components/feedback.component";
-import { useObservations } from "../hooks/useObservations";
+import { useObservations, useLlmConsent } from "../hooks/useObservations";
 import Observation from "../components/observations/observation.component";
 import Actions from "../components/props/action.component";
 import LoadingState from "../components/loading-state/loading-state.component";
 import Modal from "../components/modal/modal.component";
 
 const MAX_CHAR_LIMIT = 320;
+
+const ConsentDeniedMessage: React.FC = () => (
+    <div className={styles.consentDeniedContainer}>
+        <WarningAlt size={32} />
+        <h2>Consent Not Given</h2>
+        <p>Patient has not given consent for LLM Message generation.</p>
+    </div>
+);
+
 const AIModel: React.FC = () => {
 	const [isEditMode, setEditMode] = useState(false);
 	const [isRegenerated, setRegenerated] = useState(false);
@@ -29,13 +38,14 @@ const AIModel: React.FC = () => {
 
 	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model-generated');
 	const patientUuid = getPatientUuidFromStore();
-	const { data: observations, generateLlmMessage, isGenerating, llmResponse, saveMessage, isSaving } = useObservations(patientUuid);
+	const { consentStatus, isLoading: isConsentLoading, error: consentError } = useLlmConsent(patientUuid);
+	const { data: observations, generateLlmMessage, isGenerating, llmResponse, saveMessage, isSaving } = useObservations(patientUuid, consentStatus === 'Yes');
 
 	const hasRelevantData = observations?.some(obs => 
-		obs.diagnosis || (obs.medications && obs.medications.length > 0) || 
-		(obs.condition && obs.condition.length > 0) || 
-		(obs.tests && obs.tests.length > 0)
-	) ?? false;
+        obs.diagnosis || (obs.medications && obs.medications.length > 0) || 
+        (obs.condition && obs.condition.length > 0) || 
+        (obs.tests && obs.tests.length > 0)
+    ) ?? false;
 
 	const handleGenerateMessage = async () => {
 		setLlmError(null);
@@ -103,6 +113,18 @@ const AIModel: React.FC = () => {
 			console.error("Error saving message:", error);
 		}
 	};
+
+	 if (isConsentLoading) {
+        return <LoadingState message="Checking Patient Consent..." />;
+    }
+
+    if (consentError) {
+        return <ConsentDeniedMessage />;
+    }
+
+    if (consentStatus === 'No') {
+        return <ConsentDeniedMessage />;
+    }
 
 	if (!observations) return <LoadingState message="Fetching Patient Data..." />;
 

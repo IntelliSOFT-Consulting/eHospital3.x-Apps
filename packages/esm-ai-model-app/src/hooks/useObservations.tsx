@@ -20,7 +20,48 @@ interface LlmResponse {
   message: string;
 }
 
-export const useObservations = (patientUuid?: string) => {
+type ConsentStatus = 'Yes' | 'No' | null;
+
+export const useLlmConsent = (patientUuid?: string) => {
+  const [consentStatus, setConsentStatus] = useState<ConsentStatus>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!patientUuid) {
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchConsent = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await openmrsFetch(
+          `/ws/rest/v1/ehospital/patient/obs?patientUuid=${patientUuid}`,
+        );
+
+        if (response?.data?.results?.length > 0) {
+          const consent = response.data.results[0].llmConsent;
+          setConsentStatus(consent === 'Yes' ? 'Yes' : 'No');
+        } else {
+          setConsentStatus('No');
+        }
+      } catch (err) {
+        console.error('Failed to fetch LLM consent:', err);
+        setError('Could not verify patient consent.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchConsent();
+  }, [patientUuid]);
+
+  return { consentStatus, isLoading, error };
+};
+
+export const useObservations = (patientUuid?: string, enabled: boolean = true) => {
   const [data, setData] = useState<Observation[] | null>(null);
   const [llmResponse, setLLMResponse] = useState<string | null>(null);
   const [latestMessage, setLatestMessage] = useState<string | null>(null);
@@ -29,7 +70,10 @@ export const useObservations = (patientUuid?: string) => {
   const [isSending, setIsSending] = useState(false);
 
   useEffect(() => {
-    if (!patientUuid) return;
+    if (!patientUuid || !enabled) {
+      setData(null);
+      return;
+    }
 
     const fetchData = async () => {
       try {
@@ -63,7 +107,7 @@ export const useObservations = (patientUuid?: string) => {
     };
 
     fetchData();
-  }, [patientUuid]);
+  }, [patientUuid, enabled]);
 
   const fetchLatestMessage = async (): Promise<string | null> => {
     try {
