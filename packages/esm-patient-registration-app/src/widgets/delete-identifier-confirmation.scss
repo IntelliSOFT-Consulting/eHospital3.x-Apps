@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import '../patient-registration/patient-registration.scss';
+@use '../patient-registration/patient-registration.scss' as *;
 
 .productiveHeading {
   @include type.type-style('heading-compact-02');
