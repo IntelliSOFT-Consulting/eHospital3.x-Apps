@@ -87,7 +87,7 @@ const ChangePassword: React.FC = () => {
               <PasswordInput
                 id="oldPassword"
                 invalid={!!errors?.oldPassword}
-                invalidText={errors?.oldPassword?.message}
+                invalidText={errors?.oldPassword?.message as string}
                 labelText={t('oldPassword', 'Old password')}
                 onChange={onChange}
                 value={value}
@@ -101,7 +101,7 @@ const ChangePassword: React.FC = () => {
               <PasswordInput
                 id="newPassword"
                 invalid={!!errors?.newPassword}
-                invalidText={errors?.newPassword?.message}
+                invalidText={errors?.newPassword?.message as string}
                 labelText={t('newPassword', 'New password')}
                 onChange={onChange}
                 value={value}
@@ -115,7 +115,7 @@ const ChangePassword: React.FC = () => {
               <PasswordInput
                 id="passwordConfirmation"
                 invalid={!!errors?.passwordConfirmation}
-                invalidText={errors?.passwordConfirmation?.message}
+                invalidText={errors?.passwordConfirmation?.message as string}
                 labelText={t('confirmPassword', 'Confirm new password')}
                 onChange={onChange}
                 value={value}

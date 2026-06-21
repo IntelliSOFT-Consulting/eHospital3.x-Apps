@@ -1,7 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-
-import Overlay from '../components/overlay/overlay.component';
 import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
 import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
 import { DataTableSkeleton } from '@carbon/react';
@@ -33,7 +31,6 @@ export const CompletedList: React.FC<CompletedListProps> = ({ fulfillerStatus })
             actions={[]}
           />
         </div>
-        <Overlay />
       </>
     );
   }

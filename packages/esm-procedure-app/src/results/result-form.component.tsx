@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import styles from './result-form.scss';
 import { Button, InlineLoading, ModalBody, ModalFooter, TextArea, FormLabel } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { closeOverlay } from '../components/overlay/hook';
 import { ExtensionSlot, showNotification, showToast, usePatient } from '@openmrs/esm-framework';
 import { useGetOrderConceptByUuid, saveProcedureReport } from './result-form.resource';
 import { useForm } from 'react-hook-form';
@@ -63,7 +62,7 @@ const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) =>
           kind: 'success',
           description: t('generateSuccessfully', 'Report saved successfully'),
         });
-        closeOverlay();
+        // TODO: wire up to workspace closeWorkspace once migrated to workspace v2
       },
       (err) => {
         showNotification({
@@ -107,7 +106,7 @@ const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) =>
         </ModalBody>
 
         <ModalFooter>
-          <Button disabled={isSubmitting} onClick={() => closeOverlay()} kind="secondary">
+          <Button disabled={isSubmitting} onClick={() => {/* TODO: migrate to workspace closeWorkspace */}} kind="secondary">
             {t('cancel', 'Cancel')}
           </Button>
           <Button onClick={handleSubmit(onSubmit)}>Save report</Button>

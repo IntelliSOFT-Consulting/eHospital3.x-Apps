@@ -1,4 +1,5 @@
-import { type FHIRLocationResource } from '@openmrs/esm-api/src/types/location-resource';
+// import { type FHIRLocationResource } from '@openmrs/esm-api/src/types/location-resource';
+export type FHIRLocationResource = any;
 
 export interface LocationResponse {
   type: string;

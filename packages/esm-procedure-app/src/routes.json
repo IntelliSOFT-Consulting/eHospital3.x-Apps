@@ -124,18 +124,36 @@
       "order": 4
     }
   ],
-  "workspaces": [
+  "workspaces2": [
     {
       "name": "add-procedures-order",
-      "type": "order",
-      "title": "Add procedure order",
-      "component": "addProceduresOrderWorkspace"
+      "component": "addProceduresOrderWorkspace",
+      "window": "add-procedures-order-window"
     },
-     {
+    {
       "name": "procedure-report-form",
       "component": "postProcedureResults",
-      "title": "Procedure Report Form",
-      "type": "form"
+      "window": "procedure-report-form-window"
+    }
+  ],
+  "workspaceWindows2": [
+    {
+      "name": "add-procedures-order-window",
+      "group": "addProceduresOrderWorkspaceGroup",
+      "preferredSize": "maximized"
+    },
+    {
+      "name": "procedure-report-form-window",
+      "group": "procedureReportFormWorkspaceGroup",
+      "preferredSize": "maximized"
+    }
+  ],
+  "workspaceGroups2": [
+    {
+      "name": "addProceduresOrderWorkspaceGroup"
+    },
+    {
+      "name": "procedureReportFormWorkspaceGroup"
     }
   ],
    "modals": [

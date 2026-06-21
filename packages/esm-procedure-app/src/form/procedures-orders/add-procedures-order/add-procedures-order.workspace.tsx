@@ -11,8 +11,9 @@ import {
   useLayoutType,
   usePatient,
   type DefaultWorkspaceProps,
+  launchWorkspace2,
 } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
+import { type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
 import { TestTypeSearch } from './procedures-type-search';
 import { ProceduresOrderForm } from './procedures-order-form.component';
 import styles from './add-procedures-order.scss';
@@ -42,7 +43,7 @@ export default function AddProceduresOrderWorkspace({
   const cancelOrder = useCallback(() => {
     closeWorkspace({
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace2('order-basket'),
     });
   }, [closeWorkspace]);
 

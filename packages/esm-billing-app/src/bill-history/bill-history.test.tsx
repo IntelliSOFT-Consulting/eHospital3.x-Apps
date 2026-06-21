@@ -55,7 +55,7 @@ jest.mock('@openmrs/esm-patient-common-lib', () => ({
   CardHeader: jest.fn(({ children }) => <div>{children}</div>),
   EmptyDataIllustration: jest.fn(() => <div>Empty state illustration</div>),
   ErrorState: jest.fn(({ error }) => <div>Error: {error?.message}</div>),
-  launchPatientWorkspace: jest.fn(),
+  launchWorkspace: jest.fn(),
   usePaginationInfo: jest.fn(() => ({
     pageSizes: [10, 20, 30],
     currentPage: 1,

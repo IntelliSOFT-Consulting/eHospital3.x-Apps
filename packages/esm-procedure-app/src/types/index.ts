@@ -434,6 +434,8 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
   specimenType?: string;
   scheduleDate?: Date;
   bodySite?: string;
+  orderer?: string;
+  careSetting?: string;
 }
 
 export type OrderFrequency = CommonProceduresValueCoded;
@@ -536,6 +538,7 @@ export interface GroupedOrdersTableProps {
   showStatusFilter: boolean;
   showDateFilter: boolean;
   actions: Array<OrderAction>;
+  bills?: any[];
 }
 
 export interface ListOrdersDetailsProps {
