@@ -128,7 +128,7 @@
     {
       "name": "add-procedures-order",
       "component": "addProceduresOrderWorkspace",
-      "window": "add-procedures-order-window"
+      "window": "patient-chart-order-basket"
     },
     {
       "name": "procedure-report-form",
@@ -138,20 +138,12 @@
   ],
   "workspaceWindows2": [
     {
-      "name": "add-procedures-order-window",
-      "group": "addProceduresOrderWorkspaceGroup",
-      "preferredSize": "maximized"
-    },
-    {
       "name": "procedure-report-form-window",
       "group": "procedureReportFormWorkspaceGroup",
       "preferredSize": "maximized"
     }
   ],
   "workspaceGroups2": [
-    {
-      "name": "addProceduresOrderWorkspaceGroup"
-    },
     {
       "name": "procedureReportFormWorkspaceGroup"
     }
