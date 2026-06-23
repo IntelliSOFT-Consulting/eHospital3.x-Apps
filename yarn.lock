@@ -1721,7 +1721,6 @@ __metadata:
     "@openmrs/esm-framework": next
     "@openmrs/esm-navigation": next
     "@openmrs/esm-offline": ^8.0.0
-    "@openmrs/esm-patient-chart-app": 10.2.1-pre.8209
     "@openmrs/esm-patient-common-lib": next
     "@openmrs/esm-react-utils": next
     "@openmrs/esm-routes": next
@@ -5565,29 +5564,6 @@ __metadata:
     "@openmrs/esm-state": 6.x
     rxjs: 6.x
   checksum: 2b073c372f7dcfeef7410735efca586f1cedb8dd060af45685b734498438ef9f33c0e1460f3096f832da244f2b582c563796a3de984c3f5f3be3d3613a51540a
-  languageName: node
-  linkType: hard
-
-"@openmrs/esm-patient-chart-app@npm:10.2.1-pre.8209":
-  version: 10.2.1-pre.8209
-  resolution: "@openmrs/esm-patient-chart-app@npm:10.2.1-pre.8209"
-  dependencies:
-    lodash-es: ^4.17.21
-    uuid: ^8.3.2
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    rxjs: 6.x
-    single-spa: 6.x
-    single-spa-react: 6.x
-    swr: 2.x
-  checksum: ec5ed63d6bc8fd343e8949cb2222f9369a61a1802ffa48cd335b840dd45041490e3b154c79dc21f00e7a2019fef7f0ac7ee2f97306a35fe7fed0362740164ce8
   languageName: node
   linkType: hard
 
