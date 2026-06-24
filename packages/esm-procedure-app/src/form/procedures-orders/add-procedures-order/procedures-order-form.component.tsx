@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import classNames from 'classnames';
 import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
-import { launchWorkspace2 } from '@openmrs/esm-framework';
 import {
   translateFrom,
   useLayoutType,

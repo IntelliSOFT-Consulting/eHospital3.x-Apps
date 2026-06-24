@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, Tile } from '@carbon/react';
 import { Add, ChevronDown, ChevronUp } from '@carbon/react/icons';
-import { useLayoutType, usePatient, useWorkspace2Store } from '@openmrs/esm-framework';
+import { useLayoutType, useWorkspace2Store } from '@openmrs/esm-framework';
 import { type OrderBasketItem, useOrderBasket, type OrderBasketExtensionProps } from '@openmrs/esm-patient-common-lib';
 import { ProceduresOrderBasketItemTile } from './procedures-order-basket-item-tile.component';
 import { prepProceduresOrderPostData } from '../api';
@@ -11,7 +11,7 @@ import LabIcon from './procedures-icon.component';
 import styles from './procedures-order-basket-panel.scss';
 import { type ProcedureOrderBasketItem } from '../../../types';
 
-export default function ProceduresOrderBasketPanelExtension({patient, OrderBasketItem}: OrderBasketExtensionProps) {
+export default function ProceduresOrderBasketPanelExtension({patient}: OrderBasketExtensionProps) {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(

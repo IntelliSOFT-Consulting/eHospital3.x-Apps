@@ -10,9 +10,10 @@ import { type Result } from '../types';
 interface ResultFormProps {
   patientUuid: string;
   order: Result;
+  closeWorkspace?: () => void;
 }
 
-const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) => {
+const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid, closeWorkspace }) => {
   const [report, setProcedureReport] = useState('');
   const { t } = useTranslation();
   const {
@@ -58,11 +59,11 @@ const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) =>
       () => {
         showToast({
           critical: true,
-          title: t('saveReport', 'Report updated sucessful'),
+          title: t('saveReport', 'Report updated successfully'),
           kind: 'success',
           description: t('generateSuccessfully', 'Report saved successfully'),
         });
-        // TODO: wire up to workspace closeWorkspace once migrated to workspace v2
+        closeWorkspace?.();
       },
       (err) => {
         showNotification({
@@ -106,7 +107,7 @@ const PostProcedureForm: React.FC<ResultFormProps> = ({ order, patientUuid }) =>
         </ModalBody>
 
         <ModalFooter>
-          <Button disabled={isSubmitting} onClick={() => {/* TODO: migrate to workspace closeWorkspace */}} kind="secondary">
+          <Button disabled={isSubmitting} onClick={() => {closeWorkspace?.()}} kind="secondary">
             {t('cancel', 'Cancel')}
           </Button>
           <Button onClick={handleSubmit(onSubmit)}>Save report</Button>

@@ -55,7 +55,7 @@ jest.mock('@openmrs/esm-patient-common-lib', () => ({
   CardHeader: jest.fn(({ children }) => <div>{children}</div>),
   EmptyDataIllustration: jest.fn(() => <div>Empty state illustration</div>),
   ErrorState: jest.fn(({ error }) => <div>Error: {error?.message}</div>),
-  launchWorkspace: jest.fn(),
+  launchPatientWorkspace: jest.fn(),
   usePaginationInfo: jest.fn(() => ({
     pageSizes: [10, 20, 30],
     currentPage: 1,
@@ -91,6 +91,7 @@ jest.mock('@openmrs/esm-framework', () => ({
   formatDate: jest.fn((date) => date?.toString() ?? ''),
   formatDatetime: jest.fn((date) => date?.toString() ?? ''),
   parseDate: jest.fn((dateString) => new Date(dateString)),
+  launchWorkspace: jest.fn(),
   ExtensionSlot: jest.fn(({ children }) => <>{children}</>),
 }));
 
