@@ -48,7 +48,7 @@ jobs:
         run: yarn turbo run build --color --concurrency=5
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: |
@@ -69,7 +69,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -95,7 +95,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -121,7 +121,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -147,7 +147,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -173,7 +173,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
@@ -199,7 +199,7 @@ jobs:
 
     steps:
       - name: Download Artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Compute Timestamp
         run: echo "TIMESTAMP=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
