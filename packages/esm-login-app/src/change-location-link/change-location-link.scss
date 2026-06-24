@@ -1,5 +1,5 @@
-@import '~@openmrs/esm-styleguide/src/vars';
-@import '../root.scss';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '../root.scss' as *;
 
 .panelItemContainer a {
   display: flex;

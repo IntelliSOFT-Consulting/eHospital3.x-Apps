@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './work-list.scss';
-import Overlay from '../components/overlay/overlay.component';
 import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
 import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
 import { DataTableSkeleton } from '@carbon/react';
@@ -30,7 +29,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
           actions={[{ actionName: 'postProcedureResultForm' }, { actionName: 'reject-procedure-order-dialog' }]}
         />
       </div>
-      <Overlay />
     </>
   );
 };

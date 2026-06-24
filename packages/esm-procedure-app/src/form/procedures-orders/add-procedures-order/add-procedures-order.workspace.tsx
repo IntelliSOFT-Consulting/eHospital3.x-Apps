@@ -1,93 +1,66 @@
-import React, { useCallback, useState } from 'react';
-import classNames from 'classnames';
-import capitalize from 'lodash-es/capitalize';
+import React, { type ComponentProps, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
-import { ArrowLeft } from '@carbon/react/icons';
+import { ArrowLeftIcon, useLayoutType, Workspace2 } from '@openmrs/esm-framework';
 import {
-  age,
-  formatDate,
-  parseDate,
-  useLayoutType,
-  usePatient,
-  type DefaultWorkspaceProps,
-} from '@openmrs/esm-framework';
-import { launchPatientWorkspace, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
+  type OrderBasketItem,
+  type OrderBasketWindowProps,
+  type PatientWorkspace2DefinitionProps,
+} from '@openmrs/esm-patient-common-lib';
 import { TestTypeSearch } from './procedures-type-search';
 import { ProceduresOrderForm } from './procedures-order-form.component';
 import styles from './add-procedures-order.scss';
 import { type ProcedureOrderBasketItem } from '../../../types';
 
-export interface AddProcedureOrderWorkspaceAdditionalProps {
+export interface AddProceduresOrderWorkspaceProps {
   order?: OrderBasketItem;
 }
 
-export interface AddProceduresOrderWorkspace extends DefaultWorkspaceProps, AddProcedureOrderWorkspaceAdditionalProps {}
-
+/**
+ * This workspace displays the procedure order form for:
+ * 1. adding a new procedure order
+ * 2. editing a pending (un-submitted) procedure order in the order basket
+ *
+ * This workspace must only be used within the patient chart.
+ */
 export default function AddProceduresOrderWorkspace({
-  order: initialOrder,
+  workspaceProps,
+  groupProps: { patient },
   closeWorkspace,
-  closeWorkspaceWithSavedChanges,
-  promptBeforeClosing,
-}: AddProceduresOrderWorkspace) {
+}: PatientWorkspace2DefinitionProps<AddProceduresOrderWorkspaceProps, OrderBasketWindowProps>) {
   const { t } = useTranslation();
-
-  const { patient, isLoading: isLoadingPatient } = usePatient();
-  const [currentLabOrder, setCurrentLabOrder] = useState(initialOrder as ProcedureOrderBasketItem);
-
   const isTablet = useLayoutType() === 'tablet';
+  const initialOrder = workspaceProps?.order as ProcedureOrderBasketItem | undefined;
+  const [currentLabOrder, setCurrentLabOrder] = useState(initialOrder);
 
-  const patientName = `${patient?.name?.[0]?.given?.join(' ')} ${patient?.name?.[0].family}`;
+  const workspaceTitle = t('addProcedureOrderWorkspaceTitle', 'Add procedure order');
 
-  const cancelOrder = useCallback(() => {
-    closeWorkspace({
-      ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
-    });
-  }, [closeWorkspace]);
+  if (!currentLabOrder) {
+    return (
+      <Workspace2 title={workspaceTitle}>
+        {!isTablet && (
+          <div className={styles.backButton}>
+            <Button
+              kind="ghost"
+              renderIcon={(props: ComponentProps<typeof ArrowLeftIcon>) => <ArrowLeftIcon size={24} {...props} />}
+              iconDescription="Return to order basket"
+              size="sm"
+              onClick={() => closeWorkspace()}>
+              <span>{t('backToOrderBasket', 'Back to order basket')}</span>
+            </Button>
+          </div>
+        )}
+        <TestTypeSearch openLabForm={setCurrentLabOrder} patient={patient} closeWorkspace={closeWorkspace} />
+      </Workspace2>
+    );
+  }
 
   return (
-    <div className={styles.container}>
-      {isTablet && !isLoadingPatient && (
-        <div className={styles.patientHeader}>
-          <span className={styles.bodyShort02}>{patientName}</span>
-          <span className={classNames(styles.text02, styles.bodyShort01)}>
-            {capitalize(patient?.gender)} &middot; {age(patient?.birthDate)} &middot;{' '}
-            <span>
-              {formatDate(parseDate(patient?.birthDate), {
-                mode: 'wide',
-                time: false,
-              })}
-            </span>
-          </span>
-        </div>
-      )}
-      {!isTablet && (
-        <div className={styles.backButton}>
-          <Button
-            kind="ghost"
-            renderIcon={(props) => <ArrowLeft size={24} {...props} />}
-            iconDescription="Return to order basket"
-            size="sm"
-            onClick={cancelOrder}>
-            <span>{t('backToOrderBasket', 'Back to order basket')}</span>
-          </Button>
-        </div>
-      )}
-      {!currentLabOrder ? (
-        <div>
-          <TestTypeSearch openLabForm={setCurrentLabOrder} />
-        </div>
-      ) : (
-        <div>
-          <ProceduresOrderForm
-            initialOrder={currentLabOrder}
-            closeWorkspace={closeWorkspace}
-            closeWorkspaceWithSavedChanges={closeWorkspaceWithSavedChanges}
-            promptBeforeClosing={promptBeforeClosing}
-          />
-        </div>
-      )}
-    </div>
+    <ProceduresOrderForm
+      initialOrder={currentLabOrder}
+      patient={patient}
+      closeWorkspace={closeWorkspace}
+      onCancel={() => setCurrentLabOrder(undefined)}
+    />
   );
 }

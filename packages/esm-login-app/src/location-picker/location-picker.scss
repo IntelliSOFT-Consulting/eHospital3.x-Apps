@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
-@import '~@openmrs/esm-styleguide/src/vars';
-@import '../root.scss';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '../root.scss' as *;
 
 .locationPickerContainer {
   display: flex;

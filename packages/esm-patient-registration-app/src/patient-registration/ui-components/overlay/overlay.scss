@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import '../../patient-registration.scss';
+@use '../../patient-registration.scss' as *;
 
 .desktopOverlay {
   position: fixed;

@@ -1,6 +1,7 @@
+@forward '@openmrs/esm-styleguide/src/vars';
 @use '@carbon/layout';
 @use '@carbon/type';
-@import '~@openmrs/esm-styleguide/src/vars';
+@use '@openmrs/esm-styleguide/src/vars' as *;
 
 .title {
   color: var(--omrs-color-brand-teal);

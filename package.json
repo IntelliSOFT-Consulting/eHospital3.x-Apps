@@ -89,6 +89,7 @@
     "@openmrs/esm-offline": "^8.0.0",
     "@openmrs/esm-patient-common-lib": "next",
     "@openmrs/esm-react-utils": "next",
+    "@openmrs/esm-routes": "next",
     "@openmrs/esm-state": "next",
     "@openmrs/esm-styleguide": "next",
     "@openmrs/esm-translations": "next",
@@ -131,10 +132,10 @@
     "jest-environment-jsdom": "^28.1.3",
     "lerna": "^8.1.6",
     "lodash": "^4.17.21",
-    "openmrs": "^6.3.1-pre.3047",
+    "openmrs": "next",
     "prettier": "^2.8.8",
     "pretty-quick": "^3.1.3",
-    "react": "^19.1.1",
+    "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-i18next": "^11.18.6",
     "react-router-dom": "^6.14.1",
@@ -143,10 +144,7 @@
     "swc-loader": "^0.2.3",
     "swr": "^2.2.4",
     "turbo": "^1.12.4",
-    "typescript": "^4.9.5",
-    "webpack": "^5.88.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "typescript": "^4.9.5"
   },
   "packageManager": "yarn@3.6.1"
 }

@@ -2,7 +2,7 @@
   "$schema": "https://json.openmrs.org/routes.schema.json",
   "backendDependencies": {
     "fhir2": ">=1.2",
-    "webservices.rest": "^2.24.0"
+    "webservices.rest": ">=2.24.0"
   },
   "extensions": [
     {
@@ -124,18 +124,28 @@
       "order": 4
     }
   ],
-  "workspaces": [
+  "workspaces2": [
     {
       "name": "add-procedures-order",
-      "type": "order",
-      "title": "Add procedure order",
-      "component": "addProceduresOrderWorkspace"
+      "component": "addProceduresOrderWorkspace",
+      "window": "patient-chart-order-basket"
     },
-     {
+    {
       "name": "procedure-report-form",
       "component": "postProcedureResults",
-      "title": "Procedure Report Form",
-      "type": "form"
+      "window": "procedure-report-form-window"
+    }
+  ],
+  "workspaceWindows2": [
+    {
+      "name": "procedure-report-form-window",
+      "group": "procedureReportFormWorkspaceGroup",
+      "preferredSize": "maximized"
+    }
+  ],
+  "workspaceGroups2": [
+    {
+      "name": "procedureReportFormWorkspaceGroup"
     }
   ],
    "modals": [

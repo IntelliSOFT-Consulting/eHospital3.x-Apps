@@ -1,13 +1,14 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import classNames from 'classnames';
-import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import {
   translateFrom,
   useLayoutType,
   useSession,
   useConfig,
   ExtensionSlot,
-  type DefaultWorkspaceProps,
+  type Workspace2DefinitionProps,
+  Workspace2,
 } from '@openmrs/esm-framework';
 import { careSettingUuid, prepProceduresOrderPostData, useOrderReasons, useConceptById, type Concept } from '../api';
 import {
@@ -38,22 +39,26 @@ import { moduleName } from '../../../constants';
 
 export interface ProceduresOrderFormProps {
   initialOrder: ProcedureOrderBasketItem;
-  closeWorkspace: DefaultWorkspaceProps['closeWorkspace'];
-  closeWorkspaceWithSavedChanges: DefaultWorkspaceProps['closeWorkspaceWithSavedChanges'];
-  promptBeforeClosing: DefaultWorkspaceProps['promptBeforeClosing'];
+  patient: fhir.Patient;
+  closeWorkspace: Workspace2DefinitionProps['closeWorkspace'];
+  onCancel?: () => void;
 }
 
 export function ProceduresOrderForm({
   initialOrder,
+  patient,
   closeWorkspace,
-  closeWorkspaceWithSavedChanges,
-  promptBeforeClosing,
+  onCancel,
 }: ProceduresOrderFormProps) {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const session = useSession();
   const { orderConfigObject, isLoading: isLoadingOrderConfig, error: errorFetchingOrderConfig } = useOrderConfig();
-  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>('procedures', prepProceduresOrderPostData);
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
+    patient,
+    'procedures',
+    prepProceduresOrderPostData,
+  );
   const { testTypes, isLoading: isLoadingTestTypes, error: errorLoadingTestTypes } = useProceduresTypes();
   const [showErrorNotification, setShowErrorNotification] = useState(false);
   const {
@@ -142,19 +147,19 @@ export function ProceduresOrderForm({
       const orderIndex = existingOrder ? orders.indexOf(existingOrder) : orders.length;
       newOrders[orderIndex] = data;
       setOrders(newOrders);
-      closeWorkspaceWithSavedChanges({
-        onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
-      });
+      closeWorkspace({ discardUnsavedChanges: true });
     },
     [orders, setOrders, closeWorkspace, session?.currentProvider?.uuid, defaultValues],
   );
 
   const cancelOrder = useCallback(() => {
-    setOrders(orders.filter((order) => order.testType.conceptUuid !== defaultValues.testType.conceptUuid));
-    closeWorkspace({
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
-    });
-  }, [closeWorkspace, orders, setOrders, defaultValues]);
+    if (onCancel) {
+      onCancel();
+    } else {
+      setOrders(orders.filter((order) => order.testType.conceptUuid !== defaultValues.testType.conceptUuid));
+      closeWorkspace();
+    }
+  }, [closeWorkspace, orders, setOrders, defaultValues, onCancel]);
 
   const onError = (errors: FieldErrors<ProcedureOrderBasketItem>) => {
     if (errors) {
@@ -162,14 +167,11 @@ export function ProceduresOrderForm({
     }
   };
 
-  useEffect(() => {
-    promptBeforeClosing(() => isDirty);
-  }, [isDirty]);
-
   const [showScheduleDate, setShowScheduleDate] = useState(false);
+  const workspaceTitle = t('addProcedureOrderWorkspaceTitle', 'Add procedure order');
 
   return (
-    <>
+    <Workspace2 title={workspaceTitle} hasUnsavedChanges={isDirty}>
       {errorLoadingTestTypes && (
         <InlineNotification
           kind="error"
@@ -462,7 +464,7 @@ export function ProceduresOrderForm({
           </ButtonSet>
         </div>
       </Form>
-    </>
+    </Workspace2>
   );
 }
 

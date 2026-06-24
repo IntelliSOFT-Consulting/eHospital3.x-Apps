@@ -3,18 +3,23 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, Tile } from '@carbon/react';
 import { Add, ChevronDown, ChevronUp } from '@carbon/react/icons';
-import { useLayoutType, closeWorkspace } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useLayoutType, useWorkspace2Store } from '@openmrs/esm-framework';
+import { type OrderBasketItem, useOrderBasket, type OrderBasketExtensionProps } from '@openmrs/esm-patient-common-lib';
 import { ProceduresOrderBasketItemTile } from './procedures-order-basket-item-tile.component';
 import { prepProceduresOrderPostData } from '../api';
 import LabIcon from './procedures-icon.component';
 import styles from './procedures-order-basket-panel.scss';
 import { type ProcedureOrderBasketItem } from '../../../types';
 
-export default function ProceduresOrderBasketPanelExtension() {
+export default function ProceduresOrderBasketPanelExtension({patient}: OrderBasketExtensionProps) {
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
-  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>('procedures', prepProceduresOrderPostData);
+  const { orders, setOrders } = useOrderBasket<ProcedureOrderBasketItem>(
+    patient,
+    'procedures',
+    prepProceduresOrderPostData,
+  );
+  const { openChildWorkspace } = useWorkspace2Store();
   const [isExpanded, setIsExpanded] = useState(orders.length > 0);
   const {
     incompleteOrderBasketItems,
@@ -53,20 +58,12 @@ export default function ProceduresOrderBasketPanelExtension() {
   }, [orders]);
 
   const openNewProceduresForm = useCallback(() => {
-    closeWorkspace('order-basket', {
-      ignoreChanges: true,
-      onWorkspaceClose: () => {
-        launchPatientWorkspace('add-procedures-order');
-      },
-    });
-  }, []);
+    openChildWorkspace('order-basket', 'add-procedures-order', {});
+  }, [openChildWorkspace]);
 
   const openEditProceduresForm = useCallback((order: OrderBasketItem) => {
-    closeWorkspace('order-basket', {
-      ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('add-procedures-order', { order }),
-    });
-  }, []);
+    openChildWorkspace('order-basket', 'add-procedures-order', { order });
+  }, [openChildWorkspace]);
 
   const removeLabOrder = useCallback(
     (order: ProcedureOrderBasketItem) => {

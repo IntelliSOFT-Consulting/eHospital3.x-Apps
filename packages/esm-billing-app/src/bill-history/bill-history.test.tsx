@@ -91,6 +91,7 @@ jest.mock('@openmrs/esm-framework', () => ({
   formatDate: jest.fn((date) => date?.toString() ?? ''),
   formatDatetime: jest.fn((date) => date?.toString() ?? ''),
   parseDate: jest.fn((dateString) => new Date(dateString)),
+  launchWorkspace: jest.fn(),
   ExtensionSlot: jest.fn(({ children }) => <>{children}</>),
 }));
 

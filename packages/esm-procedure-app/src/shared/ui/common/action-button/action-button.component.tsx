@@ -1,12 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
-import { showModal, launchWorkspace } from '@openmrs/esm-framework';
+import { showModal, launchWorkspace2 } from '@openmrs/esm-framework';
 import { type Order } from '@openmrs/esm-patient-common-lib';
 import OrderActionExtension from './order-action-extension.component';
 import { type Result } from '../../../../types';
-import { launchOverlay } from '../../../../components/overlay/hook';
-import PostProcedureForm from '../../../../form/post-procedures/post-procedure-form.component';
 import styles from './action-button.scss';
 import ActionButtonBase from './action-button-base';
 
@@ -22,9 +20,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
   const { t } = useTranslation();
 
   const handleOpenProcedureResultForm = () => {
-    launchWorkspace('procedure-report-form', {
+    launchWorkspace2('procedure-report-form', {
       patientUuid,
       order,
+      workspaceTitle: t('procedureReportForm', 'Procedure Report Form'),
     });
   };
 

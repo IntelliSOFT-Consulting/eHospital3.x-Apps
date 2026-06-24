@@ -35,7 +35,8 @@ import PrintResultsSummary from '../results-summary/print-results-summary.compon
 import { useGetPatientByUuid } from '../../utils/functions';
 import { ResourceRepresentation, type Result, getOrderColor } from '../patient-procedure-order-results.resource';
 import { useLaboratoryOrderResultsPages } from '../patient-procedure-order-results-table.resource';
-import { CardHeader, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { CardHeader } from '@openmrs/esm-patient-common-lib';
+import { launchWorkspace2 } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
 
 interface LaboratoryOrderReferalResultsProps {
@@ -129,7 +130,7 @@ const LaboratoryOrderReferalResults: React.FC<LaboratoryOrderReferalResultsProps
 
   const EditReferralAction: React.FC<EditReferralActionProps> = ({ formUuid, encounterUuid }) => {
     const launchForm = () => {
-      launchPatientWorkspace('patient-laboratory-referral-workspace', {
+      launchWorkspace2('patient-laboratory-referral-workspace', {
         workspaceTitle: 'Edit Referral Form',
         mutateForm: () => {
           mutate((key) => true, undefined, {

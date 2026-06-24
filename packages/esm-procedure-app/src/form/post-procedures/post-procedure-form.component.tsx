@@ -31,7 +31,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { savePostProcedure, useConditionsSearch, useProvidersSearch } from './post-procedure.resource';
 import { type CodedProvider, type CodedCondition, ProcedurePayload, type Result } from '../../types';
 import dayjs from 'dayjs';
-import { closeOverlay } from '../../components/overlay/hook';
 import { type ConfigObject, StringPath } from '../../config-schema';
 import { mutate } from 'swr';
 
@@ -213,7 +212,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
         isLowContrast: true,
         kind: 'error',
       });
-      closeOverlay();
+      closeWorkspace();
     }
   };
 

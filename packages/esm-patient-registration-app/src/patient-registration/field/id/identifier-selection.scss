@@ -1,5 +1,5 @@
 @use '@carbon/styles/scss/spacing';
-@import '../../patient-registration.scss';
+@use '../../patient-registration.scss' as *;
 
 .button {
   height: 4rem;

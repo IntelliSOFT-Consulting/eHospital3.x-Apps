@@ -414,7 +414,8 @@ export interface WaitTime {
   averageWaitTime: string;
 }
 
-export interface ProcedureOrderBasketItem extends OrderBasketItem {
+export interface ProcedureOrderBasketItem extends Omit<OrderBasketItem, 'visit'> {
+  visit?: string;
   testType?: {
     label: string;
     conceptUuid: string;
@@ -434,6 +435,8 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
   specimenType?: string;
   scheduleDate?: Date;
   bodySite?: string;
+  orderer?: string;
+  careSetting?: string;
 }
 
 export type OrderFrequency = CommonProceduresValueCoded;
@@ -507,9 +510,13 @@ export type OrderStatusFilterType =
   | 'ON_HOLD'
   | 'DECLINED';
 
+export type FulfillerStatus = '' | 'IN_PROGRESS' | 'DECLINED' | 'COMPLETED' | 'EXCEPTION';
+
 export interface WorklistProps {
-  fulfillerStatus: string;
+  fulfillerStatus: FulfillerStatus | string;
 }
+
+export type WorkListProps = WorklistProps;
 
 export interface ResultsOrderProps {
   order: Result;
@@ -528,19 +535,24 @@ export interface GroupedOrders {
   patientId: string;
   orders: Array<Result>;
 }
+
 export interface GroupedOrdersTableProps {
   orders: Array<Result>;
   showStatus: boolean;
+  showStartButton?: boolean;
   showActions: boolean;
   showOrderType: boolean;
-  showStatusFilter: boolean;
-  showDateFilter: boolean;
+  showStatusFilter?: boolean;
+  showDateFilter?: boolean;
   actions: Array<OrderAction>;
+  title?: string;
+  bills?: any[];
 }
 
 export interface ListOrdersDetailsProps {
   groupedOrders: GroupedOrders;
   showStatus: boolean;
+  showStartButton?: boolean;
   showActions: boolean;
   showOrderType: boolean;
   actions: Array<OrderAction>;
@@ -548,7 +560,7 @@ export interface ListOrdersDetailsProps {
 
 export interface OrderAction {
   actionName: string;
-  displayPosition: 0 | number;
+  displayPosition?: 0 | number;
 }
 
 export interface Result {
