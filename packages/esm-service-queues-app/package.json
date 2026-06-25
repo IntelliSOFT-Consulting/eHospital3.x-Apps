@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-service-queues-app",
+  "name": "@intellisoftkenya/esm-service-queues-app",
   "version": "1.0.6",
   "description": "Outpatient front-end module for the OpenMRS SPA",
   "browser": "dist/sjthc-esm-service-queues-app.js",

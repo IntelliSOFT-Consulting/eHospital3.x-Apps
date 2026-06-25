@@ -1704,288 +1704,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ehospital/eHospital3.x-Apps@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/eHospital3.x-Apps@workspace:."
-  dependencies:
-    "@carbon/charts-react": ^1.5.2
-    "@carbon/react": 1.x
-    "@hookform/resolvers": ^3.1.1
-    "@openmrs/esm-api": ^8.0.0
-    "@openmrs/esm-config": ^8.0.0
-    "@openmrs/esm-context": ^8.0.0
-    "@openmrs/esm-emr-api": next
-    "@openmrs/esm-error-handling": next
-    "@openmrs/esm-extensions": next
-    "@openmrs/esm-feature-flags": ^8.0.0
-    "@openmrs/esm-framework": next
-    "@openmrs/esm-navigation": next
-    "@openmrs/esm-offline": ^8.0.0
-    "@openmrs/esm-patient-common-lib": next
-    "@openmrs/esm-react-utils": next
-    "@openmrs/esm-routes": next
-    "@openmrs/esm-state": next
-    "@openmrs/esm-styleguide": next
-    "@openmrs/esm-translations": next
-    "@openmrs/esm-utils": ^8.0.0
-    "@playwright/test": ^1.30.0
-    "@swc/cli": ^0.1.62
-    "@swc/core": ^1.3.68
-    "@swc/jest": ^0.2.26
-    "@testing-library/dom": ^8.20.1
-    "@testing-library/jest-dom": ^5.16.5
-    "@testing-library/react": ^13.4.0
-    "@testing-library/user-event": ^14.4.3
-    "@types/jest": ^28.1.8
-    "@types/lodash-es": ^4.17.12
-    "@types/react": ^18.2.14
-    "@types/react-dom": ^18.2.6
-    "@types/react-router": ^5.1.20
-    "@types/react-router-dom": ^5.3.3
-    "@types/uuid": ^9.0.4
-    "@types/webpack-env": ^1.18.1
-    "@typescript-eslint/eslint-plugin": ^5.61.0
-    "@typescript-eslint/parser": ^5.61.0
-    ace-builds: ^1.36.5
-    ajv: ^6.12.6
-    babel-preset-minify: ^0.5.2
-    classnames: ^2.3.2
-    concurrently: ^8.2.2
-    cross-env: ^7.0.3
-    css-loader: ^6.8.1
-    d3-selection: ^3.0.0
-    dayjs: ^1.11.10
-    dotenv: ^16.0.3
-    eslint: ^8.44.0
-    eslint-config-prettier: ^8.8.0
-    eslint-config-ts-react-important-stuff: ^3.0.0
-    eslint-plugin-prettier: ^4.2.1
-    file-loader: ^6.2.0
-    fuzzy: ^0.1.3
-    husky: ^8.0.3
-    i18next: ^23.2.8
-    i18next-parser: ^8.0.0
-    identity-obj-proxy: ^3.0.0
-    jest: ^28.1.3
-    jest-cli: ^28.1.3
-    jest-environment-jsdom: ^28.1.3
-    lerna: ^8.1.6
-    lodash: ^4.17.21
-    lodash-es: 4.x
-    openmrs: next
-    prettier: ^2.8.8
-    pretty-quick: ^3.1.3
-    react: ^18.3.1
-    react-ace: ^13.0.0
-    react-data-table-component: ^7.6.2
-    react-dom: ^18.3.1
-    react-hook-form: ^7.45.1
-    react-i18next: ^11.18.6
-    react-image-annotate: ^1.8.0
-    react-is: ^18.3.1
-    react-router-dom: ^6.14.1
-    react-to-print: ^2.14.13
-    rxjs: ^6.6.7
-    single-spa: ^6.0.1
-    single-spa-react: ^6.0.2
-    styled-components: ^5
-    swc-loader: ^0.2.3
-    swr: ^2.2.4
-    ts-dotenv: ^0.9.1
-    turbo: ^1.12.4
-    typescript: ^4.9.5
-    uuid: ^8.3.2
-    xlsx: ^0.18.5
-    zod: ^3.21.4
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": "*"
-    "@openmrs/esm-patient-common-lib": "*"
-    dayjs: 1.x
-    lodash-es: 4.x
-    react: 18.x
-    react-dom: 18.x
-    react-i18next: "*"
-    react-router-dom: 6.x
-    rxjs: 6.x
-    sass: ^1.33.0
-    single-spa-react: 5.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-ai-model-app@workspace:packages/esm-ai-model-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-ai-model-app@workspace:packages/esm-ai-model-app"
-  dependencies:
-    lodash-es: ^4.17.15
-    react-to-print: ^2.14.13
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-billing-app@workspace:packages/esm-billing-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-billing-app@workspace:packages/esm-billing-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-import-export-app@workspace:packages/esm-import-export-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-login-app@workspace:packages/esm-login-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-login-app@workspace:packages/esm-login-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-messages-app@workspace:packages/esm-messages-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-messages-app@workspace:packages/esm-messages-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-patient-list-app@workspace:packages/esm-patient-list-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-procedure-app@workspace:packages/esm-procedure-app"
-  peerDependencies:
-    "@carbon/react": ^1.x
-    "@openmrs/esm-framework": "*"
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-reports-app@workspace:packages/esm-reports-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-reports-app@workspace:packages/esm-reports-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
-"@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app":
-  version: 0.0.0-use.local
-  resolution: "@ehospital/esm-service-queues-app@workspace:packages/esm-service-queues-app"
-  peerDependencies:
-    "@carbon/react": 1.x
-    "@openmrs/esm-framework": 6.x
-    react: ^18.1.0
-    react-i18next: 11.x
-    react-router-dom: 6.x
-    swr: 2.x
-  languageName: unknown
-  linkType: soft
-
 "@emnapi/core@npm:^1.1.0, @emnapi/core@npm:^1.5.0":
   version: 1.11.1
   resolution: "@emnapi/core@npm:1.11.1"
@@ -3006,6 +2724,288 @@ __metadata:
   checksum: 97769b74264a2575c12c231e3d4acf98b4ae237fc987cec6b459f88b907b1729623403b8d9fe0cf2ca21743114777c64e3031fbeff72e9da37fbf4c8985f587f
   languageName: node
   linkType: hard
+
+"@intellisoftkenya/eHospital3.x-Apps@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/eHospital3.x-Apps@workspace:."
+  dependencies:
+    "@carbon/charts-react": ^1.5.2
+    "@carbon/react": 1.x
+    "@hookform/resolvers": ^3.1.1
+    "@openmrs/esm-api": ^8.0.0
+    "@openmrs/esm-config": ^8.0.0
+    "@openmrs/esm-context": ^8.0.0
+    "@openmrs/esm-emr-api": next
+    "@openmrs/esm-error-handling": next
+    "@openmrs/esm-extensions": next
+    "@openmrs/esm-feature-flags": ^8.0.0
+    "@openmrs/esm-framework": next
+    "@openmrs/esm-navigation": next
+    "@openmrs/esm-offline": ^8.0.0
+    "@openmrs/esm-patient-common-lib": next
+    "@openmrs/esm-react-utils": next
+    "@openmrs/esm-routes": next
+    "@openmrs/esm-state": next
+    "@openmrs/esm-styleguide": next
+    "@openmrs/esm-translations": next
+    "@openmrs/esm-utils": ^8.0.0
+    "@playwright/test": ^1.30.0
+    "@swc/cli": ^0.1.62
+    "@swc/core": ^1.3.68
+    "@swc/jest": ^0.2.26
+    "@testing-library/dom": ^8.20.1
+    "@testing-library/jest-dom": ^5.16.5
+    "@testing-library/react": ^13.4.0
+    "@testing-library/user-event": ^14.4.3
+    "@types/jest": ^28.1.8
+    "@types/lodash-es": ^4.17.12
+    "@types/react": ^18.2.14
+    "@types/react-dom": ^18.2.6
+    "@types/react-router": ^5.1.20
+    "@types/react-router-dom": ^5.3.3
+    "@types/uuid": ^9.0.4
+    "@types/webpack-env": ^1.18.1
+    "@typescript-eslint/eslint-plugin": ^5.61.0
+    "@typescript-eslint/parser": ^5.61.0
+    ace-builds: ^1.36.5
+    ajv: ^6.12.6
+    babel-preset-minify: ^0.5.2
+    classnames: ^2.3.2
+    concurrently: ^8.2.2
+    cross-env: ^7.0.3
+    css-loader: ^6.8.1
+    d3-selection: ^3.0.0
+    dayjs: ^1.11.10
+    dotenv: ^16.0.3
+    eslint: ^8.44.0
+    eslint-config-prettier: ^8.8.0
+    eslint-config-ts-react-important-stuff: ^3.0.0
+    eslint-plugin-prettier: ^4.2.1
+    file-loader: ^6.2.0
+    fuzzy: ^0.1.3
+    husky: ^8.0.3
+    i18next: ^23.2.8
+    i18next-parser: ^8.0.0
+    identity-obj-proxy: ^3.0.0
+    jest: ^28.1.3
+    jest-cli: ^28.1.3
+    jest-environment-jsdom: ^28.1.3
+    lerna: ^8.1.6
+    lodash: ^4.17.21
+    lodash-es: 4.x
+    openmrs: next
+    prettier: ^2.8.8
+    pretty-quick: ^3.1.3
+    react: ^18.3.1
+    react-ace: ^13.0.0
+    react-data-table-component: ^7.6.2
+    react-dom: ^18.3.1
+    react-hook-form: ^7.45.1
+    react-i18next: ^11.18.6
+    react-image-annotate: ^1.8.0
+    react-is: ^18.3.1
+    react-router-dom: ^6.14.1
+    react-to-print: ^2.14.13
+    rxjs: ^6.6.7
+    single-spa: ^6.0.1
+    single-spa-react: ^6.0.2
+    styled-components: ^5
+    swc-loader: ^0.2.3
+    swr: ^2.2.4
+    ts-dotenv: ^0.9.1
+    turbo: ^1.12.4
+    typescript: ^4.9.5
+    uuid: ^8.3.2
+    xlsx: ^0.18.5
+    zod: ^3.21.4
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": "*"
+    "@openmrs/esm-patient-common-lib": "*"
+    dayjs: 1.x
+    lodash-es: 4.x
+    react: 18.x
+    react-dom: 18.x
+    react-i18next: "*"
+    react-router-dom: 6.x
+    rxjs: 6.x
+    sass: ^1.33.0
+    single-spa-react: 5.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-admin-nav-app@workspace:packages/esm-admin-nav-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-admin-nav-app@workspace:packages/esm-admin-nav-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-ai-model-app@workspace:packages/esm-ai-model-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-ai-model-app@workspace:packages/esm-ai-model-app"
+  dependencies:
+    lodash-es: ^4.17.15
+    react-to-print: ^2.14.13
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-billing-app@workspace:packages/esm-billing-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-billing-app@workspace:packages/esm-billing-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-import-export-app@workspace:packages/esm-import-export-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-import-export-app@workspace:packages/esm-import-export-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-login-app@workspace:packages/esm-login-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-login-app@workspace:packages/esm-login-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-messages-app@workspace:packages/esm-messages-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-messages-app@workspace:packages/esm-messages-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-patient-flags-app@workspace:packages/esm-patient-flags-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-patient-flags-app@workspace:packages/esm-patient-flags-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-patient-list-app@workspace:packages/esm-patient-list-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-patient-list-app@workspace:packages/esm-patient-list-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-patient-visits-report-app@workspace:packages/esm-patient-visits-report-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-procedure-app@workspace:packages/esm-procedure-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-procedure-app@workspace:packages/esm-procedure-app"
+  peerDependencies:
+    "@carbon/react": ^1.x
+    "@openmrs/esm-framework": "*"
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-reports-app@workspace:packages/esm-reports-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-reports-app@workspace:packages/esm-reports-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
+
+"@intellisoftkenya/esm-service-queues-app@workspace:packages/esm-service-queues-app":
+  version: 0.0.0-use.local
+  resolution: "@intellisoftkenya/esm-service-queues-app@workspace:packages/esm-service-queues-app"
+  peerDependencies:
+    "@carbon/react": 1.x
+    "@openmrs/esm-framework": 6.x
+    react: ^18.1.0
+    react-i18next: 11.x
+    react-router-dom: 6.x
+    swr: 2.x
+  languageName: unknown
+  linkType: soft
 
 "@internationalized/date@npm:^3.12.2, @internationalized/date@npm:^3.8.0":
   version: 3.12.2

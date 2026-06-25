@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-admin-nav-app",
+  "name": "@intellisoftkenya/esm-admin-nav-app",
   "version": "1.1.6",
   "description": "Admin micro-frontend to navigate to all admin apps",
   "browser": "dist/ehospital-esm-admin-nav-app.js",

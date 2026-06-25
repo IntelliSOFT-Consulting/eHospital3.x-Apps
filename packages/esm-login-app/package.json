@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-login-app",
+  "name": "@intellisoftkenya/esm-login-app",
   "version": "1.0.7",
   "license": "MPL-2.0",
   "description": "The login microfrontend for the OpenMRS SPA",

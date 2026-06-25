@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-patient-list-app",
+  "name": "@intellisoftkenya/esm-patient-list-app",
   "version": "1.0.3",
   "license": "MPL-2.0",
   "description": "Custom Patient list microfrontend for the OpenMRS SPA",
