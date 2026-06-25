@@ -1690,6 +1690,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@datasert/cronjs-matcher@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@datasert/cronjs-matcher@npm:1.4.0"
+  dependencies:
+    "@datasert/cronjs-parser": ^1.4.0
+    luxon: ^3.0.4
+  checksum: b1b55041fc74de3dc35c59fbde27c2b7ffe1d24dbdeaa272d9d5746c7781b4158644e01191ba6737cca793c386e7321f5962b2bfe7d0ebd13a8656243037fc5e
+  languageName: node
+  linkType: hard
+
+"@datasert/cronjs-parser@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "@datasert/cronjs-parser@npm:1.4.0"
+  checksum: 0749279273efa4cfe4227d0fc8102a9185d6c2fc06fcae7394190835f9ef58a2191e614432a7b868a14a230ebd6c80020d5e78f05ed3674d6293d1b8b8ba0cad
+  languageName: node
+  linkType: hard
+
 "@discoveryjs/json-ext@npm:0.5.7, @discoveryjs/json-ext@npm:^0.5.7":
   version: 0.5.7
   resolution: "@discoveryjs/json-ext@npm:0.5.7"
@@ -2945,6 +2962,10 @@ __metadata:
 "@intellisoftkenya/esm-patient-registration-app@workspace:packages/esm-patient-registration-app":
   version: 0.0.0-use.local
   resolution: "@intellisoftkenya/esm-patient-registration-app@workspace:packages/esm-patient-registration-app"
+  dependencies:
+    dexie: ^4.4.4
+    formik: ^2.4.9
+    yup: ^1.7.1
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -2984,6 +3005,10 @@ __metadata:
 "@intellisoftkenya/esm-reports-app@workspace:packages/esm-reports-app":
   version: 0.0.0-use.local
   resolution: "@intellisoftkenya/esm-reports-app@workspace:packages/esm-reports-app"
+  dependencies:
+    "@datasert/cronjs-matcher": ^1.4.0
+    "@datasert/cronjs-parser": ^1.4.0
+    cronstrue: ^3.21.0
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x
@@ -7424,6 +7449,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/hoist-non-react-statics@npm:^3.3.1":
+  version: 3.3.7
+  resolution: "@types/hoist-non-react-statics@npm:3.3.7"
+  dependencies:
+    hoist-non-react-statics: ^3.3.0
+  peerDependencies:
+    "@types/react": "*"
+  checksum: 13f610572c073970b3f43cc446396974fed786fee6eac2d6fd4b0ca5c985f13e79d4a0de58af4e5b4c68470d808567c3a14108d98edb7d526d4d46c8ec851ed1
+  languageName: node
+  linkType: hard
+
 "@types/html-minifier-terser@npm:^6.0.0":
   version: 6.1.0
   resolution: "@types/html-minifier-terser@npm:6.1.0"
@@ -11442,6 +11478,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cronstrue@npm:^3.21.0":
+  version: 3.21.0
+  resolution: "cronstrue@npm:3.21.0"
+  bin:
+    cronstrue: bin/cli.js
+  checksum: ce0b4d8a4778df8559f718a1e5985b1d4378afb29a7a82314cc196385f434dedaa49abef663c963c50fdf0b0eaf2c3577c19f4f86d64018882016e870afc7145
+  languageName: node
+  linkType: hard
+
 "cross-env@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
@@ -12310,6 +12355,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deepmerge@npm:^2.1.1":
+  version: 2.2.1
+  resolution: "deepmerge@npm:2.2.1"
+  checksum: 284b71065079e66096229f735a9a0222463c9ca9ee9dda7d5e9a0545bf254906dbc7377e3499ca3b2212073672b1a430d80587993b43b87d8de17edc6af649a8
+  languageName: node
+  linkType: hard
+
 "deepmerge@npm:^4.2.2, deepmerge@npm:^4.3.1":
   version: 4.3.1
   resolution: "deepmerge@npm:4.3.1"
@@ -12542,6 +12594,13 @@ __metadata:
   version: 3.2.7
   resolution: "dexie@npm:3.2.7"
   checksum: 257504ed23cea2e5ed5c18a17a031c0a44aff70c5b3d6a63536b544cec9027c4c492a608165d5e7a44a104570c92dec2aa59c7bcec0c65f52000f979e1193dfd
+  languageName: node
+  linkType: hard
+
+"dexie@npm:^4.4.4":
+  version: 4.4.4
+  resolution: "dexie@npm:4.4.4"
+  checksum: 2d1c989b920628f738619dcea9a82929fb3aa33b54351b9b719fd214b0978857ee431e7976a0a0736deced0a888f3d5d7950eb362412b107282efd631f1c93e8
   languageName: node
   linkType: hard
 
@@ -14521,6 +14580,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"formik@npm:^2.4.9":
+  version: 2.4.9
+  resolution: "formik@npm:2.4.9"
+  dependencies:
+    "@types/hoist-non-react-statics": ^3.3.1
+    deepmerge: ^2.1.1
+    hoist-non-react-statics: ^3.3.0
+    lodash: ^4.17.21
+    lodash-es: ^4.17.21
+    react-fast-compare: ^2.0.1
+    tiny-warning: ^1.0.2
+    tslib: ^2.0.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: c518f055966245b2a120307107a19b3186f554f6218f5cb0fe2d309e5d95722008b361f851eeda2acd2c06441d8d50f7d768c1313c62a2d371f9106b064fbcff
+  languageName: node
+  linkType: hard
+
 "forwarded@npm:0.2.0":
   version: 0.2.0
   resolution: "forwarded@npm:0.2.0"
@@ -15672,7 +15749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.0.0, hoist-non-react-statics@npm:^3.3.0, hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -19147,6 +19224,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.0.4":
+  version: 3.7.2
+  resolution: "luxon@npm:3.7.2"
+  checksum: fc115fd6a7acc2adb7df3476d20c672beb2985d2a034294282f2c31de8c07f29a15460f5a2b7dd0107797be0dab545ddbc64862662b059fb18c1931a726064f4
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -22399,6 +22483,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"property-expr@npm:^2.0.5":
+  version: 2.0.6
+  resolution: "property-expr@npm:2.0.6"
+  checksum: 89977f4bb230736c1876f460dd7ca9328034502fd92e738deb40516d16564b850c0bbc4e052c3df88b5b8cd58e51c93b46a94bea049a3f23f4a022c038864cab
+  languageName: node
+  linkType: hard
+
 "property-information@npm:^5.0.0, property-information@npm:^5.3.0":
   version: 5.6.0
   resolution: "property-information@npm:5.6.0"
@@ -22745,6 +22836,13 @@ __metadata:
   peerDependencies:
     react: ">=0.14.0"
   checksum: a649d6e9ad3bdc138728905f393c7b028ca5a9eb600c76428f77305b2186276bcb35b1cb89c3eb84676b5827fab8b964d19b79407fb4750f16f59b3080a7de14
+  languageName: node
+  linkType: hard
+
+"react-fast-compare@npm:^2.0.1":
+  version: 2.0.4
+  resolution: "react-fast-compare@npm:2.0.4"
+  checksum: 06046595f90a4e3e3a56f40a8078c00aa71bdb064ddb98343f577f546aa22e888831fd45f009c93b34707cc842b4c637737e956fd13d6f80607ee92fb9cf9a1c
   languageName: node
   linkType: hard
 
@@ -26125,6 +26223,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-case@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "tiny-case@npm:1.0.3"
+  checksum: 3f7a30c39d5b0e1bc097b0b271bec14eb5b836093db034f35a0de26c14422380b50dc12bfd37498cf35b192f5df06f28a710712c87ead68872a9e37ad6f6049d
+  languageName: node
+  linkType: hard
+
 "tiny-emitter@npm:^2.0.0":
   version: 2.1.0
   resolution: "tiny-emitter@npm:2.1.0"
@@ -26289,6 +26394,13 @@ __metadata:
     topomerge: bin/topomerge
     topoquantize: bin/topoquantize
   checksum: 8c029a4f18324ace0b8b55dd90edbd40c9e3c6de18bafbb5da37ca20ebf20e26fbd4420891acb3c2c264e214185f7557871f5651a9eee517028663be98d836de
+  languageName: node
+  linkType: hard
+
+"toposort@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "toposort@npm:2.0.2"
+  checksum: d64c74b570391c9432873f48e231b439ee56bc49f7cb9780b505cfdf5cb832f808d0bae072515d93834dd6bceca5bb34448b5b4b408335e4d4716eaf68195dcb
   languageName: node
   linkType: hard
 
@@ -26657,6 +26769,13 @@ __metadata:
   version: 0.8.1
   resolution: "type-fest@npm:0.8.1"
   checksum: d61c4b2eba24009033ae4500d7d818a94fd6d1b481a8111612ee141400d5f1db46f199c014766b9fa9b31a6a7374d96fc748c6d688a78a3ce5a33123839becb7
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^2.19.0":
+  version: 2.19.0
+  resolution: "type-fest@npm:2.19.0"
+  checksum: a4ef07ece297c9fba78fc1bd6d85dff4472fe043ede98bd4710d2615d15776902b595abf62bd78339ed6278f021235fb28a96361f8be86ed754f778973a0d278
   languageName: node
   linkType: hard
 
@@ -28624,6 +28743,18 @@ __metadata:
   version: 0.1.0
   resolution: "yocto-queue@npm:0.1.0"
   checksum: f77b3d8d00310def622123df93d4ee654fc6a0096182af8bd60679ddcdfb3474c56c6c7190817c84a2785648cdee9d721c0154eb45698c62176c322fb46fc700
+  languageName: node
+  linkType: hard
+
+"yup@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "yup@npm:1.7.1"
+  dependencies:
+    property-expr: ^2.0.5
+    tiny-case: ^1.0.3
+    toposort: ^2.0.2
+    type-fest: ^2.19.0
+  checksum: 80d0d6838da457d489a97ee0b9c26fa9f59355a553f86842ea114b049811a918a0e7221f9c22bb88314699ddfb3e24ded49f7ab10a0e74dd273d03430110d5af
   languageName: node
   linkType: hard
 
