@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-import-export-app",
+  "name": "@intellisoftkenya/esm-import-export-app",
   "version": "1.0.3",
   "description": "Import and Export Micro-frontend for OpenMRS3",
   "browser": "dist/sjthc-esm-import-export-app.js",

@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-patient-registration-app",
+  "name": "@intellisoftkenya/esm-patient-registration-app",
   "version": "1.0.2",
   "description": "Patient registration microfrontend for O3",
   "browser": "dist/sjthc-esm-patient-registration-app.js",

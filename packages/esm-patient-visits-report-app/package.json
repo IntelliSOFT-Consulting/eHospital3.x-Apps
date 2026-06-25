@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/esm-patient-visits-report-app",
+  "name": "@intellisoftkenya/esm-patient-visits-report-app",
   "version": "1.0.2",
   "license": "MPL-2.0",
   "description": "Custom Patient Visits Reports microfrontend for the OpenMRS SPA",

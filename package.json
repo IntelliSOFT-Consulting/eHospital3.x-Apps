@@ -1,5 +1,5 @@
 {
-  "name": "@ehospital/eHospital3.x-Apps",
+  "name": "@intellisoftkenya/eHospital3.x-Apps",
   "private": true,
   "workspaces": [
     "packages/*"
