@@ -29,7 +29,7 @@ import { ClockOut } from './payment-points/payment-point/clock-out.component';
 import DeletePaymentModeModal from './payment-modes/delete-payment-mode.modal';
 import PaymentModeWorkspace from "./payment-modes/payment-mode.workspace";
 
-const moduleName = '@ehospital/esm-billing-app';
+const moduleName = '@intellisoftkenya/esm-billing-app';
 
 const options = {
   featureName: 'billing',

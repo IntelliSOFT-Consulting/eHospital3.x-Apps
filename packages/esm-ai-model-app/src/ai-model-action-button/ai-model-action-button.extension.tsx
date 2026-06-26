@@ -1,20 +1,22 @@
-import React from "react";
+import React, { type ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
-import { ActionMenuButton } from "@openmrs/esm-framework";
+import { ActionMenuButton2 } from "@openmrs/esm-framework";
 import { Chat } from "@carbon/react/icons";
-import { useLaunchWorkspaceRequiringVisit } from '@openmrs/esm-patient-common-lib';
+import { useStartVisitIfNeeded, type PatientChartWorkspaceActionButtonProps } from '@openmrs/esm-patient-common-lib';
 
-const AiModelActionButton: React.FC = () => {
+const AiModelActionButton: React.FC<PatientChartWorkspaceActionButtonProps> = ({ groupProps: { patientUuid } }) => {
   const { t } = useTranslation();
-  const launchAiModelWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model');
+  const startVisitIfNeeded = useStartVisitIfNeeded(patientUuid);
 
   return (
-    <ActionMenuButton 
-      getIcon={() => <Chat />}
+    <ActionMenuButton2
+      icon={(props: ComponentProps<typeof Chat>) => <Chat {...props} />}
       label={t('aiModel', 'AI Model')}
-      iconDescription={t('aiModel', 'AI Model')}
-      handler={launchAiModelWorkSpace}
-      type={"button"}
+      workspaceToLaunch={{
+        workspaceName: 'ai-model',
+        workspaceProps: {},
+      }}
+      onBeforeWorkspaceLaunch={startVisitIfNeeded}
     />
   )
 }

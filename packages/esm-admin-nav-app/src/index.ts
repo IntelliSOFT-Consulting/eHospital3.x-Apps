@@ -2,7 +2,7 @@ import { defineConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
 import NavbarActionButton from './navbar/navbar-action-button.component';
 
-const moduleName = '@ehospital/esm-admin-nav-app';
+const moduleName = '@intellisoftkenya/esm-admin-nav-app';
 
 const options = {
   featureName: 'admin-nav-app',

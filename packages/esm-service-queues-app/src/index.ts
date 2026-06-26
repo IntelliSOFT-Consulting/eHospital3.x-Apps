@@ -25,7 +25,7 @@ export const importTranslation = require.context(
   "lazy"
 );
 
-const moduleName = "@ehospital/esm-service-queues-app";
+const moduleName = "@intellisoftkenya/esm-service-queues-app";
 
 const options = {
   featureName: "outpatient",

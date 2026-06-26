@@ -6,7 +6,7 @@ import locationPickerComponent from './location-picker/location-picker-view.comp
 import logoutButtonComponent from './logout/logout.extension';
 import rootComponent from './root.component';
 
-const moduleName = '@ehospital/esm-login-app';
+const moduleName = '@intellisoftkenya/esm-login-app';
 
 const options = {
   featureName: 'login',
