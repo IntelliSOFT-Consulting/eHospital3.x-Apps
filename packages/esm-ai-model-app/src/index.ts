@@ -2,7 +2,7 @@ import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle } from "@openmr
 import { configSchema } from "./config-schema";
 import AiModelActionButton from "./ai-model-action-button/ai-model-action-button.extension";
 
-const moduleName = "@ehospital/esm-ai-model-app";
+const moduleName = "@intellisoftkenya/esm-ai-model-app";
 
 const options = {
   featureName: "ai-model",

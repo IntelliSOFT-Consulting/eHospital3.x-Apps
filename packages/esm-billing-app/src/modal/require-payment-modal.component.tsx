@@ -15,11 +15,11 @@ import {
 import { useBills } from '../billing.resource';
 import { convertToCurrency } from '../helpers';
 import styles from './require-payment.scss';
-import { navigate, useConfig } from '@openmrs/esm-framework';
+import { navigate, useConfig, usePatient } from '@openmrs/esm-framework';
 import { ComposedModal } from '@carbon/react';
 import { Heading } from '@carbon/react';
 import { BillingConfig } from '../config-schema';
-import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
+
 import dayjs from 'dayjs';
 
 type RequirePaymentModalProps = {
@@ -29,7 +29,7 @@ type RequirePaymentModalProps = {
 const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const { t } = useTranslation();
   const { defaultCurrency } = useConfig();
-  const patientUuid = getPatientUuidFromStore();
+  const { patientUuid } = usePatient();
 
   const startDate = useMemo(() => dayjs().subtract(1, 'year').toDate(), []);
   const today = useMemo(() => dayjs().toDate(), []);

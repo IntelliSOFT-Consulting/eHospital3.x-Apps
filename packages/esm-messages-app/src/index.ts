@@ -4,7 +4,7 @@ import RootComponent from "./root.component";
 import { createDashboardLink } from "@openmrs/esm-patient-common-lib";
 import { createLeftPanelLink } from "./left-panel-link.component";
 
-const moduleName = "@ehospital/esm-messages-app";
+const moduleName = "@intellisoftkenya/esm-messages-app";
 
 const options = {
   featureName: "messages-dashboard",

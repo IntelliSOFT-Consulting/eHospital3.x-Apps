@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import styles from './ai-model.scss'
 import { useObservations } from "../hooks/useObservations";
 import { Button, ToastNotification, Tile} from "@carbon/react";
-import { getPatientUuidFromStore } from "@openmrs/esm-patient-common-lib";
+import { type PatientWorkspaceGroupProps } from "@openmrs/esm-patient-common-lib";
 
-const AIModelResponse: React.FC = () => {
-	const patientUuid = getPatientUuidFromStore();
+const AIModelResponse: React.FC<{ groupProps: PatientWorkspaceGroupProps }> = ({ groupProps: { patientUuid } }) => {
 	const { sendMessageViaSMS, isSending, fetchLatestMessage, latestMessage } = useObservations(patientUuid);
 	const [message, setMessage] = useState<string | null>(null);
 	const [status, setStatus] = useState<"idle" | "sent" | "failed">("idle");

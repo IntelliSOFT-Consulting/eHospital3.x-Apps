@@ -13,7 +13,7 @@ import {
   TableRow,
 } from '@carbon/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getPatientUuidFromStore } from '@openmrs/esm-patient-common-lib';
+
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -35,9 +35,8 @@ type BillingFormProps = {
 
 type FormType = z.infer<typeof billingFormSchema>;
 
-const BillingForm: React.FC<BillingFormProps> = ({ closeWorkspace }) => {
+const BillingForm: React.FC<BillingFormProps> = ({ patientUuid, closeWorkspace }) => {
   const { t } = useTranslation();
-  const patientUuid = getPatientUuidFromStore();
   const { billableServices, error, isLoading } = useBillableServices();
   const [searchVal, setsearchVal] = useState('');
   const { cashPointUuid, cashierUuid } = useConfig<BillingConfig>();

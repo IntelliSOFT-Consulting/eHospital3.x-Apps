@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from './ai-model.scss'
 import { Button} from "@carbon/react";
 import { SendAlt, Close, Checkmark, WarningAlt } from "@carbon/react/icons";
-import { getPatientUuidFromStore, useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
+import { type PatientWorkspaceGroupProps, useLaunchWorkspaceRequiringVisit } from "@openmrs/esm-patient-common-lib";
 import CustomTextArea from "../components/ui/text-area.component";
 import GeneratedResponse from "../components/llm-response/generated-response.component";
 import Feedback from "../components/feedback.component";
@@ -22,7 +22,7 @@ const ConsentDeniedMessage: React.FC = () => (
     </div>
 );
 
-const AIModel: React.FC = () => {
+const AIModel: React.FC<{ groupProps: PatientWorkspaceGroupProps }> = ({ groupProps: { patientUuid } }) => {
 	const [isEditMode, setEditMode] = useState(false);
 	const [isRegenerated, setRegenerated] = useState(false);
 	const [editedText, setEditedText] = useState('');
@@ -36,8 +36,7 @@ const AIModel: React.FC = () => {
 	const [llmError, setLlmError] = useState<string | null>(null);
 	const [showToast, setShowToast] = useState(false);
 
-	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit('ai-model-generated');
-	const patientUuid = getPatientUuidFromStore();
+	const launchAiModelGeneratedWorkSpace = useLaunchWorkspaceRequiringVisit(patientUuid, 'ai-model-generated');
 	const { consentStatus, isLoading: isConsentLoading, error: consentError } = useLlmConsent(patientUuid);
 	const { data: observations, generateLlmMessage, isGenerating, llmResponse, saveMessage, isSaving } = useObservations(patientUuid, consentStatus === 'Yes');
 

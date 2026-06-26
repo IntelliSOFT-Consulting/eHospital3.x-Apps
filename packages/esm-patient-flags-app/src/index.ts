@@ -3,7 +3,7 @@ import { configSchema } from "./config-schema";
 import patientFlagsComponent from "./patient-flags/patient-flags.component";
 import NavbarActionButton from "./navbar/navbar-action-button.component";
 
-const moduleName = "@ehospital/esm-patient-flags-app";
+const moduleName = "@intellisoftkenya/esm-patient-flags-app";
 
 const options = {
   featureName: "patient-flags",
