@@ -9,13 +9,13 @@ export function getValidationSchema(config: RegistrationConfig) {
     familyName: Yup.string().required('familyNameRequired'),
     additionalGivenName: Yup.string().when('addNameInLocalLanguage', {
       is: true,
-      then: Yup.string().required('givenNameRequired'),
-      otherwise: Yup.string().notRequired(),
+      then: (schema) => schema.required('givenNameRequired'),
+      otherwise: (schema) => schema.notRequired(),
     }),
     additionalFamilyName: Yup.string().when('addNameInLocalLanguage', {
       is: true,
-      then: Yup.string().required('familyNameRequired'),
-      otherwise: Yup.string().notRequired(),
+      then: (schema) => schema.required('familyNameRequired'),
+      otherwise: (schema) => schema.notRequired(),
     }),
     gender: Yup.string()
       .oneOf(
@@ -23,18 +23,20 @@ export function getValidationSchema(config: RegistrationConfig) {
         'genderUnspecified',
       )
       .required('genderRequired'),
-    birthdate: Yup.date().when('birthdateEstimated', {
-      is: false,
-      then: Yup.date().required('birthdayRequired').max(Date(), 'birthdayNotInTheFuture').nullable(),
-      otherwise: Yup.date().nullable(),
-    }),
+    birthdate: Yup.date()
+      .nullable()
+      .when('birthdateEstimated', {
+        is: false,
+        then: (schema) => schema.required('birthdayRequired').max(new Date(), 'birthdayNotInTheFuture'),
+        otherwise: (schema) => schema.nullable(),
+      }),
     yearsEstimated: Yup.number().when('birthdateEstimated', {
       is: true,
-      then: Yup.number().required('yearsEstimateRequired').min(0, 'negativeYears'),
-      otherwise: Yup.number().nullable(),
+      then: (schema) => schema.required('yearsEstimateRequired').min(0, 'negativeYears'),
+      otherwise: (schema) => schema.nullable(),
     }),
     monthsEstimated: Yup.number().min(0, 'negativeMonths'),
-    deathDate: Yup.date().max(Date(), 'deathdayNotInTheFuture').nullable(),
+    deathDate: Yup.date().nullable().max(new Date(), 'deathdayNotInTheFuture'),
     email: Yup.string().optional().email('invalidEmail'),
     identifiers: Yup.lazy((obj: FormValues['identifiers']) =>
       Yup.object(
@@ -43,8 +45,8 @@ export function getValidationSchema(config: RegistrationConfig) {
             required: Yup.bool(),
             identifierValue: Yup.string().when('required', {
               is: true,
-              then: Yup.string().required('identifierValueRequired'),
-              otherwise: Yup.string().notRequired(),
+              then: (schema) => schema.required('identifierValueRequired'),
+              otherwise: (schema) => schema.notRequired(),
             }),
           }),
         ),
