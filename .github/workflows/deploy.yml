@@ -1,0 +1,36 @@
+name: Deploy eHospital
+
+on:
+  # Runs after eHospital CI (pre-release/release) publishes ESM packages to npm.
+  workflow_run:
+    workflows:
+      - "eHospital CI"
+    types:
+      - completed
+
+  # Allow manual re-deploys without waiting for CI.
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: deploy-ehospital
+  cancel-in-progress: false
+
+jobs:
+  deploy-ehospital2:
+    name: Rebuild eHospital 2.0 server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Rebuild eHospital2.0 via SSH
+        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            # Rebuild Docker image to pick up the latest ESM packages from npm.
+            docker compose -f /opt/eHospital2.0/docker-compose.yml up -d --build --remove-orphans
