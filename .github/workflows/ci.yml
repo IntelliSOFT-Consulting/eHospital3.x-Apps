@@ -140,3 +140,28 @@ jobs:
         run: yarn config set npmAuthToken "${NODE_AUTH_TOKEN}" && yarn run ci:publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  # Deploy: rebuilds eHospital2.0 server after pre-release or stable publish.
+  deploy:
+    name: Rebuild eHospital 2.0 server
+    runs-on: ubuntu-latest
+    needs: [pre_release, release]
+    # Run if either publish job succeeded (they are mutually exclusive by event).
+    if: always() && (needs.pre_release.result == 'success' || needs.release.result == 'success')
+
+    concurrency:
+      group: deploy-ehospital
+      cancel-in-progress: false
+
+    steps:
+      - name: Rebuild eHospital2.0 via SSH
+        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script_stop: true
+          script: |
+            # Rebuild Docker image to pick up the latest ESM packages from npm.
+            docker compose -f /opt/eHospital2.0/docker-compose.yml up -d --build --remove-orphans
