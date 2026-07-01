@@ -7,6 +7,8 @@ import { useQueueEntries } from '../hooks/useQueueEntries';
 import { useColumns } from '../queue-table/cells/columns.resource';
 import { QueueTableByStatusSkeleton } from '../queue-table/queue-table-by-status-skeleton.component';
 import QueueTable from '../queue-table/queue-table.component';
+import QueueTableMetrics from '../patient-queue-metrics/metrics-header.component';
+import AddPatientToQueueButton from './add-patient-to-queue-button.component';
 import QueueTableMetrics from '../queue-table/queue-table-metrics.component';
 import styles from '../queue-table/queue-table.scss';
 import type { Concept, Queue, QueueEntry, QueueTableColumn, QueueTableTabConfig } from '../types';
@@ -50,21 +52,7 @@ const QueueTablesForAllStatuses: React.FC<QueueTablesForAllStatusesProps> = ({ s
           <QueueTableMetrics selectedQueue={selectedQueue} />
         </div>
         <div className={styles.headerButtons}>
-          <ExtensionSlot
-            name="patient-search-button-slot"
-            state={{
-              buttonText: t('addPatientToQueue', 'Add patient to queue'),
-              overlayHeader: t('addPatientToQueue', 'Add patient to queue'),
-              buttonProps: {
-                kind: 'secondary',
-                renderIcon: (props) => <Add size={16} {...props} />,
-                size: 'sm',
-              },
-              selectPatientAction: (selectedPatientUuid) => {
-                launchWorkspace('service-queues-patient-search', { viewState: { selectedPatientUuid } });
-              },
-            }}
-          />
+          <AddPatientToQueueButton selectedQueueUuid={selectedQueue.uuid} />
           <Search
             labelText=""
             placeholder={t('filterTable', 'Filter table')}

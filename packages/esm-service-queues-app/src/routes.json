@@ -110,30 +110,60 @@
       "slot": "queue-table-extension-column-slot"
     }
   ],
-  "workspaces": [
+  "workspaces2": [
+    {
+      "name": "service-queues-patient-search",
+      "component": "patientSearchWorkspace",
+      "window": "add-queue-entry"
+    },
+    {
+      "name": "queue-patient-search-workspace",
+      "component": "@openmrs/esm-patient-search-app#patientSearchWorkspace2",
+      "window": "add-queue-entry"
+    },
+    {
+      "name": "queue-patient-search-start-visit-workspace",
+      "component": "@openmrs/esm-patient-chart-app#exportedVisitForm",
+      "window": "add-queue-entry"
+    },
     {
       "name": "service-queues-service-form",
-      "title": "addNewQueueService",
-      "component": "addNewQueueServiceWorkspace",
-      "type": "service-queues"
+      "component": "addnewQueueServiceWorkspace",
+      "window": "add-queue"
     },
     {
       "name": "service-queues-room-form",
-      "title": "addNewQueueServiceRoom",
-      "component": "addNewQueueServiceRoomWorkspace",
-      "type": "service-queues"
+      "component": "addnewQueueServiceRoomWorkspace",
+      "window": "add-queue-room"
     },
     {
       "name": "service-queues-linelist-filter",
-      "title": "filter",
       "component": "queueLinelistFilterWorkspace",
-      "type": "service-queues"
+      "window": "service-queues"
+    }
+  ],
+  "workspaceWindows2": [
+    {
+      "name": "add-queue-entry",
+      "group": "service-queues"
     },
     {
-      "name": "service-queues-patient-search",
-      "title": "searchPatient",
-      "component": "patientSearchWorkspace",
-      "type": "service-queues"
+      "name": "add-queue",
+      "group": "service-queues"
+    },
+    {
+      "name": "add-queue-room",
+      "group": "service-queues"
+    },
+    {
+      "name": "service-queues",
+      "group": "service-queues"
+    }
+  ],
+  "workspaceGroups2": [
+    {
+      "name": "service-queues",
+      "scopePattern": "/home/service-queues"
     }
   ]
 }
