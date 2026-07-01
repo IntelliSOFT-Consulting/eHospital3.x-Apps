@@ -7,7 +7,6 @@ import { useQueueEntries } from '../hooks/useQueueEntries';
 import { useColumns } from '../queue-table/cells/columns.resource';
 import { QueueTableByStatusSkeleton } from '../queue-table/queue-table-by-status-skeleton.component';
 import QueueTable from '../queue-table/queue-table.component';
-import QueueTableMetrics from '../patient-queue-metrics/metrics-header.component';
 import AddPatientToQueueButton from './add-patient-to-queue-button.component';
 import QueueTableMetrics from '../queue-table/queue-table-metrics.component';
 import styles from '../queue-table/queue-table.scss';
