@@ -1,29 +1,32 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SearchTypes } from '../types';
 import PatientScheduledVisits from './patient-scheduled-visits.component';
 import VisitForm from './visit-form/visit-form.component';
 import {
   type DefaultWorkspaceProps,
   ExtensionSlot,
+  Workspace2,
   usePatient,
   useVisit,
-  PatientBannerPatientInfo,
   PatientPhoto,
-  PatientBannerToggleContactDetailsButton,
-  PatientBannerContactDetails,
   displayName,
 } from '@openmrs/esm-framework';
 import ExistingVisitFormComponent from './visit-form/existing-visit-form.component';
 import styles from './patient-search.scss';
 
 interface PatientSearchProps extends DefaultWorkspaceProps {
-  viewState: {
+  viewState?: {
+    selectedPatientUuid?: string;
+  };
+  selectedPatientUuid?: string;
+  workspaceProps?: {
     selectedPatientUuid?: string;
   };
 }
 
-const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState }) => {
-  const { selectedPatientUuid } = viewState;
+const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState, selectedPatientUuid: propSelectedPatientUuid, workspaceProps }) => {
+  const selectedPatientUuid = propSelectedPatientUuid || viewState?.selectedPatientUuid || workspaceProps?.selectedPatientUuid;
   const { patient } = usePatient(selectedPatientUuid);
   const { activeVisit } = useVisit(selectedPatientUuid);
   const [searchType, setSearchType] = useState<SearchTypes>(SearchTypes.SCHEDULED_VISITS);
@@ -35,23 +38,20 @@ const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState
     setNewVisitMode(mode);
   };
 
+  const { t } = useTranslation();
   const patientName = patient && displayName(patient);
   return patient ? (
-    <>
+    <Workspace2 title={t('addPatientToQueue', 'Add patient to queue')}>
       <div className={styles.patientBannerContainer}>
-        <div className={styles.patientBanner}>
+        <div className={styles.patientBanner} style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem' }}>
           <div className={styles.patientPhoto}>
             <PatientPhoto patientUuid={patient.id} patientName={patientName} />
           </div>
-          <PatientBannerPatientInfo patient={patient} />
-          <PatientBannerToggleContactDetailsButton
-            showContactDetails={showContactDetails}
-            toggleContactDetails={() => setContactDetails(!showContactDetails)}
-          />
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{ fontSize: '1.25rem', fontWeight: 600 }}>{patientName}</span>
+            <span>{patient.gender} &middot; {patient.birthDate}</span>
+          </div>
         </div>
-        {showContactDetails ? (
-          <PatientBannerContactDetails patientId={patient.id} deceased={patient.deceasedBoolean} />
-        ) : null}
       </div>
       <div>
         {activeVisit ? (
@@ -71,7 +71,7 @@ const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState
           />
         ) : null}
       </div>
-    </>
+    </Workspace2>
   ) : null;
 };
 
