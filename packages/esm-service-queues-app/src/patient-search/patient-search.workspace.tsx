@@ -5,7 +5,6 @@ import PatientScheduledVisits from './patient-scheduled-visits.component';
 import VisitForm from './visit-form/visit-form.component';
 import {
   type DefaultWorkspaceProps,
-  ExtensionSlot,
   Workspace2,
   usePatient,
   useVisit,
