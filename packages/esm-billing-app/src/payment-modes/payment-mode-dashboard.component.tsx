@@ -69,10 +69,6 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
 
   const headers = [
     {
-      key: 'dateCreated',
-      header: t('dateCreated', 'Date Created'),
-    },
-    {
       key: 'name',
       header: t('name', 'Name'),
     },
@@ -90,11 +86,6 @@ const PaymentModeDashboard: React.FC<PaymentModeDashboardProps> = () => {
     id: `${paymentMode.uuid}`,
     name: paymentMode.name,
     description: paymentMode.description,
-    dateCreated: formatDate(new Date(paymentMode.auditInfo.dateCreated), {
-      mode: 'standard',
-      time: false,
-      noToday: true,
-    }),
     retired: paymentMode.retired ? t('yes', 'Yes') : t('no', 'No'),
   }));
 
