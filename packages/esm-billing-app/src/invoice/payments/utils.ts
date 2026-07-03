@@ -14,7 +14,6 @@ export const createPaymentPayload = (
   patientUuid: string,
   formValues: Array<Payment>,
   amountDue: number,
-  billableServices: Array<any>,
   selectedLineItems: Array<LineItem>,
 ) => {
   const { cashier } = bill;
@@ -67,4 +66,3 @@ export const createPaymentPayload = (
 export const getBillableServiceUuid = (billableServices: Array<any>, serviceName: string) => {
   return billableServices.length ? billableServices.find((service) => service.name === serviceName).uuid : null;
 };
-const processBillItem = (item) => (item.item || item.billableService)?.split(':')[0];

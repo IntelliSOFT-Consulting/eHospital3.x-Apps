@@ -138,11 +138,13 @@ export function useDefaultFacility() {
   const { sessionLocation } = useSession();
 
   return {
-    data: {
-      uuid: sessionLocation?.uuid,
-      display: sessionLocation?.display || 'Facility',
-    },
-    isLoading: false,
+    data: sessionLocation
+      ? {
+          uuid: sessionLocation.uuid,
+          display: sessionLocation.display || 'Facility',
+        }
+      : null,
+    isLoading: !sessionLocation,
   };
 }
 

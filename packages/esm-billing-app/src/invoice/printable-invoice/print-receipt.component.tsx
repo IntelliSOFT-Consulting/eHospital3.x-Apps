@@ -17,10 +17,11 @@ const PrintReceipt: React.FC<PrintReceiptProps> = ({ billUuid, receiptNumber }) 
   const handlePrintReceiptClick = () => {
     setIsRedirecting(true);
     setTimeout(() => {
-      const pdfUrl = `${baseUrl.origin}/openmrs${apiBasePath}receipt?billUuid=${billUuid}`;
+      const encodedBillUuid = encodeURIComponent(billUuid);
+      const pdfUrl = `${baseUrl.origin}/openmrs${apiBasePath}receipt?billUuid=${encodedBillUuid}`;
       const link = document.createElement('a');
       link.href = pdfUrl;
-      link.download = `receipt_${receiptNumber}.pdf`;
+      link.download = `receipt_${receiptNumber || billUuid}.pdf`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
