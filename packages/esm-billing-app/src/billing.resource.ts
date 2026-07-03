@@ -37,7 +37,6 @@ export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
     lineItems: bill?.lineItems,
     billingService: bill?.lineItems.map((bill) => bill?.item || bill?.billableService || '--').join('  '),
     payments: bill?.payments,
-    display: bill?.display,
     totalAmount: bill?.lineItems?.map((item) => item.price * item.quantity).reduce((prev, curr) => prev + curr, 0),
   };
 
