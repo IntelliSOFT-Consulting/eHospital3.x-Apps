@@ -40,9 +40,7 @@ export const createPaymentPayload = (
   const totalAmountRendered = updatedPayments.reduce((acc, payment) => acc + payment.amountTendered, 0);
 
   const updatedLineItems = bill?.lineItems.map((lineItem) => ({
-    ...lineItem,
-    billableService: getBillableServiceUuid(billableServices, lineItem.billableService),
-    item: processBillItem?.(lineItem),
+    uuid: lineItem.uuid,
     paymentStatus:
       bill?.lineItems.length > 1
         ? hasLineItem(selectedLineItems ?? [], lineItem) && totalAmountRendered >= lineItem.price * lineItem.quantity
