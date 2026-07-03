@@ -84,7 +84,7 @@ export const useBills = (
 };
 
 export const useBill = (billUuid: string) => {
-  const url = `${apiBasePath}bill/${billUuid}`;
+  const url = `${apiBasePath}bill/${billUuid}?v=full`;
   const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: PatientInvoice }>(
     billUuid ? url : null,
     openmrsFetch,
@@ -135,12 +135,15 @@ export const processBillPayment = (payload, billUuid: string) => {
 };
 
 export function useDefaultFacility() {
-  const url = `${restBaseUrl}/kenyaemr/default-facility`;
-  const { authenticated } = useSession();
+  const { sessionLocation } = useSession();
 
-  const { data, isLoading } = useSWR<{ data: FacilityDetail }>(authenticated ? url : null, openmrsFetch);
-
-  return { data: data?.data, isLoading: isLoading };
+  return {
+    data: {
+      uuid: sessionLocation?.uuid,
+      display: sessionLocation?.display || 'Facility',
+    },
+    isLoading: false,
+  };
 }
 
 export const usePatientPaymentInfo = (patientUuid: string) => {

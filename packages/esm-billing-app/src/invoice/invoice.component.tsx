@@ -116,7 +116,7 @@ const Invoice: React.FC = () => {
             size="md">
             {t('printBill', 'Print bill')}
           </Button>
-          {(bill?.status === 'PAID' || bill?.tenderedAmount > 0) && <PrintReceipt billId={bill?.id} />}
+          {(bill?.status === 'PAID' || bill?.tenderedAmount > 0) && <PrintReceipt billUuid={bill?.uuid} receiptNumber={bill?.receiptNumber} />}
         </div>
       </div>
 
