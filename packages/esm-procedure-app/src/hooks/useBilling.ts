@@ -32,7 +32,6 @@ export const mapBillProperties = (bill: PatientInvoice): MappedBill => {
         lineItems: bill?.lineItems,
         billingService: bill?.lineItems.map((bill) => bill?.item || bill?.billableService || '--').join('  '),
         payments: bill?.payments,
-        display: bill?.display,
         totalAmount: bill?.lineItems?.map((item) => item.price * item.quantity).reduce((prev, curr) => prev + curr, 0),
     };
 
@@ -48,7 +47,8 @@ export const useBills = (
     const startingDateISO = startingDate.toISOString();
     const endDateISO = endDate.toISOString();
 
-    const url = `${restBaseUrl}/billing/bill?status=${billStatus}&v=custom:(uuid,display,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
+    const statusParam = billStatus ? `status=${billStatus}&` : '';
+    const url = `${restBaseUrl}/billing/bill?${statusParam}v=custom:(uuid,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
 
     const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
         patientUuid ? `${url}&patientUuid=${patientUuid}` : url,
