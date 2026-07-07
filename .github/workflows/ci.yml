@@ -164,4 +164,5 @@ jobs:
           script_stop: true
           script: |
             # Rebuild Docker image to pick up the latest ESM packages from npm.
-            docker compose -f /opt/eHospital2.0/docker-compose.yml up -d --build --remove-orphans
+            docker compose -f /opt/eHospital2.0/docker-compose.yml -f /opt/eHospital2.0/docker-compose.override.yml build frontend --no-cache
+            docker compose -f /opt/eHospital2.0/docker-compose.yml -f /opt/eHospital2.0/docker-compose.override.yml up -d --build --remove-orphans
