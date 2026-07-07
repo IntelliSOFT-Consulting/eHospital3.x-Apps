@@ -19,17 +19,26 @@ interface PatientSearchProps extends DefaultWorkspaceProps {
     selectedPatientUuid?: string;
   };
   selectedPatientUuid?: string;
+  patientUuid?: string;
   workspaceProps?: {
     selectedPatientUuid?: string;
+    patientUuid?: string;
   };
 }
 
-const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState, selectedPatientUuid: propSelectedPatientUuid, workspaceProps }) => {
-  const selectedPatientUuid = propSelectedPatientUuid || viewState?.selectedPatientUuid || workspaceProps?.selectedPatientUuid;
+const PatientSearch: React.FC<PatientSearchProps> = ({ closeWorkspace, viewState, selectedPatientUuid: propSelectedPatientUuid, patientUuid: propPatientUuid, workspaceProps }) => {
+  const selectedPatientUuid = propSelectedPatientUuid || propPatientUuid || viewState?.selectedPatientUuid || workspaceProps?.selectedPatientUuid || workspaceProps?.patientUuid;
   const { patient } = usePatient(selectedPatientUuid);
   const { activeVisit } = useVisit(selectedPatientUuid);
-  const [searchType, setSearchType] = useState<SearchTypes>(SearchTypes.SCHEDULED_VISITS);
-  const [newVisitMode, setNewVisitMode] = useState<boolean>(false);
+  
+  // If workspaceProps.patientUuid is present, it means the external search app
+  // launched this workspace specifically via the "Start Visit" action.
+  const isStartVisitAction = !!workspaceProps?.patientUuid;
+  
+  const [searchType, setSearchType] = useState<SearchTypes>(
+    isStartVisitAction ? SearchTypes.VISIT_FORM : SearchTypes.SCHEDULED_VISITS
+  );
+  const [newVisitMode, setNewVisitMode] = useState<boolean>(isStartVisitAction);
   const [showContactDetails, setContactDetails] = useState(false);
 
   const toggleSearchType = (searchType: SearchTypes, mode: boolean = false) => {
