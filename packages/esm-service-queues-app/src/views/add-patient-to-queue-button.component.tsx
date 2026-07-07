@@ -35,7 +35,7 @@ const AddPatientToQueueButton: React.FC<AddPatientToQueueButtonProps> = ({ selec
             },
           },
           {
-            startVisitWorkspaceName: 'queue-patient-search-start-visit-workspace',
+            startVisitWorkspaceName: 'service-queues-patient-search',
           },
         )
       }>
