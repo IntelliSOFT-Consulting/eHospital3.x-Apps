@@ -15,7 +15,7 @@ import PaymentHistory from './payment-history/payment-history.component';
 import PaymentForm from './payment-form/payment-form.component';
 import { updateBillVisitAttribute } from './payment.resource';
 import styles from './payments.scss';
-import { useBillableServices } from '../../billable-services/billable-service.resource';
+
 
 type PaymentProps = {
   bill: MappedBill;
@@ -31,7 +31,7 @@ export type PaymentFormValue = {
 
 const Payments: React.FC<PaymentProps> = ({ bill, mutate, selectedLineItems }) => {
   const { t } = useTranslation();
-  const { billableServices, isLoading, isValidating, error } = useBillableServices();
+
   const paymentSchema = z.object({
     method: z.string().refine((value) => !!value, 'Payment method is required'),
     amount: z
@@ -71,7 +71,6 @@ const Payments: React.FC<PaymentProps> = ({ bill, mutate, selectedLineItems }) =
         bill?.patientUuid,
         formValues,
         amountDue,
-        billableServices,
         selectedLineItems,
       );
       paymentPayload.payments.forEach((payment) => {
