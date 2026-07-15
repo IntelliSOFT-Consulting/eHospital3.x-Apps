@@ -105,7 +105,7 @@ const ChargeSummaryTable: React.FC = () => {
   );
 
   const launchServiceChargeItem = useCallback(() => {
-    navigate({ to: window.getOpenmrsSpaBase() + 'billing/charge-items/add-charge-service' });
+    navigate({ to: window.getOpenmrsSpaBase() + 'home/billing/charge-items/add-charge-service' });
     setEditingService(null);
     setShowOverlay(true);
   }, []);

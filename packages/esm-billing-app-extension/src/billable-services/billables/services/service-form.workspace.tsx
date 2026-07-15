@@ -97,7 +97,7 @@ const AddServiceForm: React.FC<{ editingService?: any; onClose: () => void; muta
 
   const handleNavigateToServiceDashboard = () =>
     navigate({
-      to: window.getOpenmrsSpaBase() + 'billing/charge-items',
+      to: window.getOpenmrsSpaBase() + 'home/billing/charge-items',
     });
 
   useEffect(() => {

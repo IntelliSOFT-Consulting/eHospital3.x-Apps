@@ -2881,9 +2881,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@intellisoftkenya/esm-billing-app@workspace:packages/esm-billing-app":
+"@intellisoftkenya/esm-billing-app-extension@workspace:packages/esm-billing-app-extension":
   version: 0.0.0-use.local
-  resolution: "@intellisoftkenya/esm-billing-app@workspace:packages/esm-billing-app"
+  resolution: "@intellisoftkenya/esm-billing-app-extension@workspace:packages/esm-billing-app-extension"
   peerDependencies:
     "@carbon/react": 1.x
     "@openmrs/esm-framework": 6.x

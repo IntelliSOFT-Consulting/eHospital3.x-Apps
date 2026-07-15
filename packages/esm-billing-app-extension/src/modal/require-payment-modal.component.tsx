@@ -60,9 +60,9 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
 
   const handleProceedToPay = () => {
     if (unpaidBillUuid) {
-      navigate({ to: `${openmrsSpaBase}billing/patient/${patientUuid}/${unpaidBillUuid}` });
+      navigate({ to: `${openmrsSpaBase}home/billing/patient/${patientUuid}/${unpaidBillUuid}` });
     } else {
-      navigate({ to: `${openmrsSpaBase}/home` });
+      navigate({ to: `${openmrsSpaBase}home` });
     }
   };
 
@@ -132,7 +132,7 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
         </ModalBody>
       )}
       <ModalFooter>
-        <Button kind="secondary" onClick={() => navigate({ to: `\${openmrsSpaBase}/home` })}>
+        <Button kind="secondary" onClick={() => navigate({ to: `${openmrsSpaBase}home` })}>
           {t('cancel', 'Cancel')}
         </Button>
         <Button kind="danger" onClick={handleProceedToPay} disabled={!unpaidBillUuid && enforceBillPayment}>

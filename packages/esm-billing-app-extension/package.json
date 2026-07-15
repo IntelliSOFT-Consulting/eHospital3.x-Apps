@@ -1,5 +1,5 @@
 {
-  "name": "@intellisoftkenya/esm-billing-app",
+  "name": "@intellisoftkenya/esm-billing-app-extension",
   "version": "1.5.5-pre.1",
   "description": "Billing frontend module for use in O3",
   "browser": "dist/intellisoftkenya-esm-billing-app.js",
