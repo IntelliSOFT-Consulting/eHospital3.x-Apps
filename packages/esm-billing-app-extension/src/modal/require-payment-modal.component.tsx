@@ -45,11 +45,25 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
   const { enforceBillPayment } = useConfig<BillingConfig>();
   const openmrsSpaBase = window['getOpenmrsSpaBase']();
 
-  // Filter bills to only include unpaid ones and non-exempted line items
-  // Note: `bills` from `useBills` already apply `mapBillProperties` which simplifies things.
-  // The `bill.status !== 'PAID'` check should be enough for filtering
+  // Filter bills to only include unpaid ones.
+  // Note: We check both the bill status and mathematically compare tenderedAmount vs totalAmount.
+  // This ensures that even if the backend asynchronously updates the status, the bill is properly considered PAID.
   const unpaidBills = useMemo(() => {
-    return bills.filter((bill) => bill.status !== 'PAID');
+    return bills.filter((bill) => {
+      const status = (bill.status || '').toUpperCase();
+      if (status === 'PAID' || status === 'EXEMPTED' || status === 'CANCELLED' || status === 'VOIDED') {
+        return false;
+      }
+      
+      const totalAmount = bill.totalAmount || 0;
+      const tenderedAmount = bill.payments?.reduce((sum, p) => sum + (p.amountTendered || p.amount || 0), 0) || 0;
+      
+      if (totalAmount > 0 && tenderedAmount >= totalAmount) {
+        return false;
+      }
+
+      return true;
+    });
   }, [bills]);
 
   const unpaidBillUuid = unpaidBills.length > 0 ? unpaidBills[0].uuid : null;
@@ -68,8 +82,11 @@ const RequirePaymentModal: React.FC<RequirePaymentModalProps> = () => {
 
   const lineItems = useMemo(() => {
     return unpaidBills
-      .flatMap((bill) => bill.lineItems)
-      .filter((lineItem) => (lineItem.paymentStatus !== 'EXEMPTED' && lineItem.paymentStatus !== 'PAID') && !lineItem.voided);
+      .flatMap((bill) => bill.lineItems || [])
+      .filter((lineItem) => {
+        const paymentStatus = (lineItem.paymentStatus || '').toUpperCase();
+        return paymentStatus !== 'EXEMPTED' && paymentStatus !== 'PAID' && !lineItem.voided;
+      });
   }, [unpaidBills]);
 
   useEffect(() => {

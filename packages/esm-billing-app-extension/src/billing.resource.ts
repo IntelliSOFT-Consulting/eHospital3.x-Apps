@@ -53,7 +53,7 @@ export const useBills = (
   const endDateISO = endDate.toISOString();
 
   const statusParam = billStatus ? `status=${billStatus}&` : '';
-  const url = `${restBaseUrl}/billing/bill?${statusParam}v=custom:(uuid,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
+  const url = `${restBaseUrl}/billing/bill?${statusParam}v=custom:(uuid,status,payments,voided,voidReason,adjustedBy,cashPoint:(uuid,name),cashier:(uuid,display),dateCreated,lineItems,patient:(uuid,display))&createdOnOrAfter=${startingDateISO}&createdOnOrBefore=${endDateISO}`;
 
   const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<PatientInvoice> } }>(
     patientUuid ? `${url}&patientUuid=${patientUuid}` : url,
