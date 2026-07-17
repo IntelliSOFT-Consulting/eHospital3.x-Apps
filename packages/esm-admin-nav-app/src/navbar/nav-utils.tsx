@@ -61,8 +61,8 @@ export const moduleLinks = [
     icon: <Report size={24} />,
   },
   {
-    label: "Billing ",
-    url: `${openmrsSpaBase}billing`,
+    label: "Billable Services",
+    url: `${openmrsSpaBase}billable-services`,
     icon: <Receipt size={24} />,
   },
   {
